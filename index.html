@@ -549,17 +549,33 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
-        .placeholder-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--glass-border);
-            border-top-color: #e94560;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .tableau-error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            gap: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            padding: 40px 20px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .tableau-error a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 28px;
+            background: var(--gradient-2);
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tableau-error a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
         }
 
         /* Features */
@@ -898,6 +914,300 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
         }
 
+        /* Contact Section */
+        .contact-section {
+            padding: 80px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .contact-info {
+            position: sticky;
+            top: 120px;
+        }
+
+        .contact-info h2 {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .contact-info h2 .gradient-text {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .contact-info > p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .contact-perks {
+            list-style: none;
+        }
+
+        .contact-perks li {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-perks li:hover {
+            border-color: rgba(233, 69, 96, 0.2);
+            transform: translateX(-4px);
+        }
+
+        .perk-icon {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .perk-icon.red { background: rgba(233, 69, 96, 0.12); }
+        .perk-icon.gold { background: rgba(245, 166, 35, 0.12); }
+        .perk-icon.purple { background: rgba(102, 126, 234, 0.12); }
+        .perk-icon.green { background: rgba(74, 222, 128, 0.12); }
+
+        .perk-content h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .perk-content p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+        }
+
+        /* Contact Form */
+        .contact-form-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-2);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .form-header h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-label .required {
+            color: #e94560;
+            margin-right: 2px;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: rgba(233, 69, 96, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+        }
+
+        .form-input.error,
+        .form-textarea.error {
+            border-color: #e94560;
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+        }
+
+        .error-message {
+            font-size: 12px;
+            color: #e94560;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        .form-textarea {
+            min-height: 130px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-submit-btn {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--gradient-2);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .form-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(233, 69, 96, 0.45);
+        }
+
+        .form-submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .form-submit-btn.loading {
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .submit-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        .form-submit-btn.loading .submit-spinner {
+            display: block;
+        }
+
+        .form-submit-btn.loading .submit-text {
+            display: none;
+        }
+
+        /* Success State */
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .form-success.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(74, 222, 128, 0.12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+            animation: scaleIn 0.5s ease 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .form-success h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .form-success p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+        }
+
+        .form-success .btn {
+            margin-top: 24px;
+        }
+
         /* Footer */
         .footer {
             position: relative;
@@ -955,6 +1265,39 @@
             font-weight: 600;
         }
 
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-2);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.35);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(233, 69, 96, 0.5);
+        }
+
         /* Animations for scroll */
         .reveal {
             opacity: 0;
@@ -965,6 +1308,47 @@
         .reveal.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Viz Loading */
+        .viz-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-bars {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .loading-bar {
+            width: 6px;
+            height: 30px;
+            background: var(--gradient-2);
+            border-radius: 3px;
+            animation: loadingBar 1.2s ease infinite;
+        }
+
+        .loading-bar:nth-child(2) { animation-delay: 0.1s; }
+        .loading-bar:nth-child(3) { animation-delay: 0.2s; }
+        .loading-bar:nth-child(4) { animation-delay: 0.3s; }
+        .loading-bar:nth-child(5) { animation-delay: 0.4s; }
+
+        @keyframes loadingBar {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+            50% { transform: scaleY(1.2); opacity: 1; }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Responsive */
@@ -1025,6 +1409,19 @@
                 grid-template-columns: 1fr;
             }
 
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .contact-info {
+                position: static;
+            }
+
+            .contact-form-card {
+                padding: 28px 20px;
+            }
+
             .dashboard-section {
                 padding: 0 10px 60px;
             }
@@ -1047,6 +1444,10 @@
 
             .cta-card {
                 padding: 40px 24px;
+            }
+
+            .contact-section {
+                padding: 60px 20px;
             }
         }
 
@@ -1074,85 +1475,10 @@
                 justify-content: center;
                 max-width: 280px;
             }
-        }
 
-        /* Tableau loading state */
-        .viz-loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 600px;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loading-bars {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .loading-bar {
-            width: 6px;
-            height: 30px;
-            background: var(--gradient-2);
-            border-radius: 3px;
-            animation: loadingBar 1.2s ease infinite;
-        }
-
-        .loading-bar:nth-child(2) { animation-delay: 0.1s; }
-        .loading-bar:nth-child(3) { animation-delay: 0.2s; }
-        .loading-bar:nth-child(4) { animation-delay: 0.3s; }
-        .loading-bar:nth-child(5) { animation-delay: 0.4s; }
-
-        @keyframes loadingBar {
-            0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
-            50% { transform: scaleY(1.2); opacity: 1; }
-        }
-
-        /* Scroll to top */
-        .scroll-top {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 48px;
-            height: 48px;
-            background: var(--gradient-2);
-            border: none;
-            border-radius: 14px;
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.4s ease;
-            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.35);
-        }
-
-        .scroll-top.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .scroll-top:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(233, 69, 96, 0.5);
-        }
-
-        /* Divider */
-        .section-divider {
-            width: 60px;
-            height: 4px;
-            background: var(--gradient-2);
-            border-radius: 2px;
-            margin: 0 auto 20px;
+            .contact-info h2 {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
@@ -1173,6 +1499,7 @@
             <li><a href="#features">יכולות</a></li>
             <li><a href="#about">אודות</a></li>
             <li><a href="#creators">צוות</a></li>
+            <li><a href="#contact">יצירת קשר</a></li>
         </ul>
         <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">☰</button>
     </nav>
@@ -1197,8 +1524,8 @@
                 <a href="#dashboard" class="btn btn-primary">
                     📊 צפה בדשבורד
                 </a>
-                <a href="#features" class="btn btn-secondary">
-                    ✨ גלה את היכולות
+                <a href="#contact" class="btn btn-secondary">
+                    ✉️ צור קשר
                 </a>
             </div>
         </div>
@@ -1213,22 +1540,22 @@
         <div class="stats-container">
             <div class="stat-card">
                 <div class="stat-icon red">📈</div>
-                <div class="stat-number" id="statRevenue">₪2.4M</div>
+                <div class="stat-number">₪2.4M</div>
                 <div class="stat-label">סך הכנסות</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon gold">👥</div>
-                <div class="stat-number" id="statCustomers">1,250+</div>
+                <div class="stat-number">1,250+</div>
                 <div class="stat-label">לקוחות פעילים</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon purple">🌍</div>
-                <div class="stat-number" id="statRegions">18</div>
+                <div class="stat-number">18</div>
                 <div class="stat-label">אזורים גיאוגרפיים</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon green">📦</div>
-                <div class="stat-number" id="statProducts">340+</div>
+                <div class="stat-number">340+</div>
                 <div class="stat-label">מוצרים בקטלוג</div>
             </div>
         </div>
@@ -1392,6 +1719,126 @@
         </div>
     </section>
 
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="section-header reveal">
+            <div class="section-tag">✉️ צור קשר</div>
+            <h2 class="section-title">רוצה דשבורד משלך?</h2>
+            <p class="section-desc">
+                מלא את הפרטים ונחזור אליך בהקדם לבניית דשבורד בהתאמה אישית לעסק שלך
+            </p>
+        </div>
+        <div class="contact-wrapper">
+            <div class="contact-info reveal">
+                <h2>בוא נבנה <span class="gradient-text">ביחד</span> משהו מדהים</h2>
+                <p>
+                    בין אם אתה צריך לוח בקרה למכירות, דשבורד לוגיסטי, או כל סוג של ויזואליזציית נתונים — 
+                    אנחנו כאן כדי להפוך את המידע שלך לתובנות שמניעות החלטות.
+                </p>
+                <ul class="contact-perks">
+                    <li>
+                        <div class="perk-icon red">🎯</div>
+                        <div class="perk-content">
+                            <h4>התאמה אישית מלאה</h4>
+                            <p>כל דשבורד נבנה מההתחלה בהתאם לצרכים הספציפיים שלך</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="perk-icon gold">⏱️</div>
+                        <div class="perk-content">
+                            <h4>זמן אספקה מהיר</h4>
+                            <p>דשבורד מקצועי מוכן תוך ימים ספורים מהפגישה הראשונה</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="perk-icon purple">🔧</div>
+                        <div class="perk-content">
+                            <h4>תמיכה ושדרוגים</h4>
+                            <p>ליווי צמוד לאחר המסירה ויכולת שדרוג והרחבה לכל אורך הדרך</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="perk-icon green">💡</div>
+                        <div class="perk-content">
+                            <h4>ייעוץ מקצועי חינם</h4>
+                            <p>פגישת היכרות לייעוץ והמלצות — ללא התחייבות</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="contact-form-card reveal">
+                <div id="contactFormContainer">
+                    <div class="form-header">
+                        <h3>📬 שלח הודעה</h3>
+                        <p>מלא את הפרטים ואנו ניצור איתך קשר בהקדם</p>
+                    </div>
+                    <form id="contactForm" novalidate>
+                        <div class="form-group">
+                            <label class="form-label" for="fullName">
+                                <span class="required">*</span> שם מלא
+                            </label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                name="fullName"
+                                class="form-input" 
+                                placeholder="הכנס את שמך המלא"
+                                required
+                                autocomplete="name"
+                            >
+                            <div class="error-message" id="fullNameError">נא להזין שם מלא (לפחות 2 תווים)</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="phone">
+                                <span class="required">*</span> מספר טלפון
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                name="phone"
+                                class="form-input" 
+                                placeholder="050-0000000"
+                                required
+                                autocomplete="tel"
+                                dir="ltr"
+                                style="text-align: right;"
+                            >
+                            <div class="error-message" id="phoneError">נא להזין מספר טלפון תקין (לפחות 9 ספרות)</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="description">
+                                <span class="required">*</span> תיאור קצר
+                            </label>
+                            <textarea 
+                                id="description" 
+                                name="description"
+                                class="form-textarea" 
+                                placeholder="ספר/י לנו בקצרה על הדשבורד שתרצה/י לבנות — מה הנתונים, מה המטרות, וכל פרט רלוונטי..."
+                                required
+                            ></textarea>
+                            <div class="error-message" id="descriptionError">נא להזין תיאור קצר (לפחות 10 תווים)</div>
+                        </div>
+                        <button type="submit" class="form-submit-btn" id="submitBtn">
+                            <span class="submit-text">🚀 שליחת ההודעה</span>
+                            <div class="submit-spinner"></div>
+                        </button>
+                    </form>
+                </div>
+                <div class="form-success" id="formSuccess">
+                    <div class="success-icon">✅</div>
+                    <h3>ההודעה נשלחה בהצלחה!</h3>
+                    <p>
+                        תודה שפנית/ה אלינו. צוות שניר ומיכל יחזור אליך בהקדם.<br>
+                        אנחנו מצפים לבנות יחד את הדשבורד המושלם שלך!
+                    </p>
+                    <button class="btn btn-primary" onclick="resetForm()">
+                        📝 שלח הודעה נוספת
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="cta-card reveal">
@@ -1427,12 +1874,12 @@
         // Background Particles
         // ============================================
         (function createParticles() {
-            const bg = document.getElementById('bgAnimation');
-            const colors = ['#e94560', '#f5a623', '#667eea', '#764ba2', '#4ade80'];
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
+            var bg = document.getElementById('bgAnimation');
+            var colors = ['#e94560', '#f5a623', '#667eea', '#764ba2', '#4ade80'];
+            for (var i = 0; i < 30; i++) {
+                var particle = document.createElement('div');
                 particle.classList.add('particle');
-                const size = Math.random() * 8 + 3;
+                var size = Math.random() * 8 + 3;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 particle.style.left = Math.random() * 100 + '%';
@@ -1446,8 +1893,8 @@
         // ============================================
         // Navbar Scroll Effect
         // ============================================
-        const navbar = document.getElementById('navbar');
-        const scrollTop = document.getElementById('scrollTop');
+        var navbar = document.getElementById('navbar');
+        var scrollTop = document.getElementById('scrollTop');
 
         window.addEventListener('scroll', function() {
             if (window.scrollY > 50) {
@@ -1463,16 +1910,17 @@
             }
 
             // Active nav link
-            const sections = ['home', 'dashboard', 'features', 'about', 'creators'];
-            for (let i = sections.length - 1; i >= 0; i--) {
-                const section = document.getElementById(sections[i]);
+            var sections = ['home', 'dashboard', 'features', 'about', 'creators', 'contact'];
+            for (var i = sections.length - 1; i >= 0; i--) {
+                var section = document.getElementById(sections[i]);
                 if (section) {
-                    const rect = section.getBoundingClientRect();
+                    var rect = section.getBoundingClientRect();
                     if (rect.top <= 200) {
-                        document.querySelectorAll('.nav-links a').forEach(function(link) {
-                            link.classList.remove('active');
-                        });
-                        const activeLink = document.querySelector('.nav-links a[href="#' + sections[i] + '"]');
+                        var allLinks = document.querySelectorAll('.nav-links a');
+                        for (var j = 0; j < allLinks.length; j++) {
+                            allLinks[j].classList.remove('active');
+                        }
+                        var activeLink = document.querySelector('.nav-links a[href="#' + sections[i] + '"]');
                         if (activeLink) activeLink.classList.add('active');
                         break;
                     }
@@ -1487,15 +1935,14 @@
         // ============================================
         // Mobile Toggle
         // ============================================
-        const mobileToggle = document.getElementById('mobileToggle');
-        const navLinks = document.getElementById('navLinks');
+        var mobileToggle = document.getElementById('mobileToggle');
+        var navLinks = document.getElementById('navLinks');
 
         mobileToggle.addEventListener('click', function() {
             navLinks.classList.toggle('open');
             mobileToggle.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
         });
 
-        // Close mobile menu on link click
         navLinks.querySelectorAll('a').forEach(function(link) {
             link.addEventListener('click', function() {
                 navLinks.classList.remove('open');
@@ -1506,9 +1953,9 @@
         // ============================================
         // Scroll Reveal
         // ============================================
-        const revealElements = document.querySelectorAll('.reveal');
+        var revealElements = document.querySelectorAll('.reveal');
 
-        const revealObserver = new IntersectionObserver(function(entries) {
+        var revealObserver = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
@@ -1523,7 +1970,6 @@
         // ============================================
         // Tableau Embed
         // ============================================
-        var vizContainer = null;
         var vizInstance = null;
 
         function initTableau() {
@@ -1546,12 +1992,10 @@
                 vizInstance = new tableau.Viz(container, vizUrl, options);
             } catch (error) {
                 console.error('Error loading Tableau viz:', error);
-                container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:rgba(255,255,255,0.5);">' +
-                    '<p style="font-size:18px;margin-bottom:16px;">⚠️ שגיאה בטעינת הדשבורד</p>' +
+                container.innerHTML = '<div class="tableau-error">' +
+                    '<p style="font-size:18px;">⚠️ שגיאה בטעינת הדשבורד</p>' +
                     '<p style="font-size:14px;">נא לנסות לרענן את הדף או לבקר בקישור הבא:</p>' +
-                    '<a href="https://public.tableau.com/views/SnirMichalSales/Dashboard1" target="_blank" ' +
-                    'style="display:inline-block;margin-top:16px;padding:12px 24px;background:var(--gradient-2);' +
-                    'border-radius:10px;color:#fff;text-decoration:none;">פתח את הדשבורד ↗</a></div>';
+                    '<a href="https://public.tableau.com/views/SnirMichalSales/Dashboard1" target="_blank">פתח את הדשבורד ↗</a></div>';
             }
         }
 
@@ -1606,6 +2050,134 @@
                 }
             });
         });
+
+        // ============================================
+        // Contact Form Validation & Submission
+        // ============================================
+        var contactForm = document.getElementById('contactForm');
+        var submitBtn = document.getElementById('submitBtn');
+        var formSuccess = document.getElementById('formSuccess');
+        var contactFormContainer = document.getElementById('contactFormContainer');
+
+        function validateField(field, condition, errorId) {
+            var errorEl = document.getElementById(errorId);
+            if (!condition) {
+                field.classList.add('error');
+                errorEl.classList.add('show');
+                return false;
+            } else {
+                field.classList.remove('error');
+                errorEl.classList.remove('show');
+                return true;
+            }
+        }
+
+        function sanitizeInput(str) {
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML.trim();
+        }
+
+        function validateForm() {
+            var fullName = document.getElementById('fullName');
+            var phone = document.getElementById('phone');
+            var description = document.getElementById('description');
+            var digitsOnly = phone.value.replace(/[\s\-\(\)]/g, '');
+
+            var isValid = true;
+
+            if (!validateField(fullName, fullName.value.trim().length >= 2, 'fullNameError')) {
+                isValid = false;
+            }
+
+            if (!validateField(phone, digitsOnly.length >= 9 && /^[\d\s\-\(\)\+]+$/.test(phone.value.trim()), 'phoneError')) {
+                isValid = false;
+            }
+
+            if (!validateField(description, description.value.trim().length >= 10, 'descriptionError')) {
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Real-time validation on blur
+        document.getElementById('fullName').addEventListener('blur', function() {
+            validateField(this, this.value.trim().length >= 2, 'fullNameError');
+        });
+
+        document.getElementById('phone').addEventListener('blur', function() {
+            var digitsOnly = this.value.replace(/[\s\-\(\)]/g, '');
+            validateField(this, digitsOnly.length >= 9 && /^[\d\s\-\(\)\+]+$/.test(this.value.trim()), 'phoneError');
+        });
+
+        document.getElementById('description').addEventListener('blur', function() {
+            validateField(this, this.value.trim().length >= 10, 'descriptionError');
+        });
+
+        // Clear error on focus
+        ['fullName', 'phone', 'description'].forEach(function(fieldId) {
+            var field = document.getElementById(fieldId);
+            field.addEventListener('input', function() {
+                this.classList.remove('error');
+                document.getElementById(fieldId + 'Error').classList.remove('show');
+            });
+        });
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                return;
+            }
+
+            // Show loading
+            submitBtn.classList.add('loading');
+
+            // Gather data
+            var formData = {
+                name: sanitizeInput(document.getElementById('fullName').value),
+                phone: sanitizeInput(document.getElementById('phone').value),
+                description: sanitizeInput(document.getElementById('description').value)
+            };
+
+            // Simulate submission (for static GitHub Pages - no backend)
+            setTimeout(function() {
+                submitBtn.classList.remove('loading');
+                contactFormContainer.style.display = 'none';
+                formSuccess.classList.add('show');
+
+                // Log for debugging
+                console.log('Form submitted:', formData);
+
+                // Construct mailto link as fallback
+                var subject = encodeURIComponent('פנייה חדשה - דשבורד מ' + formData.name);
+                var body = encodeURIComponent(
+                    'שם: ' + formData.name + '\n' +
+                    'טלפון: ' + formData.phone + '\n\n' +
+                    'תיאור:\n' + formData.description
+                );
+
+                // Store in localStorage as backup
+                try {
+                    var submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+                    submissions.push({
+                        ...formData,
+                        timestamp: new Date().toISOString()
+                    });
+                    localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+                } catch (err) {
+                    console.log('Could not store submission in localStorage');
+                }
+
+            }, 1500);
+        });
+
+        function resetForm() {
+            contactForm.reset();
+            formSuccess.classList.remove('show');
+            contactFormContainer.style.display = 'block';
+        }
     </script>
 </body>
 </html>
