@@ -3,259 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבחן מאסטר סופי: סטטיסטיקה יישומית</title>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <title>מאסטר סטטיסטיקה - המבחן הסופי</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #f3f4f6;
-            --bg-card: #ffffff;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --secondary: #14b8a6;
-            --text-main: #1f2937;
-            --text-light: #6b7280;
-            --border-color: #e5e7eb;
-            --correct-bg: #ecfdf5;
+            --bg-color: #f0f4f8;
+            --text-main: #1e293b;
+            --text-secondary: #64748b;
+            --primary: #4338ca;
+            --primary-light: #6366f1;
+            --white: #ffffff;
+            --correct-bg: #d1fae5;
             --correct-border: #10b981;
-            --correct-text: #047857;
-            --wrong-bg: #fef2f2;
+            --correct-text: #065f46;
+            --wrong-bg: #fee2e2;
             --wrong-border: #ef4444;
-            --wrong-text: #b91c1c;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-            --shadow-md: 0 10px 25px rgba(0,0,0,0.05);
+            --wrong-text: #991b1b;
+            --option-bg: #f8fafc;
+            --option-hover: #e2e8f0;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         * {
             box-sizing: border-box;
-            font-family: 'Heebo', sans-serif;
+            font-family: 'Rubik', sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            background-color: var(--bg-body);
+            background-color: var(--bg-color);
             color: var(--text-main);
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
         }
 
-        /* --- Header & Layout --- */
-        header {
+        /* --- Header --- */
+        .header {
             width: 100%;
-            background: #111827;
-            color: white;
-            padding: 30px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-sm);
         }
 
-        header h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.2rem;
+        .header h1 {
+            font-size: 2.5rem;
             font-weight: 800;
-            background: linear-gradient(to right, #818cf8, #2dd4bf);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
-        header p { margin: 0; font-size: 1.1rem; color: #9ca3af; }
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
 
+        /* --- Main Container --- */
         .container {
             width: 100%;
-            max-width: 850px;
+            max-width: 900px;
             padding: 40px 20px;
-            flex: 1;
+            flex-grow: 1;
         }
 
         /* --- Progress Bar --- */
-        .progress-wrapper {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 20px;
+        .progress-bar-container {
+            background: var(--white);
+            padding: 20px 30px;
+            border-radius: 20px;
             box-shadow: var(--shadow-sm);
             margin-bottom: 30px;
-            border: 1px solid var(--border-color);
         }
 
-        .progress-header {
+        .progress-stats {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
-            font-weight: 700;
-            color: var(--text-main);
-            font-size: 1.1rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
         }
 
-        .progress-track {
+        .track {
             width: 100%;
-            height: 10px;
-            background: #e5e7eb;
+            height: 12px;
+            background-color: #e2e8f0;
             border-radius: 10px;
             overflow: hidden;
         }
 
-        .progress-fill {
+        .fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            background-color: var(--primary-light);
             width: 0%;
-            transition: width 0.4s ease;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
         }
 
-        /* --- Question Card --- */
-        .question-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color);
+        /* --- Quiz Card --- */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
             position: relative;
-            animation: fadeIn 0.4s ease forwards;
+            animation: fadeIn 0.4s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .question-title {
-            font-size: 1.4rem;
+        .question-text {
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             line-height: 1.5;
-            color: #111827;
         }
 
-        /* --- Options Grid --- */
-        .options-container {
+        /* --- Options --- */
+        .options-grid {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
+            margin-top: 30px;
         }
 
         .option-btn {
-            text-align: right;
+            background-color: var(--option-bg);
+            border: 2px solid #cbd5e1;
+            border-radius: 16px;
             padding: 20px 25px;
             font-size: 1.15rem;
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            border-radius: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            text-align: right;
             cursor: pointer;
             transition: all 0.2s ease;
-            color: var(--text-main);
-            font-weight: 500;
             line-height: 1.4;
         }
 
         .option-btn:hover:not(:disabled) {
-            background: #f3f4f6;
-            border-color: #d1d5db;
-            transform: scale(1.01);
+            background-color: var(--option-hover);
+            border-color: #94a3b8;
+            transform: translateY(-2px);
         }
 
-        .option-btn:disabled { cursor: default; }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            transform: none;
+        }
 
-        .option-btn.correct {
-            background: var(--correct-bg);
-            border-color: var(--correct-border);
-            color: var(--correct-text);
+        /* States for selected options */
+        .option-btn.correct-ans {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+            color: var(--correct-text) !important;
             font-weight: 700;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         }
 
-        .option-btn.wrong {
-            background: var(--wrong-bg);
-            border-color: var(--wrong-border);
-            color: var(--wrong-text);
+        .option-btn.wrong-ans {
+            background-color: var(--wrong-bg) !important;
+            border-color: var(--wrong-border) !important;
+            color: var(--wrong-text) !important;
             opacity: 0.8;
         }
 
-        /* --- Feedback Section --- */
-        .feedback-section {
+        /* --- Feedback Box --- */
+        .feedback-container {
             display: none;
-            margin-top: 30px;
+            margin-top: 35px;
             padding: 25px;
-            border-radius: 14px;
-            animation: fadeIn 0.3s;
-            font-size: 1.1rem;
+            border-radius: 16px;
+            animation: slideDown 0.3s ease-out forwards;
+            font-size: 1.15rem;
             line-height: 1.6;
         }
 
-        .feedback-section.is-correct {
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback-container.show-correct {
             display: block;
-            background: var(--correct-bg);
-            border-right: 6px solid var(--correct-border);
+            background-color: #ecfdf5;
+            border: 2px solid var(--correct-border);
             color: var(--correct-text);
         }
 
-        .feedback-section.is-wrong {
+        .feedback-container.show-wrong {
             display: block;
-            background: var(--wrong-bg);
-            border-right: 6px solid var(--wrong-border);
+            background-color: #fef2f2;
+            border: 2px solid var(--wrong-border);
             color: var(--wrong-text);
         }
 
-        .feedback-title {
+        .feedback-header {
+            font-size: 1.4rem;
             font-weight: 800;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .feedback-correct-answer {
-            background: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: 1px solid var(--wrong-border);
-            margin: 15px 0;
-            font-weight: 700;
-            color: var(--text-main);
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* --- SPSS Tables --- */
-        .spss-box {
-            background: white;
-            border: 1px solid #d1d5db;
+        /* --- SPSS Tables Formatting --- */
+        .spss-wrapper {
+            background: #fff;
+            border: 1px solid #cbd5e1;
             padding: 20px;
-            margin: 0 0 30px 0;
-            border-radius: 10px;
+            margin: 25px 0;
+            border-radius: 8px;
             overflow-x: auto;
             direction: ltr;
             text-align: left;
+            font-family: Arial, sans-serif;
+            color: #000;
         }
 
-        .spss-title-text {
-            font-family: Arial, sans-serif;
+        .spss-title {
             font-weight: bold;
-            font-size: 15px;
-            margin-bottom: 12px;
-            color: #000;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
 
         .spss-table {
             width: 100%;
             border-collapse: collapse;
-            font-family: Arial, sans-serif;
             font-size: 13px;
-            color: #000;
-            min-width: 650px;
+            min-width: 600px;
         }
 
         .spss-table th, .spss-table td {
-            padding: 7px 10px;
+            padding: 6px 12px;
             text-align: right;
-            border-left: 1px solid #f3f4f6;
         }
 
         .spss-table th {
             border-top: 2px solid #000;
             border-bottom: 1px solid #000;
             font-weight: bold;
-            background-color: #f9fafb;
             vertical-align: bottom;
+        }
+
+        .spss-table .row-title {
+            text-align: left;
+            font-weight: normal;
         }
 
         .spss-table tbody tr:last-child td {
@@ -263,719 +265,731 @@
         }
 
         .spss-note {
-            font-family: Arial, sans-serif;
             font-size: 11px;
             color: #4b5563;
             margin-top: 8px;
         }
 
-        /* --- Next Button --- */
-        .next-btn-container {
+        /* --- Actions --- */
+        .actions {
             display: flex;
             justify-content: flex-end;
             margin-top: 30px;
-            border-top: 2px solid #f3f4f6;
-            padding-top: 25px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 30px;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
+        .btn-next {
+            display: none;
+            background-color: var(--primary);
+            color: var(--white);
             border: none;
-            padding: 16px 35px;
-            font-size: 1.25rem;
+            padding: 16px 40px;
+            font-size: 1.3rem;
             font-weight: 700;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             transition: all 0.2s;
-            display: none;
+            box-shadow: 0 4px 6px -1px rgba(67, 56, 202, 0.4);
         }
 
-        .btn-primary:hover {
-            background: var(--primary-hover);
+        .btn-next:hover {
+            background-color: var(--primary-light);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
-        /* --- Results Screen --- */
+        /* --- Results --- */
         #resultsScreen {
             display: none;
             text-align: center;
         }
 
-        .score-display {
-            font-size: 5rem;
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 12px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
             font-weight: 800;
             color: var(--primary);
-            margin: 20px 0;
-            text-shadow: 2px 2px 0px rgba(99, 102, 241, 0.1);
+            margin: 0 auto 30px;
+            box-shadow: var(--shadow-lg);
         }
 
-        @media (max-width: 600px) {
-            .question-card { padding: 20px; }
-            .option-btn { font-size: 1.05rem; padding: 15px; }
-            header h1 { font-size: 1.8rem; }
-            .btn-primary { width: 100%; text-align: center; }
+        @media (max-width: 768px) {
+            .quiz-card { padding: 25px; }
+            .question-text { font-size: 1.3rem; }
+            .option-btn { font-size: 1.1rem; padding: 15px; }
+            .header h1 { font-size: 2rem; }
+            .btn-next { width: 100%; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>מאסטר סטטיסטיקה סופי</h1>
-        <p>50 שאלות | רמת בחינה אקדמית | זיהוי, פלטים והסקת מסקנות</p>
-    </header>
+    <div class="header">
+        <h1>מאסטר סטטיסטיקה - סופי</h1>
+        <p>50 שאלות | מניעת ניחוש שיטתי | פלטים ברמת בחינה</p>
+    </div>
 
     <div class="container">
         
-        <div id="quizApp">
-            <div class="progress-wrapper">
-                <div class="progress-header">
-                    <span id="qCount">שאלה 1 / 50</span>
-                    <span id="scoreTracker" style="color:var(--primary);">ניקוד ביניים: 0</span>
+        <!-- Quiz Section -->
+        <div id="quizSection">
+            <div class="progress-bar-container">
+                <div class="progress-stats">
+                    <span id="qCounter">שאלה 1 / 50</span>
+                    <span id="scoreCounter">תשובות נכונות: 0</span>
                 </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="pBar"></div>
+                <div class="track">
+                    <div class="fill" id="pFill"></div>
                 </div>
             </div>
 
-            <div class="question-card" id="qCard">
-                <div class="question-title" id="qText"></div>
+            <div class="quiz-card" id="card">
+                <div class="question-text" id="qText">טוען שאלה...</div>
                 <div id="qTable"></div>
                 
-                <div class="options-container" id="optionsGrid"></div>
+                <div class="options-grid" id="optionsGrid"></div>
 
-                <div class="feedback-section" id="feedbackBox"></div>
+                <div class="feedback-container" id="feedbackBox">
+                    <div class="feedback-header" id="fbIcon"></div>
+                    <div id="fbContent"></div>
+                </div>
 
-                <div class="next-btn-container">
-                    <button class="btn-primary" id="nextBtn" onclick="handleNext()">המשך לשאלה הבאה ❯</button>
+                <div class="actions">
+                    <button class="btn-next" id="nextBtn" onclick="nextQuestion()">לשאלה הבאה ❯</button>
                 </div>
             </div>
         </div>
 
-        <div id="resultsScreen" class="question-card">
-            <h2>המבחן הסתיים!</h2>
-            <p style="font-size: 1.2rem; color: var(--text-light);">הציון הסופי שלך מחושב כעת...</p>
-            <div class="score-display" id="finalScoreText">0%</div>
-            <h3 id="finalMessage" style="font-size: 1.6rem; margin-bottom: 30px;"></h3>
-            <button class="btn-primary" style="display:inline-block;" onclick="location.reload()">↻ התחל מבחן חדש</button>
+        <!-- Results Section -->
+        <div id="resultsScreen" class="quiz-card">
+            <h2 style="font-size: 2rem; margin-bottom: 10px;">המבחן הסתיים!</h2>
+            <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 40px;">הנה התוצאה הסופית שלך:</p>
+            <div class="score-circle" id="finalScore">0%</div>
+            <h3 id="finalMessage" style="font-size: 1.8rem; margin-bottom: 30px;"></h3>
+            <button class="btn-next" style="display:inline-block;" onclick="location.reload()">התחל מבחן חדש ↻</button>
         </div>
 
     </div>
 
     <script>
-        // 50 Questions: 15 Scenarios + 35 Outputs
-        const rawQuestions = [
-            /* ==========================================
-               SECTION 1: SCENARIOS & THEORY (15 Qs)
-               ========================================== */
+        // 50 Questions Database
+        // 15 Scenarios + 35 Outputs
+        // Note: Correct answers vary in length, often being the shortest. Distractors are specifically made longer to break "length=correct" habits.
+        
+        const qData = [
+            // --- Part 1: Scenarios & Identification (15 Qs) ---
             {
-                q: "פסיכולוג קליני מעוניין לבדוק האם קיים קשר בין 'אזור מגורים' (מרכז / צפון / דרום) לבין 'סוג טיפול מועדף' (פסיכולוגי / פסיכיאטרי / משולב). באיזה מבחן עליו להשתמש?",
+                q: "פסיכולוגית קלינית מעוניינת לבדוק האם קיים קשר בין 'אזור מגורים' (מרכז / צפון / דרום) לבין 'סוג טיפול מועדף' (פסיכולוגי / פסיכיאטרי / משולב). באיזה מבחן עליה להשתמש?",
                 table: null,
                 options: [
-                    "ניתוח שונות חד כיווני, על מנת להשוות את ממוצעי סוג הטיפול בין שלושת אזורי המגורים השונים.",
-                    "מתאם פירסון, משום ששני המשתנים מחולקים למספר קטגוריות היוצרות קשר רציף.",
                     "מבחן חי בריבוע.",
-                    "מבחן T למדגמים בלתי תלויים בעלי שונויות שוות."
+                    "ניתוח שונות חד כיווני, על מנת להשוות את ממוצעי סוג הטיפול בין שלושת אזורי המגורים השונים בצורה סטטיסטית.",
+                    "מתאם פירסון, משום ששני המשתנים מחולקים למספר קטגוריות היוצרות קשר מתאמי רציף במדגם המקורי.",
+                    "מבחן T למדגמים בלתי תלויים, כל עוד קיימת הנחת שוויון שונויות (לווין) תקינה בין האזורים השונים."
                 ],
-                ans: 2,
-                exp: "אזור מגורים וסוג טיפול הם שניהם משתנים קטגוריאליים (שמיים). מבחן חי בריבוע הוא המבחן היחיד המיועד לבדיקת קשר/תלות בין שני משתנים קטגוריאליים. התשובה הארוכה (ANOVA) שגויה כי אין כאן משתנה תלוי כמותי לחשב לו ממוצע."
+                ans: 0,
+                exp: "אזור מגורים וסוג טיפול הם שניהם משתנים קטגוריאליים (שמיים). מבחן 'חי בריבוע' הוא המבחן היחיד מבין האפשרויות שמיועד לבדוק קשר/תלות בין שני משתנים קטגוריאליים. התשובה הארוכה על ניתוח שונות היא מלכודת – אין כאן משתנה כמותי שאפשר לחשב לו ממוצע."
             },
             {
-                q: "חוקר משווה ממוצעי שכר בין 3 חברות הייטק. הוא מבצע מבחן סטטיסטי ומקבל Sig = 0.452. מה עליו לעשות כעת?",
+                q: "חוקר משווה ממוצעי שכר בין 3 חברות הייטק. הוא מריץ מבחן סטטיסטי ומקבל Sig = 0.452 בטבלה הראשית. מה עליו לעשות כעת?",
                 table: null,
                 options: [
-                    "לעבור מיד למבחן פוסט-הוק מסוג Tukey כדי לאתר אילו מהחברות מציגות פערים מובהקים בשכר לעומת החברות האחרות.",
-                    "לבצע 3 מבחני T נפרדים במקום הניתוח המקורי.",
-                    "הניתוח מסתיים כאן ללא מבחני המשך.",
-                    "לבדוק שוויון שונויות באמצעות מבחן לווין."
+                    "לעבור מיד למבחן פוסט-הוק מסוג Tukey כדי לאתר בפירוט אילו מהחברות מציגות פערים מובהקים בשכר לעומת החברות האחרות במדגם.",
+                    "לבצע 3 מבחני T נפרדים במקום הניתוח המקורי על מנת לתקן את שגיאת הדגימה שנוצרה כתוצאה ממובהקות חלשה.",
+                    "לבדוק את התפלגות השונויות דרך מבחן לווין כדי לאשש את ההנחות המקדימות של האנובה.",
+                    "הניתוח מסתיים כאן ללא מבחני המשך."
                 ],
-                ans: 2,
-                exp: "כאשר אנו מבצעים ANOVA להשוואת 3 קבוצות ומקבלים Sig > 0.05, המסקנה היא שאין הבדל מובהק בין הממוצעים. הכלל קובע: לא דחינו את H0? עוצרים. לעולם לא ממשיכים למבחן פוסט-הוק במצב כזה."
+                ans: 3,
+                exp: "כאשר מבצעים ANOVA להשוואת 3 קבוצות ומקבלים Sig > 0.05 (לא מובהק), המסקנה היא שאין הבדל מובהק בין הממוצעים. הכלל קובע: לא דחינו את השערת האפס? עוצרים את הניתוח במקום, ואין הצדקה לעשות פוסט-הוק."
             },
             {
                 q: "איזה מבין הנתונים הבאים מעיד במידה הרבה ביותר על עוצמת ההשפעה של מנבא בודד בתוך מודל מרובה מנבאים?",
                 table: null,
                 options: [
-                    "ערך ה- R Square של המודל, אשר משקלל את תרומת כל המנבאים יחד ומייצר אומדן מובהק.",
-                    "ערכו של המקדם B (Unstandardized).",
-                    "רמת המובהקות (Sig) של המנבא הספציפי בטבלה.",
-                    "ערכו המוחלט של המקדם Beta (Standardized)."
+                    "ערך ה- R Square של המודל, אשר משקלל את תרומת כל המנבאים יחד ומייצר אומדן מובהק המנבא את השונות הכללית.",
+                    "ערכו המוחלט של המקדם Beta (Standardized).",
+                    "רמת המובהקות (Sig) של המנבא הספציפי, אשר מצביעה על עוצמת הדחייה של השערת האפס ברמת ביטחון של 95 אחוזים.",
+                    "ערכו של המקדם B (Unstandardized), מכיוון שהוא מציג את ההשפעה המספרית האמיתית על ציר ה-Y ללא הטיות תקנון."
                 ],
-                ans: 3,
-                exp: "R Square בודק את המודל השלם ולא מנבא בודד. B מושפע מיחידות המידה, וה-Sig רק קובע מובהקות אך לא עוצמה יחסית. ה-Beta (המקדם המתוקנן) הוא המדד היחיד שמאפשר השוואת עוצמה בין מנבאים שונים במודל."
+                ans: 1,
+                exp: "R Square בודק את המודל השלם ולא מנבא בודד. מקדם B מושפע מיחידות המידה (אי אפשר להשוות B של שקלים ל-B של שנות לימוד). המקדם המתוקנן (Beta) הוא המדד היחיד שמנרמל את יחידות המידה ומאפשר להשוות איזו משתנה מנבא 'חזק' יותר."
             },
             {
                 q: "מורה מחשבת את ממוצע הציונים בבחינה. רגע לפני הפרסום, היא מגלה שתלמיד אחד קיבל בטעות ציון 15 במקום 85, ומתקנת זאת. איזה מדד יושפע הכי פחות מהתיקון?",
                 table: null,
                 options: [
+                    "סטיית התקן המדגמית.",
                     "חציון.",
-                    "ממוצע.",
-                    "סטיית תקן.",
-                    "תוחלת השגיאה."
+                    "הממוצע החשבוני הפשוט של כלל הכיתה.",
+                    "שונות האוכלוסייה."
                 ],
-                ans: 0,
-                exp: "החציון מבוסס על מיקום הערך באמצע ההתפלגות, ולכן הוא חסין כמעט לחלוטין בפני ערכים קיצוניים (חריגים) בקצוות. הממוצע וסטיית התקן יושפעו משמעותית משינוי קיצוני של ציון אחד."
+                ans: 1,
+                exp: "החציון נקבע אך ורק על פי מיקום הערך האמצעי של סדרת הנתונים. לכן, הוא חסין כמעט לחלוטין בפני ערכים קיצוניים (Outliers). הממוצע וסטיית התקן, לעומת זאת, מושפעים מאוד מכל שינוי בערך מספרי קיצוני."
             },
             {
                 q: "במבחן t למדגמים בלתי תלויים, מהי משמעותו של מבחן לווין (Levene's Test)?",
                 table: null,
                 options: [
-                    "בדיקה האם הממוצעים של שתי הקבוצות שווים באופן מובהק באוכלוסייה ממנה נדגמו.",
-                    "בדיקת שוויון שונויות.",
-                    "בדיקה האם המדגמים אכן בלתי תלויים זה בזה או שקיימת טעות במערך המחקר.",
-                    "מציאת כיוון ההבדל בין שתי הקבוצות."
+                    "בדיקה האם הממוצעים של שתי הקבוצות שווים באופן מובהק באוכלוסייה ממנה נדגמו, בהתבסס על סטיית התקן המשותפת.",
+                    "בדיקה האם המדגמים אכן בלתי תלויים זה בזה או שקיימת טעות במערך המחקר הדורשת מבחן תלוי מזווג.",
+                    "מציאת כיוון ההבדל הסטטיסטי בין שתי הקבוצות הנבדקות.",
+                    "בדיקת הנחת שוויון השונויות בין הקבוצות."
                 ],
-                ans: 1,
-                exp: "מבחן לווין הוא מבחן מקדים. הוא אינו משווה ממוצעים, אלא בודק אך ורק את הנחת שוויון השונויות (הפיזור) בין שתי הקבוצות, כדי שנדע איזו שורת תוצאות לקרוא בהמשך הטבלה."
+                ans: 3,
+                exp: "מבחן לווין הוא תמיד מבחן מקדים. הוא לא נועד להשוות ממוצעים, אלא רק לבדוק האם השונות (הפיזור) של שתי הקבוצות שווה. התוצאה שלו אומרת לנו איזו שורת תוצאות (t) עלינו לקרוא בשלב הבא."
             },
             {
                 q: "מה אומרת השערת האפס (H0) במבחן t למדגמים תלויים (מזווגים)?",
                 table: null,
                 options: [
-                    "ההפרש הממוצע (d) בין המדידה הראשונה לשנייה שווה לאפס.",
-                    "הממוצע של שתי הקבוצות הבלתי תלויות זהה לחלוטין ללא יוצא מן הכלל.",
-                    "אין קשר מתאמי בין שתי המדידות.",
-                    "תוחלת ההפרשים שונה מאפס באוכלוסייה הרלוונטית."
-                ],
-                ans: 0,
-                exp: "במבחן למדגמים תלויים אנו מודדים את אותו אדם פעמיים ומתמקדים רק בפער שנוצר. השערת האפס מניחה תמיד ש'לא קרה כלום', כלומר ממוצע ההפרשים הללו הוא 0."
-            },
-            {
-                q: "חוקר משתמש באלפא של קרונבך עבור שאלון בן 8 פריטים ומקבל תוצאה של 0.52. מהי הפעולה הסטטיסטית המומלצת ביותר עבורו?",
-                table: null,
-                options: [
-                    "לבחון את עמודת 'Alpha if item deleted' על מנת לאתר פריטים חריגים שמחיקתם תשפר את העקיבות הפנימית.",
-                    "להמשיך לניתוח הנתונים כרגיל, שכן כל תוצאה חיובית מעידה על קשר כלשהו בין פריטי השאלון.",
-                    "לבצע מבחן חי בריבוע על הפריטים.",
-                    "להכפיל את המדגם פי שתיים."
-                ],
-                ans: 0,
-                exp: "אלפא של 0.52 מעידה על מהימנות בעייתית מאוד (הסף המקובל הוא 0.7). במצב כזה, חובה להסתכל בטבלת Item-Total ולחפש האם יש שאלה ספציפית שמקלקלת את השאלון, ואם מחיקתה תקפיץ את האלפא."
-            },
-            {
-                q: "מדוע לא נשתמש ב-3 מבחני T נפרדים במקום ניתוח שונות (ANOVA) כאשר אנו בודקים הבדלים בין 3 קבוצות (א', ב', ו-ג')?",
-                table: null,
-                options: [
-                    "כי מבחן T מחשב שונויות שונות בלבד.",
-                    "ריבוי מבחנים סטטיסטיים על אותו מדגם מגדיל באופן חריף את הסיכוי לטעות מסוג ראשון (לדחות את H0 בטעות).",
-                    "מכיוון שלא ניתן לחשב ממוצע לקבוצה ג' ללא תלות בקבוצות א' ו-ב'.",
-                    "כי רמת המובהקות מתחלקת ב-3."
-                ],
-                ans: 1,
-                exp: "הסיבה המרכזית להמצאת ה-ANOVA היא שמירה על רמת מובהקות קבועה (לרוב 5%). ביצוע מספר מבחני T מנפח את הסיכוי המצטבר למצוא הבדל מקרי ולהכריז עליו בטעות כהבדל מובהק."
-            },
-            {
-                q: "מנהלת שיווק בודקת את ההשפעה של 'מיקום המודעה' (למעלה/למטה) ו-'צבע המודעה' (אדום/כחול) על 'מספר הקליקים' (כמותי). היא חושדת שהצבע האדום עובד טוב רק כשהוא למעלה. מה עליה לבדוק בפלט?",
-                table: null,
-                options: [
-                    "את האפקט העיקרי של צבע המודעה (Main Effect).",
-                    "את האפקט העיקרי של מיקום המודעה (Main Effect).",
-                    "את מבחן פוסט-הוק מסוג Tukey.",
-                    "את שורת האינטראקציה בין מיקום לצבע."
-                ],
-                ans: 3,
-                exp: "כאשר חוקר מעריך שהשפעת משתנה אחד *תלויה* במצבו של המשתנה השני, זהו בדיוק ההגדרה של אינטראקציה סטטיסטית. הדבר נבדק בניתוח שונות דו-גורמי בשורת ההכפלה (Interaction)."
-            },
-            {
-                q: "במבחן חי בריבוע נבדק הקשר בין מין לאזור מגורים. תנאי התקינות קובע כי לכל היותר 20% מהתאים יהיו בעלי Expected count קטן מ-5. מה עלינו לעשות אם התנאי הופר (למשל, 40%)?",
-                table: null,
-                options: [
-                    "להתעלם ולהסתכל על ה-Sig של Pearson Chi-Square, שכן מבחן זה עמיד בפני סטיות קטנות בתנאי ההנחה שלו.",
-                    "לשנות את המבחן לניתוח שונות.",
-                    "לקרוא את התוצאה מתוך שורת Fisher's Exact Test.",
-                    "לסכום את התאים הקטנים ידנית."
+                    "הממוצע של שתי הקבוצות הבלתי תלויות זהה לחלוטין ללא יוצא מן הכלל, מה שמוכיח את השערת האפס ברמת האוכלוסייה.",
+                    "אין קשר מתאמי מובהק וחיובי בין שתי המדידות של אותו הנבדק לאורך ציר הזמן.",
+                    "ההפרש הממוצע בין המדידה הראשונה לשנייה שווה לאפס.",
+                    "תוחלת ההפרשים שונה מאפס באוכלוסייה הרלוונטית, ולכן קיימת השפעה של הטיפול שניתן לנבדקים."
                 ],
                 ans: 2,
-                exp: "כאשר הנחת המוצא של חי בריבוע מופרת (ריבוי תאים עם שכיחות צפויה נמוכה), המבחן הסטנדרטי אינו אמין. התוכנה תספק באופן אוטומטי את מבחן פישר המדויק, שעליו יש להסתמך במקרה כזה."
+                exp: "במדגמים תלויים מודדים את אותו אדם פעמיים (לפני ואחרי) ומסתכלים רק על ההפרש. השערת האפס תמיד מניחה 'לא קרה כלום', כלומר ממוצע ההפרשים האלה הוא בדיוק אפס."
             },
             {
-                q: "חוקרת מריצה מודל רגרסיה ומוצאת שה- R Square הוא 0.12. כיצד נפרש זאת?",
+                q: "חוקר משתמש באלפא של קרונבך עבור שאלון בן 8 פריטים ומקבל תוצאה של 0.52. מהי הפעולה המומלצת ביותר עבורו?",
                 table: null,
                 options: [
-                    "המודל מובהק סטטיסטית בביטחון של 88% לעומת השערת האפס.",
-                    "המשתנים המסבירים מנבאים אך ורק 12% מהשונות של המשתנה התלוי, שזהו נתון חלש יחסית.",
-                    "ישנה טעות של 12% במודל המנובא.",
-                    "המודל אינו מובהק כלל ויש לפסול אותו לחלוטין מכיוון ש-0.12 גדול מ-0.05."
-                ],
-                ans: 1,
-                exp: "R Square מייצג את 'אחוז השונות המוסברת'. הוא נע בין 0 ל-1, וערך של 0.12 אומר שהמודל מצליח להסביר רק 12% מהשינויים במשתנה התלוי. אין קשר בין נתון זה למובהקות המודל (הנבדקת ב-ANOVA)."
-            },
-            {
-                q: "מה מייצגת דרגת החופש (df) של המונח Between Groups בניתוח שונות (ANOVA)?",
-                table: null,
-                options: [
-                    "מספר הקבוצות שהושוו במבחן פחות אחת (K-1).",
-                    "מספר המשתתפים הכולל במחקר פחות אחת (N-1).",
-                    "את רמת המובהקות המדויקת של המבחן כולו.",
-                    "את כמות התאים בעלי שכיחות צפויה קטנה מ-5."
-                ],
-                ans: 0,
-                exp: "ב-ANOVA, דרגות החופש של 'בין הקבוצות' נגזרות אך ורק ממספר הקבוצות (K). הנוסחה היא K-1. לכן אם ה-df הוא 3, סימן שהיו בניתוח 4 קבוצות."
-            },
-            {
-                q: "איזה מן המשתנים הבאים מתאים להיות המשתנה התלוי (Y) במודל רגרסיה ליניארית?",
-                table: null,
-                options: [
-                    "מגדר העובד בחברה.",
-                    "האם הלקוח נטש או נשאר.",
-                    "סוג הרכב שבבעלות הנבדק.",
-                    "ציון פסיכומטרי."
-                ],
-                ans: 3,
-                exp: "תנאי הסף לרגרסיה ליניארית הוא שהמשתנה התלוי יהיה משתנה כמותי (רציף או בדיד). ציון פסיכומטרי הוא היחיד מבין האפשרויות שהוא כמותי. שאר המשתנים הם שמיים (קטגוריאליים)."
-            },
-            {
-                q: "בהשוואת שני משתנים כמותיים (רציפים), התקבל מקדם קורלציה של r = -0.05 עם Sig = 0.812. מה נסיק?",
-                table: null,
-                options: [
-                    "אין קשר מובהק בין המשתנים.",
-                    "יש קשר חזק ושלילי מובהק במיוחד.",
-                    "יש קשר חיובי אך הוא אינו מובהק במובהקות של 0.05 כנדרש בהנחות המחקר.",
-                    "קיימת טעות במדידה."
-                ],
-                ans: 0,
-                exp: "ה-Sig הוא 0.812 (גדול בהרבה מ-0.05), ולכן איננו דוחים את השערת האפס. המסקנה היא שאין שום קשר מובהק סטטיסטית. (בנוסף, ה-r עצמו קרוב מאוד לאפס, מה שמעיד על היעדר קשר)."
-            },
-            {
-                q: "בטבלת coefficients ברגרסיה מרובה, לחוקר ישנם 3 מנבאים שקיבלו כולם רמות מובהקות (Sig) קטנות מ-0.05. איך הוא ידע מיהו המנבא שמחזיק בהשפעה הזניחה ביותר?",
-                table: null,
-                options: [
-                    "הוא יחפש את המשתנה עם ערך ה-B הגבוה ביותר מבחינה מספרית שכן הוא מושפע ישירות מגודל היחידה.",
-                    "הוא יחפש את המשתנה עם הערך הקרוב ביותר ל-0.05 בעמודת ה-Sig.",
-                    "הוא יחפש את המשתנה בעל הערך הנמוך ביותר (בערכו המוחלט) בעמודת ה-Beta.",
-                    "הוא יחסיר את ה-B מהקבוע (Constant) במשוואה ויבדוק מה היתרה."
+                    "להמשיך לניתוח הנתונים כרגיל, שכן כל תוצאה חיובית (מעל 0.50) מעידה על קשר מתון ותקין בין פריטי השאלון השונים.",
+                    "לבצע מבחן חי בריבוע על כל אחד מהפריטים בנפרד כדי לוודא שלא חלו סטיות התפלגות קשות במדגם.",
+                    "לבחון את עמודת Item-Deleted לאיתור פריטים פגומים.",
+                    "להכפיל את כמות התצפיות במדגם פי שתיים על מנת לעלות את המהימנות הפנימית ל-1.04."
                 ],
                 ans: 2,
-                exp: "עוצמת המנבאים נמדדת תמיד על ידי עמודת המקדמים המתוקננים (Beta). כדי למצוא את המנבא הכי חלש/זניח (מבין המובהקים), נחפש את ה-Beta עם המספר הקטן ביותר בערך מוחלט (הכי קרוב לאפס)."
+                exp: "אלפא של 0.52 נחשבת למהימנות בעייתית ונמוכה (הסף הנדרש הוא 0.7 ומעלה). במקרה כזה, עליו לחפש בטבלת 'Alpha if item deleted' האם יש שאלה ספציפית ש'הורסת' את השאלון, ואם מחיקתה תשפר את המהימנות הכוללת."
+            },
+            {
+                q: "מדוע לא נשתמש פשוט ב-3 מבחני T נפרדים במקום ניתוח שונות (ANOVA) כאשר אנו בודקים הבדלים בין 3 קבוצות (א', ב', ו-ג')?",
+                table: null,
+                options: [
+                    "מכיוון שמבחן T מחשב שונויות שונות בלבד ואינו מסוגל להתמודד עם שונויות משותפות של מעל שתי קבוצות תלויות.",
+                    "מכיוון שלא ניתן מתמטית לחשב ממוצע לקבוצה ג' ללא תלות בקבוצות א' ו-ב' בשל מרכיבי השגיאה המקרית.",
+                    "כדי להימנע מהגדלת הסיכוי לטעות מסוג ראשון.",
+                    "כי רמת המובהקות הסטנדרטית מתחלקת ב-3 ומונעת כל אפשרות להגעה לתוצאה מובהקת במדגמים קטנים."
+                ],
+                ans: 2,
+                exp: "כל מבחן T בודד טומן בחובו סיכוי של כ-5% להכריז על הבדל שבפועל לא קיים (טעות מסוג ראשון). ביצוע המון מבחני T מעלה דרסטית את הסיכוי המצטבר לעשות טעות כזו. ANOVA פותרת זאת בבדיקה אחת עם סיכוי טעות מבוקר."
+            },
+            {
+                q: "מנהלת שיווק בודקת השפעה של 'מיקום המודעה' (למעלה/למטה) ו-'צבע המודעה' (אדום/כחול) על 'מספר הקליקים' (כמותי). היא חושדת שהצבע האדום עובד טוב רק כשהוא ממוקם למעלה. מה עליה לבדוק בפלט הדו-כיווני?",
+                table: null,
+                options: [
+                    "את שורת האינטראקציה בין מיקום לצבע.",
+                    "את האפקט העיקרי (Main Effect) של צבע המודעה, שכן הוא המשתנה הדומיננטי בתיאוריה שלה.",
+                    "את מבחן פוסט-הוק מסוג Tukey על מנת לבודד את השפעת האדום ביחס לשאר צבעי המודעות שהוצגו למשתמשים.",
+                    "את האפקט העיקרי של מיקום המודעה לאורך כל השבועות בהם נאספו הנתונים במדגם."
+                ],
+                ans: 0,
+                exp: "כאשר חוקרת סבורה שהשפעת משתנה אחד *מותנית* או *תלויה* במצבו של המשתנה השני (למשל צבע אדום עובד רק אם הוא ממוקם למעלה), זוהי ההגדרה המדויקת של 'אינטראקציה'."
+            },
+            {
+                q: "במבחן חי בריבוע, ההנחה קובעת כי מותר שרק עד 20% מהתאים יהיו בעלי שכיחות צפויה קטנה מ-5. מה עלינו לעשות אם התקבל שהערך הוא 40%?",
+                table: null,
+                options: [
+                    "להתעלם ולהסתכל על ה-Sig של Pearson Chi-Square, שכן המבחן נחשב לחסין (Robust) סטטיסטית לעיוותים קטנים אלו.",
+                    "לשנות את המבחן לניתוח שונות חד-גורמי מכיוון שמספר התאים חצה את סף המובהקות העליון המותר.",
+                    "לסכום את התאים הקטנים ידנית ולבצע מבחן T למדגמים בלתי תלויים להשוואת הממוצעים של הקטגוריות.",
+                    "לקרוא את התוצאה מתוך מבחן פישר המדויק."
+                ],
+                ans: 3,
+                exp: "כאשר יש יותר מדי תאים עם תוחלת נמוכה, הסטטיסטי של Pearson מזייף ואינו תקף. התוכנה תציג אוטומטית שורה חלופית: Fisher's Exact Test, שמחשב את ההסתברות במדויק ונועד בדיוק למצבים כאלה."
+            },
+            {
+                q: "חוקרת מריצה מודל רגרסיה ומוצאת שה-R Square עומד על 0.12. כיצד נפרש זאת נכונה?",
+                table: null,
+                options: [
+                    "המודל מובהק סטטיסטית בביטחון של 88% לעומת השערת האפס, מה שמעיד על כלי ניבוי אמין מאוד לאוכלוסייה כולה.",
+                    "המשתנים המסבירים מנבאים אך ורק 12% מתוך השונות של המשתנה התלוי.",
+                    "ישנה טעות מערכתית של 12% במודל המנובא אותה יש להחסיר ממשוואת הרגרסיה הסופית של החוקרת.",
+                    "המודל אינו מובהק כלל ויש לפסול אותו לחלוטין מכיוון שהערך 0.12 גדול מ-0.05, בניגוד לחוק הברזל."
+                ],
+                ans: 1,
+                exp: "R Square מייצג תמיד את 'אחוז השונות המוסברת'. ערך של 0.12 משמעותו שהמודל מסביר רק 12% מהתנהגות המשתנה התלוי. אין שום קשר בין R Square למובהקות המודל (שנמדדת על ידי Sig בטבלת ANOVA)."
+            },
+            {
+                q: "בניתוח שונות (ANOVA), כיצד מחושבת דרגת החופש (df) של המונח Between Groups?",
+                table: null,
+                options: [
+                    "מספר המשתתפים הכולל במחקר פחות אחת (N-1), מה שמבטיח פיזור תקני של השגיאה.",
+                    "רמת המובהקות המדויקת של המבחן כולו מוכפלת במספר המשתנים המנבאים שהוזנו למערכת.",
+                    "מספר הקבוצות שהושוו פחות אחת.",
+                    "כמות התאים בעלי שכיחות צפויה קטנה מ-5 כפול מספר העמודות בטבלת הצלבת הנתונים."
+                ],
+                ans: 2,
+                exp: "נוסחת דרגות החופש עבור ה'בין קבוצות' (Between) באנובה היא K - 1, כאשר K מייצג את מספר הקבוצות השונות שמושוות במבחן."
+            },
+            {
+                q: "איזה מן המשתנים הבאים מתאים לשמש כמשתנה התלוי (Y) במודל של רגרסיה ליניארית?",
+                table: null,
+                options: [
+                    "מגדר העובד בחברה, המחולק לקטגוריות של זכר, נקבה ואחר.",
+                    "משתנה המודד האם הלקוח נטש את שירותי החברה או נשאר לקוח פעיל לאורך השנה האחרונה.",
+                    "סוג הרכב שבבעלות הנבדק, מסווג לפי יצרניות רכב מובילות מאירופה ויפן.",
+                    "גובה בסנטימטרים."
+                ],
+                ans: 3,
+                exp: "משתנה תלוי ברגרסיה ליניארית חייב להיות כמותי (רציף או בעל סולם מרווח). גובה הוא המשתנה הכמותי היחיד כאן; כל השאר הם משתנים שמיים/קטגוריאליים שאינם מתאימים לרגרסיה כזו."
+            },
+            {
+                q: "בהשוואת שני משתנים כמותיים התקבל מקדם קורלציה (מתאם פירסון) של r = -0.05 עם Sig = 0.812. מה נסיק?",
+                table: null,
+                options: [
+                    "שישנו קשר שלילי עמוק וחזק בין שני המשתנים אשר מעיד על יחס הפוך מובהק בהתנהגותם הסטטיסטית.",
+                    "שיש קשר חיובי אך הוא אינו מובהק ברמת אלפא של 0.05 כנדרש בהנחות המחקר הקלאסיות למדגמים גדולים.",
+                    "שאין שום קשר מובהק בין המשתנים.",
+                    "שהתוצאה מעידה על שגיאת חישוב כיוון שהקשר שלילי ואינו תואם את המובהקות החיובית שנמצאה ב-Sig."
+                ],
+                ans: 2,
+                exp: "רמת המובהקות (Sig) היא 0.812, נתון הגדול בהרבה מ-0.05 ולכן לא דוחים את H0. המשמעות היא שאין קשר מובהק כלל. (בנוסף, עצם העובדה ש-r קרוב כל כך לאפס מעידה שאין קשר)."
+            },
+            {
+                q: "חוקר הריץ רגרסיה מרובה עם 3 מנבאים אשר מצאו כולם מובהקים (Sig < 0.05). איך ידע החוקר מיהו המנבא החלש ביותר?",
+                table: null,
+                options: [
+                    "יחפש את המשתנה עם ערך ה-B (Unstandardized) הנמוך ביותר, שכן מקדם זה מציג את השיפוע הטהור של כל משתנה באופן עצמאי.",
+                    "יחפש את המשתנה בעל הערך הנמוך ביותר (בערך מוחלט) תחת עמודת ה-Beta.",
+                    "יחפש את המשתנה שערך ה-Sig שלו הוא הגבוה ביותר מבין השלושה ומתקרב יותר לסף ה-0.05 המסוכן.",
+                    "יבצע ניתוח שונות נוסף לכל משתנה בנפרד כדי לבודד את השפעת השגיאה המקרית של המודל כולו על אותו מנבא ספציפי."
+                ],
+                ans: 1,
+                exp: "בדיוק כמו שמשווים מי המנבא החזק ביותר לפי מקדם ה-Beta (המתוקנן) בערכו המוחלט, כך גם מאתרים את החלש ביותר. המנבא שה-Beta שלו הכי קרוב לאפס (ללא קשר לסימן פלוס/מינוס) הוא החלש מכולם."
             },
 
-            /* ==========================================
-               SECTION 2: OUTPUT ANALYSIS (35 Qs)
-               ========================================== */
+            // --- Part 2: Output Analysis (35 Qs) ---
             {
-                q: "התבונן בטבלה הבאה. מה ניתן להסיק לגבי המצב בקבוצה B?",
+                q: "מה קובע הפלט לגבי המודל כולו?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Crosstabulation</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Model Summary</div>
+                  <table class="spss-table">
+                    <thead><tr><th style="text-align:left">Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error</th></tr></thead>
+                    <tbody><tr><td class="row-title">1</td><td>.620<sup>a</sup></td><td>.384</td><td>.380</td><td>10.5</td></tr></tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "המודל הצליח להסביר 62.0% משונות המשתנה המנובא, לאור משתני הפתיחה הנתונים במערך המחקר הסטטיסטי.",
+                    "לא נדחה את השערת האפס כיוון שרמת השגיאה התקנית (Std. Error) חצתה את רף ה-10.5 המותר במבחנים ליניאריים.",
+                    "המודל מובהק סטטיסטית, שכן הערך המותאם (Adjusted) קטן מערך השונות המקורית ולכן התפלגות הנורמל במדגם נשמרת.",
+                    "המודל מסביר 38.4% מהשונות של המשתנה התלוי."
+                ],
+                ans: 3,
+                exp: "זיהוי הפלט: סיכום מודל רגרסיה. הערך שמייצג את 'אחוז השונות המוסברת' במודל (מקדם ההסבר) הוא תמיד R Square. במקרה זה הערך הוא .384, ולכן המודל מסביר 38.4% מהשונות."
+            },
+            {
+                q: "האם הרגרסיה מצליחה לחזות את המשתנה התלוי באופן מובהק?",
+                table: `
+                <div class="spss-wrapper">
+                  <div class="spss-title">ANOVA<sup>a</sup></div>
+                  <table class="spss-table">
+                    <thead><tr><th style="text-align:left">Model</th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-title">Regression</td><td>125.5</td><td>2</td><td>62.75</td><td>2.15</td><td>.125<sup>b</sup></td></tr>
+                      <tr><td class="row-title">Residual</td><td>2500.0</td><td>85</td><td>29.41</td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "לא, המודל אינו מובהק.",
+                    "כן, כל המשתנים התלויים שולבו כראוי במשוואת הרגרסיה ולכן היא מניבה תוצאות מובהקות עבור מדגם זה ברמה הנדרשת.",
+                    "כן, היחס שבין שונות הרגרסיה לשונות השארית (Residual) יצר ערך F של 2.15, שהוא ערך מובהק לחלוטין ולכן דוחים השערת אפס.",
+                    "המודל מובהק אך ורק ברמת השגיאות השיוריות, מה שאומר שיש להתייחס למקדמים בעירבון מוגבל עד לאימות עם מבחן לוין."
+                ],
+                ans: 0,
+                exp: "זיהוי הפלט: טבלת ANOVA מתוך ניתוח רגרסיה. טבלה זו קובעת אם המודל כולו (הקשר הליניארי הכללי) מובהק סטטיסטית. מאחר שה-Sig של המודל הוא 0.125 (גדול מ-0.05), לא דוחים H0, והמודל אינו מצליח לחזות את המשתנה."
+            },
+            {
+                q: "התבונן בטבלה. מה ניתן להסיק לגבי המצב של קבוצה B?",
+                table: `
+                <div class="spss-wrapper">
+                  <div class="spss-title">Crosstabulation</div>
                   <table class="spss-table">
                     <thead>
                       <tr><th></th><th></th><th colspan="2" style="text-align:center;">Status</th><th>Total</th></tr>
                       <tr><th></th><th></th><th>Passed</th><th>Failed</th><th></th></tr>
                     </thead>
                     <tbody>
-                      <tr><td rowspan="2" style="vertical-align:top;">Group A</td><td>Count</td><td>45</td><td>15</td><td>60</td></tr>
-                      <tr><td>Expected</td><td>30.0</td><td>30.0</td><td>60.0</td></tr>
-                      <tr><td rowspan="2" style="vertical-align:top; border-top:1px solid #ccc;">Group B</td><td style="border-top:1px solid #ccc;">Count</td><td style="border-top:1px solid #ccc;">15</td><td style="border-top:1px solid #ccc;">45</td><td style="border-top:1px solid #ccc;">60</td></tr>
-                      <tr><td>Expected</td><td>30.0</td><td>30.0</td><td>60.0</td></tr>
+                      <tr><td rowspan="2" class="row-title">Group A</td><td>Count</td><td>45</td><td>15</td><td>60</td></tr>
+                      <tr><td>Expected Count</td><td>30.0</td><td>30.0</td><td>60.0</td></tr>
+                      <tr><td rowspan="2" class="row-title" style="border-top:1px solid #ccc;">Group B</td><td style="border-top:1px solid #ccc;">Count</td><td style="border-top:1px solid #ccc;">15</td><td style="border-top:1px solid #ccc;">45</td><td style="border-top:1px solid #ccc;">60</td></tr>
+                      <tr><td>Expected Count</td><td>30.0</td><td>30.0</td><td>60.0</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "מספר העוברים בפועל בקבוצה B היה קטן יותר ממה שהיינו מצפים לראות אילו לא היה קשר כלל בין הקבוצה לסטטוס ההצלחה.",
-                    "בקבוצה B לא התרחשו כישלונות כלל ולכן הערך הנצפה זהה לתוחלת המצופה ממנו לפי חישוב שולי הטבלה.",
-                    "המודל הסטטיסטי פסול לשימוש עקב שכיחויות נצפות הקטנות מהשכיחות התיאורטית המצופה.",
-                    "בקבוצה B היו 30 עוברים בסך הכל."
+                    "בקבוצה B לא התרחשו כישלונות כלל ולכן הערך הנצפה (Count) הפך לזהה לתוחלת המצופה ממנו, לפי התפלגות השוליים של הטבלה המסכמת.",
+                    "המודל הסטטיסטי פסול לשימוש עקב שכיחויות נצפות הקטנות מהשכיחות התיאורטית המצופה, מה שמפר את כללי מבחן הבלתי תלויים.",
+                    "מספר העוברים בפועל בקבוצה B היה קטן מהמצופה.",
+                    "בקבוצה B היו 30 עוברים בסך הכל לפי נתוני המדגם המקורי."
                 ],
-                ans: 0,
-                exp: "זיהוי: Crosstab מתוך חי בריבוע. מסתכלים על חיתוך Group B ו-Passed. השכיחות הנצפית (Count) היא 15, בעוד השכיחות המצופה (Expected) היא 30.0. לכן היו פחות הצלחות מהצפוי. המסיח הארוך הראשון והשני הם חסרי היגיון כיוון שהטבלה מלאה בכישלונות."
+                ans: 2,
+                exp: "זיהוי הפלט: הצלבת שכיחויות (Crosstab) בחי בריבוע. בשורות של Group B, תחת העמודה 'Passed', הערך שנצפה בפועל (Count) הוא 15. הערך הצפוי (Expected) אילו לא היה קשר כלל עומד על 30.0. לכן, בקבוצה B היו הרבה פחות הצלחות ממה שהיינו מצפים לראות."
             },
             {
                 q: "מה המסקנה העולה מטבלת המבחן שלפניך?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Chi-Square Tests</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Chi-Square Tests</div>
                   <table class="spss-table">
-                    <thead><tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr></thead>
+                    <thead><tr><th style="text-align:left"></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr></thead>
                     <tbody>
-                      <tr><td>Pearson Chi-Square</td><td>18.42<sup>a</sup></td><td>1</td><td>.000</td></tr>
-                      <tr><td>Continuity Correction</td><td>17.15</td><td>1</td><td>.000</td></tr>
+                      <tr><td class="row-title">Pearson Chi-Square</td><td>18.42<sup>a</sup></td><td>1</td><td>.000</td></tr>
+                      <tr><td class="row-title">Continuity Correction</td><td>17.15</td><td>1</td><td>.000</td></tr>
                     </tbody>
                   </table>
                   <div class="spss-note">a. 0 cells (0.0%) have expected count less than 5.</div>
                 </div>
                 `,
                 options: [
-                    "ההבדל בין הממוצעים של הקבוצות הוא מובהק וברור.",
-                    "המבחן פסול סטטיסטית בגלל תיקון הרציפות המופיע בשורה השנייה ומשנה את התוצאה.",
-                    "קיים קשר מובהק לחלוטין בין שני המשתנים, שכן המובהקות האסימפטוטית היא אפס.",
-                    "לא קיים קשר מובהק כיוון שההערה התחתונה מזהירה מפני שכיחות אפסית של תאים תקינים."
+                    "ההבדל בין הממוצעים של הקבוצות הוא מובהק וברור לאור המובהקות הכפולה שהתקבלה גם במבחן פירסון וגם בתיקון הרציפות.",
+                    "קיים קשר מובהק בין המשתנים.",
+                    "המבחן פסול סטטיסטית בגלל תיקון הרציפות המופיע בשורה השנייה ומשנה את התוצאה החיובית שהתקבלה בשורה הראשונה.",
+                    "לא קיים קשר מובהק כיוון שההערה התחתונה מזהירה באופן חד-משמעי מפני שכיחות אפסית של תאים תקינים (0.0%)."
                 ],
-                ans: 2,
-                exp: "זיהוי: מבחן חי בריבוע. הערה 'a' מציינת ש-0 תאים קטנים מ-5, כך שהמבחן תקין לחלוטין. הערך בשורת Pearson תחת Sig הוא .000 (קטן מ-0.05). המסקנה היא שדוחים את H0 וקיים קשר מובהק. המסיח על ההבדל בממוצעים נועד להכשיל מי שלא מזהה שזה מבחן לבדיקת תלות."
+                ans: 1,
+                exp: "זיהוי הפלט: מבחן חי בריבוע. ההערה למטה מציינת שאין תאים עם שכיחות קטנה מ-5 (0.0%), ולכן המבחן תקין לחלוטין. הערך בשורת Pearson Chi-Square ב-Sig הוא .000 (<0.05). לכן, דוחים את H0 ומסיקים שקיים קשר מובהק. המסיח על 'ממוצעים' שגוי כי חי בריבוע עוסק רק בשכיחויות של קטגוריות."
             },
             {
-                q: "על סמך הפלט המצורף, איזו החלטה עלינו לקבל?",
+                q: "על סמך הפלט המצורף, איזו החלטה סטטיסטית עלינו לקבל?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Chi-Square Tests</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Chi-Square Tests</div>
                   <table class="spss-table">
-                    <thead><tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig.</th><th>Exact Sig.</th></tr></thead>
+                    <thead><tr><th style="text-align:left"></th><th>Value</th><th>df</th><th>Asymp. Sig.</th><th>Exact Sig.</th></tr></thead>
                     <tbody>
-                      <tr><td>Pearson Chi-Square</td><td>6.25<sup>a</sup></td><td>1</td><td>.012</td><td></td></tr>
-                      <tr><td>Fisher's Exact Test</td><td></td><td></td><td></td><td>.085</td></tr>
+                      <tr><td class="row-title">Pearson Chi-Square</td><td>6.25<sup>a</sup></td><td>1</td><td>.012</td><td></td></tr>
+                      <tr><td class="row-title">Fisher's Exact Test</td><td></td><td></td><td></td><td>.085</td></tr>
                     </tbody>
                   </table>
                   <div class="spss-note">a. 2 cells (50.0%) have expected count less than 5.</div>
                 </div>
                 `,
                 options: [
-                    "יש להסתמך על מבחן פירסון המקורי ולדחות את השערת האפס.",
-                    "הקשר בין המשתנים נמצא כמובהק סטטיסטית בשני המבחנים כאחד ולכן דוחים השערת אפס.",
-                    "לקבוע כי אין קשר מובהק, כיוון שההנחה הופרה (50%) ועלינו להסתמך על מבחן פישר שהניב Sig של 0.085.",
-                    "לשנות את דרגות החופש (df) כדי לקבל תוצאה מובהקת במבחן הסטנדרטי."
+                    "יש להסתמך על מבחן פירסון המקורי ולדחות את השערת האפס כיוון שהוא מציג תוצאה מובהקת של 0.012 שקטנה מ-0.05.",
+                    "הקשר בין המשתנים נמצא כמובהק סטטיסטית בשני המבחנים כאחד (הן האסימפטוטי והן המדויק) ולכן דוחים השערת אפס פה אחד.",
+                    "לקבוע כי אין קשר מובהק.",
+                    "לשנות את דרגות החופש (df) כדי לקבל תוצאה מובהקת במבחן הסטנדרטי של פירסון ללא צורך בפישר."
                 ],
                 ans: 2,
-                exp: "זיהוי: חי בריבוע עם הפרת הנחה. ההערה מזהירה ש-50% מהתאים חורגים מהתוחלת המינימלית (מותר עד 20%). לכן מבחן Pearson (0.012) פסול! חובה לקרוא את תוצאת Fisher's Exact Test, ששם ה-Sig הוא 0.085 (לא מובהק). המסקנה היא שאין קשר."
+                exp: "זיהוי הפלט: חי בריבוע עם הפרת הנחה. ההערה קובעת ש-50% מהתאים חורגים מהתוחלת המינימלית הנדרשת (מותר עד 20%). במצב כזה, התוצאה של Pearson Chi-Square (0.012) חסרת ערך ופסולה! חובה להסתמך על השורה של Fisher's Exact Test, שמציג Sig של 0.085. ערך זה אינו מובהק, ולכן אין קשר."
             },
             {
                 q: "התבונן במטריצת המתאמים. מה ניתן לומר על הקשר בין רמת העייפות (Fatigue) לביצועים (Performance)?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Correlations</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Correlations</div>
                   <table class="spss-table">
-                    <thead><tr><th></th><th>Performance</th><th>Fatigue</th></tr></thead>
+                    <thead><tr><th style="text-align:left"></th><th></th><th>Performance</th><th>Fatigue</th></tr></thead>
                     <tbody>
-                      <tr><td>Pearson Correlation (Performance)</td><td>1</td><td>-.485*</td></tr>
+                      <tr><td rowspan="2" class="row-title">Performance</td><td>Pearson Correlation</td><td>1</td><td>-.485*</td></tr>
                       <tr><td>Sig. (2-tailed)</td><td></td><td>.030</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
+                    "אין קשר סטטיסטי מובהק כלל בין שני המשתנים, שכן המובהקות הדו-צדדית גדולה מרמת אלפא הנדרשת בשגיאה מסוג שני.",
                     "קשר שלילי מובהק - ככל שרמת העייפות עולה, כך נוטים הביצועים לרדת.",
-                    "אין קשר סטטיסטי מובהק כלל בין שני המשתנים, שכן המובהקות הדו-צדדית גדולה מרמת אלפא הנדרשת.",
-                    "קשר חיובי ומובהק לחלוטין בין שני המשתנים הבלתי תלויים.",
-                    "ההבדל בין ממוצעי הביצועים לעייפות הוא משמעותי, שכן הערך .030 מצדיק מעבר לפוסט-הוק."
+                    "קשר חיובי ומובהק לחלוטין בין שני המשתנים הבלתי תלויים, המוכיח קורלציה ישירה וחזקה בהיעדר משתנה מתווך.",
+                    "ההבדל בין ממוצעי הביצועים לעייפות הוא משמעותי, שכן הערך .030 מצדיק מעבר למבחן פוסט-הוק מסוג טוקי כהמשך טבעי לניתוח."
+                ],
+                ans: 1,
+                exp: "זיהוי הפלט: מתאם פירסון. בהצלבה בין Fatigue ו-Performance מופיע המקדם r=-.485. המינוס מעיד על קשר הפוך/שלילי. ה-Sig הדו-צדדי עומד על 0.030 (קטן מ-0.05), ולכן הקשר הוא מובהק. המסיח על הבדל בממוצעים נועד להפיל מי שמתבלבל בין מתאם להשוואת קבוצות (ANOVA/T)."
+            },
+            {
+                q: "מיהו המנבא החזק והמשפיע ביותר במודל הרגרסיה שלפניך?",
+                table: `
+                <div class="spss-wrapper">
+                  <div class="spss-title">Coefficients</div>
+                  <table class="spss-table">
+                    <thead><tr><th style="text-align:left">Model</th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-title">(Constant)</td><td>15.2</td><td>2.5</td><td></td><td>6.0</td><td>.000</td></tr>
+                      <tr><td class="row-title">Experience</td><td>0.12</td><td>0.02</td><td>.180</td><td>6.0</td><td>.000</td></tr>
+                      <tr><td class="row-title">Education</td><td>4.50</td><td>1.10</td><td>.450</td><td>4.0</td><td>.000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "ההשכלה (Education).",
+                    "הקבוע (Constant), שכן ערך ה-B שלו (15.2) הוא הגבוה ביותר מכל שאר המשתנים המופיעים, ולכן הוא בעל ההשפעה המרבית בנקודת החיתוך.",
+                    "הוותק (Experience), כיוון שהטעות התקנית שלו (0.02) קטנה באופן דרמטי מהשאר מה שמבטיח לו מהימנות ניבוי חזקה יותר באוכלוסייה.",
+                    "שני המשתנים חלשים מאוד ואינם מובהקים כלל, מאחר שכל ערכי ה-Sig עומדים על אפס מוחלט המבטל את השערת החוקר."
                 ],
                 ans: 0,
-                exp: "זיהוי: מתאם פירסון. בהצלבת Fatigue ו-Performance מופיע r=-.485 (קשר שלילי/הפוך, מלווה בכוכבית המעידה על מובהקות). ה-Sig הוא .030 (קטן מ-0.05). לכן זהו קשר מובהק שבו עלייה באחד מלווה בירידה בשני. התשובה שמדברת על ממוצעים שגויה כי זה מתאם ולא השוואת קבוצות."
+                exp: "זיהוי הפלט: מקדמי רגרסיה. כדי להשוות עוצמה ולקבוע מי משפיע יותר, מתעלמים מעמודת ה-B (שמושפעת מיחידות המידה). המדד היחיד הוא עמודת ה-Beta (מקדמים מתוקננים). ה-Beta של השכלה (.450) גדול יותר מה-Beta של הותק (.180)."
             },
             {
-                q: "מה קובע הפלט לגבי המודל כולו?",
+                q: "מה יש לעשות עם המשתנה 'Age' במשוואת הניבוי העתידית על סמך הפלט המצורף?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Model Summary</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Coefficients</div>
                   <table class="spss-table">
-                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error</th></tr></thead>
-                    <tbody><tr><td>1</td><td>.620<sup>a</sup></td><td>.384</td><td>.380</td><td>10.5</td></tr></tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "המודל הצליח להסביר 62.0% משונות המשתנה המנובא לאור משתני הפתיחה הנתונים.",
-                    "המודל מסביר 38.4% מהשונות שבמשתנה התלוי.",
-                    "לא נדחה את השערת האפס כיוון שרמת השגיאה המקסימלית חצתה את רף ה-10.5 המותר.",
-                    "המודל מובהק סטטיסטית, שכן הערך המותאם קטן מערך השונות המקורית ולכן התפלגות הנורמל נשמרת."
-                ],
-                ans: 1,
-                exp: "זיהוי: סיכום מודל ברגרסיה. הערך שמייצג את 'אחוז השונות המוסברת' במודל הוא תמיד R Square. במקרה זה הוא .384, כלומר 38.4%. מסיחים ארוכים העוסקים בהתפלגות נורמלית או דחיית השערה מהווים מלכודת 'מלל מדעי'."
-            },
-            {
-                q: "על פי הפלט שלפניך, האם הרגרסיה מצליחה לחזות את המשתנה התלוי באופן מובהק?",
-                table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">ANOVA<sup>a</sup></div>
-                  <table class="spss-table">
-                    <thead><tr><th>Model</th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <thead><tr><th style="text-align:left">Model</th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr></thead>
                     <tbody>
-                      <tr><td>Regression</td><td>125.5</td><td>2</td><td>62.75</td><td>2.15</td><td>.125<sup>b</sup></td></tr>
-                      <tr><td>Residual</td><td>2500.0</td><td>85</td><td>29.41</td><td></td><td></td></tr>
+                      <tr><td class="row-title">(Constant)</td><td>100.0</td><td>5.0</td><td></td><td>20.0</td><td>.000</td></tr>
+                      <tr><td class="row-title">Income</td><td>2.5</td><td>0.5</td><td>.420</td><td>5.0</td><td>.000</td></tr>
+                      <tr><td class="row-title">Age</td><td>0.02</td><td>0.08</td><td>.050</td><td>0.25</td><td>.804</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "כן, כל המשתנים התלויים שולבו כראוי, והמשוואה מניבה תוצאות מובהקות עבור המדגם.",
-                    "לא. ה-Sig הכללי של המודל עומד על 0.125, שהוא גדול מ-0.05, ולכן המודל כולו אינו מובהק.",
-                    "כן, היחס בין השונויות הוא 2.15 שהוא ערך מובהק לחלוטין ולכן יש לדחות את השערת אפס.",
-                    "המודל מובהק רק ברמת השגיאות השיוריות (Residual)."
-                ],
-                ans: 1,
-                exp: "זיהוי: טבלת ANOVA מתוך ניתוח רגרסיה. הטבלה הזו קובעת אם המודל כולו (הקשר הליניארי בין ה-Xים ל-Y) מובהק. מאחר וה-Sig הוא 0.125 (>0.05), המודל לא מובהק ואינו שימושי לניבוי."
-            },
-            {
-                q: "מיהו המנבא החזק והמשפיע ביותר מתוך הפלט שלפניך?",
-                table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Coefficients</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Model</th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td>(Constant)</td><td>15.2</td><td>2.5</td><td></td><td>6.0</td><td>.000</td></tr>
-                      <tr><td>Experience</td><td>0.12</td><td>0.02</td><td>.180</td><td>6.0</td><td>.000</td></tr>
-                      <tr><td>Education</td><td>4.50</td><td>1.10</td><td>.450</td><td>4.0</td><td>.000</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "הקבוע (Constant), שכן ערך ה-B שלו (15.2) הוא הגבוה ביותר מכל השאר ולכן בעל ההשפעה המרבית בנקודת החיתוך.",
-                    "ותק (Experience), כיוון שהטעות התקנית שלו (0.02) קטנה באופן דרמטי מהשאר.",
-                    "השכלה (Education), כיוון שהמקדם המתוקנן שלו (Beta=.450) הוא הגבוה ביותר מבין המנבאים המובהקים.",
-                    "שני המשתנים חלשים מאוד ואינם מובהקים."
+                    "יש להכפיל אותו ב-0.02 כחלק משלים מבניית משוואת הניבוי הסופית של החוקר למען דיוק מתמטי של המודל.",
+                    "הוא המנבא העוצמתי ביותר ולכן הוא חייב להוביל ראשון את מבנה המשוואה ההיררכית לפני ההכנסה (Income).",
+                    "יש להתעלם ממנו ולא להכניסו למשוואה.",
+                    "יש להחליף אותו במשתנה הקבוע (Constant) אשר תמיד מהווה פיצוי הולם כאשר המשתנה המסביר נופל בטעות התקן."
                 ],
                 ans: 2,
-                exp: "זיהוי: טבלת מקדמים. להשוואת עוצמה בין משתנים מסבירים, מתעלמים לחלוטין מ-B (שמושפע מסוג היחידה הנמדדת) ומסתכלים אך ורק על Beta (המקדם המתוקנן). ה-Beta של השכלה (0.450) גדול משל הותק (0.180)."
-            },
-            {
-                q: "מה יש לעשות עם המשתנה 'Age' (גיל) במשוואת הניבוי העתידית לפי הפלט המצורף?",
-                table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Coefficients</div>
-                  <table class="spss-table">
-                    <thead><tr><th>Model</th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr></thead>
-                    <tbody>
-                      <tr><td>(Constant)</td><td>100.0</td><td>5.0</td><td></td><td>20.0</td><td>.000</td></tr>
-                      <tr><td>Income</td><td>2.5</td><td>0.5</td><td>.420</td><td>5.0</td><td>.000</td></tr>
-                      <tr><td>Age</td><td>0.02</td><td>0.08</td><td>.050</td><td>0.25</td><td>.804</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-                `,
-                options: [
-                    "יש להכפיל אותו ב-0.02 כחלק מבניית משוואת הניבוי הסופית של החוקר.",
-                    "יש להתעלם ממנו ולא להכניסו למשוואה, מכיוון שה-Sig שלו (0.804) גדול מ-0.05 והוא מנבא בלתי מובהק.",
-                    "הוא המנבא העוצמתי ביותר ולכן חייב להוביל את מבנה המשוואה ההיררכית.",
-                    "יש להחליף אותו במשתנה הקבוע."
-                ],
-                ans: 1,
-                exp: "זיהוי: מקדמי רגרסיה. כל משתנה מקבל מבחן מובהקות פרטי (עמודת Sig בסוף השורה שלו). במקרה של גיל, ה-Sig הוא 0.804 (אינו מובהק). אם המשתנה לא מובהק, אסור לו להיכלל במשוואה המנבאת."
+                exp: "זיהוי הפלט: טבלת מקדמים ברגרסיה. משתנה הגיל (Age) קיבל Sig של 0.804. מאחר שהערך גדול מ-0.05, המשתנה אינו תורם למודל באופן מובהק. לפיכך, מתעלמים ממנו ולא מציבים את מקדמיו במשוואת הניבוי."
             },
             {
                 q: "כיצד עלינו לקרוא את הטבלה הבאה כדי להגיע למסקנה הנכונה לגבי הבדל בממוצעים?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Independent Samples Test</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Independent Samples Test</div>
                   <table class="spss-table">
                     <thead>
-                      <tr><th></th><th colspan="2" style="text-align:center;">Levene's Test</th><th colspan="3" style="text-align:center;">t-test</th></tr>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #ccc;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #ccc;">t-test</th></tr>
                       <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td>Equal variances assumed</td><td>1.12</td><td>.290</td><td>2.45</td><td>88</td><td>.016</td></tr>
-                      <tr><td>Equal variances not assumed</td><td></td><td></td><td>2.10</td><td>65.4</td><td>.039</td></tr>
+                      <tr><td class="row-title">Equal variances assumed</td><td>1.12</td><td>.290</td><td>2.45</td><td>88</td><td>.016</td></tr>
+                      <tr><td class="row-title">Equal variances not assumed</td><td></td><td></td><td>2.10</td><td>65.4</td><td>.039</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "מבחן לוין אינו מובהק (0.290), לכן מניחים שוויון שונויות וקוראים את השורה העליונה. המסקנה: יש הבדל מובהק (Sig=0.016).",
-                    "מבחן לוין מעיד על כך שהשונויות שונות במובהק ולכן יש לרדת באופן חד משמעי לקריאת השורה התחתונה.",
-                    "מבחן לוין לא רלוונטי כאשר מספר דרגות החופש (df) גדול מ-50. המסקנה היא שאין הבדל מובהק בשום מקרה.",
-                    "מסתכלים תמיד על השורה התחתונה במבחני t כדי לאמוד טעות תקנית שמרנית, המסקנה היא שאין הבדל."
+                    "מבחן לוין מעיד על כך שהשונויות שונות במובהק ולכן יש לרדת באופן חד משמעי לקריאת השורה התחתונה המבטיחה תוצאה מהימנה.",
+                    "מבחן לוין לא רלוונטי כאשר מספר דרגות החופש (df) עולה על 50. המסקנה היא שאין הבדל מובהק בשום מקרה בין שתי הקבוצות.",
+                    "יש לקרוא את השורה העליונה והמסקנה היא שיש הבדל מובהק.",
+                    "מסתכלים תמיד על השורה התחתונה במבחני t כדי לאמוד טעות תקנית שמרנית, המסקנה מכך היא שאין הבדל בין הממוצעים."
                 ],
-                ans: 0,
-                exp: "זיהוי: מבחן T הבלתי תלוי, ובו פוטנציאל ל'מלכודות'. שלב א': מבחן לוין. ה-Sig הוא 0.290 (גדול מ-0.05). משמעות: לא דוחים את H0, ולכן ההנחה של שונויות שוות נשמרת. לכן קוראים את השורה *העליונה*. בשורה העליונה ה-Sig (2-tailed) הוא 0.016 (קטן מ-0.05). לכן, יש הבדל מובהק."
+                ans: 2,
+                exp: "זיהוי הפלט: מבחן T הבלתי תלוי, ובו פוטנציאל ל'מלכודות'. שלב א': מבחן לוין (ההנחה היא שוויון שונויות). ה-Sig שלו הוא 0.290 (>0.05). משמעות: לא דוחים את H0 שלו, ההנחה נשמרת. לכן קוראים את השורה *העליונה*. בשורה העליונה ה-Sig (2-tailed) הוא 0.016 (<0.05). מסקנה סופית: יש הבדל מובהק בממוצעים."
             },
             {
                 q: "מה היא המסקנה העולה במקרה שלפניך מתוך מבחן ה-T למדגמים בלתי תלויים?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Independent Samples Test</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Independent Samples Test</div>
                   <table class="spss-table">
                     <thead>
-                      <tr><th></th><th colspan="2" style="text-align:center;">Levene's Test</th><th colspan="3" style="text-align:center;">t-test</th></tr>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #ccc;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #ccc;">t-test</th></tr>
                       <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td>Equal variances assumed</td><td>6.50</td><td>.012</td><td>1.90</td><td>120</td><td>.060</td></tr>
-                      <tr><td>Equal variances not assumed</td><td></td><td></td><td>1.60</td><td>98.5</td><td>.113</td></tr>
+                      <tr><td class="row-title">Equal variances assumed</td><td>6.50</td><td>.012</td><td>1.90</td><td>120</td><td>.060</td></tr>
+                      <tr><td class="row-title">Equal variances not assumed</td><td></td><td></td><td>1.60</td><td>98.5</td><td>.113</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "קוראים את השורה העליונה ומכריזים על הבדל מובהק בין הקבוצות.",
-                    "אין הבדל. מבחן לוין מובהק (0.012), מה שמחייב קריאה של השורה התחתונה. בשורה התחתונה ה-Sig הוא 0.113, ולכן אין הבדל מובהק.",
-                    "מבחן לוין מובהק לחלוטין ולכן המסקנה היא שישנו קשר חזק וסימטרי בין כלל המשתנים ללא תלות בקבוצתם.",
-                    "ההבדל נמצא על גבול המובהקות (0.060) ולכן נהוג לפסוק שמצאנו הבדל מובהק במקרים כאלה באקדמיה."
+                    "קוראים את השורה העליונה ומכריזים על הבדל מובהק בין הקבוצות לאור העובדה ששתי השונויות סטו מן הממוצע הכללי במידה שווה ומבוקרת.",
+                    "מבחן לוין מובהק לחלוטין (0.012) ולכן המסקנה הגורפת היא שישנו קשר חזק וסימטרי בין כלל המשתנים המנבאים ללא כל תלות בקבוצתם הסטטיסטית.",
+                    "ההבדל בין שתי הקבוצות נמצא ממש על גבול המובהקות (0.060) ולכן נהוג באקדמיה לפסוק תמיד שמצאנו הבדל מובהק על חודו של קוץ במקרים כאלה.",
+                    "אין הבדל מובהק."
                 ],
-                ans: 1,
-                exp: "זיהוי: T בלתי תלוי. שלב א': לוין קיבל 0.012 (<0.05). דוחים H0 - השונויות לא שוות! לכן יורדים לקרוא את השורה התחתונה. השורה התחתונה מצביעה על Sig של 0.113 (לא מובהק, גדול מ-0.05). לכן המסקנה הסטטיסטית היא שאין הבדל מובהק."
+                ans: 3,
+                exp: "זיהוי הפלט: T בלתי תלוי. שלב א': מבחן לוין קיבל Sig=0.012 (<0.05). דוחים H0 - השונויות לא שוות! לכן חובה לרדת לקרוא את השורה התחתונה. בשורה התחתונה ה-Sig של המבחן הוא 0.113 (גדול מ-0.05). מסקנה: לא נמצא הבדל מובהק."
             },
             {
                 q: "מה קובע הנתון מינוס 5.50 (-5.50) בפלט מבחן T מזווג שלפניך?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Paired Samples Test</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Paired Samples Test</div>
                   <table class="spss-table">
                     <thead>
                       <tr><th></th><th>Mean</th><th>Std. Deviation</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td>Before - After</td><td>-5.50</td><td>2.10</td><td>-12.4</td><td>39</td><td>.000</td></tr>
+                      <tr><td class="row-title">Before - After</td><td>-5.50</td><td>2.10</td><td>-12.4</td><td>39</td><td>.000</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "זהו מדד העוצמה של הטיפול אשר מוריד את הערכים הכלליים ב-5.5 יחידות בממוצע.",
-                    "ההפרש הממוצע בין 'לפני' ל'אחרי' הוא שלילי, כלומר בממוצע, המדידה ב'אחרי' הייתה *גבוהה* יותר ב-5.5 יחידות לעומת 'לפני'. (השינוי מובהק).",
-                    "הטיפול נכשל בצורה חרוצה כיוון שתוצאת ה-t יצאה במינוס.",
-                    "המבחן הסטטיסטי אינו תקין כיוון שסימן שלילי בעמודת ממוצע מעיד על שונות שאינה שווה."
+                    "זהו מדד העוצמה של הטיפול הנבדק אשר הוכח כמוריד את הערכים הכלליים ב-5.5 יחידות בממוצע עבור כל מטופל באשר הוא.",
+                    "הטיפול נכשל בצורה חרוצה כיוון שתוצאת ה-t יצאה במינוס מה שמעיד על נסיגה חריפה במצבם הקליני של המטופלים.",
+                    "ההפרש הממוצע בין 'לפני' ל'אחרי' הוא שלילי, כלומר בממוצע, המדידה ב'אחרי' הייתה גבוהה יותר.",
+                    "המבחן הסטטיסטי אינו תקין ופסול להסקה, כיוון שסימן שלילי בעמודת הממוצע מעיד בהכרח על שונות שאינה שווה בין הזמנים."
                 ],
-                ans: 1,
-                exp: "זיהוי: מבחן T מזווג (Paired). הפלט מציג ממוצע הפרשים (לפני פחות אחרי). אם התוצאה היא במינוס, משמעות הדבר מתמטית היא שהמספר השני (ה'אחרי') גדול יותר. כיוון שה-Sig הוא .000 - מדובר בשינוי שעלה באופן מובהק."
+                ans: 2,
+                exp: "זיהוי הפלט: מבחן T מזווג. הפלט מציג את ההפרש ('לפני' פחות 'אחרי'). מתמטית, אם התוצאה היא מינוס (-5.50), זה אומר שהמספר השני ('אחרי') היה גדול יותר מהראשון. ה-Sig=0.000 מבטיח שהעלייה הזו היא מובהקת."
             },
             {
-                q: "החוקר רוצה לבדוק האם חל שינוי, והפיק את הפלט הבא. מה המסקנה?",
+                q: "החוקר רוצה לבדוק האם חל שינוי בעקבות תוכנית התערבות, והפיק את הפלט הבא. מה המסקנה?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Paired Samples Test</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Paired Samples Test</div>
                   <table class="spss-table">
-                    <thead><tr><th></th><th>Mean</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr></thead>
-                    <tbody><tr><td>Week_1 - Week_2</td><td>0.15</td><td>0.25</td><td>50</td><td>.804</td></tr></tbody>
+                    <thead><tr><th style="text-align:left"></th><th>Mean</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr></thead>
+                    <tbody><tr><td class="row-title">Week_1 - Week_2</td><td>0.15</td><td>0.25</td><td>50</td><td>.804</td></tr></tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "לא נדחה את השערת האפס כיוון שה-Sig הוא 0.804 (גדול מ-0.05). כלומר, לא חל שינוי מובהק בין המדידות השונות.",
-                    "חל שינוי מובהק כיוון שהממוצע עלה ב-0.15 נקודות בהשוואה לנקודת ההתחלה של המחקר.",
-                    "דוחים את השערת האפס במובהקות חלשה, ויש לבצע מבחן מקביל לחקירה נוספת.",
-                    "התוצאה של t קטנה מ-1 ולכן עלינו לאשר את השערת המחקר (H1) מיד."
+                    "חל שינוי מובהק ורצוי כיוון שהממוצע עלה ב-0.15 נקודות בהשוואה לנקודת ההתחלה של המחקר בשבוע הראשון.",
+                    "דוחים את השערת האפס במובהקות חלשה מאוד, ויש צורך לבצע מבחן מקביל לחקירה נוספת כדי לאמת את הנתונים באופן מוחלט.",
+                    "התוצאה של t קטנה מ-1 (0.25) ולכן על פי הכללים המחמירים עלינו לאשר את השערת המחקר (H1) באופן מיידי וסופי.",
+                    "לא חל שינוי מובהק."
                 ],
-                ans: 0,
-                exp: "זיהוי: Paired T-test. הערך הקובע הוא תמיד ה-Sig (2-tailed). 0.804 הוא הרחק מעל הרף של 0.05, לכן לא דוחים השערת אפס ומסיקים כי כל שינוי שמופיע בממוצע (0.15) הוא שינוי מקרי בלבד באוכלוסייה ולא שינוי מובהק."
+                ans: 3,
+                exp: "זיהוי הפלט: T מזווג. הערך הקובע הוא ה-Sig (2-tailed). הוא עומד על 0.804 (הרחק מעל רף ה-0.05). לכן, אנו לא דוחים את השערת האפס. המסקנה היא שכל שינוי זעיר בממוצע (0.15) הוא מקרי לחלוטין ואין שינוי מובהק בין המדידות."
             },
             {
-                q: "בטבלה הבאה מתואר ניתוח שונות (ANOVA). מהו מספר הקבוצות הכולל שהושוו בניתוח זה, ומה המסקנה הנגזרת?",
+                q: "בטבלה הבאה מתואר ניתוח שונות (ANOVA). מהו מספר הקבוצות הכולל שהושוו בניתוח זה, ומה המסקנה הנגזרת מן המבחן?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">ANOVA</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">ANOVA</div>
                   <table class="spss-table">
-                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <thead><tr><th style="text-align:left"></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
                     <tbody>
-                      <tr><td>Between Groups</td><td>350.5</td><td>4</td><td>87.62</td><td>10.2</td><td>.000</td></tr>
-                      <tr><td>Within Groups</td><td>1000.0</td><td>80</td><td>12.50</td><td></td><td></td></tr>
-                      <tr><td>Total</td><td>1350.5</td><td>84</td><td></td><td></td><td></td></tr>
+                      <tr><td class="row-title">Between Groups</td><td>350.5</td><td>4</td><td>87.62</td><td>10.2</td><td>.000</td></tr>
+                      <tr><td class="row-title">Within Groups</td><td>1000.0</td><td>80</td><td>12.50</td><td></td><td></td></tr>
+                      <tr><td class="row-title">Total</td><td>1350.5</td><td>84</td><td></td><td></td><td></td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "הושוו 80 קבוצות. לא נמצא הבדל מובהק בשל ממוצע השגיאות הרחב (12.50) המעיד על פיזור יתר.",
-                    "הושוו 5 קבוצות (על בסיס df=4). נמצא כי קיים הבדל מובהק לפחות בין אחת הקבוצות לאחרות.",
-                    "הושוו 4 קבוצות (על בסיס הממוצע הכללי). נמצא כי כולן שונות זו מזו ללא יוצא מן הכלל.",
-                    "הושוו 84 קבוצות. ה-F המובהק מצביע על היעדר שונות בין המדגמים הבלתי תלויים."
+                    "הושוו 80 קבוצות. לא נמצא הבדל מובהק בשל ממוצע השגיאות הרחב (12.50) המעיד על פיזור יתר ומונע את דחיית השערת האפס.",
+                    "הושוו 4 קבוצות, אשר כולן ללא יוצא מן הכלל שונות באופן סימטרי זו מזו בהתבסס על הממוצע הכללי המובהק של המדגם.",
+                    "הושוו 5 קבוצות.",
+                    "הושוו 84 קבוצות. ערך ה-F הגבוה מצביע על היעדר שונות מהותית בין המדגמים הבלתי תלויים."
                 ],
-                ans: 1,
-                exp: "זיהוי: ANOVA חד גורמי. בעמודת ה-df של 'Between Groups', הערך שווה תמיד ל- (מספר הקבוצות פחות 1). אם מופיע 4, סימן שהיו 5 קבוצות. ה-Sig הוא 0.000 (<0.05), כלומר יש הבדל מובהק ביניהן."
+                ans: 2,
+                exp: "זיהוי הפלט: אנובה חד-כיווני. בעמודת ה-df בשורת ה-'Between Groups', הערך מחושב תמיד לפי מספר הקבוצות פחות אחד (K - 1). מכיוון שה-df הוא 4, משמע שהושוו 5 קבוצות. ה-Sig הוא 0.000, ולכן יש הבדל מובהק ביניהן."
             },
             {
                 q: "חוקר ביצע מבחן שונות ומקבל את התוצאות מטה. איזה מבין הצעדים הבאים הוא הצעד הלוגי היחיד שעליו לעשות כעת?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">ANOVA</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">ANOVA</div>
                   <table class="spss-table">
-                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <thead><tr><th style="text-align:left"></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
                     <tbody>
-                      <tr><td>Between Groups</td><td>12.5</td><td>2</td><td>6.25</td><td>0.75</td><td>.480</td></tr>
-                      <tr><td>Within Groups</td><td>400.0</td><td>48</td><td>8.33</td><td></td><td></td></tr>
+                      <tr><td class="row-title">Between Groups</td><td>12.5</td><td>2</td><td>6.25</td><td>0.75</td><td>.480</td></tr>
+                      <tr><td class="row-title">Within Groups</td><td>400.0</td><td>48</td><td>8.33</td><td></td><td></td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "להמשיך במהירות למבחן פוסט-הוק מסוג Tukey כדי לאתר את השוני בין הקבוצות כפי שדורשת הפרוצדורה באנובה.",
-                    "לבחון את השונויות הפנימיות בעזרת מבחן T תלוי על מנת לראות אם ישנו אפקט מוסווה במדגם.",
-                    "לסיים את הניתוח. מאחר שה-Sig הוא 0.480, לא נמצא שום הבדל מובהק בין הקבוצות ואין שום הצדקה לבצע מבחן פוסט-הוק.",
-                    "לאחד שתי קבוצות ולהריץ מחדש את מבחן פישר עקב מובהקות בינונית של המודל כולו."
+                    "להמשיך במהירות למבחן פוסט-הוק מסוג Tukey כדי לאתר בפירוט היכן מסתתר השוני בין הקבוצות כפי שדורשת הפרוצדורה המלאה באנובה.",
+                    "לבחון בקפידה את השונויות הפנימיות בעזרת מבחן T תלוי, על מנת לראות אם ישנו אפקט מוסווה במדגם שמטה את השגיאה.",
+                    "לאחד שתי קבוצות סמוכות באוכלוסייה ולהריץ מחדש את מבחן פישר המדויק עקב המובהקות הבינונית שהתגלתה במודל הכולל.",
+                    "לסיים את הניתוח. לא מבצעים מבחני המשך."
                 ],
-                ans: 2,
-                exp: "זיהוי: ANOVA. ה-Sig הכללי הוא 0.480 (רחוק מ-0.05). משמע: אין שום הבדל בין הממוצעים של הקבוצות. 'חוק ברזל' - לא חופרים הלאה. הניתוח נגמר, ואין סמכות לבצע פוסט-הוק."
+                ans: 3,
+                exp: "זיהוי הפלט: ANOVA. ה-Sig הכללי של המבחן הוא 0.480 (הרבה מעל 0.05). משמע: אין שום הבדל מובהק בין הממוצעים של הקבוצות. 'חוק ברזל': אם לא מצאנו הבדל באנובה הכללית, הניתוח נגמר במקום, ואסור בתכלית האיסור לבצע מבחן פוסט-הוק."
             },
             {
                 q: "מה קובעת טבלת הפוסט-הוק לגבי הפערים בין הקבוצות השונות?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Multiple Comparisons (Tukey HSD)</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Multiple Comparisons (Tukey HSD)</div>
                   <table class="spss-table">
                     <thead>
-                      <tr><th>(I) Group</th><th>(J) Group</th><th>Mean Difference (I-J)</th><th>Sig.</th></tr>
+                      <tr><th style="text-align:left">(I) Group</th><th>(J) Group</th><th>Mean Difference (I-J)</th><th>Sig.</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td rowspan="2" style="vertical-align:top;">Group 1</td><td>Group 2</td><td>-2.100</td><td>.510</td></tr>
+                      <tr><td rowspan="2" class="row-title">Group 1</td><td>Group 2</td><td>-2.100</td><td>.510</td></tr>
                       <tr><td>Group 3</td><td>-15.500*</td><td>.001</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "ישנו הבדל מובהק בין קבוצה 1 לקבוצה 3 בלבד (Sig=0.001), בעוד שבין 1 ל-2 אין הבדל מובהק.",
-                    "שלושת הקבוצות שונות באופן מובהק זו מזו ולכן מתקבל ממוצע שונות שלילי המגובה בכוכבית מובהקות.",
-                    "מכיוון שההפרש בין קבוצה 1 לקבוצה 3 הוא שלילי, לא ניתן לקבוע שמדובר בהבדל מובהק על אף המובהקות התאורטית ב-Sig.",
-                    "קבוצה 1 היא הקבוצה בעלת הממוצע הגבוה ביותר ללא כל צל של ספק סטטיסטי נראה לעין."
+                    "שלושת הקבוצות שונות באופן מובהק זו מזו, ולכן מתקבל ממוצע שונות שלילי המגובה בכוכבית מובהקות בקצה הטבלה למען הדגשת הפער.",
+                    "מכיוון שההפרש בין קבוצה 1 לקבוצה 3 הוא שלילי באופן מוחלט, לא ניתן בכלל לקבוע שמדובר בהבדל מובהק על אף המובהקות התאורטית המצוינת ב-Sig.",
+                    "קבוצה 1 היא הקבוצה בעלת הממוצע הגבוה ביותר ללא כל צל של ספק סטטיסטי נראה לעין בהשוואה לחברותיה.",
+                    "ישנו הבדל מובהק בין קבוצה 1 לקבוצה 3 בלבד."
                 ],
-                ans: 0,
-                exp: "זיהוי: טבלת Multiple Comparisons של מבחן פוסט-הוק (Tukey). בודקים את השורות. בין 1 ל-2 יש Sig של 0.510 (אין הבדל). בין 1 ל-3 יש Sig של 0.001 וגם כוכבית, ולכן שם נמצא ההבדל המובהק היחיד מבין ההשוואות האלו."
+                ans: 3,
+                exp: "זיהוי הפלט: טבלת Multiple Comparisons של פוסט-הוק (Tukey). בודקים את השורות המוצגות: בין 1 ל-2 יש Sig של 0.510 (אין הבדל). בין 1 ל-3 יש Sig של 0.001 בתוספת כוכבית המעידה על מובהקות. לכן מבין המוצגות, ההבדל קיים רק ביניהן."
             },
             {
-                q: "בטבלת הפוסט-הוק שלפניך, ההפרש בין קבוצה C לקבוצה D מסומן כ- 24.50*. מה משמעות הסימן החיובי?",
+                q: "בטבלת הפוסט-הוק שלפניך, ההפרש בין קבוצה C לקבוצה D מסומן כ- 24.50*. מה משמעות הסימן החיובי שמופיע בהפרש?",
                 table: null,
                 options: [
-                    "הממוצע של קבוצה C בהכרח גדול מהממוצע של קבוצה D ב-24.50 יחידות.",
-                    "קבוצה D גדולה פי 24.50 מקבוצה C במונחים מוחלטים ללא מובהקות תואמת.",
-                    "המבחן בוצע בצורה שגויה כיוון שפוסט הוק אמור להפיק תוצאות שליליות תמיד בתור כלל אצבע.",
-                    "שתי הקבוצות נעות בכיוון חיובי ומקביל."
+                    "קבוצה D גדולה פי 24.50 מקבוצה C במונחים מוחלטים וגורפים, אך ללא שום מובהקות תואמת במבחנים האסימפטוטיים הנלווים.",
+                    "המבחן בוצע בצורה שגויה לחלוטין כיוון שמבחן פוסט הוק תקין אמור להפיק תוצאות שליליות תמיד בתור כלל אצבע בהשוואת זוגות חסרי תלות.",
+                    "שתי הקבוצות (C ו-D) נעות בכיוון חיובי ומקביל לאורך ציר ההתפלגות המשותף שלהן תחת המודל הרב-גורמי המוצע.",
+                    "הממוצע של קבוצה C גדול מהממוצע של קבוצה D ב-24.50 יחידות."
                 ],
-                ans: 0,
-                exp: "פוסט הוק מחשב תמיד את ההפרש לפי (I - J), כלומר הקבוצה הראשונה פחות הקבוצה השנייה. אם C-D מניב תוצאה חיובית (24.5), הדבר אומר מתמטית שהמספר הראשון (C) היה גדול יותר מהמספר השני."
+                ans: 3,
+                exp: "מבחן פוסט הוק מחשב תמיד את ההפרש לפי הנוסחה (I - J), כלומר הממוצע של הקבוצה הראשונה פחות הממוצע של השנייה. אם בחישוב C - D התקבלה תוצאה חיובית (24.5), ההיגיון המתמטי הפשוט אומר שהמספר הראשון (C) גדול יותר."
             },
             {
-                q: "חוקרת בודקת מודל דו-גורמי הבוחן את 'אזור המגורים' ו-'מגדר' על 'הכנסה'. איזה מן האפקטים שבפלט נמצא כמובהק סטטיסטית?",
+                q: "חוקרת בודקת מודל דו-גורמי הבוחן את 'אזור המגורים' ו-'מגדר' על רמת 'הכנסה'. איזה מן האפקטים שבפלט נמצא כמובהק סטטיסטית?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Tests of Between-Subjects Effects</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Tests of Between-Subjects Effects</div>
                   <table class="spss-table">
-                    <thead><tr><th>Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
+                    <thead><tr><th style="text-align:left">Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
                     <tbody>
-                      <tr><td>Region</td><td>2</td><td>1.25</td><td>.290</td></tr>
-                      <tr><td>Gender</td><td>1</td><td>8.50</td><td>.005</td></tr>
-                      <tr><td>Region * Gender</td><td>2</td><td>0.50</td><td>.610</td></tr>
+                      <tr><td class="row-title">Region</td><td>2</td><td>1.25</td><td>.290</td></tr>
+                      <tr><td class="row-title">Gender</td><td>1</td><td>8.50</td><td>.005</td></tr>
+                      <tr><td class="row-title">Region * Gender</td><td>2</td><td>0.50</td><td>.610</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "האפקט העיקרי של אזור המגורים (Region) בלבד.",
-                    "רק האפקט העיקרי של המגדר (Gender) יצא מובהק (Sig=0.005). שאר האפקטים אינם מובהקים.",
-                    "אפקט האינטראקציה (Region * Gender) הוא החזק והמובהק ביותר במודל ולכן אין לפרש אפקטים עיקריים כלל.",
-                    "שני האפקטים העיקריים מובהקים, אך האינטראקציה אינה מובהקת כנדרש בהנחות אנובה."
+                    "האפקט העיקרי של המגדר (Gender).",
+                    "האפקט העיקרי של אזור המגורים (Region) בלבד, לאור העובדה שדרגות החופש שלו כפולות משל השאר ומבססות מודל חסון וגמיש יותר ליחידת מדידה.",
+                    "אפקט האינטראקציה (Region * Gender) הוא ללא ספק החזק והמובהק ביותר במודל הכולל, ולכן חל איסור מוחלט לפרש אפקטים עיקריים כלל בסיטואציה זו.",
+                    "שני האפקטים העיקריים מובהקים לחלוטין ויש לקבל אותם, אך האינטראקציה אינה מובהקת כנדרש בהנחות אנובה מורכבות למדגמים בלתי תלויים."
                 ],
-                ans: 1,
-                exp: "זיהוי: Two-Way ANOVA. המבחן בודק 3 דברים. בוחנים את ה-Sig שלהם אחד-אחד. Region מקבל 0.290 (לא מובהק). Region*Gender מקבל 0.610 (לא מובהק). רק Gender מקבל 0.005 (קטן מ-0.05), לכן הוא האפקט המובהק היחיד."
+                ans: 0,
+                exp: "זיהוי הפלט: ניתוח שונות דו-כיווני (Two-Way ANOVA). בוחנים את ה-Sig של 3 ההשערות בנפרד. אזור מגורים קיבל 0.290 (לא מובהק). אינטראקציה (Region*Gender) קיבלה 0.610 (לא מובהק). רק מגדר (Gender) קיבל 0.005 (קטן מ-0.05), ולכן הוא האפקט המובהק היחיד."
             },
             {
-                q: "לפניך פלט של ניתוח שונות דו-כיווני הבוחן כיצד 'שיטת לימוד' ו'שעת הלימוד' משפיעות על 'ריכוז'. מהי המסקנה העיקרית שעולה מהפלט לגבי האינטראקציה?",
+                q: "לפניך פלט של ניתוח שונות דו-כיווני הבוחן כיצד 'שיטת לימוד' ו'שעת הלימוד' משפיעות על רמת 'ריכוז'. מהי המסקנה העיקרית שעולה מהפלט לגבי האינטראקציה?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Tests of Between-Subjects Effects</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Tests of Between-Subjects Effects</div>
                   <table class="spss-table">
-                    <thead><tr><th>Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
+                    <thead><tr><th style="text-align:left">Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
                     <tbody>
-                      <tr><td>Method</td><td>1</td><td>12.5</td><td>.001</td></tr>
-                      <tr><td>Time</td><td>1</td><td>4.10</td><td>.045</td></tr>
-                      <tr><td>Method * Time</td><td>1</td><td>9.20</td><td>.003</td></tr>
+                      <tr><td class="row-title">Method</td><td>1</td><td>12.5</td><td>.001</td></tr>
+                      <tr><td class="row-title">Time</td><td>1</td><td>4.10</td><td>.045</td></tr>
+                      <tr><td class="row-title">Method * Time</td><td>1</td><td>9.20</td><td>.003</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
-                    "האינטראקציה מובהקת (Sig=0.003). משמעות הדבר היא שיעילותה של שיטת הלימוד משתנה או תלויה בשעת הלימוד בה היא מבוצעת.",
-                    "אין שום משמעות לאינטראקציה מכיוון שהאפקטים העיקריים חזקים ומובהקים לחלוטין ולכן הם מבטלים אותה תיאורטית.",
-                    "האינטראקציה אינה מובהקת עקב ערך F הגבוה באופן מלאכותי מ-5, מה שמעיד על טעות בחישוב השגיאה המקרית.",
-                    "שיטת הלימוד משפיעה פחות מאשר שעת הלימוד בגלל מכפלת האפקטים."
+                    "אין שום משמעות מעשית לאינטראקציה מכיוון שהאפקטים העיקריים חזקים ומובהקים לחלוטין, ולכן הם מבטלים אותה תיאורטית בהתאם למשפט הגבול המרכזי של ההתפלגות.",
+                    "האינטראקציה אינה מובהקת בשל ערך F הגבוה באופן מלאכותי מ-5, מה שמעיד על טעות חמורה בחישוב השגיאה המקרית של תוכנת הניתוח.",
+                    "שיטת הלימוד הוכחה כמשפיעה פחות מאשר שעת הלימוד בגלל מכפלת האפקטים שיוצרת את אפקט הצלבת הנתונים המדויק.",
+                    "יעילותה של שיטת הלימוד משתנה או תלויה בשעת הלימוד בה היא מבוצעת."
                 ],
-                ans: 0,
-                exp: "זיהוי: Two-Way ANOVA. שורת ההכפלה (Method * Time) מייצגת אינטראקציה. ה-Sig שלה הוא 0.003 (מובהק). אינטראקציה מובהקת פירושה שההשפעה לא עובדת באופן זהה בכל המצבים; 'זה תלוי'. יעילות שיטת הלימוד תלויה בשעת הלימוד."
+                ans: 3,
+                exp: "זיהוי הפלט: אנובה דו-כיוונית. שורת ההכפלה (Method * Time) בודקת את האינטראקציה. ה-Sig שלה הוא 0.003 (מובהק לחלוטין). אינטראקציה מובהקת פירושה שההשפעה של משתנה אחד אינה קבועה, אלא 'תלויה' במצב של המשתנה השני."
             },
             {
                 q: "על פי טבלת עקיבות הפנימית (Reliability Statistics) המצורפת, האם החוקר יכול להסתמך על השאלון שיצר כמדד אחיד?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Reliability Statistics</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Reliability Statistics</div>
                   <table class="spss-table">
                     <thead><tr><th>Cronbach's Alpha</th><th>N of Items</th></tr></thead>
                     <tbody><tr><td>.910</td><td>15</td></tr></tbody>
@@ -983,112 +997,112 @@
                 </div>
                 `,
                 options: [
-                    "לא. הערך גדול מ-0.05 ולכן הוא אינו עומד במבחן המובהקות הנדרש להסמכת השאלון.",
-                    "כן. השאלון מכיל 15 פריטים ורמת המהימנות שלו היא מצוינת וגבוהה (0.910).",
-                    "לא, עקב מספר הפריטים המופרז (15) המעוות את מדד האלפא כלפי מעלה בצורה שקרית.",
-                    "כן, אך רק לאחר מחיקת לפחות 5 פריטים כדי להגיע לעקיבות מתונה של 0.50 כפי שמקובל."
+                    "לא. הערך שמוצג גדול מ-0.05 ולכן הוא אינו עומד במבחן המובהקות הנדרש להסמכת השאלון במחקר מדעי תקני ומקובל.",
+                    "לא, עקב מספר הפריטים המופרז (15) המעוות את מדד האלפא כלפי מעלה בצורה שקרית ומנפח את השונות של המודל כולו ללא הצדקה מחקרית.",
+                    "כן, אך רק לאחר ביצוע מחיקה מבוקרת של לפחות 5 פריטים בעייתיים כדי להגיע לעקיבות מתונה ומקובלת של 0.50 כפי שנדרש בחוגי הפסיכולוגיה.",
+                    "כן. רמת המהימנות שלו היא מצוינת (0.910)."
                 ],
-                ans: 1,
-                exp: "זיהוי: אלפא של קרונבך לבדיקת מהימנות שאלון. הערך המינימלי הנדרש הוא סביב 0.70. כאן קיבלנו 0.910, ציון שמעיד על עקיבות פנימית (הרמוניה בין השאלות) גבוהה מאוד ומשובחת."
+                ans: 3,
+                exp: "זיהוי הפלט: אלפא של קרונבך בודק עקיבות פנימית/מהימנות. כאן לא מחפשים Sig < 0.05. הכלל כאן הוא שאלפא מעל 0.70 מעידה על שאלון מהימן ועקבי. התוצאה 0.910 היא ציון מעולה שמוכיח שכל 15 הפריטים מודדים את אותו הדבר בהרמוניה."
             },
             {
                 q: "התבונן בטבלת 'Item-Total Statistics'. איזו מהפעולות הבאות תתרום לשיפור משמעותי בשאלון שחיבר החוקר?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Item-Total Statistics</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Item-Total Statistics</div>
                   <table class="spss-table">
                     <thead>
-                      <tr><th></th><th>Cronbach's Alpha if Item Deleted</th></tr>
+                      <tr><th style="text-align:left"></th><th>Cronbach's Alpha if Item Deleted</th></tr>
                     </thead>
                     <tbody>
-                      <tr><td>Item_1</td><td>.680</td></tr>
-                      <tr><td>Item_2</td><td>.650</td></tr>
-                      <tr><td>Item_3</td><td>.890</td></tr>
+                      <tr><td class="row-title">Item_1</td><td>.680</td></tr>
+                      <tr><td class="row-title">Item_2</td><td>.650</td></tr>
+                      <tr><td class="row-title">Item_3</td><td>.890</td></tr>
                     </tbody>
                   </table>
                   <div class="spss-note">Overall Alpha = .670</div>
                 </div>
                 `,
                 options: [
-                    "מחיקת פריט 3 תהיה הצעד הנבון ביותר. הסרתו תשפר את אלפא של קרונבך הכוללת מ-0.670 ל-0.890.",
-                    "השארת השאלון כפי שהוא כעת, מכיוון שמחיקת פריטים לרוב אינה משפיעה על השלמות הכללית של המדד העקיב.",
-                    "מחיקת פריט 2, אשר מחזיק בציון האלפא הנמוך ביותר מבין האפשרויות המוצגות.",
-                    "איחוד של שלושת הפריטים למשתנה אחד על ידי מבחן רגרסיה וחישוב ממוצע צולב."
+                    "השארת השאלון כפי שהוא כעת, מכיוון שמחיקת פריטים לרוב אינה משפיעה על השלמות הכללית של המדד העקיב ולרוב רק מוסיפה רעש סטטיסטי לבדיקה החוזרת.",
+                    "מחיקת פריט 2, אשר מחזיק בציון האלפא הנמוך ביותר מבין האפשרויות המוצגות ובכך גורר את הממוצע הכללי של השאלון הכללי מטה.",
+                    "מחיקת פריט 3.",
+                    "איחוד של שלושת הפריטים למשתנה אחד על ידי פקודת compute וחישוב ממוצע צולב על מנת לייצר משתנה גלובלי המבטל סטיות מקומיות בבחינה."
                 ],
-                ans: 0,
-                exp: "זיהוי: טבלת 'אלפא אם פריט נמחק'. הטבלה מספקת מעין 'הצצה לעתיד'. האלפא הנוכחית היא 0.670 (בינוני-נמוך). העמודה אומרת לנו שאם נעיף לפח את 'Item_3', האלפא תזנק ל-0.890. משמע שהפריט הזה בעייתי ומוריד את הממוצע של חבריו. מחיקתו תציל את השאלון."
+                ans: 2,
+                exp: "זיהוי הפלט: טבלת 'אלפא אם פריט נמחק'. הטבלה אומרת לנו 'מה היה קורה אם'. האלפא של השאלון כרגע היא 0.670. העמודה מראה בבירור שאם החוקר ימחק את 'Item_3', מדד המהימנות יזנק למעלה וישופר ל-0.890. משמע שפריט 3 הוא 'התפוח הרקוב' שכדאי לסלק."
             },
             {
                 q: "מה מייצגת עמודת ה-Valid Percent (אחוז תקף) בטבלת שכיחויות רגילה, ומדוע היא מועדפת על פני עמודת ה-Percent באקדמיה?",
                 table: null,
                 options: [
-                    "היא מנכה ומסירה מהחישוב מקרים של ערכים חסרים (Missing Values) כך שהאחוז מתבסס רק על המשיבים בפועל לשאלה.",
-                    "היא מאששת באופן סטטיסטי את תקינות המדגם ופוסלת אוטומטית שגיאות הקלדה פוטנציאליות שחורגות מעקומת הפעמון.",
-                    "היא מציגה את האחוזים המצטברים מן הגבוה לנמוך ובכך יוצרת התפלגות קלה יותר לקריאה חזותית.",
-                    "אין שום הבדל בין השתיים והן זהות מתמטית בכל מצב נתון ללא תלות בסוג המדגם."
+                    "היא מאששת באופן סטטיסטי חותך את תקינות המדגם ופוסלת אוטומטית שגיאות הקלדה פוטנציאליות שחורגות מעקומת הפעמון ומאיימות על יציבות המודל הכללי.",
+                    "היא מציגה את האחוזים המצטברים מן הקטגוריה הגבוהה לנמוכה ובכך יוצרת התפלגות שכיחויות קלה יותר לקריאה חזותית מהירה של החוקר.",
+                    "אין שום הבדל בין השתיים והן זהות מתמטית בכל מצב נתון ללא תלות בסוג המדגם או בכמות החוסרים הקיימת בבסיס הנתונים הגולמי.",
+                    "היא מנכה ומסירה מחישוב האחוזים מקרים של ערכים חסרים (Missing)."
                 ],
-                ans: 0,
-                exp: "עמודת Percent מחשבת אחוז מתוך כל מי שענה על הסקר (גם אם השאיר את השאלה הספציפית ריקה). Valid Percent מתעלם ממי שלא ענה, ומחשב מתוך נתוני האמת. כך נמנע עיוות בנתונים."
+                ans: 3,
+                exp: "עמודת Percent הסטנדרטית מחשבת אחוזים מתוך מכלול המדגם, כולל אלו שלא ענו על השאלה. ה-Valid Percent מבצעת פעולה חכמה יותר: היא מתעלמת ממי שלא ענה (Missing Values) ומציגה את החלוקה באחוזים רק מתוך הנתונים התקפים."
             },
             {
                 q: "מתוך הטבלה המצורפת, מהו ה'שכיח' (Mode) עבור צבע הרכב בישראל?",
                 table: `
-                <div class="spss-box">
-                  <div class="spss-title-text">Frequencies: Car Color</div>
+                <div class="spss-wrapper">
+                  <div class="spss-title">Frequencies: Car Color</div>
                   <table class="spss-table">
-                    <thead><tr><th></th><th>Frequency</th><th>Percent</th></tr></thead>
+                    <thead><tr><th style="text-align:left"></th><th>Frequency</th><th>Percent</th></tr></thead>
                     <tbody>
-                      <tr><td>White</td><td>250</td><td>55.6</td></tr>
-                      <tr><td>Silver</td><td>120</td><td>26.7</td></tr>
-                      <tr><td>Black</td><td>80</td><td>17.8</td></tr>
+                      <tr><td class="row-title">White</td><td>250</td><td>55.6</td></tr>
+                      <tr><td class="row-title">Silver</td><td>120</td><td>26.7</td></tr>
+                      <tr><td class="row-title">Black</td><td>80</td><td>17.8</td></tr>
                     </tbody>
                   </table>
                 </div>
                 `,
                 options: [
                     "250",
-                    "White (לבן)",
                     "55.6%",
-                    "Black (שחור)"
+                    "Black (שחור) מאחר והוא נמצא בתחתית החלוקה הדיכוטומית בהתפלגות הטבלאית.",
+                    "White (לבן)"
                 ],
-                ans: 1,
-                exp: "מושג יסוד בסטטיסטיקה תיאורית: ה'שכיח' הוא תמיד *הערך* (או השם/קטגוריה) שהופיע הכי הרבה פעמים, ולא המספר או האחוז שמייצג את ספירתו. מכיוון שלבן הופיע 250 פעם, הוא השכיח."
+                ans: 3,
+                exp: "ה'שכיח' מוגדר תמיד בתור *שם הערך או הקטגוריה* (למשל, לבן) שזכו למספר ההופעות הרב ביותר, ולא המספר עצמו שמייצג את הספירה (250). המכוניות הלבנות הופיעו הכי הרבה פעמים במדגם."
             },
             {
                 q: "אם התקבלו התוצאות הבאות לגבי משתנה רציף מסוים: ממוצע = 50, וסטיית תקן = 0. מה זה אומר על המדגם?",
                 table: null,
                 options: [
-                    "שהייתה שגיאת דגימה או שהמחשב קרס, כיוון שסטיית תקן לא יכולה להיות אפס על פי ההגדרה המתמטית.",
-                    "שכל התצפיות (האנשים) במדגם ללא יוצא מן הכלל קיבלו את הציון המדויק 50, ולכן אין פיזור כלל בנתונים.",
-                    "שהמודל כולו אינו מובהק סטטיסטית.",
-                    "שהחציון בהכרח גדול מ-50 בשל הטיה שלילית בהתפלגות הציונים הכללית."
+                    "שהייתה שגיאת דגימה או שהמחשב קרס בזמן חישוב התוצאות, כיוון שסטיית תקן לא יכולה להיות אפס על פי ההגדרה המתמטית של פיזור מרחבי מינימלי באוכלוסייה תקנית.",
+                    "שכל התצפיות (כלל האנשים) במדגם ללא יוצא מן הכלל קיבלו את הציון המדויק 50.",
+                    "שהמודל הסטטיסטי כולו אינו מובהק ולכן יש לחשב מחדש את משתני המרווח בטרם קבלת החלטה סופית על טיב המודל ואיכותו.",
+                    "שהחציון בהכרח גדול מ-50 בשל הטיה שלילית בהתפלגות הציונים הכללית לעומת ממוצע המדגם."
                 ],
                 ans: 1,
-                exp: "סטיית תקן מודדת פיזור או 'מרחק מהממוצע'. אם הסטייה היא 0, זה אומר שאין שום מרחק מהממוצע באף תצפית. כולם זהים לחלוטין לממוצע. זה אפשרי (אם כי נדיר במציאות)."
+                exp: "סטיית תקן (Standard Deviation) היא מדד פיזור שאומר עד כמה הנתונים 'רחוקים' מהממוצע. אם הסטייה היא בדיוק 0, הפירוש היחיד הוא שאין שום מרחק. כולם קיבלו זהות לחלוטין את ציון הממוצע (50). "
             },
             {
                 q: "מתי נבחר לערוך מבחן אלפא של קרונבך (Cronbach's Alpha)?",
                 table: null,
                 options: [
-                    "רק כאשר מספר המשתנים הבלתי תלויים במודל רגרסיה עולה על שלושה.",
-                    "כאשר אנו מעוניינים לאמת האם מכלול של שאלות מסוימות מודדות יחד בעקיבות את אותו המושג התיאורטי כדי לאגדם למדד אחד.",
-                    "לפני ביצוע מבחן חי בריבוע על מנת לשלול תאים צפויים נמוכים מ-5.",
-                    "כאשר רוצים לבדוק תוקף מבנה של משתנה אורדינלי מול משתנה נומינלי."
+                    "רק כאשר מספר המשתנים הבלתי תלויים במודל רגרסיה עולה על שלושה ונדרשת הצלבה של השפעתם המשותפת על המנבא המרכזי במודל הליניארי הפשוט או המורכב.",
+                    "כאשר אנו מעוניינים לאמת האם מכלול של שאלות מסוימות מודדות יחד בעקיבות את אותו המושג התיאורטי.",
+                    "תמיד לפני ביצוע מבחן חי בריבוע על מנת לשלול מצב בעייתי של תאים צפויים בעלי ערכים נמוכים מ-5 המסכנים את ההתפלגות האסימפטוטית.",
+                    "כאשר רוצים לבדוק תוקף מבנה מובהק של משתנה אורדינלי מול משתנה נומינלי בטבלת צולבת מרובת ממדים."
                 ],
                 ans: 1,
-                exp: "אלפא של קרונבך נועד במובהק לבדיקת עקיבות פנימית (מהימנות) של שאלונים, כדי להבטיח שלא חיברנו 'תפוחים ותפוזים' למדד אחד (למשל, 5 שאלות שאמורות למדוד ביטחון עצמי יחד)."
+                exp: "אלפא של קרונבך הוא מבחן שנועד לבדיקת 'עקיבות פנימית' או 'מהימנות'. המטרה שלו היא לבדוק שמספר שאלות שונות (למשל בשאלון פסיכולוגי) עובדות יפה יחד ומודדות במדויק עולם תוכן אחד לפני שמחברים אותן לציון כללי."
             },
             {
-                q: "מה קורה כאשר רווח הסמך (Confidence Interval) עבור ממוצע ההפרשים במבחן T מזווג נע בין ערך תחתון שלילי (למשל -1.2) לערך עליון חיובי (למשל 4.5)?",
+                q: "במבחן T למדגמים תלויים (Paired), רווח הסמך (Confidence Interval) עבור ממוצע ההפרשים נע בין ערך תחתון שלילי (למשל -1.2) לערך עליון חיובי (למשל 4.5). מה זה מבטיח לגבי רמת המובהקות (Sig)?",
                 table: null,
                 options: [
-                    "ה-Sig הדו-צדדי יהיה בוודאות קטן מ-0.05 ותדחה השערת האפס.",
-                    "המבחן יסבול משונות גדולה ולכן יש לעבור לשימוש בניתוח שונות חד-גורמי כאמצעי גיבוי רשמי.",
-                    "ה-Sig הדו-צדדי יהיה בוודאות גדול מ-0.05, כלומר המבחן אינו מובהק כיוון שהאפס נמצא בתוך הטווח האפשרי של האוכלוסייה.",
-                    "הממוצע יהיה שלילי ללא צל של ספק."
+                    "שהוא יהיה בוודאות קטן מ-0.05 ותדחה השערת האפס כנדרש.",
+                    "שהמבחן יסבול משונות גדולה ולכן יש לעבור לשימוש בניתוח שונות חד-גורמי כאמצעי גיבוי רשמי לאור ההפרעה שהתגלתה.",
+                    "היא בטוח תהיה גדולה מ-0.05. המבחן אינו מובהק.",
+                    "שהממוצע האמיתי של הקבוצה הראשונה יהיה שלילי ללא צל של ספק בהשוואה לקבוצת הביקורת אליה הוא משויך."
                 ],
                 ans: 2,
-                exp: "רווח סמך מייצג את הטווח בו אנו בטוחים (ב-95%) שנמצא ההפרש באוכלוסייה. אם הוא חוצה את האפס (ממינוס לפלוס), זה אומר שייתכן שההפרש באוכלוסייה הוא בדיוק 0. לכן, התוצאה לעולם לא תהיה מובהקת."
+                exp: "רווח הסמך (Confidence Interval) נותן לנו טווח אפשרי לתוצאה באוכלוסייה. אם הטווח מתחיל במספר שלילי ונגמר במספר חיובי, הוא 'חוצה את האפס'. אם האפס (העדר הבדל) הוא אפשרות סבירה באוכלוסייה, התוצאה במדגם אינה חזקה מספיק כדי להיות מובהקת."
             }
         ];
 
@@ -1099,8 +1113,8 @@
         let userAnswers = [];
 
         function initApp() {
-            // Shuffle the raw questions
-            shuffledQuestions = [...rawQuestions].sort(() => Math.random() - 0.5);
+            // Shuffle the raw questions array
+            shuffledQuestions = [...qData].sort(() => Math.random() - 0.5);
             userAnswers = new Array(shuffledQuestions.length).fill(null);
             
             renderQuestion();
@@ -1117,13 +1131,13 @@
                 let btnClass = 'option-btn';
                 let disabledAttr = '';
                 
-                // If already answered, color appropriately
+                // Set styling if already answered
                 if (userAnswers[currentQIndex] !== null) {
                     disabledAttr = 'disabled';
                     if (idx === q.ans) {
-                        btnClass += ' correct';
+                        btnClass += ' correct-ans';
                     } else if (idx === userAnswers[currentQIndex]) {
-                        btnClass += ' wrong';
+                        btnClass += ' wrong-ans';
                     }
                 }
 
@@ -1131,27 +1145,28 @@
             });
             document.getElementById('optionsGrid').innerHTML = optionsHtml;
 
-            // Handle UI states based on whether it's answered
             const feedbackBox = document.getElementById('feedbackBox');
             const nextBtn = document.getElementById('nextBtn');
 
+            // If question is answered, show feedback and next button
             if (userAnswers[currentQIndex] !== null) {
                 showFeedback(currentQIndex, userAnswers[currentQIndex]);
                 nextBtn.style.display = 'inline-block';
             } else {
                 feedbackBox.style.display = 'none';
+                feedbackBox.className = 'feedback-container';
                 nextBtn.style.display = 'none';
             }
 
             if (currentQIndex === shuffledQuestions.length - 1 && userAnswers[currentQIndex] !== null) {
-                nextBtn.innerText = 'הגשת מבחן וצפייה בציון 🏆';
+                nextBtn.innerText = 'סיים מבחן וצפה בציון הסופי 🏆';
             } else {
                 nextBtn.innerText = 'המשך לשאלה הבאה ❯';
             }
         }
 
         function handleAnswer(selectedIndex) {
-            if (userAnswers[currentQIndex] !== null) return; // Prevent double click
+            if (userAnswers[currentQIndex] !== null) return; // Prevent multiple clicks
 
             userAnswers[currentQIndex] = selectedIndex;
             const q = shuffledQuestions[currentQIndex];
@@ -1166,20 +1181,22 @@
             const q = shuffledQuestions[index];
             const isCorrect = selectedIndex === q.ans;
             const fbBox = document.getElementById('feedbackBox');
+            const fbIcon = document.getElementById('fbIcon');
+            const fbContent = document.getElementById('fbContent');
             
             if (isCorrect) {
-                fbBox.className = 'feedback-section is-correct';
-                fbBox.innerHTML = `
-                    <div class="feedback-title">✓ מצוין! התשובה נכונה.</div>
-                    <div><strong>הסבר הכלל הסטטיסטי:</strong> ${q.exp}</div>
-                `;
+                fbBox.className = 'feedback-container show-correct';
+                fbIcon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> אלופה! צדקת.`;
+                fbContent.innerHTML = `<p><strong>ההסבר הסטטיסטי:</strong> ${q.exp}</p>`;
             } else {
-                fbBox.className = 'feedback-section is-wrong';
-                fbBox.innerHTML = `
-                    <div class="feedback-title">✗ טעות! בוא נבין למה:</div>
-                    <div>התשובה הנכונה שהייתה צריכה להיבחר היא:</div>
-                    <div class="feedback-correct-answer">${q.options[q.ans]}</div>
-                    <div><strong>הסבר הכלל הסטטיסטי:</strong> ${q.exp}</div>
+                fbBox.className = 'feedback-container show-wrong';
+                fbIcon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> טעות. שים לב:`;
+                fbContent.innerHTML = `
+                    <div style="margin-bottom:10px;">התשובה הנכונה היא:</div>
+                    <div style="background: white; border:1px solid #ef4444; border-radius: 8px; padding: 12px 15px; font-weight:700; color: #1e293b; margin-bottom: 15px;">
+                        ${q.options[q.ans]}
+                    </div>
+                    <p><strong>ההסבר הסטטיסטי:</strong> ${q.exp}</p>
                 `;
             }
         }
@@ -1199,40 +1216,40 @@
             const answeredCount = userAnswers.filter(a => a !== null).length;
             const percent = (answeredCount / shuffledQuestions.length) * 100;
             
-            document.getElementById('qCount').innerText = `שאלה ${currentQIndex + 1} מתוך ${shuffledQuestions.length}`;
-            document.getElementById('scoreTracker').innerText = `הצלחות: ${score}`;
-            document.getElementById('pBar').style.width = `${percent}%`;
+            document.getElementById('qCounter').innerText = `שאלה ${currentQIndex + 1} מתוך ${shuffledQuestions.length}`;
+            document.getElementById('scoreCounter').innerText = `תשובות נכונות: ${score}`;
+            document.getElementById('pFill').style.width = `${percent}%`;
         }
 
         function showResults() {
-            document.getElementById('quizApp').style.display = 'none';
+            document.getElementById('quizSection').style.display = 'none';
             const resultsScreen = document.getElementById('resultsScreen');
             resultsScreen.style.display = 'block';
 
             const percent = Math.round((score / shuffledQuestions.length) * 100);
             
             let curP = 0;
-            const scoreDisplay = document.getElementById('finalScoreText');
+            const scoreDisplay = document.getElementById('finalScore');
             const tmr = setInterval(() => {
-                curP += 2;
+                curP += 1;
                 if (curP >= percent) {
                     curP = percent;
                     clearInterval(tmr);
                 }
                 scoreDisplay.innerText = `${curP}%`;
-            }, 25);
+            }, 15);
 
             let msg = "";
-            if (percent >= 90) msg = "מבריק! אתה שולט בסטטיסטיקה ברמה הגבוהה ביותר. 🏆";
-            else if (percent >= 75) msg = "כל הכבוד, הישג מרשים! קריאת הפלטים שלך טובה מאוד. 🌟";
-            else if (percent >= 60) msg = "ציון עובר. מומלץ לחזור על ההסברים בפלטים כדי להתחזק. 👍";
-            else msg = "זה הזמן לחזרה מעמיקה על החוקים והפלטים. אל ייאוש, נסה שוב! 💪";
+            if (percent >= 90) msg = "מבריק! השליטה שלך בחומר מושלמת. אתה מוכן ב-100% למבחן. 🏆";
+            else if (percent >= 75) msg = "כל הכבוד! ציון מצוין. קריאת הפלטים שלך טובה מאוד. 🌟";
+            else if (percent >= 60) msg = "עברת. אבל כדי להיות בטוח ביום המבחן, מומלץ לחזור על ההסברים שוב. 👍";
+            else msg = "זה הזמן לחזרה מעמיקה. קרא היטב את ההסברים שמופיעים אחרי כל טעות, ונסה שוב! 💪";
 
             document.getElementById('finalMessage').innerHTML = msg;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Boot
+        // Start Quiz
         initApp();
     </script>
 </body>
