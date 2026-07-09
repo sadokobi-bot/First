@@ -3,1078 +3,1481 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבחן סימולציה סופי: מבוא למדע הנתונים</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>מאסטר SPSS: הכנה למבחן בסטטיסטיקה יישומית</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3b82f6; /* Blue */
-            --secondary: #8b5cf6; /* Indigo */
-            --bg-dark: #0f172a; /* Slate 900 */
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #0ea5e9;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --border-radius: 20px;
         }
-        body {
-            font-family: 'Heebo', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            color: #f8fafc;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        /* Glassmorphism utilities */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-        
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        
-        /* Option Buttons */
-        .option-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease-in-out;
-            text-align: right;
-        }
-        .option-btn:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--primary);
-            transform: translateX(-4px);
-        }
-        .option-btn.correct {
-            background: rgba(16, 185, 129, 0.2) !important;
-            border-color: #10b981 !important;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
-        }
-        .option-btn.incorrect {
-            background: rgba(239, 68, 68, 0.2) !important;
-            border-color: #ef4444 !important;
-        }
-        .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
-        .option-btn.correct:disabled, .option-btn.incorrect:disabled { opacity: 1; }
 
-        /* Progress Bar Glow */
-        .progress-glow { box-shadow: 0 0 10px var(--primary); }
+        * {
+            box-sizing: border-box;
+            font-family: 'Assistant', sans-serif;
+        }
+
+        body {
+            background: var(--bg-color);
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .app-header {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15);
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            margin-bottom: 40px;
+        }
+
+        .app-header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .app-header p {
+            margin: 0;
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 0 20px 60px;
+        }
+
+        .progress-bar-container {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            margin-bottom: 30px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .progress-track {
+            height: 14px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 100%);
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            animation: slideUp 0.5s ease-out;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .spss-container {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            direction: ltr; 
+            text-align: left;
+            overflow-x: auto;
+            border-radius: 8px;
+        }
+
+        .spss-title {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .spss-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #000;
+            min-width: 600px;
+        }
+
+        .spss-table th, .spss-table td {
+            padding: 6px 10px;
+            text-align: right;
+            border-left: 1px solid #f1f5f9;
+        }
+
+        .spss-table th {
+            border-top: 2px solid #000;
+            border-bottom: 1px solid #000;
+            font-weight: bold;
+            vertical-align: bottom;
+            background-color: #f8fafc;
+        }
+
+        .spss-table .row-header {
+            text-align: left;
+            font-weight: normal;
+        }
+
+        .spss-table tbody tr:last-child td {
+            border-bottom: 2px solid #000;
+        }
+
+        .spss-footer {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            color: #333;
+            margin-top: 10px;
+            padding-top: 5px;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: right;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-dark);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        }
+
+        .option-btn.correct {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: #064e3b;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .option-btn.wrong {
+            background: var(--danger-light);
+            border-color: var(--danger);
+            color: #7f1d1d;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+            opacity: 0.7;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+            transform: none;
+        }
+
+        .feedback-box {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            animation: slideUp 0.4s ease-out;
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
+        .feedback-box h4 {
+            margin: 0 0 15px 0;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feedback-box.correct-feedback {
+            display: block;
+            background: #ecfdf5;
+            border-right: 6px solid var(--success);
+            color: #064e3b;
+        }
+
+        .feedback-box.wrong-feedback {
+            display: block;
+            background: #fef2f2;
+            border-right: 6px solid var(--danger);
+            color: #7f1d1d;
+        }
+
+        .correct-answer-highlight {
+            display: inline-block;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--danger);
+            margin: 10px 0;
+            font-weight: 700;
+        }
+
+        .action-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 30px;
+        }
+
+        .btn-next {
+            display: none;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.25);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(79, 70, 229, 0.35);
+        }
+
+        #resultsScreen {
+            display: none;
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: white;
+            border: 10px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 0 auto 30px;
+            box-shadow: 0 15px 35px rgba(79, 70, 229, 0.2);
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .card { padding: 25px; }
+            .question-text { font-size: 1.3rem; }
+            .option-btn { font-size: 1.1rem; padding: 15px; }
+            .app-header h1 { font-size: 2.2rem; }
+        }
     </style>
 </head>
-<body class="flex items-center justify-center p-4 sm:p-6">
+<body>
 
-    <div id="app" class="max-w-4xl w-full glass-panel rounded-3xl overflow-hidden relative">
+    <header class="app-header">
+        <h1>מאסטר SPSS - מבחן סופי</h1>
+        <p>50 שאלות ברמת בחינה | תרחישים וזיהוי פלטים</p>
+    </header>
+
+    <div class="container">
         
-        <!-- Decorative Background Elements -->
-        <div class="absolute top-[-100px] left-[-100px] w-64 h-64 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-        <div class="absolute bottom-[-100px] right-[-100px] w-64 h-64 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style="animation-delay: 2s;"></div>
-
-        <!-- START SCREEN -->
-        <div id="start-screen" class="p-8 sm:p-16 text-center animate-fade-in relative z-10">
-            <div class="inline-block p-4 rounded-full bg-blue-500/20 text-blue-400 mb-6 border border-blue-500/30">
-                <i class="fa-solid fa-graduation-cap text-5xl"></i>
-            </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
-                הסימולציה המלאה: מבוא למדע הנתונים
-            </h1>
-            <p class="text-slate-300 text-lg sm:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
-                60 שאלות המבוססות במדויק על המיקוד והמבחן לדוגמה. 
-                מסיחי דעת ברמה גבוהה, ללא ידע חיצוני. מכסה Pandas, ניקוי נתונים, מודלים של Machine Learning ומדדי הערכה.
-            </p>
-            <button onclick="startQuiz()" class="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full font-bold text-lg hover:from-blue-500 hover:to-indigo-500 transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] focus:outline-none">
-                <span class="mr-2">התחל במבחן</span>
-                <i class="fa-solid fa-play group-hover:translate-x-1 transition-transform"></i>
-            </button>
-        </div>
-
-        <!-- QUIZ SCREEN -->
-        <div id="quiz-screen" class="hidden flex flex-col min-h-[650px] relative z-10">
-            
-            <!-- Header & Progress -->
-            <div class="p-5 sm:p-6 border-b border-white/10 bg-black/20">
-                <div class="flex justify-between items-center mb-4">
-                    <div class="text-blue-400 font-semibold tracking-wide">
-                        <i class="fa-solid fa-clipboard-question ml-2"></i>שאלה <span id="current-q-num">1</span> / 60
-                    </div>
-                    <div class="bg-blue-500/20 border border-blue-500/30 px-4 py-1.5 rounded-full text-blue-300 font-bold">
-                        <i class="fa-solid fa-trophy ml-2"></i><span id="score-display">0</span> נק'
-                    </div>
+        <div id="quizScreen">
+            <div class="progress-bar-container">
+                <div class="progress-info">
+                    <span id="progressText">שאלה 1 מתוך 50</span>
+                    <span id="scoreTracker">הצלחות: 0</span>
                 </div>
-                <div class="w-full bg-slate-800 rounded-full h-2.5">
-                    <div id="progress-bar" class="bg-gradient-to-r from-blue-400 to-indigo-500 h-2.5 rounded-full progress-glow transition-all duration-500" style="width: 0%"></div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
 
-            <!-- Question Area -->
-            <div class="flex-grow p-6 sm:p-8 flex flex-col justify-center">
-                <h2 id="question-text" class="text-2xl sm:text-3xl font-bold leading-tight mb-8 text-white"></h2>
+            <div class="card" id="questionCard">
+                <div class="question-text" id="questionText">טוען שאלה...</div>
+                <div id="tableContainer"></div>
                 
-                <div id="options-container" class="space-y-4 w-full max-w-3xl mx-auto">
-                    <!-- Options injected here -->
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Options injected via JS -->
                 </div>
 
-                <!-- Feedback Area -->
-                <div id="feedback-area" class="hidden mt-8 p-6 rounded-2xl border animate-fade-in">
-                    <div class="flex items-center mb-3">
-                        <i id="feedback-icon" class="text-2xl ml-3"></i>
-                        <h3 id="feedback-title" class="text-xl font-bold"></h3>
-                    </div>
-                    <p id="feedback-rationale" class="text-slate-300 leading-relaxed"></p>
-                    
-                    <button id="next-btn" onclick="nextQuestion()" class="mt-6 w-full py-3 sm:py-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl font-bold transition-all focus:outline-none flex justify-center items-center text-lg">
-                        המשך לשאלה הבאה <i class="fa-solid fa-arrow-left mr-2"></i>
-                    </button>
+                <div id="feedbackBox" class="feedback-box">
+                    <!-- Feedback injected via JS -->
+                </div>
+
+                <div class="action-container">
+                    <button class="btn-next" id="btnNext" onclick="nextQuestion()">לשאלה הבאה ❯</button>
                 </div>
             </div>
         </div>
 
-        <!-- RESULTS SCREEN -->
-        <div id="result-screen" class="hidden p-8 sm:p-16 text-center animate-fade-in relative z-10">
-            <div id="result-icon-container" class="inline-block p-6 rounded-full mb-6 border-4">
-                <i id="result-icon" class="text-6xl"></i>
-            </div>
-            <h2 id="result-title" class="text-4xl sm:text-5xl font-black mb-3"></h2>
-            <p id="result-subtitle" class="text-xl text-slate-400 mb-8"></p>
-            
-            <div class="text-7xl sm:text-8xl font-black mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400 drop-shadow-lg">
-                <span id="final-score"></span>/60
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10">
-                <button onclick="shareResults()" class="px-8 py-4 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-green-500/50 flex justify-center items-center text-lg">
-                    <i class="fa-brands fa-whatsapp ml-2 text-2xl"></i> שתף תוצאה
-                </button>
-                <button onclick="location.reload()" class="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl font-bold transition-all flex justify-center items-center text-lg">
-                    <i class="fa-solid fa-rotate-right ml-2"></i> נסה שוב
-                </button>
-            </div>
-            <p id="share-toast" class="text-green-400 mt-4 opacity-0 transition-opacity font-medium">הטקסט הועתק ללוח!</p>
+        <div id="resultsScreen" class="card">
+            <h2>סיום המבחן!</h2>
+            <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 30px;">הנה התוצאה הסופית שלך:</p>
+            <div class="score-circle" id="finalScore">0%</div>
+            <h3 id="finalMessage" style="font-size: 1.8rem; margin-bottom: 40px; color: var(--text-dark);"></h3>
+            <button class="btn-next" style="display: inline-block;" onclick="location.reload()">↻ התחל מבחן מחדש</button>
         </div>
+
     </div>
 
     <script>
+        // 50 Questions: 15 Scenarios, 35 Outputs
         const questions = [
-            // --- CRISP-DM & Exception Handling ---
+            // --- SECTION 1: Scenarios & Identification (1-15) ---
             {
-                q: "מהו השלב הראשון במודל CRISP-DM (מחזור החיים של פרויקט מדע הנתונים)?",
+                q: "חוקר רפואי מעוניין לבדוק האם קיים הבדל ברמת הכולסטרול (משתנה כמותי) בין 4 מחלקות שונות בבית החולים. מהו המבחן הסטטיסטי המתאים ביותר?",
+                table: null,
                 options: [
-                    "הכנת נתונים וניקוי שגיאות (Data Preparation).",
-                    "איסוף נתונים ממקורות שונים (Data Understanding).",
-                    "הבנת הבעיה העסקית (Business Understanding).",
-                    "בניית מודל למידת מכונה ראשוני (Modeling)."
+                    "מבחן t למדגמים בלתי תלויים.",
+                    "ניתוח שונות חד-כיווני (One-Way ANOVA).",
+                    "מבחן t למדגמים תלויים.",
+                    "מבחן חי בריבוע."
                 ],
-                answer: 2,
-                rationale: "לפי מודל CRISP-DM, השלב הראשון והקריטי ביותר הוא הבנת הבעיה העסקית לפני שניגשים לנתונים."
+                ans: 1,
+                exp: "כאשר אנו משווים ממוצעים של משתנה כמותי בין 3 קבוצות ומעלה (כאן יש 4 מחלקות בלתי תלויות), המבחן הנדרש הוא ניתוח שונות חד-כיווני."
             },
             {
-                q: "באיזה שלב במודל CRISP-DM המערכת יוצאת מסביבת הפיתוח ומשולבת במערכות האמיתיות של החברה?",
+                q: "מנהל משאבי אנוש רוצה לבדוק האם שילוב של 'ותק' (עד שנה / 1-5 שנים / מעל 5) ו'מגדר' (גבר/אישה) משפיע על 'שביעות רצון' (ציון 1-100), והאם השפעת המגדר משתנה כתלות בוותק. באיזה מבחן ישתמש?",
+                table: null,
                 options: [
-                    "הערכת המודל (Evaluation).",
-                    "הטמעת המודל (Deployment).",
-                    "הכנת הנתונים (Data Preparation).",
-                    "בניית המודל (Modeling)."
+                    "רגרסיה ליניארית מרובה.",
+                    "מבחן חי בריבוע.",
+                    "ניתוח שונות דו-גורמי (Two-Way ANOVA).",
+                    "מבחן t למדגמים בלתי תלויים."
                 ],
-                answer: 1,
-                rationale: "שלב ההטמעה (Deployment) הוא השלב האחרון בו המודל מותקן בסביבת הייצור האמיתית."
+                ans: 2,
+                exp: "יש כאן משתנה תלוי כמותי אחד (שביעות רצון) ושני משתנים בלתי תלויים קטגוריאליים (ותק, מגדר). כמו כן, הוא מחפש אינטראקציה (האם השפעה אחת תלויה בשנייה). זהו ניתוח שונות דו-כיווני."
             },
             {
-                q: "במנגנון טיפול בשגיאות בפייתון (Exception Handling), מה מטרת הבלוק except?",
+                q: "פסיכולוגית רוצה לבדוק אם קיימת תלות בין 'סוג התמכרות' (עישון / אלכוהול / הימורים) לבין 'הצלחה בגמילה' (כן / לא). מה המבחן המתאים?",
+                table: null,
                 options: [
-                    "הוא מכיל את הקוד המסוכן שעלול לזרוק שגיאה בזמן ריצה.",
-                    "הוא מכיל את הקוד שיבוצע תמיד, גם אם התרחשה שגיאה וגם אם לא.",
-                    "הוא מכיל את הקוד שיבוצע אך ורק אם הקוד עבר בהצלחה מלאה.",
-                    "הוא מכיל את הקוד שיבוצע רק במידה והתרחשה שגיאה בחלק של ה-try."
+                    "מבחן חי בריבוע.",
+                    "מתאם פירסון.",
+                    "ניתוח שונות חד-כיווני.",
+                    "רגרסיה פשוטה."
                 ],
-                answer: 3,
-                rationale: "בלוק ה-except 'תופס' את השגיאה שנזרקה ב-try ומגדיר לתוכנית כיצד להתמודד איתה במקום לקרוס."
+                ans: 0,
+                exp: "המשתנה הבלתי תלוי הוא שמי (סוג התמכרות), וגם המשתנה התלוי הוא שמי/דיכוטומי (הצלחה - כן/לא). קשר בין שני משתנים קטגוריאליים נבדק באמצעות חי בריבוע."
             },
             {
-                q: "מתי יתבצע הקוד שנמצא תחת בלוק finally במנגנון try-except-finally?",
+                q: "חוקר יצר שאלון הכולל 15 פריטים המודדים חרדה חברתית. לפני שהוא מחשב ציון מסכם לכל נבדק, הוא רוצה לוודא שכל הפריטים מודדים את אותו עולם תוכן בהצלחה. איזה מדד עליו לבדוק?",
+                table: null,
                 options: [
-                    "רק אם התרחשה שגיאה מסוג ValueError.",
-                    "רק אם הקוד בבלוק ה-try התבצע ללא שום שגיאות.",
-                    "הקוד יתבצע תמיד בסוף התהליך, ללא קשר להתרחשות שגיאה.",
-                    "רק במידה ובלוק ה-except נכשל בטיפול בשגיאה."
+                    "R Square.",
+                    "אלפא של קרונבך.",
+                    "מובהקות של F.",
+                    "מבחן לוין."
                 ],
-                answer: 2,
-                rationale: "הבלוק finally נועד לפעולות ניקיון וסיום (כמו סגירת קבצים), והוא מופעל תמיד."
+                ans: 1,
+                exp: "בדיקת עקיבות פנימית של שאלון (האם הפריטים מודדים את אותו המושג יחד) מתבצעת על ידי מדד המהימנות 'אלפא של קרונבך'."
             },
             {
-                q: "אנו רצים על שורות ב-DataFrame בעזרת iterrows() ומנסים להמיר עמודה ל-float בתוך בלוק try-except ValueError. מה יקרה לשורה המכילה טקסט?",
+                q: "איזה מבין המדדים הבאים עוזר לנו לקבוע מיהו המנבא החזק ביותר במודל רגרסיה מרובה?",
+                table: null,
                 options: [
-                    "התוכנית תקרוס לחלוטין עם שגיאת SyntaxError.",
-                    "השגיאה תיתפס ב-except ונוכל להגדיר קוד חלופי מבלי שהתוכנית תעצור.",
-                    "פונקציית iterrows תדלג אוטומטית על השורה הזו ותעבור הלאה.",
-                    "פייתון ימיר את הטקסט באופן אוטומטי למספר 0."
+                    "Sig של המודל כולו.",
+                    "Unstandardized B.",
+                    "R Square.",
+                    "Standardized Beta."
                 ],
-                answer: 1,
-                rationale: "זוהי המטרה של טיפול בשגיאות בניקוי נתונים: השגיאה 'נתפסת', והלולאה יכולה להמשיך לרוץ לשורה הבאה."
-            },
-
-            // --- Pandas: Creation, Inspection, Casting ---
-            {
-                q: "מהי הפקודה הנכונה ב-Pandas ליצירת DataFrame חדש מתוך מילון פייתון בשם 'data'?",
-                options: [
-                    "df = pd.CreateDataFrame(data)",
-                    "df = pd.New(data)",
-                    "df = pd.Generate(data)",
-                    "df = pd.DataFrame(data)"
-                ],
-                answer: 3,
-                rationale: "הפונקציה המובנית ליצירת טבלה בספריית Pandas היא pd.DataFrame()."
+                ans: 3,
+                exp: "מקדמי ה-B מושפעים מיחידות המידה (למשל, שקלים מול שנות לימוד). לכן, כדי להשוות עוצמה בין המנבאים השונים, מסתכלים תמיד על המקדמים המתוקננים - Beta."
             },
             {
-                q: "כיצד מוסיפים עמודה חדשה ששמה 'new_column' שמאותחלת עם הערך המשתנה 'value'?",
+                q: "במבחן t למדגמים בלתי תלויים, אנו מקבלים פלט הכולל את מבחן לווין (Levene's Test). אם ה-Sig של מבחן לווין הוא 0.015, מה המשמעות?",
+                table: null,
                 options: [
-                    "df.insert('new_column', value)",
-                    "df['new_column'] = value",
-                    "df.add_column('new_column', value)",
-                    "df.append('new_column', value)"
+                    "שיש הבדל מובהק בין ממוצעי הקבוצות.",
+                    "שהשונויות של שתי הקבוצות אינן שוות, ויש לקרוא את השורה התחתונה במבחן ה-t.",
+                    "שאין הבדל מובהק בין ממוצעי הקבוצות.",
+                    "שהשונויות שוות, ויש לקרוא את השורה העליונה במבחן ה-t."
                 ],
-                answer: 1,
-                rationale: "בפנדס מוסיפים עמודה חדשה (או דורסים קיימת) על ידי פנייה אליה בסוגריים מרובעים והשמת ערך."
+                ans: 1,
+                exp: "מבחן לווין בודק שוויון שונויות. השערת האפס שלו היא שהשונויות שוות. אם Sig < 0.05, אנו דוחים את השערת האפס ומסיקים שהשונויות שונות (Not assumed). לכן קוראים את השורה התחתונה."
             },
             {
-                q: "איזו פונקציה מספקת תעודת זהות טכנית של הטבלה, הכוללת את סוגי הנתונים (Dtypes) וכמות הערכים הלא-חסרים?",
+                q: "מדוע נעדיף לבצע ניתוח שונות (ANOVA) כדי להשוות בין 4 קבוצות, במקום לבצע 6 מבחני t נפרדים בין כל זוג קבוצות?",
+                table: null,
                 options: [
-                    "df.summary()",
-                    "df.describe()",
-                    "df.info()",
-                    "df.dtypes()"
+                    "מכיוון שמבחן t מיועד רק למדגמים תלויים.",
+                    "כי לא ניתן לחשב ממוצע ליותר מ-2 קבוצות במקביל.",
+                    "כדי להימנע מהגדלת ההסתברות לטעות מסוג ראשון (דחיית H0 בטעות).",
+                    "כי מבחן ANOVA מבטיח תוצאה מובהקת תמיד."
                 ],
-                answer: 2,
-                rationale: "בעוד describe נותנת מידע סטטיסטי, info() מספקת את המידע הטכני: כמה שורות, סוגי הנתונים וערכים חסרים."
+                ans: 2,
+                exp: "כל מבחן t טומן בחובו סיכוי של 5% לטעות. ביצוע מספר רב של מבחני t מגדיל את הסיכוי המצטבר לטעות. ANOVA עושה זאת במבחן אחד ושומר על רמת המובהקות קבועה."
             },
             {
-                q: "איך מקבלים סיכום סטטיסטי (ממוצע, חציון, סטיית תקן) לעמודות המספריות של DataFrame?",
+                q: "חוקרת מעוניינת לבדוק אם קיים קשר בין 'משקל התינוק בלידה' (כמותי) לבין 'מספר שבועות ההיריון' (כמותי). באיזה מבחן עליה להשתמש?",
+                table: null,
                 options: [
-                    "df.overview()",
-                    "df.describe()",
-                    "df.stats()",
-                    "df.summary()"
+                    "חי בריבוע.",
+                    "מתאם פירסון.",
+                    "מבחן t למדגמים בלתי תלויים.",
+                    "ניתוח שונות דו-כיווני."
                 ],
-                answer: 1,
-                rationale: "הפונקציה describe מציגה את הסטטיסטיקה התיאורית המלאה (count, mean, std, min, 25%, 50%, 75%, max)."
+                ans: 1,
+                exp: "כאשר רוצים לבדוק רק האם קיים קשר בין שני משתנים כמותיים ומה עוצמתו (ולא בהכרח לנבא אחד באמצעות השני עם מספר מנבאים), משתמשים במקדם המתאם של פירסון."
             },
             {
-                q: "כיצד ניתן להמיר עמודה קיימת בשם 'Price' מסוג מחרוזת (Object) למספר עשרוני (float64)?",
+                q: "מה אומרת השערת האפס (H0) במבחן t למדגמים תלויים (מזווגים)?",
+                table: null,
                 options: [
-                    "df['Price'] = float64(df['Price'])",
-                    "df['Price'].change('float64')",
-                    "df['Price'].convert('float64')",
-                    "df['Price'] = df['Price'].astype('float64')"
+                    "ההפרש בין התצפיות שווה לאפס.",
+                    "תוחלת ההפרשים באוכלוסייה שווה לאפס (אין שינוי).",
+                    "אין קשר בין שתי הקבוצות הבלתי תלויות.",
+                    "הממוצעים של שלוש הקבוצות שווים."
                 ],
-                answer: 3,
-                rationale: "הפונקציה התקנית ב-Pandas לשינוי טיפוס נתונים של עמודה (Casting) היא astype()."
+                ans: 1,
+                exp: "במדגמים תלויים אנו מסתכלים על ההפרש (למשל, ציון לפני פחות ציון אחרי). השערת האפס מניחה שלא חל שום שינוי, ולכן תוחלת ההפרשים הללו שווה לאפס."
             },
             {
-                q: "איך מוצאים את מספר השורות הכולל ב-DataFrame בשם df?",
+                q: "בפלט של רגרסיה ליניארית מרובה, בטבלת ה-ANOVA, התקבל ערך Sig = 0.650. מהי משמעות התוצאה?",
+                table: null,
                 options: [
-                    "df.count()",
-                    "len(df)",
-                    "df.rows()",
-                    "df.len()"
+                    "המודל מובהק ומסביר 65% מהשונות.",
+                    "אחד המנבאים מובהק והשני לא.",
+                    "מודל הניבוי אינו מובהק כלל ואינו מסביר באופן סטטיסטי את השונות במשתנה התלוי.",
+                    "יש להמשיך למבחן פוסט הוק."
                 ],
-                answer: 1,
-                rationale: "פונקציית len() הבסיסית של פייתון מחזירה את מספר השורות ב-DataFrame. (count מחזירה את מספר הערכים הלא-חסרים לכל עמודה)."
-            },
-
-            // --- Pandas: Missing Values & Cleaning ---
-            {
-                q: "מהי הפונקציה הנכונה למציאת מיקומם של ערכים חסרים בטבלת DataFrame?",
-                options: [
-                    "df.isna()",
-                    "df.missing()",
-                    "df.find_nulls()",
-                    "df.findna()"
-                ],
-                answer: 0,
-                rationale: "df.isna() (או df.isnull() הזהה לה) מחזירה טבלה בוליאנית של True במקומות בהם חסר ערך."
+                ans: 2,
+                exp: "טבלת ה-ANOVA ברגרסיה בודקת את מובהקות המודל *כולו*. אם ה-Sig מעל 0.05, המודל אינו מובהק והמשתנים בו לא מצליחים לנבא את המשתנה התלוי יחד."
             },
             {
-                q: "מה קורה כאשר מפעילים את הפקודה df.dropna(inplace=True)?",
+                q: "חוקר ביצע מבחן ANOVA חד-כיווני והתקבל Sig = 0.082. מהו השלב הבא?",
+                table: null,
                 options: [
-                    "הפקודה זורקת שגיאה כי חסר הפרמטר axis.",
-                    "הטבלה מתנקה משורות המכילות ערכים חסרים, והשינוי נשמר בטבלה המקורית.",
-                    "המשתנה df הופך למילון ריק.",
-                    "כל העמודות המכילות ערך חסר אחד לפחות נמחקות מהטבלה."
+                    "ביצוע מבחן פוסט-הוק מסוג טוקי.",
+                    "בדיקת מובהקות במבחן לווין.",
+                    "אין צורך להמשיך. לא נמצא הבדל מובהק בין הקבוצות.",
+                    "מחיקת אחת הקבוצות מתוך המודל והרצה מחדש."
                 ],
-                answer: 1,
-                rationale: "הפרמטר inplace=True מבטיח שהמחיקה תתבצע על ה-DataFrame המקורי, ללא צורך בהשמה מחדש (df = df.dropna)."
+                ans: 2,
+                exp: "כאשר ה-Sig ב-ANOVA גדול מ-0.05, אנו לא דוחים את השערת האפס (אין הבדלים). אם אין הבדלים, אין שום סיבה לבצע מבחן פוסט-הוק (שמטרתו למצוא איפה ההבדלים מסתתרים)."
             },
             {
-                q: "כיצד נמחק מהטבלה אך ורק שורות שבהן חסר נתון בעמודה הספציפית 'Age'?",
+                q: "מה מסמל הסטטיסטי F בניתוח שונות (ANOVA)?",
+                table: null,
                 options: [
-                    "df.drop('Age', axis=0)",
-                    "df.dropna(axis='Age')",
-                    "df.fillna('Age', inplace=True)",
-                    "df.dropna(subset=['Age'])"
+                    "את אחוז השונות המוסברת.",
+                    "את היחס בין השונות *בין* הקבוצות לשונות *בתוך* הקבוצות.",
+                    "את עוצמת הקשר בין המשתנים הקטגוריאליים.",
+                    "את ממוצע ההפרשים בין המדידה הראשונה לשנייה."
                 ],
-                answer: 3,
-                rationale: "הפרמטר subset בפונקציית dropna מאפשר לנו להגביל את חיפוש הערכים החסרים לעמודות ספציפיות בלבד."
+                ans: 1,
+                exp: "סטטיסטי ה-F מבוסס על חלוקה של ה-Mean Square Between ב-Mean Square Within. ככל שהשונות בין הקבוצות גדולה יותר מהשונות בתוך הקבוצות, ה-F יגדל והתוצאה תהיה מובהקת יותר."
             },
             {
-                q: "מהי הדרך הנכונה למלא את כל הערכים החסרים בטבלה בערך 0, כך שהשינוי יישמר?",
+                q: "בשאלון שנבדק לאמינות, הוסרה השאלה השלישית וערך האלפא של קרונבך עלה מ- 0.58 ל- 0.81. מה ניתן לומר על שאלה מספר 3?",
+                table: null,
                 options: [
-                    "df.fill_nulls(0)",
-                    "df.fillna(0, inplace=True)",
-                    "df.replace(NaN, 0)",
-                    "df = df.fill(0)"
+                    "היא השאלה החשובה ביותר בשאלון.",
+                    "היא לא הייתה מתואמת עם שאר השאלות ולכן פגעה בעקיבות הפנימית של השאלון.",
+                    "היא הייתה מובהקת מדי.",
+                    "היא יצרה אינטראקציה עם המשתנה התלוי."
                 ],
-                answer: 1,
-                rationale: "הפונקציה fillna מחליפה את ה-NaN בערך המבוקש. ה-inplace=True שומר את השינוי על ה-DataFrame המקורי."
+                ans: 1,
+                exp: "אם מחיקת פריט מעלה את המהימנות בצורה כה דרסטית, משמעות הדבר היא שהפריט נמדד בצורה הפוכה או שונה לגמרי משאר הפריטים, ו'קלקל' את התיאום הפנימי."
             },
             {
-                q: "הפעלנו את הקוד: df['Salary'].fillna(df['Salary'].mean(), inplace=True). מה תהיה התוצאה?",
+                q: "במבחן חי בריבוע, מה קורה אם 35% מהתאים בטבלה הם בעלי שכיחות צפויה (Expected count) הקטנה מ-5?",
+                table: null,
                 options: [
-                    "העמודה תימחק במידה והממוצע שווה לאפס.",
-                    "כל הערכים בעמודת השכר יוחלפו בממוצע הכללי.",
-                    "הקוד יזרוק שגיאת ValueError בגלל חישוב ממוצע עם NaN.",
-                    "כל הערכים החסרים בעמודת השכר יושלמו על ידי הממוצע של אותה עמודה."
+                    "התוצאה תהיה תמיד מובהקת.",
+                    "המבחן תקין, אין לכך משמעות.",
+                    "המבחן אינו תקין (הופרה הנחת המוצא), ויש להיעזר במבחן פישר (Fisher's Exact Test).",
+                    "מסיקים שאין קשר בין המשתנים."
                 ],
-                answer: 3,
-                rationale: "זוהי פרקטיקה נפוצה מאוד: אנו מחשבים את הממוצע של העמודה (פנדס מתעלם מ-NaN בחישוב), ומציבים אותו במקום הערכים החסרים."
-            },
-
-            // --- Pandas: Filtering, LOC/ILOC, Sorting ---
-            {
-                q: "מהי הפקודה הנכונה בפנדס לסינון שורות שבהן הערך בעמודה 'Age' גדול מ-30?",
-                options: [
-                    "df.filter('Age' > 30)",
-                    "df.select('Age' > 30)",
-                    "df.where('Age' > 30)",
-                    "df[df['Age'] > 30]"
-                ],
-                answer: 3,
-                rationale: "התחביר התקני לסינון בוליאני בפנדס דורש להעביר את התנאי המלא בתוך סוגריים מרובעים של ה-DataFrame."
+                ans: 2,
+                exp: "התנאי לתקינות מבחן חי בריבוע (Pearson Chi-Square) הוא שלכל היותר 20% מהתאים יהיו בעלי Expected count < 5. מכיוון שכאן יש 35%, התנאי הופר."
             },
             {
-                q: "כיצד נסנן מתוך ה-DataFrame שורות שבהן הגיל מעל 20 וגם הציון (Score) מתחת ל-90?",
+                q: "חוקר משתמש ברגרסיה מרובה ומוצא שאחד המשתנים המסבירים מקבל Sig = 0.420 בטבלת המקדמים (Coefficients). מה עליו לעשות?",
+                table: null,
                 options: [
-                    "df.filter(Age > 20 & Score < 90)",
-                    "df[(df['Age'] > 20) & (df['Score'] < 90)]",
-                    "df[(df['Age'] > 20) and (df['Score'] < 90)]",
-                    "df[df['Age'] > 20 & df['Score'] < 90]"
+                    "להכניס אותו למשוואת הניבוי, כי הוא מסביר 42%.",
+                    "להתעלם מהמשתנה הזה לחלוטין בבניית משוואת הניבוי, שכן הוא אינו תורם באופן מובהק למודל.",
+                    "לחלק את ה-B שלו ב-2 בגלל שהוא לא מובהק.",
+                    "לשנות את המבחן ל-ANOVA."
                 ],
-                answer: 1,
-                rationale: "בתנאים מורכבים בפנדס חייבים לעטוף כל תנאי בנפרד בסוגריים עגולים, ולהשתמש באופרטור & (ולא ב-and של פייתון)."
-            },
-            {
-                q: "מהו ההבדל העיקרי בין פונקציית loc לפונקציית iloc ב-Pandas?",
-                options: [
-                    "loc משמשת לשליפה לפי מיקום מספרי (אינדקס), ו-iloc לשליפה לפי שמות עמודות ותנאים.",
-                    "loc מיועדת לעדכון נתונים, ו-iloc מיועדת למחיקת נתונים בלבד.",
-                    "loc משמשת לשליפה לפי שמות (תוויות) ותנאים לוגיים, ו-iloc מתבססת אך ורק על מיקומים מספריים.",
-                    "אין שום הבדל מעשי ביניהן, אלו שמות נרדפים לאותה פעולה."
-                ],
-                answer: 2,
-                rationale: "האות i ב-iloc מציינת Integer (או Index). loc עובדת עם שמות בפועל ותנאי סינון לוגיים."
-            },
-            {
-                q: "ברצוננו לשנות את עמודת 'Status' למילה 'Low' רק עבור שורות שבהן ה-'Salary' קטן מ-5000. מהי הדרך הנכונה?",
-                options: [
-                    "df.loc[df['Salary'] < 5000, 'Status'] = 'Low'",
-                    "df[df['Salary'] < 5000] = 'Low'",
-                    "df.iloc[df['Salary'] < 5000, 'Status'] = 'Low'",
-                    "df.update(Salary < 5000, 'Low')"
-                ],
-                answer: 0,
-                rationale: "שימוש ב-loc במבנה של [תנאי_לשורה, שם_עמודה] היא הדרך התקנית והבטוחה לבצע עדכון מותנה בפנדס."
-            },
-            {
-                q: "איך מסדרים את הערכים בעמודה מסוימת מהגבוה לנמוך (סדר יורד)?",
-                options: [
-                    "df.order('column', ascending=False)",
-                    "df.sort('column', up=False)",
-                    "df.sort_values(by='column', ascending=False)",
-                    "df.align('column', high_to_low=True)"
-                ],
-                answer: 2,
-                rationale: "הפונקציה sort_values משמשת למיון, והפרמטר ascending=False מבטיח שהמיון יהיה בסדר יורד."
+                ans: 1,
+                exp: "רק משתנים שמובהקותם קטנה מ-0.05 נחשבים כתורמים לניבוי וראויים להיכלל במשוואה. משתנה עם 0.420 אינו מובהק ויש להתעלם ממנו."
             },
 
-            // --- Pandas: Columns manipulation, Math ---
+            // --- SECTION 2: Output Analysis (16-50) ---
             {
-                q: "איזו מבין הפעולות הבאות תמחק לחלוטין את העמודה 'City' מתוך הטבלה?",
+                q: "התבונן בטבלה שלפניך. איזו מהטענות הבאות מתארת במדויק את המצב העולה מהפלט?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Crosstabulation</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #ccc;">Outcome</th><th>Total</th></tr>
+                      <tr><th></th><th></th><th>Success</th><th>Failure</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td rowspan="2" style="vertical-align:top;">Group A</td><td class="row-header">Count</td><td>12</td><td>28</td><td>40</td></tr>
+                      <tr><td class="row-header">Expected Count</td><td>20.0</td><td>20.0</td><td>40.0</td></tr>
+                      <tr><td rowspan="2" style="vertical-align:top;">Group B</td><td class="row-header">Count</td><td>38</td><td>22</td><td>60</td></tr>
+                      <tr><td class="row-header">Expected Count</td><td>30.0</td><td>30.0</td><td>60.0</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "df.dropna(subset=['City'])",
-                    "df = df.drop('City', axis=0)",
-                    "df.delete_column('City')",
-                    "df = df.drop('City', axis=1)"
+                    "בקבוצה A היו יותר הצלחות מהצפוי.",
+                    "המבחן הסטטיסטי אינו תקף עקב שכיחויות נמוכות מ-5.",
+                    "בקבוצה A התרחשו פחות הצלחות (12) ממה שהיה צפוי (20.0) במקרה של היעדר קשר.",
+                    "סך המשתתפים במחקר הוא 60."
                 ],
-                answer: 3,
-                rationale: "הפונקציה drop מוחקת עמודות כאשר axis=1. כאשר axis=0 היא מוחקת שורות."
+                ans: 2,
+                exp: "איתור: זו טבלת Crosstab מתוך חי בריבוע. מסתכלים על השורה של Group A תחת העמודה Success. ה-Count (בפועל) הוא 12. ה-Expected Count (הצפוי) הוא 20.0. כלומר, היו פחות הצלחות מהצפוי."
             },
             {
-                q: "איך משנים את שם העמודה 'old_name' ל-'new_name' כך שהשינוי יישמר בטבלה המקורית?",
+                q: "בהמשך לפלט הקודם, החוקר הפיק את טבלת המבחן שלמטה. מה המסקנה הסטטיסטית הנגזרת ממנה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Chi-Square Tests</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Pearson Chi-Square</td><td>7.530<sup>a</sup></td><td>1</td><td>.006</td></tr>
+                      <tr><td class="row-header">Continuity Correction</td><td>6.120</td><td>1</td><td>.013</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">a. 0 cells (0.0%) have expected count less than 5.</div>
+                </div>
+                `,
                 options: [
-                    "df.columns['old_name'] = 'new_name'",
-                    "df.rename('old_name', 'new_name')",
-                    "df.rename(columns={'old_name': 'new_name'}, inplace=True)",
-                    "df.set_columns('old_name', 'new_name')"
+                    "המבחן לא תקין ויש לפסול אותו.",
+                    "לא קיים קשר מובהק בין הקבוצה לתוצאה.",
+                    "קיים קשר מובהק בין הקבוצה לתוצאה, נדחה את השערת האפס.",
+                    "ההבדל בין הממוצעים מובהק."
                 ],
-                answer: 2,
-                rationale: "הפונקציה rename מקבלת מילון הממפה שם ישן לשם חדש, ויש להשתמש ב-inplace=True לשמירת השינוי."
+                ans: 2,
+                exp: "איתור: מבחן חי בריבוע. תקין (0.0% expected < 5). בודקים את ה-Sig של Pearson Chi-Square, והוא .006. מכיוון שהוא קטן מ-0.05, אנו דוחים את השערת האפס ומסיקים שקיים קשר מובהק."
             },
             {
-                q: "איך מוסיפים עמודה בשם 'Total' שהיא סכום של עמודה 'A' ועמודה 'B'?",
+                q: "מה קובעת ההערה המופיעה בתחתית הפלט הבא?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Chi-Square Tests</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th><th>Exact Sig. (2-sided)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Pearson Chi-Square</td><td>3.120<sup>a</sup></td><td>1</td><td>.077</td><td></td></tr>
+                      <tr><td class="row-header">Fisher's Exact Test</td><td></td><td></td><td></td><td>.102</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">a. 2 cells (50.0%) have expected count less than 5. The minimum expected count is 2.10.</div>
+                </div>
+                `,
                 options: [
-                    "df.calculate('Total', 'A' + 'B')",
-                    "df.add_column('Total', 'A' + 'B')",
-                    "df['Total'] = df['A'] + df['B']",
-                    "df['Total'].compute(df['A'] + df['B'])"
+                    "שיש להסתכל על ה-Sig של ה-Pearson (0.077) מכיוון שהמבחן תקין.",
+                    "שהמבחן אינו תקין (50% תאים < 5), ולכן עלינו להסתכל על ה-Sig של מבחן פישר, שהוא 0.102.",
+                    "שהקשר מובהק רק לפי מבחן פישר.",
+                    "שבמחקר השתתפו בדיוק 2 נבדקים."
                 ],
-                answer: 2,
-                rationale: "פעולות אריתמטיות בפנדס מבוצעות שורה-שורה (Element-wise) על ידי ציון שמות העמודות והאופרטור המתמטי."
+                ans: 1,
+                exp: "איתור: חי בריבוע עם אזהרה. כשיש מעל 20% תאים עם תוחלת קטנה מ-5, אסור להסתמש ב-Pearson. חובה להשתמש ב-Fisher's Exact Test המופיע מתחתיו (שגם הוא כאן לא מובהק - 0.102)."
             },
             {
-                q: "איך מחשבים את סטיית התקן של הערכים בעמודה מסוימת?",
+                q: "לפניך מטריצת קורלציה. איזה מהמשתנים מציג את הקשר החזק והמובהק ביותר עם המשתנה 'Performance'?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Correlations</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th></th><th>Performance</th><th>Motivation</th><th>Stress</th></tr></thead>
+                    <tbody>
+                      <tr><td rowspan="2" style="vertical-align:top;">Performance</td><td class="row-header">Pearson Correlation</td><td>1</td><td>.310</td><td>-.640**</td></tr>
+                      <tr><td class="row-header">Sig. (2-tailed)</td><td></td><td>.062</td><td>.001</td></tr>
+                      <tr><td rowspan="2" style="vertical-align:top;">Motivation</td><td class="row-header" style="border-top:1px solid #e2e8f0;">Pearson Correlation</td><td style="border-top:1px solid #e2e8f0;">.310</td><td style="border-top:1px solid #e2e8f0;">1</td><td style="border-top:1px solid #e2e8f0;">-.120</td></tr>
+                      <tr><td class="row-header">Sig. (2-tailed)</td><td>.062</td><td></td><td>.330</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "df['column'].variance()",
-                    "df['column'].std()",
-                    "df['column'].stdev()",
-                    "df.standard_deviation('column')"
+                    "Motivation (מוטיבציה), כי הערך שלו חיובי.",
+                    "Stress (לחץ), למרות שהקשר שלילי, הוא החזק והמובהק ביותר.",
+                    "שניהם חזקים ומובהקים באותה מידה.",
+                    "אין אף קשר מובהק בפלט הזה."
                 ],
-                answer: 1,
-                rationale: "הפונקציה std() (קיצור של Standard Deviation) מחשבת את סטיית התקן של סדרה או טבלה."
+                ans: 1,
+                exp: "איתור: פירסון. נסתכל על העמודה של Performance. הקשר עם Motivation הוא 0.310 אך הוא אינו מובהק (Sig=0.062). הקשר עם Stress הוא -.640 (קשר שלילי חזק) והוא מובהק מאוד (Sig=.001)."
             },
             {
-                q: "מה עושה הפקודה df.sum(axis=0)?",
+                q: "מה אנו למדים מטבלת הסיכום שלפניך?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Model Summary</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Model</th><th>R</th><th>R Square</th><th>Adjusted R Square</th><th>Std. Error of the Estimate</th></tr></thead>
+                    <tbody><tr><td>1</td><td>.850<sup>a</sup></td><td>.722</td><td>.718</td><td>3.450</td></tr></tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "מחשבת את הסכום הצידה (משמאל לימין) עבור כל שורה בנפרד.",
-                    "מחשבת את הסכום למטה (לאורך השורות) עבור כל עמודה מספרית בנפרד.",
-                    "מחשבת את הסכום הכולל של כל הערכים בטבלה למספר בודד.",
-                    "מסכמת רק את עמודות הטקסט ומשרשרת אותן."
+                    "המודל מובהק סטטיסטית בביטחון של 72.2%.",
+                    "המשתנים המסבירים מצליחים להסביר 72.2% מהשונות שבמשתנה התלוי.",
+                    "המודל מסביר 85.0% מהשונות.",
+                    "ישנה טעות תקן גבוהה שפוסלת את המודל."
                 ],
-                answer: 1,
-                rationale: "axis=0 מתייחס לתנועה מלמעלה למטה (לאורך אינדקס השורות), ולכן החישוב יבוצע עבור כל עמודה."
-            },
-
-            // --- Pandas: Groupby, Agg, Pivot, Merges ---
-            {
-                q: "אנו רוצים לחשב את סך ההכנסות ('Revenue') עבור כל קטגוריה ('Category'). מהי הפקודה הנכונה?",
-                options: [
-                    "df.group('Category').add('Revenue')",
-                    "df.sum('Category', 'Revenue')",
-                    "df.agg('Category', sum='Revenue')",
-                    "df.groupby('Category')['Revenue'].sum()"
-                ],
-                answer: 3,
-                rationale: "הסדר הוא: קיבוץ לפי הקטגוריה, בחירת העמודה לחישוב, ולבסוף הפעלת פונקציית האגרגציה."
+                ans: 1,
+                exp: "איתור: טבלת Model Summary (רגרסיה). הערך המרכזי כאן הוא R Square המייצג את אחוז השונות המוסברת. 0.722 = 72.2%."
             },
             {
-                q: "כיצד נחשב עבור כל 'Category' גם את הממוצע וגם את הסכום של עמודת ה-'Sales' באותה פקודה?",
+                q: "האם מודל הרגרסיה המלא, כפי שמוצג בפלט ה-ANOVA שלפניך, מהווה מודל ניבוי מובהק?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">ANOVA<sup>a</sup></div>
+                  <table class="spss-table">
+                    <thead><tr><th>Model</th><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td>1</td><td class="row-header">Regression</td><td>450.0</td><td>3</td><td>150.0</td><td>12.50</td><td>.000<sup>b</sup></td></tr>
+                      <tr><td></td><td class="row-header">Residual</td><td>1200.0</td><td>100</td><td>12.0</td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "df.groupby('Category')['Sales'].agg(['mean', 'sum'])",
-                    "df.groupby('Category')['Sales'].mean().sum()",
-                    "df.pivot_table(index='Category', values='Sales')",
-                    "df['Sales'].groupby('Category').describe()"
+                    "לא, מכיוון שה-Residual גבוה מה-Regression.",
+                    "כן, מכיוון שה-Sig שווה ל-0.000 (קטן מ-0.05).",
+                    "לא ניתן לדעת עד שנראה את המקדמים (Beta).",
+                    "המודל מובהק אך מסביר 0% מהשונות."
                 ],
-                answer: 0,
-                rationale: "הפונקציה agg() מאפשרת לנו להעביר רשימה של פונקציות סטטיסטיות שיופעלו על העמודה בו-זמנית."
+                ans: 1,
+                exp: "איתור: ANOVA של רגרסיה. מסתכלים על ה-Sig בשורת הרגרסיה. הערך .000 מצביע על כך שהמודל (ככלול) מצליח לנבא את המשתנה התלוי באופן מובהק."
             },
             {
-                q: "מהו התחביר הנכון למזג שני DataFrames בשיטת מיזוג 'Inner Join' על בסיס עמודת 'key'?",
+                q: "מתוך פלט הרגרסיה הבא, מיהו המנבא החזק ביותר של הציון (Score), ומהי משוואת הניבוי?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Coefficients<sup>a</sup></div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th>Model</th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>1</td><td class="row-header">(Constant)</td><td>50.00</td><td>4.00</td><td></td><td>12.5</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">IQ</td><td>0.15</td><td>0.05</td><td>.250</td><td>3.0</td><td>.012</td></tr>
+                      <tr><td></td><td class="row-header">Study_Hours</td><td>3.50</td><td>0.50</td><td>.580</td><td>7.0</td><td>.000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "pd.append(df1, df2, join='inner')",
-                    "pd.merge(df1, df2, on='key', how='inner')",
-                    "pd.join(df1, df2, on='key', method='inner')",
-                    "pd.concat([df1, df2], join='inner')"
+                    "Study_Hours החזק ביותר. המשוואה: Score = 3.50*IQ + 0.15*Study_Hours + 50.00",
+                    "IQ החזק ביותר. המשוואה: Score = 0.15*IQ + 3.50*Study_Hours + 50.00",
+                    "Study_Hours החזק ביותר. המשוואה: Score = 0.15*IQ + 3.50*Study_Hours + 50.00",
+                    "Study_Hours החזק ביותר. המשוואה: Score = 0.250*IQ + 0.580*Study_Hours + 50.00"
                 ],
-                answer: 1,
-                rationale: "הפונקציה pd.merge היא המקבילה ל-JOIN ב-SQL. ברירת המחדל שלה (how='inner') משאירה רק התאמות משני הצדדים."
+                ans: 2,
+                exp: "איתור: טבלת מקדמים. משווים עוצמה בעזרת עמודת Beta (הערך .580 של שעות גדול מ-.250 של IQ). את המשוואה בונים מעמודת B בלבד: 50.0 הוא הקבוע (a), 0.15 הוא שיפוע IQ, ו-3.50 הוא שיפוע שעות הלמידה."
             },
             {
-                q: "מה תהיה התוצאה של ביצוע מיזוג שמאלי (Left Join) בין df1 ל-df2?",
+                q: "מה יש לעשות עם משתנה Age בפלט הבא?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Coefficients</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th>Model</th><th></th><th>B</th><th>Std. Error</th><th>Beta</th><th>t</th><th>Sig.</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>1</td><td class="row-header">(Constant)</td><td>10.0</td><td>2.0</td><td></td><td>5.0</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Experience</td><td>2.5</td><td>0.5</td><td>.420</td><td>5.0</td><td>.000</td></tr>
+                      <tr><td></td><td class="row-header">Age</td><td>0.01</td><td>0.05</td><td>.050</td><td>0.2</td><td>.845</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "שמירת רק השורות שיש להן התאמה מדויקת בשתי הטבלאות.",
-                    "מיזוג כל השורות משתי הטבלאות ללא התחשבות בהתאמות.",
-                    "שמירת כל השורות מטבלה df2 (הימנית), ואם אין התאמה ב-df1 יוצבו ערכי NaN.",
-                    "שמירת כל השורות מטבלה df1 (השמאלית), ואם אין התאמה ב-df2 יוצבו ערכי NaN."
+                    "להכניס אותו למשוואה עם מקדם של 0.01.",
+                    "למחוק אותו מהמודל מכיוון שה-Sig שלו (0.845) גדול מ-0.05 והוא אינו מנבא מובהק.",
+                    "הוא המנבא המובהק ביותר כי ה-Sig שלו קרוב ל-1.",
+                    "אין משמעות לגיל ברגרסיה אלא רק בחי בריבוע."
                 ],
-                answer: 3,
-                rationale: "Left Join שומר את טבלת המקור במלואה, ומצרף מידע מהטבלה השנייה רק היכן שנמצאה התאמה. אחרת, הוא מציב NaN."
+                ans: 1,
+                exp: "איתור: מקדמים. משתנה ה-Age קיבל מובהקות של 0.845 (גדול מ-0.05). המשמעות היא שאין לו תרומה מובהקת לניבוי בתוך המודל, ולכן מתעלמים ממנו בבניית המשוואה."
             },
             {
-                q: "כיצד ניתן ליצור טבלת פיווט (Pivot Table) המציגה את ממוצע ערכי 'D', כאשר עמודה 'A' בשורות ועמודה 'C' בעמודות?",
+                q: "לפניך פלט של מבחן T. איזו שורה בטבלה רלוונטית למסקנה, ומהי המסקנה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Independent Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #ccc;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #ccc;">t-test for Equality of Means</th></tr>
+                      <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Equal variances assumed</td><td>1.25</td><td>.310</td><td>2.10</td><td>58</td><td>.040</td></tr>
+                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>1.95</td><td>45.2</td><td>.058</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "df.pivot('D', rows='A', cols='C')",
-                    "df.make_pivot('D', index='A', columns='C')",
-                    "pd.pivot_table(df, values='D', index='A', columns='C', aggfunc='mean')",
-                    "df.create_pivot_table(values='D', index='A', columns='C')"
+                    "מסתכלים על השורה התחתונה כי לווין מובהק. המסקנה: אין הבדל (0.058).",
+                    "מסתכלים על השורה העליונה כי לווין אינו מובהק (0.310). המסקנה: יש הבדל מובהק (0.040).",
+                    "מסתכלים על השורה העליונה ותמיד דוחים H0.",
+                    "מסתכלים על השורה התחתונה כי t קטן יותר."
                 ],
-                answer: 2,
-                rationale: "pd.pivot_table דורשת את מקור הנתונים, הערכים לחישוב, עמודות לאינדקס, עמודות ציר, ופונקציית אגרגציה (mean היא ברירת המחדל)."
+                ans: 1,
+                exp: "איתור: מבחן T בלתי תלוי. שלב א: מבחן לווין לשוויון שונויות (Sig = 0.310). לא מובהק -> מניחים שוויון שונויות וקוראים את השורה *העליונה*. בשורה העליונה ה-Sig (2-tailed) הוא 0.040 (<0.05), כלומר יש הבדל מובהק."
             },
             {
-                q: "מה תפקידו של הפרמטר fill_value=0 ביצירת טבלת ציר (Pivot Table)?",
+                q: "מה קורה במצב הבא במבחן T בלתי תלוי?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Independent Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #ccc;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #ccc;">t-test for Equality of Means</th></tr>
+                      <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Equal variances assumed</td><td>8.90</td><td>.005</td><td>1.50</td><td>80</td><td>.137</td></tr>
+                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>1.45</td><td>62.1</td><td>.152</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "מחיקת שורות שהסכום המחושב שלהן יוצא 0.",
-                    "השלמת ערכים חסרים בעמודת האינדקס בלבד ב-0.",
-                    "לאפס את כל הנתונים המקוריים בטבלה לפני תחילת החישוב.",
-                    "החלפה אוטומטית של תאים ריקים (NaN), שנוצרים כשאין מידע עבור שילוב מסוים, בערך 0."
+                    "קוראים שורה עליונה ויש הבדל.",
+                    "קוראים שורה עליונה ואין הבדל.",
+                    "קוראים שורה תחתונה (לווין=0.005), ואין הבדל מובהק בין הקבוצות (Sig=0.152).",
+                    "קוראים שורה תחתונה ויש הבדל."
                 ],
-                answer: 3,
-                rationale: "כאשר חיתוך מסוים לא מופיע בנתונים המקוריים (למשל סוכן שלא מכר באזור מסוים), נוצר תא NaN. הפרמטר ממלא אותו מראש בערך קבוע."
-            },
-
-            // --- Visualizations ---
-            {
-                q: "איזה סוג גרף מתאים ביותר להצגת הקשר או המתאם (Correlation) בין שני משתנים מספריים רציפים?",
-                options: [
-                    "גרף עמודות (Bar Plot)",
-                    "גרף קופסה (Box Plot)",
-                    "היסטוגרמה (Histogram)",
-                    "גרף פיזור (Scatter Plot)"
-                ],
-                answer: 3,
-                rationale: "גרף פיזור מציג נקודות צירי X ו-Y, ומשמש באופן קלאסי לזיהוי קשר ומגמה בין שני משתנים."
-            },
-            {
-                q: "איזה מבין הגרפים הבאים יאפשר לנו לזהות בצורה הברורה ביותר ערכים חריגים (Outliers)?",
-                options: [
-                    "גרף קופסה (Boxplot)",
-                    "גרף עוגה (Pie Chart)",
-                    "היסטוגרמה (Histogram)",
-                    "גרף קווי (Line Plot)"
-                ],
-                answer: 0,
-                rationale: "גרף הקופסה מציג את פיזור הנתונים (רבעונים וחציון), ומשרטט במפורש נקודות הנמצאות מחוץ ל'שפמים' כערכים חריגים."
+                ans: 2,
+                exp: "איתור: שלב א' לווין: Sig = 0.005 (<0.05) -> השונויות שונות. לכן יורדים לשורה *התחתונה*. בשורה התחתונה ה-Sig (2-tailed) הוא 0.152 (>0.05), לכן אין הבדל מובהק."
             },
             {
-                q: "איזה סוג גרף נבחר אם נרצה להציג את התפלגות השכיחות (Frequency) של משתנה מספרי רציף המחולק למרווחים (Bins)?",
+                q: "מתוך פלט הסטטיסטיקה התיאורית המצורף, לאיזו קבוצה יש ממוצע גבוה יותר ומהי טעות התקן שלה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Group Statistics</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Group</th><th>N</th><th>Mean</th><th>Std. Deviation</th><th>Std. Error Mean</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Control</td><td>30</td><td>85.40</td><td>10.20</td><td>1.86</td></tr>
+                      <tr><td class="row-header">Treatment</td><td>30</td><td>92.10</td><td>8.50</td><td>1.55</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "גרף עמודות (Bar Plot)",
-                    "היסטוגרמה (Histogram)",
-                    "גרף פיזור (Scatter Plot)",
-                    "גרף קווי (Line Plot)"
+                    "לקבוצת Control ממוצע גבוה יותר עם טעות תקן של 10.20.",
+                    "לקבוצת Treatment ממוצע גבוה יותר (92.10) עם טעות תקן (Std. Error) של 1.55.",
+                    "לקבוצת Treatment ממוצע גבוה יותר עם סטיית תקן של 1.55.",
+                    "שתי הקבוצות זהות."
                 ],
-                answer: 1,
-                rationale: "היסטוגרמה לוקחת משתנה רציף, מחלקת אותו למקטעים (Bins), ומראה כמה תצפיות נפלו בכל מקטע."
+                ans: 1,
+                exp: "איתור: Group Statistics מקדים את מבחן ה-t. הממוצע של Treatment (92.10) גבוה משל Control (85.40). טעות התקן מופיעה בעמודת Std. Error Mean והיא 1.55."
             },
             {
-                q: "איך מציירים גרף עמודות בסיסי מתוך נתוני DataFrame?",
+                q: "האם יש הבדל מובהק בין שתי הקבוצות בפלט הבא?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Independent Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #ccc;">Levene's Test</th><th colspan="3" style="text-align:center; border-bottom:1px solid #ccc;">t-test for Equality of Means</th></tr>
+                      <tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Equal variances assumed</td><td>0.15</td><td>.700</td><td>-1.99</td><td>98</td><td>.049</td></tr>
+                      <tr><td class="row-header">Equal variances not assumed</td><td></td><td></td><td>-1.99</td><td>97.5</td><td>.051</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "df.draw('bar')",
-                    "df.plot_bar()",
-                    "df.bar()",
-                    "df.plot.bar()"
+                    "לא, כי t שלילי.",
+                    "לא, כי שורה תחתונה 0.051 אינה קטנה מ-0.05.",
+                    "כן. לווין אינו מובהק (0.700) ולכן קוראים שורה עליונה שבה ה-Sig הדו-צדדי הוא 0.049 (קטן מ-0.05).",
+                    "לא ניתן להחליט במקרי גבול כאלה."
                 ],
-                answer: 3,
-                rationale: "ב-Pandas, הדרך הישירה והמקובלת לציור גרף עמודות היא דרך מתודת plot.bar() או plot(kind='bar')."
+                ans: 2,
+                exp: "איתור: זה מקרה גבול קלאסי שמפיל סטודנטים. לווין = 0.700 (גדול מ-0.05 -> שונויות שוות -> שורה עליונה!). בשורה העליונה ה-Sig הוא 0.049, שזה קטן מ-0.05. ולכן: דוחים H0, יש הבדל."
             },
             {
-                q: "בפייתון, באמצעות ספריית matplotlib, איזו פקודה תוסיף קו אופקי אפור מקווקו לרוחב הגרף בנקודת ה-Y הממוצעת?",
+                q: "מה מסמל הנתון מינוס 4.50 בפלט הבא של מבחן T?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Paired Samples Statistics</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Mean</th><th>N</th><th>Std. Deviation</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Before_Diet</td><td>85.50</td><td>40</td><td>12.0</td></tr>
+                      <tr><td class="row-header">After_Diet</td><td>90.00</td><td>40</td><td>11.5</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "plt.horizontal_line(y.mean(), color='gray')",
-                    "plt.draw_line(y_mean, 'gray', dashed)",
-                    "plt.axhline(y=y.mean(), color='gray', linestyle='--')",
-                    "df.add_line(mean, color='gray')"
+                    "הסטייה של התקן.",
+                    "הבדל מובהק שלילי.",
+                    "ההפרש הממוצע (Mean Difference) בין המדידה הראשונה לשנייה (לפני פחות אחרי). המשמעות היא שהמשקל הממוצע *עלה*.",
+                    "אחוז המשתתפים שירדו במשקל."
                 ],
-                answer: 2,
-                rationale: "הפקודה axhline ב-matplotlib משמשת להוספת קו ציר אופקי (Axis Horizontal Line) לכל רוחב הגרף."
-            },
-
-            // --- ML Prep & Basics ---
-            {
-                q: "בעת פיצול נתונים באמצעות הפונקציה train_test_split, מה תפקידו של הפרמטר random_state=42?",
-                options: [
-                    "הוא דואג ש-42% מהנתונים ילכו לקבוצת המבחן.",
-                    "הוא מחלק את הנתונים ל-42 קבוצות בדיקה שונות.",
-                    "הבטחת תוצאה קבועה וזהה של החלוקה האקראית בכל פעם שמריצים את הקוד, לצורך עקביות.",
-                    "הוא בוחר 42 מאפיינים אקראיים מתוך הטבלה."
-                ],
-                answer: 2,
-                rationale: "קביעת גרעין אקראיות (seed) קבוע מבטיחה שכל הרצה תייצר בדיוק את אותן קבוצות אימון ובדיקה."
-            },
-            {
-                q: "מהי המטרה של פרמטר test_size=0.2 בפונקציית train_test_split?",
-                options: [
-                    "הוראה לפצל את הנתונים כך ש-20% מהם ישמשו כמבחן למודל, ו-80% לאימון.",
-                    "הסרת 20% מהנתונים החריגים ביותר בטבלה לפני האימון.",
-                    "קביעת רמת השגיאה המקסימלית המותרת למודל (20%).",
-                    "אימון המודל במשך 0.2 שניות."
-                ],
-                answer: 0,
-                rationale: "הפרמטר מגדיר את החלק היחסי של מערך הנתונים שיישמר בצד ולא ישתתף באימון, כדי לבחון את המודל בסוף."
+                ans: 2,
+                exp: "איתור: סטטיסטיקה של T מזווג (Paired). כשהמדידה הראשונה (85.5) פחות המדידה השנייה (90.0) שווה למינוס 4.5, זה אומר שהמדידה השנייה גדולה יותר (עלייה במשקל במקרה הזה)."
             },
             {
-                q: "מהי המטרה של Scaling (נרמול/סילום הנתונים)?",
+                q: "לפי הפלט הבא, האם התרופה גרמה לשינוי מובהק?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Paired Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th colspan="2" style="text-align:center; border-bottom:1px solid #ccc;">Paired Differences</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
+                      <tr><th></th><th>Mean</th><th>Std. Dev</th><th></th><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Before - After</td><td>5.20</td><td>2.10</td><td>15.6</td><td>29</td><td>.000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "למנוע חלוקה באפס במהלך החישובים המתמטיים של המודל.",
-                    "למחוק ערכים חסרים בצורה מנורמלת.",
-                    "להמיר ערכי טקסט (כמו 'זכר'/'נקבה') למספרים שהמודל יוכל לקרוא.",
-                    "להביא את כל העמודות המספריות לקנה מידה אחיד, כדי שעמודות עם ערכים גדולים לא ישלטו במודל."
+                    "ההפרש (5.20) אינו מובהק.",
+                    "לא ניתן לדעת ללא מבחן לווין.",
+                    "כן. הערך Sig (2-tailed) שווה ל-0.000, כלומר דוחים את השערת האפס וחל שינוי מובהק.",
+                    "לא, מכיוון שה-df שווה ל-29."
                 ],
-                answer: 3,
-                rationale: "באלגוריתמים המחשבים מרחקים (כמו K-Means), עמודה עם טווח מספרים של עשרות אלפים 'תעלים' עמודה של עשרות בודדות ללא נרמול."
+                ans: 2,
+                exp: "איתור: Paired Samples Test. העמודה החשובה היא תמיד ה-Sig. ערך של .000 אומר שיש שינוי מובהק לחלוטין בין המדידה הראשונה לשנייה."
             },
             {
-                q: "איזה מבין המודלים הבאים *פטור* לחלוטין מביצוע Scaling של הנתונים?",
+                q: "מה קורה כאשר מתקבל הפלט הבא במבחן T למדגמים תלויים?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Paired Samples Test</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Mean</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Test1 - Test2</td><td>0.50</td><td>0.85</td><td>45</td><td>.400</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "רגרסיה לינארית (Linear Regression)",
-                    "K-Means",
-                    "רשתות נוירונים (Neural Networks)",
-                    "יער אקראי (Random Forest)"
+                    "התוצאה מובהקת ודוחים את H0.",
+                    "ההפרש בין הממוצעים הוא 45.",
+                    "לא דוחים את H0 (Sig=0.400). לא נמצא שינוי מובהק בין מבחן 1 למבחן 2.",
+                    "מבחן t אינו תקף ויש לעבור לחי בריבוע."
                 ],
-                answer: 3,
-                rationale: "מודלים מבוססי עצים פועלים על בסיס פיצול תנאים לוגיים (למשל: האם הערך קטן מ-5?) ולכן אינם מושפעים מקנה המידה של המספרים."
-            },
-
-            // --- Clustering (Unsupervised) ---
-            {
-                q: "לאיזה סוג למידת מכונה משתייך אלגוריתם K-Means?",
-                options: [
-                    "למידה מונחית (Supervised Learning) - משימת סיווג.",
-                    "למידה מונחית (Supervised Learning) - משימת רגרסיה.",
-                    "למידה עמוקה (Deep Learning) - זיהוי תמונות.",
-                    "למידה לא מונחית (Unsupervised Learning) - עובד על נתונים גולמיים ללא תוויות."
-                ],
-                answer: 3,
-                rationale: "K-Means מקבל נתונים ללא מטרת יעד (Labels) מוגדרת מראש, ותפקידו לחפש ולמצוא תבניות ולקבץ אותם לאשכולות."
-            },
-            {
-                q: "בשיטת המרפק (Elbow Method) עבור K-Means, מה מייצג ציר ה-Y בגרף ואותו אנו מנסים למזער?",
-                options: [
-                    "הסתברות שכל נקודה שייכת לאשכול הנכון.",
-                    "סכום ריבועי המרחקים של הנקודות ממרכז האשכול שלהן (Inertia/WCSS).",
-                    "מספר הפעמים שהאלגוריתם רץ עד להתכנסות.",
-                    "רמת הדיוק (Accuracy) של האשכולות שנוצרו."
-                ],
-                answer: 1,
-                rationale: "האינרציה (Inertia) מודדת את ה'פיזור' בתוך כל אשכול. ככל שהיא נמוכה יותר, האשכולות דחוסים ומוגדרים טוב יותר."
+                ans: 2,
+                exp: "איתור: Sig=.400 הוא מספר שגדול מ-0.05. במצב כזה לעולם לא דוחים את השערת האפס, והמסקנה היא שהשינוי הקטן שמוצג מקרי ולא מובהק."
             },
             {
-                q: "בגרף שיטת המרפק, כיצד אנו מזהים את מספר האשכולות (K) האופטימלי?",
+                q: "כמה קבוצות הושוו בניתוח שמוצג בטבלה, ומהי המסקנה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">ANOVA</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Between Groups</td><td>250.5</td><td>3</td><td>83.50</td><td>5.10</td><td>.003</td></tr>
+                      <tr><td class="row-header">Within Groups</td><td>1000.0</td><td>60</td><td>16.66</td><td></td><td></td></tr>
+                      <tr><td class="row-header">Total</td><td>1250.5</td><td>63</td><td></td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "הנקודה הגבוהה ביותר בגרף (המקסימום).",
-                    "הנקודה הראשונה שבה הגרף מתחיל לעלות במקום לרדת.",
-                    "נקודת החיתוך של הגרף עם ציר ה-X.",
-                    "הנקודה שבה קצב הירידה של השגיאה (Inertia) מתמתן ונחלש בצורה משמעותית ('הכיפוף')."
+                    "הושוו 3 קבוצות. יש הבדל מובהק.",
+                    "הושוו 4 קבוצות (df+1 ב-Between). קיים הבדל מובהק בממוצעים מכיוון שה-Sig הוא 0.003.",
+                    "הושוו 60 קבוצות. אין הבדל מובהק.",
+                    "הושוו 4 קבוצות. אין הבדל מובהק."
                 ],
-                answer: 3,
-                rationale: "זוהי 'נקודת המרפק'. מעבר לה, הוספת אשכולות נוספים משפרת את המודל בצורה שולית בלבד ולא מצדיקה את המורכבות."
+                ans: 1,
+                exp: "איתור: דרגות החופש ב-Between Groups שוות למספר הקבוצות פחות אחת (K-1). לכן אם df=3, היו 4 קבוצות. ה-Sig הוא .003 (קטן מ-0.05) ולכן יש הבדל מובהק."
             },
             {
-                q: "מהי הפקודה בספריית Sklearn שמאמנת מודל K-Means וגם מחזירה מיד את תוויות האשכול לכל שורה?",
+                q: "חוקר הריץ מבחן ANOVA וקיבל את הפלט הבא. מה עליו לעשות כעת?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">ANOVA</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Between Groups</td><td>15.2</td><td>2</td><td>7.60</td><td>0.95</td><td>.392</td></tr>
+                      <tr><td class="row-header">Within Groups</td><td>320.0</td><td>40</td><td>8.00</td><td></td><td></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "kmeans.cluster_labels(X)",
-                    "pd.kmeans(X)",
-                    "kmeans.fit_predict(X)",
-                    "kmeans.group_by_cluster(X)"
+                    "לעבור מיד למבחן פוסט הוק כדי לגלות מי הקבוצה ששונה.",
+                    "ה-Sig הוא 0.392 (גדול מ-0.05), לכן אין שום הבדל מובהק. הניתוח מסתיים כאן ולא מבצעים פוסט הוק.",
+                    "לבצע מבחן t למדגמים תלויים.",
+                    "להוריד את השונות של Within Groups."
                 ],
-                answer: 2,
-                rationale: "הפונקציה fit_predict משלבת את שלב האימון (מציאת המרכזים) ואת שלב התחזית (הקצאת התווית לכל דגימה) בפעולה אחת."
+                ans: 1,
+                exp: "איתור: Sig=0.392 מעיד שאין הבדלים בין הקבוצות. הכלל החשוב ביותר באנובה הוא: אם אין הבדל מובהק, הניתוח עוצר שם! לא עושים פוסט הוק."
             },
             {
-                q: "מהו היתרון המרכזי של אלגוריתם DBSCAN לעומת K-Means בחלוקה לאשכולות?",
+                q: "מה קובע הפלט הבא לגבי ההשוואות הזוגיות?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Multiple Comparisons (Tukey HSD)</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th>(I) Group</th><th>(J) Group</th><th>Mean Difference (I-J)</th><th>Sig.</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td rowspan="2" style="vertical-align:top;">Group 1</td><td class="row-header">Group 2</td><td>1.200</td><td>.450</td></tr>
+                      <tr><td class="row-header">Group 3</td><td>8.500*</td><td>.005</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "DBSCAN מציג את התוצאות בגרף דנדרוגרמה המאפשר לראות את ההיררכיה.",
-                    "DBSCAN דורש לדעת מראש מהו מספר האשכולות (K) הרצוי.",
-                    "DBSCAN מתאים רק לנתונים טקסטואליים ולא למספרים.",
-                    "DBSCAN מבוסס צפיפות, מעולה לזיהוי צורות מורכבות ולסינון רעשים/נקודות חריגות (Outliers)."
+                    "אין הבדל מובהק בין שום זוג.",
+                    "יש הבדל מובהק רק בין קבוצה 1 לקבוצה 3 (Sig=0.005).",
+                    "קבוצה 1 וקבוצה 2 זהות לחלוטין ולכן Sig=0.450.",
+                    "ההבדל בין 1 ל-2 גדול יותר מאשר 1 ל-3."
                 ],
-                answer: 3,
-                rationale: "K-Means מכריח כל נקודה, גם חריגה, להשתייך לאשכול. DBSCAN יודע להשאיר תצפיות מבודדות בחוץ תחת הגדרת 'רעש'."
-            },
-
-            // --- Models: Trees, Ensemble, Regression ---
-            {
-                q: "מה מנסה מודל הרגרסיה הלינארית למזער במהלך האימון שלו?",
-                options: [
-                    "את כמות הענפים והעלים במודל.",
-                    "את פונקציית ההפסד (Loss Function), כמו שגיאה ריבועית ממוצעת (MSE).",
-                    "את המרחק של הנקודות ממרכזי האשכולות.",
-                    "את מדד האי-טוהר (ג'יני)."
-                ],
-                answer: 1,
-                rationale: "המטרה של רגרסיה היא למצוא את קו המגמה שעובר הכי קרוב לכל הנקודות, באמצעות מזעור השגיאה בין התחזית למציאות."
-            },
-            {
-                q: "מודל רגרסיה לינארית אומן בהצלחה. מה מייצג הערך השמור תחת המשתנה model.coef_?",
-                options: [
-                    "את השגיאה הממוצעת של המודל על נתוני האימון.",
-                    "את אחוז הדיוק הכללי (Accuracy) של המודל.",
-                    "את שיפוע הישר (המקדם המכפיל את המשתנה).",
-                    "את נקודת החיתוך של קו הרגרסיה עם ציר ה-Y (Intercept)."
-                ],
-                answer: 2,
-                rationale: "ב-Sklearn, המשתנה coef_ (Coefficients) מכיל את השיפועים של המשתנים, בעוד intercept_ מכיל את נקודת החיתוך."
+                ans: 1,
+                exp: "איתור: טבלת פוסט הוק. מחפשים שורות עם Sig קטן מ-0.05. בין 1 ל-2 יש 0.450 (אין הבדל). בין 1 ל-3 יש 0.005 (יש הבדל מובהק!). הכוכבית ליד ההפרש גם מאותתת על כך."
             },
             {
-                q: "מהו ההבדל המרכזי בין הפונקציות fit() ו-predict() בספריות למידת מכונה?",
+                q: "בטבלת פוסט-הוק, אם ההפרש בין קבוצה A לקבוצה B עומד על -12.5* וה-Sig הוא 0.001. מה זה אומר?",
+                table: null,
                 options: [
-                    "fit משמשת לאימון המודל על נתוני העבר, ו-predict משמשת כדי לקבל תחזיות עבור נתונים חדשים.",
-                    "predict מנקה את הנתונים, ו-fit מאמנת את המודל.",
-                    "fit מיועדת למודלי רגרסיה בלבד, ו-predict למודלי סיווג בלבד.",
-                    "אין הבדל, אלו שתי דרכים שונות לרשום את אותה הפעולה."
+                    "שקבוצה A גדולה יותר מקבוצה B.",
+                    "המבחן שגוי כי אי אפשר לקבל הפרש שלילי מובהק.",
+                    "שיש הבדל מובהק, והממוצע של קבוצה B גדול מהממוצע של קבוצה A ב-12.5 יחידות.",
+                    "שקבוצה B קטנה יותר מקבוצה A ב-12.5 יחידות."
                 ],
-                answer: 0,
-                rationale: "fit הוא שלב הלמידה שבו המודל מחשב פרמטרים. predict הוא שלב השימוש בו מזינים נתונים ללא תשובות כדי לקבל את החיזוי של המודל."
+                ans: 2,
+                exp: "ההפרש הוא תמיד (I - J), כלומר A פחות B. אם התוצאה שלילית (-12.5), זה אומר שהמספר השני (B) היה גדול יותר מהמספר הראשון (A)."
             },
             {
-                q: "מהו היתרון המרכזי של עץ החלטה (Decision Tree) לעומת רשת נוירונים?",
+                q: "מה מייצג המונח Within Groups בטבלת ה-ANOVA?",
+                table: null,
                 options: [
-                    "הוא מהיר וקל מאוד לפרשנות והמחשה לוגית (קופסה לבנה), ואינו דורש עיבוד מורכב מראש.",
-                    "הוא מצוין בזיהוי תמונות ועיבוד שפה טבעית.",
-                    "הוא מחשב מרחקים גיאומטריים מדויקים יותר בין תצפיות.",
-                    "הוא תמיד מניב דיוק גבוה יותר על מערכי נתונים עצומים מרובי ממדים."
+                    "את השונות הכללית של המדגם.",
+                    "את ההבדלים בין הממוצעים של הקבוצות השונות.",
+                    "את השונות (הפיזור) הטבעי שקיים בתוך כל קבוצה בנפרד (שגיאה).",
+                    "את המהימנות של השאלון."
                 ],
-                answer: 0,
-                rationale: "עץ החלטה מציג את הלוגיקה שלו בבירור (למשל: אם הגיל > 30 אז..), ולכן קל מאוד להסביר אותו ללקוח עסקי."
+                ans: 2,
+                exp: "Within Groups הוא הפיזור של התצפיות סביב הממוצע של הקבוצה שלהם בלבד. זו השונות שלא מוסברת על ידי חלוקה לקבוצות."
             },
             {
-                q: "מהו מדד ג'יני (Gini Impurity) המשמש בעצי החלטה?",
+                q: "בפלט של מבחן דו-גורמי (Two-Way ANOVA), אילו מהאפקטים הבאים נמצא מובהק?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Tests of Between-Subjects Effects</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">City</td><td>2</td><td>5.10</td><td>.008</td></tr>
+                      <tr><td class="row-header">Gender</td><td>1</td><td>1.20</td><td>.280</td></tr>
+                      <tr><td class="row-header">City * Gender</td><td>2</td><td>0.80</td><td>.455</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "פונקציית הפסד המשמשת לחישוב השגיאה הריבועית הממוצעת.",
-                    "מדד שנועד להעריך את איכות הפיצול בעץ; ערך 0 מעיד על קבוצה טהורה לגמרי (הומוגנית).",
-                    "מדד המחשב את המרחק האוקלידי בין דגימות באשכול.",
-                    "פרמטר הקובע את העומק המקסימלי שהעץ יכול להגיע אליו."
+                    "כל האפקטים מובהקים.",
+                    "רק משתנה ה-City (עיר) מציג אפקט עיקרי מובהק (Sig=0.008).",
+                    "יש אינטראקציה מובהקת אך אין אפקטים עיקריים.",
+                    "רק מגדר נמצא מובהק."
                 ],
-                answer: 1,
-                rationale: "מדד ג'יני בודק 'אי-טוהר'. עץ ההחלטה מחפש בכל שלב לבצע את הפיצול שימזער את הג'יני כמה שיותר, עד לעלים טהורים."
+                ans: 1,
+                exp: "איתור: Two-Way ANOVA. ה-Sig של עיר הוא 0.008 (מובהק). ה-Sig של מגדר הוא 0.280 (לא מובהק). ה-Sig של האינטראקציה (City*Gender) הוא 0.455 (לא מובהק). לכן רק 'עיר' מובהק."
             },
             {
-                q: "מודל מבוסס עצי החלטה מבצע 'חיפוש חמדן' (Greedy Search) במהלך בניית העץ. למה הכוונה?",
+                q: "מה המסקנה לגבי האינטראקציה בפלט הבא?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Tests of Between-Subjects Effects</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Source</th><th>df</th><th>F</th><th>Sig.</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Treatment</td><td>1</td><td>12.5</td><td>.001</td></tr>
+                      <tr><td class="row-header">Age_Group</td><td>1</td><td>4.10</td><td>.045</td></tr>
+                      <tr><td class="row-header">Treatment * Age_Group</td><td>1</td><td>8.80</td><td>.004</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "הוא בודק ובוחר בכל שלב נתון את הפיצול שממזער את מדד הג'יני בצורה הגדולה ביותר לאותו רגע.",
-                    "הוא מתקדם אחורה מהעלים לשורש כדי לחסוך זמן חישוב.",
-                    "הוא מנסה לשמור את כל הנתונים בעלה אחד כדי לקבל עץ קטן ככל האפשר.",
-                    "הוא מבצע עדכון משקולות לאחור עד שהוא מגיע לשגיאה אפס."
+                    "אין אינטראקציה כלל.",
+                    "האינטראקציה (Treatment * Age_Group) מובהקת (Sig=0.004), מה שאומר שהשפעת הטיפול תלויה בקבוצת הגיל.",
+                    "האינטראקציה מובהקת אבל האפקטים העיקריים לא.",
+                    "המבחן פסול כי ה-F גדול מ-5."
                 ],
-                answer: 0,
-                rationale: "חיפוש חמדן לא מתכנן קדימה. הוא פשוט מבצע את הבחירה המקומית הטובה ביותר בכל צומת בתקווה שזה יוביל לתוצאה כללית אופטימלית."
+                ans: 1,
+                exp: "איתור: השורה של הכפל מציגה את האינטראקציה. ה-Sig שלה הוא 0.004 (<0.05). משמעות האינטראקציה היא שההשפעה של משתנה אחד משתנה/תלויה ברמות של המשתנה השני."
             },
             {
-                q: "מהו היתרון המרכזי של מודל יער אקראי (Random Forest) על פני עץ החלטה בודד?",
+                q: "האם יש צורך במבחן פוסט הוק כאשר ב-ANOVA דו גורמי, אפקט האינטראקציה אינו מובהק ושני האפקטים העיקריים גם הם אינם מובהקים?",
+                table: null,
                 options: [
-                    "הוא היחיד שאינו דורש פונקציית Scaling לפני הפעלתו.",
-                    "הוא פועל בצורה סדרתית ומהירה יותר מעץ בודד.",
-                    "הוא משלב עצי החלטה רבים במקביל שמצביעים יחד, מה שמונע התאמת יתר (Overfitting) ועמיד לרעשים.",
-                    "הוא מבוסס על פונקציית אקטיבציה שהופכת אותו לרשת נוירונים עמוקה."
+                    "כן, פוסט הוק הוא חובה תמיד באנובה.",
+                    "כן, כדי להיות בטוחים.",
+                    "לא, מכיוון שאין שום אפקט מובהק שדורש פירוק נוסף.",
+                    "מבצעים רק מבחן T מזווג במקום."
                 ],
-                answer: 2,
-                rationale: "עץ בודד נוטה ללמוד את הרעש בנתונים. יער אקראי ממצע את ההחלטות של מאות עצים שונים (Bagging), מה שמנטרל טעויות מקומיות."
+                ans: 2,
+                exp: "הכלל תקף גם כאן - פוסט הוק או התעמקות באפקטים (Simple effects) עושים רק אם מצאנו קודם משהו מובהק שמצדיק חקירה."
             },
             {
-                q: "כיצד פועל אלגוריתם ה-XGBoost, הנחשב למודל החזק ביותר לנתונים טבלאיים?",
+                q: "הפלט הבא מתאר מבחן מהימנות (אלפא של קרונבך). מה ניתן להסיק לגבי השאלון?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Reliability Statistics</div>
+                  <table class="spss-table">
+                    <thead><tr><th>Cronbach's Alpha</th><th>N of Items</th></tr></thead>
+                    <tbody><tr><td>.880</td><td>10</td></tr></tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "הוא בונה מספר עצים בלתי תלויים במקביל ומבצע הצבעת רוב.",
-                    "הוא מחלק את הנתונים לאשכולות על סמך מרחק ממרכז כובד אקראי.",
-                    "הוא משתמש בשכבות של נוירונים להמרת נתונים מספריים לטקסטואליים.",
-                    "הוא בונה עצים בצורה סדרתית (Boosting), כאשר כל עץ חדש מנסה ללמוד ולתקן את טעויות החיזוי של העץ שקדם לו."
+                    "השאלון בעייתי כי המספר קרוב ל-1.",
+                    "יש למחוק את פריט מספר 10.",
+                    "השאלון בן 10 פריטים ומציג מהימנות (עקיבות פנימית) גבוהה וטובה מאוד (0.880).",
+                    "השאלון אינו מובהק."
                 ],
-                answer: 3,
-                rationale: "בניגוד ליער אקראי שבונה במקביל, XGBoost מתמקד בתיקון השאריות והשגיאות של העצים הקודמים כדי להגיע לדיוק מקסימלי."
-            },
-
-            // --- Neural Networks ---
-            {
-                q: "מהו תפקידה של שכבת הקלט (Input Layer) ברשת נוירונים?",
-                options: [
-                    "להחזיר את החיזוי הסופי של הרשת בצורת הסתברות.",
-                    "לבצע את ההכפלות המתמטיות ולשנות את המשקולות.",
-                    "לקבל את המאפיינים הגולמיים של הנתונים מהעולם החיצון, ולהעביר אותם הלאה לרשת.",
-                    "לחשב את מדד ההפסד (Loss) של המודל מול המציאות."
-                ],
-                answer: 2,
-                rationale: "שכבת הקלט היא ה'דלת' של הרשת. היא לא מבצעת חישובים אלא פשוט קולטת את הנתונים ומוסרת אותם לשכבות הבאות."
+                ans: 2,
+                exp: "איתור: Reliability Statistics. ערך אלפא מעל 0.7 נחשב טוב. 0.880 זה מצוין ומעיד על עקיבות פנימית גבוהה בין 10 השאלות."
             },
             {
-                q: "ברשת נוירונים, היכן מתבצעים החישובים המתמטיים האמיתיים (הכפלת הערכים במשקולות והעברה דרך פונקציית אקטיבציה)?",
+                q: "בטבלת Item-Total Statistics המופיעה מטה, האם יש פריט שמומלץ למחוק מתוך השאלון?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Item-Total Statistics</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th></th><th>Corrected Item-Total Correlation</th><th>Cronbach's Alpha if Item Deleted</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Item_1</td><td>.450</td><td>.620</td></tr>
+                      <tr><td class="row-header">Item_2</td><td>.120</td><td>.850</td></tr>
+                      <tr><td class="row-header">Item_3</td><td>.550</td><td>.600</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="spss-footer">Overall Alpha = .650</div>
+                </div>
+                `,
                 options: [
-                    "בשכבות החבויות (Hidden Layers).",
-                    "בשכבת ה-Backpropagation.",
-                    "בשכבת הפלט (Output Layer).",
-                    "בשכבת הקלט (Input Layer)."
+                    "לא, מחיקת פריטים רק תוריד את המהימנות הכללית.",
+                    "כן, פריט מספר 2. מחיקתו תקפיץ את המהימנות מ-0.650 ל-0.850.",
+                    "כן, פריט מספר 3, כי יש לו את האלפא הכי נמוכה.",
+                    "יש למחוק את כל הפריטים."
                 ],
-                answer: 0,
-                rationale: "השכבות החבויות הן המוח של הרשת. שם מתבצע העיבוד האמיתי של הנתונים לזיהוי תבניות."
+                ans: 1,
+                exp: "איתור: פלט עקיבות פנימית מתקדם. עמודת 'If item deleted' היא עמודת 'מה היה קורה אם'. אם נמחק את פריט 2, האלפא של השאלון כולו תהפוך ל-0.850 (שיפור אדיר לעומת ה-0.650 הקיים)."
             },
             {
-                q: "מדוע פונקציית הפעלה (Activation Function) היא הכרחית וקריטית בכל נוירון ברשת?",
+                q: "מה מייצגת עמודת ה-Valid Percent בטבלת השכיחויות?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Frequencies</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Frequency</th><th>Percent</th><th>Valid Percent</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">Yes</td><td>40</td><td>40.0</td><td>50.0</td></tr>
+                      <tr><td class="row-header">No</td><td>40</td><td>40.0</td><td>50.0</td></tr>
+                      <tr><td class="row-header">Missing</td><td>20</td><td>20.0</td><td></td></tr>
+                      <tr><td class="row-header">Total</td><td>100</td><td>100.0</td><td>100.0</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "מכיוון שהיא מתרגמת משתנים קטגוריאליים למספרים שהרשת יכולה לקרוא.",
-                    "כדי שהיא תפסול נתונים שגויים או חסרים שעלולים להקריס את הרשת.",
-                    "כדי להכניס אי-ליניאריות לרשת. בלעדיה, הרשת העצבית הייתה מתפקדת כמודל רגרסיה לינארית פשוט ולא מסוגלת ללמוד דפוסים מורכבים.",
-                    "מכיוון שהיא קובעת איזה אחוז מנתוני האימון יועבר לקבוצת המבחן."
+                    "את האחוז מתוך סך כל השאלונים שחולקו, כולל החסרים.",
+                    "את מידת המובהקות של התשובה.",
+                    "את האחוז מתוך האנשים שהשיבו לשאלה בפועל, תוך ניכוי הערכים החסרים (Missing).",
+                    "את הסטייה מתקן 100."
                 ],
-                answer: 2,
-                rationale: "פונקציית הפעלה מעקמת את הישרים המתמטיים ומאפשרת לרשת לפתור בעיות שאינן ניתנות להפרדה בקו ישר אחד."
+                ans: 2,
+                exp: "איתור: טבלת תדירויות בסיסית. Percent כולל את ה-Missing בחישוב (40 מתוך 100). Valid Percent מתעלם מה-Missing ומחשב רק מתוך אלו שענו (40 מתוך 80 = 50%)."
             },
             {
-                q: "בתהליך הלמידה של רשת נוירונים, מהו התפקיד של Backpropagation (פעפוע לאחור)?",
+                q: "מהו השכיח (Mode) העולה מהטבלה הבאה?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Frequencies: Car Color</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th>Frequency</th><th>Percent</th></tr></thead>
+                    <tbody>
+                      <tr><td class="row-header">White</td><td>150</td><td>50.0</td></tr>
+                      <tr><td class="row-header">Black</td><td>100</td><td>33.3</td></tr>
+                      <tr><td class="row-header">Red</td><td>50</td><td>16.7</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
                 options: [
-                    "לחלק את הנתונים ל-Batches קטנים כדי לשמור על זיכרון המחשב.",
-                    "להעביר את נתוני הקלט קדימה כדי לקבל תחזית סופית מהירה.",
-                    "לאפס משקולות שלא תרמו לתוצאה כדי לייעל את חישוב המודל.",
-                    "להשתמש בנגזרות כדי לחשב את תרומת כל משקולת לשגיאה (Loss), ולעדכן אותה בכיוון ההפוך כדי למזער את הטעות."
+                    "Black",
+                    "150",
+                    "White (לבן)",
+                    "Red"
                 ],
-                answer: 3,
-                rationale: "ה-Backpropagation הוא מנגנון הלמידה שמסתכל על גודל הטעות שנוצרה בסוף, הולך אחורה ומתקן את המשקולות האחראיות לטעות."
+                ans: 2,
+                exp: "השכיח הוא תמיד *הקטגוריה* או ה*ערך* שמופיע הכי הרבה פעמים, ולא המספר עצמו. צבע לבן הופיע הכי הרבה (150 פעמים)."
             },
             {
-                q: "בנוסחת החישוב של נוירון בודד, מהו תפקיד ההטיה (Bias)?",
+                q: "בפלט תיאורי מתקבלות סטטיסטיקות שונות. מה המשמעות אם ממוצע הגילאים הוא 25 וסטיית התקן (Std. Deviation) היא 2?",
+                table: null,
                 options: [
-                    "לאפשר הזזה (Shifting) של פונקציית האקטיבציה, מה שנותן למודל גמישות להיות מופעל גם כאשר כל הקלטים (X) שווים לאפס.",
-                    "לאפס באופן אקראי נוירונים מסוימים כדי למנוע התאמת יתר.",
-                    "לשלוט בגודל צעדי הלמידה (Learning Rate) של האלגוריתם בכל תקופה (Epoch).",
-                    "למדוד את רמת אי-הטוהר של הצומת לפי מדד ג'יני."
+                    "שכולם במדגם בני 25 או 27.",
+                    "שבממוצע, הגילאים של האנשים רחוקים מגיל 25 בשנתיים (למעלה או למטה).",
+                    "שהשונות מוסברת ב-2%.",
+                    "שיש טעות תקן של 2%."
                 ],
-                answer: 0,
-                rationale: "ה-Bias הוא מקביל לנקודת החיתוך עם ציר Y (ה-b במשוואה y=mx+b), המאפשר לקו לא לעבור בהכרח דרך ראשית הצירים (0,0)."
-            },
-
-            // --- Evaluation Metrics ---
-            {
-                q: "במטריצת הבלבול (Confusion Matrix), מה מתאר מצב של False Negative (FN)?",
-                options: [
-                    "המודל חזה חיובי, ובמציאות התוצאה היא אכן חיובית (הצלחה).",
-                    "המודל חזה שלילי, ובמציאות התוצאה היא אכן שלילית (שלילה נכונה).",
-                    "המודל חזה חיובי, אך במציאות התוצאה היא שלילית (אזעקת שווא).",
-                    "המודל חזה שלילי, אך במציאות התוצאה היא חיובית (פספוס קריטי)."
-                ],
-                answer: 3,
-                rationale: "המילה 'False' מעידה שהמודל טעה בחיזוי. המילה 'Negative' מתארת את החיזוי של המודל. מסקנה: הוא חזה שלילי בטעות."
+                ans: 1,
+                exp: "סטיית תקן היא מדד פיזור המציין את המרחק הממוצע של כלל התצפיות מן הממוצע שלהן."
             },
             {
-                q: "במערכת לסינון דואר זבל, המודל חזה שהמייל הוא 'ספאם' (חיובי), אך במציאות מדובר במייל עבודה חשוב מהבוס. איזה סוג טעות זה?",
+                q: "כאשר אנו מקבלים אזהרה בחי בריבוע שיותר מ-20% מהתאים קטנים מ-5, מה השם של המבחן שאליו יש לעבור?",
+                table: null,
                 options: [
-                    "True Negative (TN)",
-                    "False Positive (FP)",
-                    "False Negative (FN)",
-                    "True Positive (TP)"
+                    "Tukey Post-Hoc",
+                    "Fisher's Exact Test (מבחן פישר)",
+                    "Levene's Test",
+                    "Pearson Correlation"
                 ],
-                answer: 1,
-                rationale: "המודל חזה ספאם (Positive), אבל טעה (False). מדובר באזעקת שווא - False Positive."
+                ans: 1,
+                exp: "זהו כלל אצבע בסיסי: כשחי בריבוע מופר, משתמשים בתיקון של פישר שמחושב בצורה מדוייקת (Exact) ולא אסימפטוטית."
             },
             {
-                q: "מדד ה-Accuracy (דיוק כללי) מחושב כסך התחזיות הנכונות חלקי סך הדגימות. מתי נשתדל **להימנע** מלהשתמש בו?",
+                q: "בטבלת מתאמים של פירסון, התקבל קשר של r = -0.85 בין 'זמן מסך' ל'הישגים לימודיים'. מה המשמעות?",
+                table: null,
                 options: [
-                    "כאשר מודל הרגרסיה שלנו מציג שגיאה מסוג MSE.",
-                    "במשימות שבהן אנו מנסים לחזות משתנה רציף ולא קטגוריה.",
-                    "כאשר אנו מתמודדים עם נתונים בעלי חוסר איזון קיצוני (Imbalanced Data), למשל 99% מיילים רגילים ו-1% ספאם.",
-                    "כאשר המודל אינו משתמש בפונקציית Scaling לפני הפעלתו."
+                    "קשר חלש מאוד כי המספר שלילי.",
+                    "אין קשר מובהק.",
+                    "קיים קשר שלילי חזק: ככל שזמן המסך עולה, ההישגים הלימודיים נוטים לרדת.",
+                    "קשר חיובי וחזק."
                 ],
-                answer: 2,
-                rationale: "במצב של חוסר איזון, מודל 'טיפש' שיחזה תמיד את קבוצת הרוב יקבל דיוק של 99% אך יהיה חסר תועלת לחלוטין."
+                ans: 2,
+                exp: "המינוס רק מעיד על כיוון (קשר הפוך - אחד עולה, שני יורד). הערך 0.85 מעיד על עוצמה חזקה מאוד (קרוב ל-1)."
             },
             {
-                q: "באיזה תרחיש נעדיף למקסם את מדד ה-Recall (רגישות) על חשבון מדדים אחרים?",
+                q: "מה מייצג df בטבלאות של t-test?",
+                table: null,
                 options: [
-                    "במערכת זיהוי מחלה מסוכנת, שבה אנו מאוד מפחדים לפספס חולים אמיתיים (מוכנים לספוג אזעקות שווא).",
-                    "בחיזוי מחיר של נדל\"ן על בסיס שטח הדירה במספרים עשרוניים.",
-                    "במערכת סינון ספאם, בה אנו מאוד מפחדים שמייל תקין יסומן בטעות כספאם ויימחק.",
-                    "כאשר אנו מריצים אלגוריתם חלוקה לאשכולות כמו K-Means ורוצים לאמת את מספר הקבוצות."
+                    "Difference Factor",
+                    "Degrees of Freedom (דרגות חופש)",
+                    "Data Frequency",
+                    "Dependent Factor"
                 ],
-                answer: 0,
-                rationale: "ה-Recall מודד 'מתוך כל מי שבאמת חולה, כמה זיהיתי נכון?'. כשפספוס (FN) הוא קריטי, אנו ממקסמים Recall."
+                ans: 1,
+                exp: "df מייצג Degrees of freedom (דרגות חופש), והוא נגזר מגודל המדגם (n-1 או n-2 תלוי במבחן)."
             },
             {
-                q: "מדד ה-F1 Score משמש כמדד מאוזן לביצועי מודל במצבים של חוסר איזון בנתונים. כיצד הוא מחושב?",
+                q: "במבחן t למדגמים מזווגים (Paired), רווח הסמך (Confidence Interval) עבור ההפרש כולל ערכים משלילי ועד חיובי (למשל: Lower=-1.5, Upper=3.2). מה זה מבטיח לגבי ה-Sig?",
+                table: null,
                 options: [
-                    "הכפלה פשוטה של סך ההצלחות בסך הכישלונות.",
-                    "סכום של ה-Accuracy וה-Recall ביחד.",
-                    "הממוצע ההרמוני של Precision ו-Recall, שנועד 'לקנוס' מודל אם אחד מהמדדים נמוך מאוד.",
-                    "חישוב השטח תחת עקומת ה-ROC הכללית של המודל."
+                    "שהוא יהיה קטן מ-0.05.",
+                    "שהוא יהיה שווה לאפס.",
+                    "שהוא יהיה גדול מ-0.05 (לא מובהק).",
+                    "אי אפשר לדעת מראש."
                 ],
-                answer: 2,
-                rationale: "ממוצע הרמוני מושך את התוצאה לכיוון הערך הנמוך מבין השניים. אם ה-Recall מעולה אבל ה-Precision גרוע, ה-F1 יהיה נמוך ויחשוף את הבעיה."
+                ans: 2,
+                exp: "זה כלל סטטיסטי: אם רווח הסמך של ההפרש 'חוצה את האפס' (כלומר, ההפרש באוכלוסייה יכול להיות אפס), התוצאה בוודאות אינה מובהקת (Sig > 0.05)."
             },
             {
-                q: "בגרף הבוחן את היכולת של המודל להבחין בין כיתות (חיובי/שלילי), קיבלנו ציון שטח תחת העקומה (ROC AUC) של 0.5. מה משמעות התוצאה?",
+                q: "במשוואת הרגרסיה, מה מייצג הקבוע (Constant / a)?",
+                table: null,
                 options: [
-                    "המודל למד להתאים את עצמו יתר על המידה (Overfitting) ולכן יש לאפס את המשקולות.",
-                    "יש חוסר איזון בנתונים, ויש להשתמש במדד Gini במקום.",
-                    "המודל מציג יכולת הפרדה מושלמת וצודק ב-100% מהמקרים שנבחנו.",
-                    "המודל שווה ערך לניחוש אקראי לחלוטין (כמו הטלת מטבע) ואין לו יכולת הפרדה."
+                    "את המנבא החזק ביותר.",
+                    "את ערכו של המשתנה התלוי (Y) כאשר כל המשתנים המסבירים (X) שווים לאפס.",
+                    "את המובהקות של המודל.",
+                    "את אחוז השונות."
                 ],
-                answer: 3,
-                rationale: "בגרף ROC, ערך של 1.0 הוא מושלם, בעוד 0.5 (קו אלכסוני ישר) מייצג בחירה מקרית ללא שום כוח חיזוי אמיתי."
+                ans: 1,
+                exp: "הקבוע הוא בעצם נקודת החיתוך עם ציר ה-Y. הוא מנבא מה תהיה התוצאה אם כל משתני ה-X (למשל גיל, ותק, וכו') היו 0."
+            },
+            {
+                q: "ניתוח שונות (ANOVA) מחלק את השונות הכללית (Total) לשני חלקים. אילו הם?",
+                table: null,
+                options: [
+                    "Between Groups ו- Within Groups",
+                    "Regression ו- Residual",
+                    "Pearson ו- Fisher",
+                    "Constant ו- Beta"
+                ],
+                ans: 0,
+                exp: "אלו הם שני רכיבי הליבה של מבחן F באנובה: השונות בין הקבוצות (ההבדלים הרצויים) מול השונות בתוך הקבוצות (השגיאה)."
+            },
+            {
+                q: "חוקר ביצע מבחן ANOVA דו-גורמי (Two-Way) וגילה שהאינטראקציה אינה מובהקת. מה עליו לבדוק עכשיו?",
+                table: null,
+                options: [
+                    "הוא חייב להפסיק את הניתוח.",
+                    "עליו לבדוק את ה-Sig של כל אחד מהאפקטים העיקריים (Main Effects) בנפרד כדי לראות אם להם יש השפעה.",
+                    "לבצע מבחן t למדגמים מזווגים.",
+                    "להריץ רגרסיה מרובה."
+                ],
+                ans: 1,
+                exp: "כאשר אין אינטראקציה, הדרך פנויה ונקייה לפרש את האפקטים העיקריים. מסתכלים על השורות של שני המשתנים ובוחנים אם מי מהם מובהק בפני עצמו."
+            },
+            {
+                q: "לפניך תא ספציפי מתוך טבלת חי בריבוע (Crosstab). המשתנה בשורה הוא 'מין' והמשתנה בעמודה הוא 'עבר תאונה'. מה מייצג המספר 56?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Crosstabulation (Partial)</div>
+                  <table class="spss-table">
+                    <thead><tr><th></th><th></th><th>Yes (תאונה)</th></tr></thead>
+                    <tbody>
+                      <tr><td rowspan="2" style="vertical-align:top;">Male</td><td class="row-header">Count</td><td>56</td></tr>
+                      <tr><td class="row-header">Expected Count</td><td>43.7</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "את מספר הגברים במדגם ש*לא* עברו תאונה.",
+                    "את מספר הגברים שאנו *מצפים* שיעברו תאונה אם אין קשר.",
+                    "את מספר הגברים הממשי (בפועל) במדגם שעברו תאונה.",
+                    "את אחוז הגברים שעברו תאונה."
+                ],
+                ans: 2,
+                exp: "איתור: Count מייצג את המנייה בפועל (Observed). Expected מייצג את הצפי. כאן בשורת Count תחת גברים שעברו תאונה יש 56 איש בפועל."
+            },
+            {
+                q: "מה אומר המספר המודגש (Mean Difference) בטבלת מבחן הפוסט-הוק שלפניך?",
+                table: `
+                <div class="spss-container">
+                  <div class="spss-title">Multiple Comparisons (Tukey HSD)</div>
+                  <table class="spss-table">
+                    <thead>
+                      <tr><th>(I) City</th><th>(J) City</th><th>Mean Difference (I-J)</th><th>Sig.</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="row-header">Tel Aviv</td><td>Haifa</td><td><strong>15.50*</strong></td><td>.001</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                `,
+                options: [
+                    "שבחיפה הערך הממוצע גבוה ב-15.5 מבתל אביב.",
+                    "שבתל אביב (קבוצה I) הממוצע גבוה יותר מבחיפה (קבוצה J) ב-15.5 יחידות, וההבדל הזה מובהק.",
+                    "שטעות התקן היא 15.5.",
+                    "שההבדל לא מובהק כיוון שהמספר חיובי."
+                ],
+                ans: 1,
+                exp: "איתור: פוסט-הוק תמיד מציג I פחות J. אם התוצאה חיובית (15.5), זה אומר שהראשון (תל אביב) גדול יותר מהשני (חיפה). הכוכבית וה-Sig=0.001 מאשרים שההבדל הזה מובהק סטטיסטית."
             }
         ];
 
+        // --- Application Logic ---
         let currentQuestionIndex = 0;
         let score = 0;
-        let hasAnswered = false;
+        const userAnswers = new Array(questions.length).fill(null);
 
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
-        const nextBtn = document.getElementById('next-btn');
-        const feedbackContainer = document.getElementById('feedback-area');
-        const feedbackTitle = document.getElementById('feedback-title');
-        const feedbackRationale = document.getElementById('feedback-rationale');
-        const feedbackIcon = document.getElementById('feedback-icon');
-        const progressBar = document.getElementById('progress-bar');
-        const questionCounter = document.getElementById('current-q-num');
-        const scoreDisplay = document.getElementById('score-display');
-        const startScreen = document.getElementById('start-screen');
-        const quizScreen = document.getElementById('quiz-screen');
-        const resultScreen = document.getElementById('result-screen');
-
-        function startQuiz() {
-            startScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
-            loadQuestion();
+        function initQuiz() {
+            renderQuestion(currentQuestionIndex);
+            updateProgress();
         }
 
-        function loadQuestion() {
-            hasAnswered = false;
-            const q = questions[currentQuestionIndex];
+        function renderQuestion(index) {
+            const q = questions[index];
+            const container = document.getElementById('optionsGrid');
             
-            // Update UI
-            questionText.textContent = `${q.q}`;
-            questionCounter.textContent = currentQuestionIndex + 1;
-            progressBar.style.width = `${((currentQuestionIndex) / questions.length) * 100}%`;
+            document.getElementById('questionText').innerHTML = `שאלה ${index + 1}: ${q.q}`;
+            document.getElementById('tableContainer').innerHTML = q.table ? q.table : '';
             
-            // Clear previous
-            optionsContainer.innerHTML = '';
-            feedbackContainer.classList.add('hidden');
-            feedbackContainer.classList.remove('bg-green-500/10', 'border-green-500/30', 'bg-red-500/10', 'border-red-500/30');
-            nextBtn.classList.add('hidden');
-
-            // Render options
-            q.options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn w-full p-4 rounded-xl text-lg font-medium focus:outline-none flex justify-between items-center group';
-                btn.innerHTML = `
-                    <span class="ml-4" style="direction: rtl; flex-grow: 1; text-align: right;">${opt}</span>
-                    <div class="w-6 h-6 rounded-full border border-white/30 flex-shrink-0 flex items-center justify-center group-hover:border-blue-400 transition-colors option-circle"></div>
-                `;
-                btn.onclick = () => checkAnswer(index, btn);
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function checkAnswer(selectedIndex, selectedBtn) {
-            if (hasAnswered) return;
-            hasAnswered = true;
-
-            const q = questions[currentQuestionIndex];
-            const isCorrect = selectedIndex === q.answer;
-            const allBtns = optionsContainer.children;
-
-            // Style buttons
-            for(let i=0; i < allBtns.length; i++) {
-                allBtns[i].disabled = true;
-                const circle = allBtns[i].querySelector('.option-circle');
+            let html = '';
+            q.options.forEach((opt, optIndex) => {
+                let btnClass = 'option-btn';
+                let disabledAttr = '';
                 
-                if(i === q.answer) {
-                    allBtns[i].classList.add('correct');
-                    circle.innerHTML = '<i class="fa-solid fa-check text-xs"></i>';
-                    circle.className = "w-6 h-6 rounded-full bg-green-500 text-white flex-shrink-0 flex items-center justify-center border-none shadow-[0_0_10px_rgba(16,185,129,0.8)]";
-                } else if(i === selectedIndex && !isCorrect) {
-                    allBtns[i].classList.add('incorrect');
-                    circle.innerHTML = '<i class="fa-solid fa-xmark text-xs"></i>';
-                    circle.className = "w-6 h-6 rounded-full bg-red-500 text-white flex-shrink-0 flex items-center justify-center border-none";
-                } else {
-                    allBtns[i].classList.add('opacity-50');
+                if (userAnswers[index] !== null) {
+                    disabledAttr = 'disabled';
+                    if (optIndex === q.ans) {
+                        btnClass += ' correct';
+                    } else if (optIndex === userAnswers[index]) {
+                        btnClass += ' wrong';
+                    }
                 }
-            }
 
-            // Feedback Logic
-            feedbackContainer.classList.remove('hidden');
-            nextBtn.classList.remove('hidden');
+                html += `
+                    <button class="${btnClass}" ${disabledAttr} onclick="checkAnswer(${optIndex}, this)">
+                        <div style="flex-grow:1; text-align:right;">${opt}</div>
+                    </button>
+                `;
+            });
             
-            if(isCorrect) {
-                score++;
-                scoreDisplay.textContent = score;
-                feedbackContainer.classList.add('bg-green-500/10', 'border-green-500/30');
-                feedbackTitle.textContent = "בול פגיעה!";
-                feedbackTitle.className = "text-xl font-bold text-green-400";
-                feedbackIcon.className = "fa-solid fa-circle-check text-green-400 text-2xl ml-3";
+            container.innerHTML = html;
+
+            const feedbackBox = document.getElementById('feedbackBox');
+            if (userAnswers[index] !== null) {
+                showFeedback(index, userAnswers[index]);
+                document.getElementById('btnNext').style.display = 'inline-block';
             } else {
-                feedbackContainer.classList.add('bg-red-500/10', 'border-red-500/30');
-                feedbackTitle.textContent = "לא מדויק...";
-                feedbackTitle.className = "text-xl font-bold text-red-400";
-                feedbackIcon.className = "fa-solid fa-circle-xmark text-red-400 text-2xl ml-3";
+                feedbackBox.style.display = 'none';
+                document.getElementById('btnNext').style.display = 'none';
             }
 
-            feedbackRationale.innerHTML = `<span class="font-bold text-white">הסבר: </span>${q.rationale}`;
+            if (index === questions.length - 1 && userAnswers[index] !== null) {
+                document.getElementById('btnNext').innerText = 'סיום והצגת ציון 🏆';
+            } else {
+                document.getElementById('btnNext').innerText = 'לשאלה הבאה ❯';
+            }
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            if (userAnswers[currentQuestionIndex] !== null) return;
+
+            userAnswers[currentQuestionIndex] = selectedIndex;
+            const q = questions[currentQuestionIndex];
+            const isCorrect = selectedIndex === q.ans;
             
-            if(currentQuestionIndex === questions.length - 1) {
-                nextBtn.innerHTML = 'סיים מבחן וצפה בתוצאות <i class="fa-solid fa-flag-checkered mr-2"></i>';
-                nextBtn.classList.replace('hover:bg-white/20', 'bg-blue-600');
-                nextBtn.classList.add('hover:bg-blue-500', 'border-blue-500');
+            if (isCorrect) score++;
+
+            renderQuestion(currentQuestionIndex);
+            updateProgress();
+        }
+
+        function showFeedback(index, selectedIndex) {
+            const q = questions[index];
+            const isCorrect = selectedIndex === q.ans;
+            const feedbackBox = document.getElementById('feedbackBox');
+            
+            if (isCorrect) {
+                feedbackBox.className = 'feedback-box correct-feedback';
+                feedbackBox.innerHTML = `
+                    <h4><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> כל הכבוד! תשובה נכונה.</h4>
+                    <p>${q.exp}</p>
+                `;
+            } else {
+                feedbackBox.className = 'feedback-box wrong-feedback';
+                feedbackBox.innerHTML = `
+                    <h4><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> טעות!</h4>
+                    <p>התשובה הנכונה היא:</p>
+                    <div class="correct-answer-highlight">${q.options[q.ans]}</div>
+                    <p><strong>למה?</strong> ${q.exp}</p>
+                `;
             }
         }
 
         function nextQuestion() {
-            currentQuestionIndex++;
-            if(currentQuestionIndex < questions.length) {
-                loadQuestion();
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion(currentQuestionIndex);
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 showResults();
             }
         }
 
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(ans => ans !== null).length;
+            document.getElementById('progressText').innerText = `שאלה ${currentQuestionIndex + 1} מתוך ${questions.length}`;
+            document.getElementById('scoreTracker').innerText = `הצלחות: ${score}/${questions.length}`;
+            
+            const percent = ((answeredCount) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = `${percent}%`;
+        }
+
         function showResults() {
-            quizScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-            progressBar.style.width = '100%';
-            
-            document.getElementById('final-score').textContent = score;
-            const percentage = (score / questions.length) * 100;
-            
-            const title = document.getElementById('result-title');
-            const subtitle = document.getElementById('result-subtitle');
-            const icon = document.getElementById('result-icon');
-            const iconCont = document.getElementById('result-icon-container');
+            document.getElementById('quizScreen').style.display = 'none';
+            const resultsScreen = document.getElementById('resultsScreen');
+            resultsScreen.style.display = 'block';
 
-            if(percentage >= 90) {
-                title.textContent = "מדען נתונים מדופלם!";
-                subtitle.textContent = "רמת השליטה שלך בחומר היא פנומנלית. אתה לגמרי מוכן למבחן האמיתי.";
-                icon.className = "fa-solid fa-crown text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.8)]";
-                iconCont.className = "inline-block p-6 rounded-full mb-6 border-4 border-yellow-400/30 bg-yellow-400/10";
-            } else if(percentage >= 70) {
-                title.textContent = "עבודה טובה מאוד!";
-                subtitle.textContent = "שליטה חזקה בחומר. חזרה קטנה על ההסברים של הטעויות וזה יהיה מושלם.";
-                icon.className = "fa-solid fa-medal text-blue-400 drop-shadow-[0_0_15px_rgba(59,130,246,0.8)]";
-                iconCont.className = "inline-block p-6 rounded-full mb-6 border-4 border-blue-400/30 bg-blue-400/10";
-            } else if(percentage >= 55) {
-                title.textContent = "עובר, אבל יש מקום לשיפור";
-                subtitle.textContent = "השאלות המכשילות כנראה הפילו אותך. זה הזמן לעבור על דף הנוסחאות שהכנו.";
-                icon.className = "fa-solid fa-book-open text-indigo-400 drop-shadow-[0_0_15px_rgba(99,102,241,0.8)]";
-                iconCont.className = "inline-block p-6 rounded-full mb-6 border-4 border-indigo-400/30 bg-indigo-400/10";
-            } else {
-                title.textContent = "דרוש חישוב מסלול מחדש";
-                subtitle.textContent = "החומר התיאורטי והקוד עדיין לא יושבים מספיק טוב. מומלץ לתרגל את המבחן הזה שוב מההתחלה.";
-                icon.className = "fa-solid fa-triangle-exclamation text-red-400 drop-shadow-[0_0_15px_rgba(248,113,113,0.8)]";
-                iconCont.className = "inline-block p-6 rounded-full mb-6 border-4 border-red-400/30 bg-red-400/10";
-            }
-        }
-
-        function shareResults() {
-            const percentage = Math.round((score / questions.length) * 100);
-            const text = `סיימתי עכשיו סימולציה מקיפה במבוא למדע הנתונים וקיבלתי ${score}/${questions.length} (${percentage}%)! 🚀📊\nמי אמר פנדס ולא קיבל?`;
+            const percent = Math.round((score / questions.length) * 100);
             
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('share-toast');
-                toast.classList.remove('opacity-0');
-                setTimeout(() => toast.classList.add('opacity-0'), 3000);
-            }).catch(err => {
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    const toast = document.getElementById('share-toast');
-                    toast.classList.remove('opacity-0');
-                    setTimeout(() => toast.classList.add('opacity-0'), 3000);
-                } catch (err) {
-                    console.error('Fallback: Oops, unable to copy', err);
+            let currentPercent = 0;
+            const scoreElement = document.getElementById('finalScore');
+            const timer = setInterval(() => {
+                currentPercent += 2;
+                if (currentPercent >= percent) {
+                    currentPercent = percent;
+                    clearInterval(timer);
                 }
-                document.body.removeChild(textArea);
-            });
+                scoreElement.innerText = `${currentPercent}%`;
+            }, 25);
+
+            let msg = "";
+            if (percent >= 90) msg = "מאסטר SPSS אמיתי! 🏆<br>אתה מוכן לחלוטין למבחן.";
+            else if (percent >= 75) msg = "עבודה מעולה! 🌟<br>שליטה טובה מאוד בחומר ובקריאת הפלטים.";
+            else if (percent >= 60) msg = "ציון עובר 👍<br>מומלץ לחזור שוב על השאלות שטעית בהן (במיוחד קריאת טבלאות).";
+            else msg = "לא נורא 💪<br>זכור את חוק ה-Sig, קרא שוב את הכללים, ותעשה את המבחן מחדש.";
+
+            document.getElementById('finalMessage').innerHTML = msg;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // Start App
+        initQuiz();
     </script>
 </body>
 </html>
