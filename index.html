@@ -4,34 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מאסטר סטטיסטיקה - המבחן הסופי</title>
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            /* Glassmorphism & Premium Theme Variables */
-            --bg-gradient: radial-gradient(circle at 15% 50%, #2e1065, #0f172a 50%, #172554 100%);
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-blur: 16px;
+            /* Palette */
+            --bg-dark: #0f172a;
+            --bg-gradient: radial-gradient(circle at 10% 20%, rgb(30, 20, 70) 0%, rgb(15, 23, 42) 90%);
             
-            --text-main: #f8fafc;
-            --text-secondary: #cbd5e1;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
             
             --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-hover: #4f46e5;
+            --primary-glow: rgba(99, 102, 241, 0.4);
             
-            --correct-bg: rgba(16, 185, 129, 0.2);
-            --correct-border: rgba(16, 185, 129, 0.5);
-            --correct-text: #34d399;
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --error: #ef4444;
+            --error-bg: rgba(239, 68, 68, 0.1);
             
-            --wrong-bg: rgba(239, 68, 68, 0.2);
-            --wrong-border: rgba(239, 68, 68, 0.5);
-            --wrong-text: #f87171;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 8px;
             
-            --option-bg: rgba(255, 255, 255, 0.05);
-            --option-hover: rgba(255, 255, 255, 0.15);
-            
-            --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --shadow-card: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
         }
 
         * {
@@ -39,349 +42,430 @@
             font-family: 'Rubik', sans-serif;
             margin: 0;
             padding: 0;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: var(--bg-gradient);
-            background-attachment: fixed;
             color: var(--text-main);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- Glass Container Utility --- */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow-glass);
-            border-radius: 24px;
+        /* --- Background Elements --- */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .orb-1 { top: -10%; right: -10%; width: 400px; height: 400px; background: #4f46e5; }
+        .orb-2 { bottom: -10%; left: -10%; width: 300px; height: 300px; background: #ec4899; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 50px); }
         }
 
         /* --- Header --- */
-        .header {
+        header {
             width: 100%;
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            margin-bottom: 30px;
+            position: relative;
+            z-index: 10;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
+        h1 {
+            font-size: 2rem;
             font-weight: 800;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, #a5b4fc, #c4b5fd);
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
-        .header p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
             font-weight: 400;
         }
 
-        /* --- Main Container --- */
-        .container {
+        /* --- Main Layout --- */
+        main {
             width: 100%;
-            max-width: 900px;
-            padding: 0 20px 40px 20px;
+            max-width: 800px;
+            padding: 0 20px 60px 20px;
             flex-grow: 1;
+            position: relative;
+            z-index: 10;
         }
 
         /* --- Progress Bar --- */
-        .progress-bar-container {
-            padding: 20px 30px;
-            margin-bottom: 30px;
+        .progress-wrapper {
+            margin-bottom: 25px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
-        .progress-stats {
+        .progress-info {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .q-number {
+            font-size: 0.85rem;
+            color: var(--text-muted);
             font-weight: 500;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-badge {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
         }
 
         .track {
-            width: 100%;
-            height: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
+            flex-grow: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            margin: 0 20px;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
         }
 
         .fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            background: linear-gradient(90deg, var(--primary), #a855f7);
             width: 0%;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 10px;
-            box-shadow: 0 0 10px var(--primary-light);
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 10px var(--primary-glow);
         }
 
         /* --- Quiz Card --- */
-        .quiz-card {
+        .card {
+            background: rgba(20, 25, 40, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid var(--glass-highlight);
+            border-radius: var(--radius-lg);
             padding: 40px;
+            box-shadow: var(--shadow-card);
             position: relative;
-            animation: fadeIn 0.5s ease-out;
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .question-text {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 30px;
-            line-height: 1.5;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        /* --- Options --- */
-        .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-top: 30px;
-        }
-
-        .option-btn {
-            background: var(--option-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px 25px;
-            font-size: 1.15rem;
-            font-weight: 400;
-            color: var(--text-main);
-            text-align: right;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            line-height: 1.4;
-            backdrop-filter: blur(8px);
-        }
-
-        .option-btn:hover:not(:disabled) {
-            background: var(--option-hover);
-            border-color: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .option-btn:disabled {
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* States for selected options */
-        .option-btn.correct-ans {
-            background: var(--correct-bg) !important;
-            border-color: var(--correct-border) !important;
-            color: #fff !important;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
-        }
-
-        .option-btn.wrong-ans {
-            background: var(--wrong-bg) !important;
-            border-color: var(--wrong-border) !important;
-            color: #fff !important;
-            opacity: 0.9;
-        }
-
-        /* --- Feedback Box --- */
-        .feedback-container {
-            display: none;
-            margin-top: 35px;
-            padding: 25px;
-            border-radius: 16px;
-            animation: slideDown 0.4s ease-out forwards;
-            font-size: 1.15rem;
+            font-size: 1.35rem;
             line-height: 1.6;
-            backdrop-filter: blur(12px);
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .glass-correct {
-            background: var(--correct-bg);
-            border: 1px solid var(--correct-border);
-            color: var(--correct-text);
-        }
-
-        .glass-wrong {
-            background: var(--wrong-bg);
-            border: 1px solid var(--wrong-border);
-            color: var(--wrong-text);
-        }
-
-        .feedback-header {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .feedback-content strong {
+            font-weight: 600;
             color: #fff;
+            margin-bottom: 30px;
         }
 
-        /* --- SPSS Tables Formatting (Kept light for readability, but styled premium) --- */
+        /* --- SPSS Tables Styling (Cleaned up) --- */
         .spss-wrapper {
-            background: rgba(255, 255, 255, 0.95);
-            border: none;
+            background: #ffffff;
+            border-radius: 12px;
             padding: 20px;
             margin: 25px 0;
-            border-radius: 12px;
             overflow-x: auto;
-            direction: ltr;
-            text-align: left;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #1e293b;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            direction: ltr; /* SPSS is LTR */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .spss-title {
             font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #0f172a;
+            font-size: 14px;
+            color: #1e293b;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
         }
 
         .spss-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
-            min-width: 600px;
+            font-size: 12px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #334155;
         }
 
         .spss-table th, .spss-table td {
             padding: 8px 12px;
             text-align: right;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #f1f5f9;
         }
 
         .spss-table th {
-            border-top: 2px solid #334155;
-            border-bottom: 2px solid #334155;
             font-weight: 700;
-            vertical-align: bottom;
-            color: #334155;
-        }
-
-        .spss-table .row-title {
-            text-align: left;
-            font-weight: 500;
-        }
-
-        .spss-table tbody tr:last-child td {
-            border-bottom: 2px solid #334155;
+            color: #0f172a;
+            background: #f8fafc;
         }
 
         .spss-note {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748b;
-            margin-top: 10px;
+            margin-top: 8px;
             font-style: italic;
         }
 
-        /* --- Actions --- */
+        /* --- Options Grid --- */
+        .options-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            text-align: right;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .option-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        /* Answer States */
+        .option-btn.correct-ans {
+            background: var(--success-bg) !important;
+            border-color: var(--success) !important;
+            color: #fff !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+        
+        .option-btn.correct-ans::after {
+            content: '\f00c';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--success);
+        }
+
+        .option-btn.wrong-ans {
+            background: var(--error-bg) !important;
+            border-color: var(--error) !important;
+            color: #fff !important;
+            opacity: 0.8;
+        }
+
+        .option-btn.wrong-ans::after {
+            content: '\f00d';
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--error);
+        }
+
+        /* --- Feedback Section --- */
+        .feedback-container {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: var(--radius-md);
+            animation: fadeIn 0.4s ease-out;
+            border: 1px solid transparent;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-correct {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .glass-wrong {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .feedback-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feedback-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+        }
+        
+        .feedback-content strong {
+            color: #fff;
+        }
+
+        /* --- Next Button --- */
         .actions {
+            margin-top: 30px;
             display: flex;
             justify-content: flex-end;
-            margin-top: 35px;
-            border-top: 1px solid var(--glass-border);
-            padding-top: 30px;
         }
 
         .btn-next {
-            display: none;
-            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            color: white;
             border: none;
-            padding: 16px 40px;
-            font-size: 1.2rem;
+            padding: 16px 32px;
+            font-size: 1.1rem;
             font-weight: 600;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 15px var(--primary-glow);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .btn-next:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+            box-shadow: 0 8px 25px var(--primary-glow);
+            filter: brightness(1.1);
         }
 
-        /* --- Results --- */
+        /* --- Results Screen --- */
         #resultsScreen {
             display: none;
             text-align: center;
+            padding: 60px 20px;
         }
 
         .score-circle {
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 40px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 8px solid var(--primary-light);
+            background: conic-gradient(var(--primary) 0%, rgba(255,255,255,0.05) 0%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-            font-weight: 800;
-            color: #fff;
-            margin: 0 auto 30px;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3), inset 0 0 20px rgba(99, 102, 241, 0.2);
-            backdrop-filter: blur(10px);
+            position: relative;
+            box-shadow: 0 0 50px rgba(99, 102, 241, 0.2);
         }
 
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            background: var(--bg-dark);
+            border-radius: 50%;
+        }
+
+        .score-value {
+            position: relative;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #fff;
+            z-index: 2;
+        }
+
+        .result-msg {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 40px;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        /* --- Responsive --- */
         @media (max-width: 768px) {
-            .quiz-card { padding: 25px; }
-            .question-text { font-size: 1.3rem; }
-            .option-btn { font-size: 1.1rem; padding: 15px; }
-            .header h1 { font-size: 2rem; }
-            .btn-next { width: 100%; text-align: center; }
+            .card { padding: 25px; }
+            .question-text { font-size: 1.15rem; }
+            .option-btn { padding: 16px; font-size: 1rem; }
+            .spss-wrapper { padding: 15px; }
+            h1 { font-size: 1.6rem; }
+            .score-circle { width: 180px; height: 180px; }
+            .score-circle::before { width: 155px; height: 155px; }
+            .score-value { font-size: 2.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>מאסטר סטטיסטיקה - סופי</h1>
-        <p>50 שאלות | מניעת ניחוש שיטתי | פלטים ברמת בחינה</p>
-    </div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-    <div class="container">
-        
+    <header>
+        <h1>מאסטר סטטיסטיקה - סופי</h1>
+        <p class="subtitle">50 שאלות | מניעת ניחוש שיטתי | פלטים ברמת בחינה</p>
+    </header>
+
+    <main>
         <div id="quizSection">
-            <div class="progress-bar-container glass-panel">
-                <div class="progress-stats">
-                    <span id="qCounter">שאלה 1 / X</span>
-                    <span id="scoreCounter">תשובות נכונות: 0</span>
+            <div class="progress-wrapper">
+                <div class="progress-info">
+                    <span class="q-number" id="qCounter">שאלה 1 / X</span>
+                    <span class="score-badge" id="scoreCounter">נכון: 0</span>
                 </div>
                 <div class="track">
                     <div class="fill" id="pFill"></div>
                 </div>
             </div>
 
-            <div class="quiz-card glass-panel" id="card">
+            <div class="card" id="card">
                 <div class="question-text" id="qText">טוען שאלה...</div>
                 <div id="qTable"></div>
                 
@@ -393,20 +477,28 @@
                 </div>
 
                 <div class="actions">
-                    <button class="btn-next" id="nextBtn" onclick="handleNext()">לשאלה הבאה ❯</button>
+                    <button class="btn-next" id="nextBtn" onclick="handleNext()">
+                        לשאלה הבאה <i class="fa-solid fa-arrow-left"></i>
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div id="resultsScreen" class="quiz-card glass-panel">
-            <h2 style="font-size: 2.2rem; margin-bottom: 10px; color: #fff;">המבחן הסתיים!</h2>
-            <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 40px;">הנה התוצאה הסופית שלך:</p>
-            <div class="score-circle" id="finalScore">0%</div>
-            <h3 id="finalMessage" style="font-size: 1.6rem; margin-bottom: 30px; line-height: 1.5; color: #e2e8f0;"></h3>
-            <button class="btn-next" style="display:inline-block;" onclick="location.reload()">התחל מבחן חדש ↻</button>
+        <div id="resultsScreen" class="card">
+            <h2 style="font-size: 2.5rem; margin-bottom: 10px; color: #fff;">המבחן הסתיים!</h2>
+            <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 50px;">התוצאה הסופית שלך:</p>
+            
+            <div class="score-circle" id="finalScoreCircle">
+                <div class="score-value" id="finalScore">0%</div>
+            </div>
+            
+            <h3 id="finalMessage" class="result-msg"></h3>
+            
+            <button class="btn-next" style="padding: 18px 40px; font-size: 1.2rem;" onclick="location.reload()">
+                <i class="fa-solid fa-rotate-right"></i> התחל מבחן חדש
+            </button>
         </div>
-
-    </div>
+    </main>
 
     <script>
         const qData = [
@@ -807,7 +899,7 @@
                     "מסתכלים תמיד על השורה התחתונה במבחני t כדי לאמוד טעות תקנית שמרנית, המסקנה מכך היא שאין הבדל בין הממוצעים."
                 ],
                 ans: 2,
-                exp: "זיהוי הפלט: מבחן T הבלתי תלוי, ובו פוטנציאל ל'מלכודות'. שלב א': מבחן לוין (ההנחה היא שוויון שונויות). ה-Sig שלו הוא 0.290 (>0.05). משמעות: לא דוחים את H0 שלו, ההנחה נשמרת. לכן קוראים את השורה *העליונה*. בשורה העליונה ה-Sig (2-tailed) הוא 0.016 (<0.05). מסקנה סופית: יש הבדל מובהק בממוצעים."
+                exp: "זיהוי הפלט: מבחן T הבלתי תלוי, ובו פוטנציאל ל'מלכודות'. שלב א': מבחן לוין (ההנחה היא שוויון שונויות). ה-Sig שלו הוא 0.290 (>0.05). משמעות: לא דוחים את H0 שלו, ההנחה נשמרת. לכן קוראים את השורה *העליונה*. בשורה העליונה ה-Sig (2-tailed) הוא 0.016 (<0.05). מסקנה סופית: יש הבדל מובהק."
             },
             {
                 q: "מה היא המסקנה העולה במקרה שלפניך מתוך מבחן ה-T למדגמים בלתי תלויים?",
@@ -1185,9 +1277,9 @@
             }
 
             if (currentQIndex === shuffledQuestions.length - 1 && userAnswers[currentQIndex] !== null) {
-                nextBtn.innerText = 'סיים מבחן וצפה בציון הסופי 🏆';
+                nextBtn.innerHTML = 'סיים מבחן וצפה בציון הסופי <i class="fa-solid fa-flag-checkered"></i>';
             } else {
-                nextBtn.innerText = 'המשך לשאלה הבאה ❯';
+                nextBtn.innerHTML = 'המשך לשאלה הבאה <i class="fa-solid fa-arrow-left"></i>';
             }
         }
 
@@ -1214,14 +1306,14 @@
             
             if (isCorrect) {
                 fbBox.className = 'feedback-container glass-correct';
-                fbIcon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> אלופה! צדקת.`;
+                fbIcon.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--success)"></i> תשובה נכונה!.`;
                 fbContent.innerHTML = `<p><strong>ההסבר הסטטיסטי:</strong> ${q.exp}</p>`;
             } else {
                 fbBox.className = 'feedback-container glass-wrong';
-                fbIcon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> טעות. שים לב:`;
+                fbIcon.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:var(--error)"></i> טעות. שים לב:`;
                 fbContent.innerHTML = `
                     <div style="margin-bottom:10px; color: #fff;">התשובה הנכונה היא:</div>
-                    <div style="background: rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 12px 15px; font-weight:500; color: #fff; margin-bottom: 15px;">
+                    <div style="background: rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 12px 15px; font-weight:500; color: #fff; margin-bottom: 15px;">
                         ${q.options[q.ans]}
                     </div>
                     <p><strong>ההסבר הסטטיסטי:</strong> ${q.exp}</p>
@@ -1245,7 +1337,7 @@
             const percent = (answeredCount / shuffledQuestions.length) * 100;
             
             document.getElementById('qCounter').innerText = `שאלה ${currentQIndex + 1} מתוך ${shuffledQuestions.length}`;
-            document.getElementById('scoreCounter').innerText = `תשובות נכונות: ${score}`;
+            document.getElementById('scoreCounter').innerText = `נכון: ${score}`;
             document.getElementById('pFill').style.width = `${percent}%`;
         }
 
@@ -1256,6 +1348,10 @@
 
             const percent = Math.round((score / shuffledQuestions.length) * 100);
             
+            // Animate Circle Gradient
+            const circle = document.getElementById('finalScoreCircle');
+            circle.style.background = `conic-gradient(var(--primary) ${percent}%, rgba(255,255,255,0.05) ${percent}%)`;
+
             let curP = 0;
             const scoreDisplay = document.getElementById('finalScore');
             const tmr = setInterval(() => {
@@ -1282,3 +1378,4 @@
     </script>
 </body>
 </html>
+
