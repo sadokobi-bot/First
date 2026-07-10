@@ -3,789 +3,858 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבחן מתקדם בסטטיסטיקה ו-SPSS</title>
+    <title>מבחן גמר בסטטיסטיקה - 50 שאלות</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4338ca;
+            --primary-light: #6366f1;
+            --secondary: #0ea5e9;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --success-bg: #ecfdf5;
+            --danger: #ef4444;
+            --danger-bg: #fef2f2;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+
+        * { box-sizing: border-box; font-family: 'Assistant', sans-serif; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 900px;
-            margin: 0 auto;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
         }
-        h1, h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
+
+        /* --- Header --- */
+        header {
+            width: 100%; background: var(--bg-card);
+            padding: 30px 20px; text-align: center;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 100;
         }
-        .story {
-            background-color: #e8f4f8;
-            padding: 15px;
-            border-right: 5px solid #3498db;
-            margin-bottom: 20px;
-            font-weight: bold;
+
+        header h1 {
+            font-size: 2.2rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
         }
-        .question-card {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+        header p { font-size: 1.1rem; color: var(--text-muted); font-weight: 600; }
+
+        /* --- Container & Progress --- */
+        .container { width: 100%; max-width: 900px; padding: 40px 20px; }
+
+        .progress-box {
+            background: var(--bg-card); border-radius: 16px;
+            padding: 20px; box-shadow: var(--shadow);
+            border: 1px solid var(--border); margin-bottom: 30px;
         }
-        .question-title {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 15px;
+
+        .progress-text {
+            display: flex; justify-content: space-between;
+            font-size: 1.2rem; font-weight: 700; margin-bottom: 12px;
+            color: var(--primary);
         }
-        .options {
-            list-style-type: none;
-            padding-right: 0;
+
+        .track {
+            width: 100%; height: 10px; background: #e2e8f0;
+            border-radius: 10px; overflow: hidden;
         }
-        .options li {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #fdfdfd;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+
+        .fill {
+            height: 100%; background: linear-gradient(90deg, var(--secondary), var(--primary));
+            width: 0%; transition: width 0.4s ease; border-radius: 10px;
         }
-        details {
-            margin-top: 15px;
-            background-color: #eef7ee;
-            padding: 10px;
-            border-radius: 4px;
-            border-right: 4px solid #27ae60;
+
+        /* --- Card --- */
+        .card {
+            background: var(--bg-card); border-radius: 20px;
+            padding: 40px; box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            animation: fadeIn 0.3s ease-out;
         }
-        summary {
-            font-weight: bold;
-            cursor: pointer;
-            color: #27ae60;
-            outline: none;
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .q-text { font-size: 1.5rem; font-weight: 700; margin-bottom: 30px; line-height: 1.4; }
+
+        /* --- Authentic SPSS Tables --- */
+        .spss-wrapper {
+            background: #fff; color: #000; border: 1px solid #94a3b8;
+            padding: 20px; margin-bottom: 30px; border-radius: 8px;
+            overflow-x: auto; direction: ltr; text-align: left;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
-        .explanation {
-            margin-top: 10px;
-            font-size: 0.95em;
+        .spss-title { font-family: Arial, sans-serif; font-weight: bold; font-size: 15px; margin-bottom: 10px; }
+        .spss-table { width: 100%; border-collapse: collapse; font-size: 13px; font-family: Arial, sans-serif; min-width: 500px; }
+        .spss-table th, .spss-table td { padding: 6px 10px; text-align: right; border-left: 1px solid #e2e8f0; }
+        .spss-table th { border-top: 2px solid #000; border-bottom: 1px solid #000; font-weight: bold; background: #f8fafc; vertical-align: bottom; }
+        .spss-table .row-title { text-align: left; font-weight: normal; }
+        .spss-table tbody tr:last-child td { border-bottom: 2px solid #000; }
+        .spss-note { font-size: 11px; color: #475569; margin-top: 8px; font-family: Arial, sans-serif; }
+
+        /* --- Options --- */
+        .options { display: flex; flex-direction: column; gap: 14px; }
+
+        .opt-btn {
+            background: #f8fafc; border: 2px solid var(--border);
+            border-radius: 14px; padding: 20px; font-size: 1.15rem;
+            color: var(--text-main); text-align: right; cursor: pointer;
+            transition: all 0.2s ease; line-height: 1.4; font-weight: 500;
+        }
+
+        .opt-btn:hover:not(:disabled) { border-color: var(--primary-light); background: #eff6ff; }
+        .opt-btn:disabled { cursor: default; }
+
+        .opt-btn.correct { background: var(--success-bg) !important; border-color: var(--success) !important; color: #065f46 !important; font-weight: 700; }
+        .opt-btn.wrong { background: var(--danger-bg) !important; border-color: var(--danger) !important; color: #991b1b !important; opacity: 0.8; }
+
+        /* --- Feedback --- */
+        .feedback {
+            display: none; margin-top: 30px; padding: 25px;
+            border-radius: 14px; animation: slideDown 0.3s ease forwards;
+            font-size: 1.15rem; line-height: 1.6;
+        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .feedback.is-correct { display: block; background: var(--success-bg); border: 2px solid var(--success); color: #065f46; }
+        .feedback.is-wrong { display: block; background: var(--danger-bg); border: 2px solid var(--danger); color: #991b1b; }
+        
+        .fb-header { font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .correct-answer-box { background: rgba(255,255,255,0.8); padding: 12px; border-radius: 8px; border: 1px solid var(--danger); margin: 15px 0; font-weight: 700; color: var(--text-main); }
+
+        /* --- Actions --- */
+        .actions { display: flex; justify-content: flex-end; margin-top: 30px; padding-top: 25px; border-top: 1px solid var(--border); }
+        
+        .btn-next {
+            display: none; background: var(--primary); color: white; border: none;
+            padding: 16px 35px; font-size: 1.2rem; font-weight: 700;
+            border-radius: 12px; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.3);
+        }
+        .btn-next:hover { background: var(--primary-light); transform: translateY(-2px); }
+
+        /* --- Results --- */
+        #resultsScreen { display: none; text-align: center; }
+        .score-circle {
+            width: 180px; height: 180px; border-radius: 50%;
+            background: #fff; border: 12px solid var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem; font-weight: 800; color: var(--primary);
+            margin: 0 auto 30px; box-shadow: 0 10px 20px rgba(67, 56, 202, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .card { padding: 25px; } .q-text { font-size: 1.3rem; }
+            .opt-btn { font-size: 1.05rem; padding: 15px; }
+            header h1 { font-size: 1.8rem; } .btn-next { width: 100%; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <h1>מבחן מסכם בסטטיסטיקה ויישומי SPSS (50 שאלות)</h1>
-    <p>חלק א': זיהוי המבחן הסטטיסטי (שאלות 1-15)<br>
-    חלק ב': סיפור מקרה 1 (שאלות 16-32)<br>
-    חלק ג': סיפור מקרה 2 (שאלות 33-50)</p>
+    <header>
+        <h1>מבחן גמר בסטטיסטיקה יישומית</h1>
+        <p>50 שאלות | מניעת ניחושים | קריאת פלטים מתקדמת</p>
+    </header>
 
-    <h2>חלק א': שאלות זיהוי (1-15)</h2>
+    <div class="container">
+        
+        <div id="quizApp">
+            <div class="progress-box">
+                <div class="progress-text">
+                    <span id="qCount">שאלה 1 מתוך 50</span>
+                    <span id="scoreCount">ניקוד ביניים: 0</span>
+                </div>
+                <div class="track"><div class="fill" id="pFill"></div></div>
+            </div>
 
-    <div class="question-card">
-        <div class="question-title">1. חוקר מעוניין לבדוק האם קיים קשר בין אזור מגורים (צפון, מרכז, דרום) לבין סוג הרכב שבבעלות המשפחה (פרטי, מסחרי, ללא רכב). איזה מבחן עליו לבצע?</div>
-        <ul class="options">
-            <li>א. ניתוח שונות (ANOVA)</li>
-            <li>ב. מבחן T למדגמים בלתי תלויים</li>
-            <li>ג. חי בריבוע לאי-תלות</li>
-            <li>ד. מתאם פירסון</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> שני המשתנים הם קטגוריאליים נומינליים (שמיים). מבחן חי בריבוע מיועד לבדיקת קשר/אי-תלות בין משתנים מסוג זה.</div>
-        </details>
+            <div class="card" id="qCard">
+                <div class="q-text" id="qText"></div>
+                <div id="qTable"></div>
+                <div class="options" id="optGrid"></div>
+
+                <div class="feedback" id="fbBox">
+                    <div class="fb-header" id="fbIcon"></div>
+                    <div id="fbContent"></div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-next" id="nextBtn" onclick="nextQuestion()">המשך לשאלה הבאה ❯</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultsScreen" class="card">
+            <h2 style="font-size: 2.2rem; margin-bottom: 15px; color: var(--primary);">המבחן הסתיים!</h2>
+            <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 40px;">הציון הסופי שלך מחושב כעת.</p>
+            <div class="score-circle" id="finalScore">0%</div>
+            <h3 id="finalMsg" style="font-size: 1.6rem; margin-bottom: 30px;"></h3>
+            <button class="btn-next" style="display:inline-block;" onclick="location.reload()">התחל מבחן חדש ↻</button>
+        </div>
+
     </div>
 
-    <div class="question-card">
-        <div class="question-title">2. פסיכולוג בודק את רמת החרדה של 50 מטופלים (נמדדת בסולם רציף 1-100) לפני סדרת טיפולים ולאחריה. המטרה היא לבדוק אם חלה ירידה בחרדה. איזה מבחן נדרש?</div>
-        <ul class="options">
-            <li>א. מבחן T למדגמים תלויים</li>
-            <li>ב. מבחן T למדגמים בלתי תלויים</li>
-            <li>ג. מתאם פירסון</li>
-            <li>ד. חי בריבוע</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> מדובר במדידה חוזרת של אותו מדגם (לפני ואחרי) על משתנה כמותי רציף, לכן מדובר במדגמים תלויים.</div>
-        </details>
-    </div>
+    <script>
+        // Table generator helper
+        function spss(title, th, tb, note='') {
+            return `<div class="spss-wrapper"><div class="spss-title">${title}</div><table class="spss-table"><thead>${th}</thead><tbody>${tb}</tbody></table>${note ? `<div class="spss-note">${note}</div>`:''}</div>`;
+        }
 
-    <div class="question-card">
-        <div class="question-title">3. מנהל שיווק רוצה להשוות את ממוצע המכירות החודשי (בשקלים) בין שלושה סניפים שונים של הרשת. מה המבחן המתאים?</div>
-        <ul class="options">
-            <li>א. שלושה מבחני T נפרדים</li>
-            <li>ב. ניתוח שונות חד-כיווני (ANOVA)</li>
-            <li>ג. מבחן T למדגמים תלויים</li>
-            <li>ד. פוסט-הוק מסוג Tukey באופן ישיר</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> השוואת ממוצע של משתנה רציף (מכירות) בין 3 קבוצות בלתי תלויות (סניפים) מתבצעת באמצעות ANOVA. ביצוע מספר מבחני T מנפח את טעות האלפא.</div>
-        </details>
-    </div>
+        // 50 Questions (No Regression). Correct = Short. Distractors = Long & Jargony.
+        const qData = [
+            // --- Scenarios (1-15) ---
+            {
+                q: "חוקר בודק את משקל התיק (בגרמים) אצל תלמידים ב-3 בתי ספר שונים. איזה מבחן מתאים?",
+                t: null,
+                options: [
+                    "ניתוח שונות (One-Way ANOVA).",
+                    "מבחן t למדגמים בלתי תלויים, מכיוון שהקבוצות אינן חופפות ואנו נדרשים לאמוד את פער התוחלות באוכלוסייה מתוך הנחת שוויון שונויות משולב במדגם כפול.",
+                    "מבחן חי בריבוע, לאור העובדה שמדובר בחלוקה לקטגוריות נפרדות של בתי ספר המצריכות טבלת שכיחויות מוצלבת כדי לאתר פיזור אסימפטוטי.",
+                    "מתאם פירסון רב-משתני, משום שניתן להתייחס לבתי הספר כמשתני סדר ולחשב את עוצמת וכיוון הקשר הליניארי בינם לבין המשקל."
+                ], ans: 0,
+                exp: "המשתנה התלוי הוא כמותי (משקל התיק), והמשתנה הבלתי תלוי הוא קטגוריאלי עם 3 קבוצות (בתי ספר). המבחן להשוואת ממוצעים של 3 קבוצות ומעלה הוא ANOVA חד-כיווני."
+            },
+            {
+                q: "מנהל רשת בודק האם קיים קשר תלות בין 'העדפת סניף' (צפון/דרום) לבין 'אמצעי תשלום' (מזומן/אשראי). מהו המבחן הנדרש?",
+                t: null,
+                options: [
+                    "מבחן חי בריבוע.",
+                    "מבחן T למדגמים מזווגים (Paired), שכן מדובר באותן העסקאות שנמדדו פעם אחת בקופה ופעם נוספת ברישומי האשראי של הלקוחות הקבועים ברשת.",
+                    "ניתוח שונות (ANOVA), שכן ההצלחה במכירות מהווה פונקציה ישירה של שונות אמצעי התשלום אותה יש לנתח על פני קטגוריות גיאוגרפיות שונות.",
+                    "מבחן T למדגמים בלתי תלויים, על מנת להשוות את ממוצע העסקאות."
+                ], ans: 0,
+                exp: "העדפת סניף ואמצעי תשלום הם שניהם משתנים קטגוריאליים. המבחן היחיד לבדיקת קשר/תלות בין משתנים שמיים (קטגוריאליים) הוא חי בריבוע."
+            },
+            {
+                q: "דיאטנית בודקת משקל של 40 אנשים לפני תוכנית התזונה, ושוקלת את *אותם 40 אנשים* שוב בסוף התוכנית. באיזה מבחן תשתמש להוכחת ירידה במשקל?",
+                t: null,
+                options: [
+                    "מבחן T למדגמים בלתי תלויים, בהנחה שמשקלם של האנשים בשתי נקודות הזמן מניב תצפיות בלתי תלויות לחלוטין ברמת האוכלוסייה האסימפטוטית.",
+                    "ניתוח שונות דו-גורמי (Two-Way ANOVA), מכיוון שמדובר בשתי מדידות שונות המייצרות שונות פנימית וחיצונית המצדיקות פירוק לדרגות חופש כפולות.",
+                    "מבחן T למדגמים תלויים (מזווגים).",
+                    "מתאם פירסון לזיהוי קשר שלילי בין המדידות."
+                ], ans: 2,
+                exp: "כאשר מודדים את *אותם אנשים* פעמיים (לפני ואחרי), המדגמים תלויים זה בזה. כדי להשוות ממוצעים במקרה זה, חובה להשתמש במבחן T למדגמים תלויים."
+            },
+            {
+                q: "חוקר בודק קשר בין 'ותק בעבודה' (בשנים) לבין 'גובה הבונוס' (בשקלים). מה המבחן הסטטיסטי?",
+                t: null,
+                options: [
+                    "מבחן חי בריבוע, לאחר קידוד הוותק לקבוצות של עשורים וביצוע בדיקת תלות אסימפטוטית קפדנית המנכה ערכים חסרים בטבלת הציר.",
+                    "מבחן T למדגמים בלתי תלויים, שכן גובה הבונוס נחשב בלתי תלוי לחלוטין בוותק העובד על פי רוב מודלי התגמול המודרניים במחלקות משאבי אנוש.",
+                    "ניתוח שונות (ANOVA), המאפשר בחינה של האפקט העיקרי של הגיל והשפעתו על השונות הכללית בין דרגות הבונוס בטבלאות השכר השנתיות.",
+                    "מתאם פירסון."
+                ], ans: 3,
+                exp: "ותק (כמותי) ובונוס (כמותי). המבחן לבדיקת קשר ליניארי בין שני משתנים כמותיים (רציפים) הוא מתאם פירסון."
+            },
+            {
+                q: "מנהל משווה ממוצע מכירות של צוות בוקר לעומת ממוצע מכירות של צוות ערב. איזה מבחן מתאים?",
+                t: null,
+                options: [
+                    "ניתוח שונות דו-גורמי, במטרה לבחון את השפעת המשמרת יחד עם התפלגות השגיאה המקרית המובנית בעבודת הצוותים כפי שנמדדה לאורך תקופת הרבעון המקביל.",
+                    "מבחן T למדגמים תלויים, כיוון ששתי הקבוצות עובדות באותה החברה וחולקות סביבת עבודה ארגונית משותפת בעלת תרבות ארגונית אחידה המחייבת תלות סטטיסטית.",
+                    "מבחן T למדגמים בלתי תלויים.",
+                    "מבחן חי בריבוע, מכיוון שהמשמרת מוגדרת כמשתנה נומינלי שאינו מאפשר חישוב מתמטי רציף ולכן מגביל אותנו לבדיקת שכיחויות בלבד."
+                ], ans: 2,
+                exp: "מכירות (כמותי) המושוות בין בדיוק שתי קבוצות שונות (בוקר וערב). מכיוון שאלו אנשים שונים, המדגמים בלתי תלויים ולכן משתמשים במבחן T למדגמים בלתי תלויים."
+            },
+            {
+                q: "סוציולוג מעריך שהשפעת 'סוג העיר' (מרכז/פריפריה) על 'גובה הכנסה', שונה משמעותית בין נשים לגברים. איזה מבחן מתאים לבדוק זאת?",
+                table: null,
+                options: [
+                    "מבחן חי בריבוע מורחב, מאחר שיש כאן שילוב של מספר קטגוריות שמיות במקביל היוצרות טבלת ציר מסועפת המצריכה הפעלת מבחן פישר מדויק עבור כל תא ותא בנפרד.",
+                    "ניתוח שונות דו-כיווני (Two-Way ANOVA).",
+                    "ארבעה מבחני T נפרדים על מנת לבודד כל קבוצת מגדר בנפרד מול כל אזור גיאוגרפי תוך שימוש בתיקון בונפרוני למניעת ניפוח השגיאה הסטטיסטית של המודל.",
+                    "אלפא של קרונבך לבדיקת תיאום המשתנים."
+                ], ans: 1,
+                exp: "החוקר בודק השפעה של שני משתנים בלתי תלויים קטגוריאליים (עיר ומגדר) על משתנה תלוי כמותי (הכנסה), ובמיוחד מחפש *אינטראקציה* (השפעה שמשתנה/תלויה). זהו המקרה הקלאסי של Two-Way ANOVA."
+            },
+            {
+                q: "חוקר ביצע מבחן ANOVA חד-כיווני להשוואת 4 קבוצות, ומצא שה-Sig הוא 0.01. מה עליו לעשות כעת?",
+                t: null,
+                options: [
+                    "לשנות את המבחן ולבצע שורת מבחני T על מנת לאשש את המובהקות הראשונית שהתקבלה במודל הכולל בטרם פרסום המסקנות בספרות האקדמית המחמירה.",
+                    "לסיים את הניתוח במקום שכן דחיית השערת האפס מהווה הוכחה חותכת וסופית להצלחת מערך המחקר מתחילתו ועד סופו ללא צורך בניתוחים משניים מורכבים.",
+                    "לבצע מבחן Post-Hoc (פוסט הוק).",
+                    "לבדוק את התפלגות השונויות מחדש באמצעות מבחן לוין כדי לשלול סטיות תקן חריגות שהשפיעו על ה-F."
+                ], ans: 2,
+                exp: "כאשר אנובה מעלה תוצאה מובהקת (Sig < 0.05), אנו יודעים שיש הבדל, אך לא יודעים בין אילו קבוצות בדיוק. לכן חובה לבצע מבחן פוסט-הוק (כגון Tukey) שישווה זוגות זוגות."
+            },
+            {
+                q: "חוקרת יצרה שאלון בן 8 פריטים למדידת שביעות רצון. כיצד תוודא שכל השאלות מודדות באופן עקבי את אותו מושג?",
+                t: null,
+                options: [
+                    "אלפא של קרונבך.",
+                    "חישוב ערך ה- R Square של השאלון, אשר יעיד על עוצמת הניבוי של שמונת הסעיפים כלפי רמת שביעות הרצון הממשית של העובד כפי שנמדדה על ידי מנהליו הישירים.",
+                    "ביצוע ניתוח שונות (ANOVA) כדי להשוות בין ממוצעי התשובות של הסעיפים ולוודא כי אין ביניהם הבדלים מובהקים סטטיסטית העלולים לפגוע בתוקף המבנה הפנימי.",
+                    "הפעלת מבחן לוין לשוויון שונויות בין הפריטים."
+                ], ans: 0,
+                exp: "בדיקת 'עקיבות פנימית' או מהימנות של שאלון רב-פריטים מתבצעת אך ורק על ידי מבחן אלפא של קרונבך."
+            },
+            {
+                q: "מה קובע מבחן לווין (Levene's Test) במבחן T למדגמים בלתי תלויים?",
+                t: null,
+                options: [
+                    "בדיקת הנחת שוויון השונויות בין שתי הקבוצות.",
+                    "הוא קובע את עוצמת ההבדל בין שתי התוחלות ומאשש באופן סטטיסטי את יציבות ההפרש ביניהן ברמת מובהקות של חמישה אחוזים על פי עקומת הנורמל התקנית.",
+                    "הוא קובע האם המדגמים נדגמו באקראיות מתוך האוכלוסייה הכללית, ובכך מונע הטיית בחירה במערכי מחקר שאינם מפוקחים מחקרית על ידי כלי דגימה אוטומטיים.",
+                    "את רמת המהימנות של משתנה הבדיקה לעומת קבוצת הביקורת."
+                ], ans: 0,
+                exp: "תפקידו של מבחן לווין הוא לבדוק דבר אחד בלבד: האם מידת הפיזור (השונות) סביב הממוצע בשתי הקבוצות היא שווה. לפי התוצאה שלו מחליטים באיזו נוסחת t להשתמש."
+            },
+            {
+                q: "מה אומרת ההשערה החלופית (H1) במבחן ANOVA חד-כיווני (למשל עבור 3 קבוצות)?",
+                t: null,
+                options: [
+                    "שכל הממוצעים של שלוש הקבוצות שונים זה מזה לחלוטין בצורה מובהקת, ואין אף זוג קבוצות שמציג ממוצעים זהים בטווח טעות התקן ההיקפית המותרת בניסוי.",
+                    "שהשונות בין הקבוצות שווה בדיוק לשונות בתוך הקבוצות, ובכך מאשררת את קיומה של עקומת פעמון נורמלית במדגם הכללי ולגיטימציה סטטיסטית למבחן ממוצעים.",
+                    "שלפחות ממוצע של קבוצה אחת שונה מהשאר.",
+                    "שכל הקבוצות זהות לחלוטין."
+                ], ans: 2,
+                exp: "ההשערה החלופית באנובה אינה דורשת שכולם יהיו שונים מכולם. היא רק טוענת שקיים הבדל *כלשהו*. כלומר, לפחות תוחלת/ממוצע של קבוצה אחת שונה מהיתר."
+            },
+            {
+                q: "מתי חובה לעבור משימוש במבחן פירסון (Pearson Chi-Square) למבחן פישר (Fisher's Exact Test)?",
+                t: null,
+                options: [
+                    "כאשר מעוניינים לאמת תוצאות חיוביות על ידי שימוש בנוסחה אסימפטוטית מחמירה השוללת הטיות קצה בקטגוריות בעלות ייצוג חסר משמעות סטטיסטית בטבלה המורחבת.",
+                    "כאשר יותר מ-20% מהתאים בטבלה מציגים שכיחות צפויה הקטנה מ-5.",
+                    "כאשר מספר דרגות החופש בטבלה עולה על 5 ונדרש תיקון רציפות מיידי המקזז את מרכיב השגיאה המקרית הנוטה לנפח את סטטיסטי המבחן מעבר לרצוי.",
+                    "כאשר השכיחות הנצפית זהה לשכיחות הצפויה."
+                ], ans: 1,
+                exp: "מבחן חי בריבוע מניח כהנחת יסוד שמקסימום 20% מהתאים יהיו בעלי Expected Count הקטן מ-5. ברגע שהרף נחצה (למשל 50%), המבחן מאבד תוקף וחובה לקרוא את מבחן פישר המדויק המופיע מתחתיו."
+            },
+            {
+                q: "מה מייצג המונח Within Groups (בתוך הקבוצות) בניתוח שונות (ANOVA)?",
+                t: null,
+                options: [
+                    "את ההבדלים המובהקים בין הממוצעים של הקבוצות השונות אשר נובעים באופן ישיר מהטיפול הניסויי שהוחל על המשתתפים במהלך תקופת איסוף הנתונים המבוקרת.",
+                    "את סכום הריבועים של התוצאות לאחר מניפולציה כפול דרגות החופש הכוללות של כלל המדגם כפי שהוזן במערכת האנליטית לפני ביצוע החיתוכים הדמוגרפיים הנדרשים.",
+                    "את השונות (הפיזור) של המשתתפים בתוך כל קבוצה בנפרד (השגיאה המקרית).",
+                    "את המהימנות הפנימית של קבוצות המחקר העצמאיות."
+                ], ans: 2,
+                exp: "ANOVA מפרקת את השונות. 'בתוך הקבוצות' מייצג את הפיזור הטבעי של האנשים סביב הממוצע של הקבוצה שלהם עצמם. זה נחשב לרעש/שגיאה מקרית, לעומת השונות 'בין הקבוצות' שמייצגת את ההבדל המחקרי הרצוי."
+            },
+            {
+                q: "אם התקבלו התוצאות הבאות לגבי משתנה כמותי: ממוצע = 80, וסטיית תקן = 0. מה זה אומר?",
+                t: null,
+                options: [
+                    "שהייתה שגיאת דגימה או שהמחשב קרס בזמן חישוב התוצאות, כיוון שסטיית תקן לא יכולה לעולם להיות אפס על פי ההגדרה המתמטית של פיזור מרחבי מינימלי מחייב במדגמים אקראיים.",
+                    "שהמודל הסטטיסטי כולו אינו מובהק ולכן יש לחשב מחדש את משתני המרווח בטרם קבלת החלטה סופית על טיב ההתפלגות ואיכותה המדעית המחמירה הנדרשת מכתבי העת.",
+                    "שכל התצפיות במדגם ללא יוצא מן הכלל זהות לחלוטין (כולן בדיוק 80).",
+                    "שהחציון בהכרח שווה לאפס בגלל ההטיה המוחלטת של ההתפלגות השמאלית."
+                ], ans: 2,
+                exp: "סטיית תקן מודדת את המרחק הממוצע של הנתונים מהממוצע. אם הסטייה היא 0, זה אומר שאין שום מרחק כלל באף תצפית - כלומר, כל האנשים במדגם קיבלו את הציון 80 בדיוק."
+            },
+            {
+                q: "מה קורה כאשר רווח הסמך (Confidence Interval) עבור ממוצע ההפרשים במבחן T מזווג נע בין ערך שלילי לערך חיובי (למשל: -1.2 עד 4.5)?",
+                t: null,
+                options: [
+                    "ה-Sig הדו-צדדי יהיה בוודאות קטן מ-0.05 ותדחה השערת האפס כנדרש בבדיקות כיווניות מחמירות של מרווחי בר סמך כפולים במערך הניסוי הפנימי שהופעל על הנבדקים.",
+                    "שהמבחן יסבול משונות גדולה ולכן יש לעבור לשימוש בניתוח שונות חד-גורמי כאמצעי גיבוי רשמי לאור ההפרעה שהתגלתה באומדני טעות התקן הקריטית למרווחים המוצגים.",
+                    "התוצאה בוודאות אינה מובהקת (Sig > 0.05).",
+                    "הפרש הממוצעים יהיה שלילי בוודאות סטטיסטית של 95 אחוזים."
+                ], ans: 2,
+                exp: "רווח הסמך מייצג את הטווח בו אנו מאמינים (ב-95% ביטחון) שההפרש באוכלוסייה נמצא. אם הטווח כולל בתוכו את המספר אפס (עובר ממינוס לפלוס), הרי שייתכן שאין שום הבדל. לכן התוצאה אוטומטית מוגדרת כלא מובהקת."
+            },
+            {
+                q: "מתי השימוש בעמודת ה-Valid Percent (אחוז תקף) בטבלת שכיחויות יהיה שונה מעמודת ה-Percent הרגילה?",
+                t: null,
+                options: [
+                    "הוא לעולם לא יהיה שונה. שתיהן זהות לחלוטין ומייצגות מתמטיקה חלופית לאותה הנוסחה האסימפטוטית המקובלת לבחינת שיעורי תגובה במדגמי נוחות אקראיים לחלוטין.",
+                    "רק כאשר המדגם חוצה רף מינימלי של 500 משתתפים, אז נכנסת לפעולה נוסחת התיקון האוטומטית המייצרת פער מספרי בין שתי עמודות אלו על מנת להתאים את הפיזור לנורמל.",
+                    "כאשר ישנם ערכים חסרים (Missing Values) במדגם.",
+                    "כאשר התפלגות התשובות היא א-סימטרית ימנית."
+                ], ans: 2,
+                exp: "ההבדל היחיד בין העמודות נוצר כאשר יש תצפיות חסרות. Percent רגיל כולל את כולם בחישוב האחוזים (גם מי שלא ענה). Valid Percent מחשב מחדש את האחוזים רק מתוך הרוב שענו בפועל."
+            },
 
-    <div class="question-card">
-        <div class="question-title">4. חוקר מצא תוצאה מובהקת במבחן ANOVA בו הושוו 4 שיטות הוראה. כעת הוא רוצה לדעת בדיוק איזו שיטה טובה יותר מהאחרות. באיזה כלי ישתמש?</div>
-        <ul class="options">
-            <li>א. מבחן Levene</li>
-            <li>ב. חי בריבוע טבלה צולבת</li>
-            <li>ג. מבחן Post Hoc (כגון Scheffe או Tukey)</li>
-            <li>ד. מתאם פירסון מרובה</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> מבחני פוסט-הוק נועדו לבצע השוואות זוגיות בין הקבוצות לאחר ש-ANOVA כללי יצא מובהק, תוך תיקון רמת המובהקות כדי למנוע טעות מסוג ראשון.</div>
-        </details>
-    </div>
+            // --- Outputs Analysis (16-50) ---
+            {
+                q: "על פי הפלט הבא מתוך טבלת המבחן המוצלבת, מה התוחלת המצופה (Expected Count) בקבוצה C עבור תוצאה של 'Pass'?",
+                t: spss("Crosstabulation","<tr><th></th><th></th><th colspan='2' style='text-align:center;'>Result</th></tr><tr><th></th><th></th><th>Pass</th><th>Fail</th></tr>",
+                `<tr><td rowspan='2' class='row-title'>Group A</td><td>Count</td><td>45</td><td>15</td></tr><tr><td>Expected</td><td>30.0</td><td>30.0</td></tr>
+                 <tr><td rowspan='2' class='row-title' style='border-top:1px solid #ccc;'>Group C</td><td style='border-top:1px solid #ccc;'>Count</td><td style='border-top:1px solid #ccc;'>12</td><td style='border-top:1px solid #ccc;'>28</td></tr><tr><td>Expected</td><td>20.0</td><td>20.0</td></tr>`),
+                options: [
+                    "הנתון אינו מופיע במפורש בטבלה זו ויש לחלצו רק מתוך מטריצת מתאמי פירסון המורחבת של הניתוח לאחר הפעלת תיקון רציפות מקובל למדגמים קטנים הסובלים מסטייה.",
+                    "12, כפי שמוצג בשורת התצפיות בפועל המעידות על כישלון מערכתי של קבוצת המחקר להשיג את היעדים כפי שהוצבו על ידי התיאוריות הפסיכולוגיות המקדימות לניסוי.",
+                    "20.0.",
+                    "30.0."
+                ], ans: 2,
+                exp: "קריאת טבלה פשוטה. מחפשים את השורה של Group C, יורדים תחתיה לשורת ה-Expected Count, ומצליבים עם העמודה של 'Pass'. הערך המופיע הוא 20.0 בדיוק."
+            },
+            {
+                q: "התבונן בטבלה. מה ניתן להסיק לגבי המצב של קבוצה A בתוצאת המעבר (Passed)?",
+                t: spss("Crosstabulation","<tr><th></th><th></th><th colspan='2' style='text-align:center;'>Status</th></tr><tr><th></th><th></th><th>Passed</th><th>Failed</th></tr>",
+                `<tr><td rowspan='2' class='row-title'>Group A</td><td>Count</td><td>45</td><td>15</td></tr><tr><td>Expected Count</td><td>30.0</td><td>30.0</td></tr>`),
+                options: [
+                    "בקבוצה A לא התרחשו כישלונות כלל ולכן הערך הנצפה הפך לזהה לתוחלת המצופה ממנו, לפי התפלגות השוליים של הטבלה המסכמת שמופקת באופן אוטומטי על ידי התוכנה.",
+                    "המודל הסטטיסטי פסול לשימוש עקב שכיחויות נצפות הקטנות מהשכיחות התיאורטית המצופה, מה שמפר את כללי מבחן הבלתי תלויים ומאלץ מעבר מהיר למבחנים א-פרמטריים חלופיים.",
+                    "מספר העוברים בפועל בקבוצה A היה גבוה מהמצופה.",
+                    "בקבוצה A היו 30 עוברים בסך הכל לפי נתוני המדגם המקורי."
+                ], ans: 2,
+                exp: "הערך שנצפה בפועל (Count) בעמודת Passed של קבוצה A הוא 45. הערך הצפוי אילו לא היה קשר (Expected Count) הוא 30.0. לכן, היו יותר הצלחות מהצפוי."
+            },
+            {
+                q: "מה המסקנה העולה מטבלת המבחן הסטטיסטי שלפניך?",
+                t: spss("Chi-Square Tests","<tr><th style='text-align:left'></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>",
+                `<tr><td class='row-title'>Pearson Chi-Square</td><td>18.42<sup>a</sup></td><td>1</td><td>.000</td></tr><tr><td class='row-title'>Continuity Correction</td><td>17.15</td><td>1</td><td>.000</td></tr>`,
+                "a. 0 cells (0.0%) have expected count less than 5."),
+                options: [
+                    "ההבדל בין הממוצעים של הקבוצות הוא מובהק וברור לאור המובהקות הכפולה שהתקבלה גם במבחן פירסון וגם בתיקון הרציפות המצביע על פער עצום בסטיות התקן של המדגם השלם.",
+                    "המבחן פסול סטטיסטית בגלל תיקון הרציפות המופיע בשורה השנייה ומשנה את התוצאה החיובית שהתקבלה בשורה הראשונה תוך פגיעה קשה בדרגות החופש של המשתנה החופשי בניסוי.",
+                    "קיים קשר מובהק בין המשתנים.",
+                    "לא קיים קשר מובהק כיוון שההערה התחתונה מזהירה באופן חד-משמעי מפני שכיחות אפסית של תאים תקינים בטבלת השכיחויות."
+                ], ans: 2,
+                exp: "ההערה למטה קובעת שאין שום תאים קטנים מ-5 (0.0%), ולכן מבחן פירסון תקין לחלוטין. הערך ב-Sig הוא 0.000 (<0.05). משמע: דוחים H0 וקיים קשר מובהק. המסיח על ממוצעים שגוי שכן חי בריבוע אינו עוסק בממוצעים כלל אלא בשכיחויות."
+            },
+            {
+                q: "על סמך הפלט המצורף, איזו החלטה סטטיסטית עלינו לקבל?",
+                t: spss("Chi-Square Tests","<tr><th style='text-align:left'></th><th>Value</th><th>df</th><th>Asymp. Sig.</th><th>Exact Sig.</th></tr>",
+                `<tr><td class='row-title'>Pearson Chi-Square</td><td>6.25<sup>a</sup></td><td>1</td><td>.012</td><td></td></tr><tr><td class='row-title'>Fisher's Exact Test</td><td></td><td></td><td></td><td>.085</td></tr>`,
+                "a. 2 cells (50.0%) have expected count less than 5."),
+                options: [
+                    "יש להסתמך על מבחן פירסון המקורי ולדחות את השערת האפס כיוון שהוא מציג תוצאה מובהקת של 0.012 שקטנה מ-0.05 ומעידה על קשר יציב וחזק בין שתי הקטגוריות הנבדקות במסגרת מערך המחקר החותך.",
+                    "הקשר בין המשתנים נמצא כמובהק סטטיסטית בשני המבחנים כאחד (הן האסימפטוטי והן המדויק) ולכן דוחים השערת אפס פה אחד וללא עוררין לגבי אמיתות הקשר המדובר בקבוצות המחקר הפעילות לאור משפט הגבול המרכזי.",
+                    "לקבוע כי אין קשר מובהק.",
+                    "לשנות את דרגות החופש (df) כדי לקבל תוצאה מובהקת במבחן הסטנדרטי של פירסון ללא צורך בפישר המיושן והשמרני מדי."
+                ], ans: 2,
+                exp: "ההערה למטה צועקת שהמבחן אינו תקין! 50% מהתאים קטנים מ-5 (מותר רק עד 20%). במצב כזה, אסור להשתמש בתוצאה של פירסון (0.012) כי היא מזייפת. חובה לקרוא את מבחן פישר המדויק, שקיבל Sig של 0.085. ערך זה אינו מובהק ולכן אין קשר."
+            },
+            {
+                q: "לפניך מטריצת קורלציות. איזה משתנה מציג את הקשר החזק ביותר עם משתנה השכר (Salary)?",
+                t: spss("Correlations","<tr><th style='text-align:left'></th><th></th><th>Salary</th><th>Age</th><th>Absences</th></tr>",
+                `<tr><td rowspan='2' class='row-title'>Salary</td><td>Pearson Correlation</td><td>1</td><td>.420*</td><td>-.750**</td></tr><tr><td>Sig. (2-tailed)</td><td></td><td>.020</td><td>.000</td></tr>`),
+                options: [
+                    "משתנה 'Age' (גיל), מאחר והקורלציה שלו חיובית ומובהקת, בעוד שהערך השני נמצא מתחת לאפס ולכן נחשב לחסר השפעה סטטיסטית אמתית במודל הליניארי של ניבוי תוצאות המשכורת השנתית הממוצעת בקרב אוכלוסיית המדגם המבוקרת.",
+                    "משתנה 'Absences' (היעדרויות).",
+                    "שני המשתנים מציגים קשר שווה בעוצמתו מכיוון ששניהם זכו לכוכביות מובהקות המסמלות את הגעתם לסף הנדרש במחקר מדעי איכותי ומבוקר המבוסס על אומדן סטייה מינימלי משותף המאפשר הכללה סטטיסטית מדויקת לאוכלוסיית היעד.",
+                    "הקשר החזק ביותר הוא עם המשתנה 'Salary' עצמו ששווה ל-1 השלם בסולם הערכים ולכן מבטל את שאר הקשרים המופיעים לצידו."
+                ], ans: 1,
+                exp: "עוצמת הקשר בקורלציה נמדדת על פי הערך המוחלט של המקדם. מינוס מתאר רק כיוון שלילי, אך לא חולשה. המספר 0.750 גדול מהמספר 0.420, ולכן ההיעדרויות הן בעלות הקשר החזק ביותר עם השכר."
+            },
+            {
+                q: "מה אומר הנתון -.200 המופיע בטבלת המתאמים שלפניך בין X ל-Y?",
+                t: spss("Correlations","<tr><th style='text-align:left'></th><th></th><th>Var_X</th><th>Var_Y</th></tr>",
+                `<tr><td rowspan='2' class='row-title'>Var_X</td><td>Pearson Correlation</td><td>1</td><td>-.200</td></tr><tr><td>Sig. (2-tailed)</td><td></td><td>.350</td></tr>`),
+                options: [
+                    "שיש קשר שלילי ומובהק לחלוטין בין שני המשתנים המעיד על יחס הפוך ועוצמתי באוכלוסייה ממנה הם נדגמו באקראי בהתאם לפרוטוקול עקומת הפעמון האסימטרית המבטיחה רמות בטחון של 95% בניתוח התוצאות הסופיות.",
+                    "שההבדל הממוצע בין שתי הקבוצות הבלתי תלויות שווה למינוס 0.200 יחידות מדידה תקניות בסולם יחס סדור החשוף להשפעות חיצוניות משמעותיות מהרגרסיה התקנית המבוצעת במקביל.",
+                    "הקשר אינו מובהק.",
+                    "שכל יחידה ב-X מורידה את Y ב-0.200 באופן שמבטיח קשר דטרמיניסטי סיבתי בין השניים ברמת בטחון מלאה וללא תלות בגורמים מתערבים."
+                ], ans: 2,
+                exp: "הערך -.200 מצביע על קשר שלילי חלש, אך המפתח להבנת המצב נמצא בשורת ה-Sig. ה-Sig עומד על 0.350 (גדול בהרבה מ-0.05). המשמעות היא שהקשר שנמצא אינו מובהק סטטיסטית אלא מקרי בלבד."
+            },
+            {
+                q: "התבונן במטריצת המתאמים. מה ניתן לומר על הקשר בין רמת העייפות (Fatigue) לביצועים (Performance)?",
+                t: spss("Correlations","<tr><th style='text-align:left'></th><th></th><th>Performance</th><th>Fatigue</th></tr>",
+                `<tr><td rowspan='2' class='row-title'>Performance</td><td>Pearson Correlation</td><td>1</td><td>-.485*</td></tr><tr><td>Sig. (2-tailed)</td><td></td><td>.030</td></tr>`),
+                options: [
+                    "אין קשר סטטיסטי מובהק כלל בין שני המשתנים, שכן המובהקות הדו-צדדית גדולה מרמת אלפא הנדרשת בשגיאה מסוג שני המגבילה את יכולת הדחייה של ההשערה המרכזית בקרב מרבית החוקרים במדעי החברה המודרניים הפועלים כיום.",
+                    "קשר שלילי מובהק - ככל שרמת העייפות עולה, כך נוטים הביצועים לרדת.",
+                    "קשר חיובי ומובהק לחלוטין בין שני המשתנים הבלתי תלויים, המוכיח קורלציה ישירה וחזקה בהיעדר משתנה מתווך העלול להטות את כיוון השפעת הקשר שנמצא במסגרת מערך המחקר החצי-ניסויי המבוקר.",
+                    "ההבדל בין ממוצעי הביצועים לעייפות הוא משמעותי, שכן הערך .030 מצדיק מעבר למבחן פוסט-הוק מסוג טוקי כהמשך טבעי לניתוח הנתונים המעמיק בתוכנה."
+                ], ans: 1,
+                exp: "בהצטלבות של הביצועים מול העייפות, מופיע מקדם פירסון שלילי של -.485 המסמן יחס הפוך. ה-Sig הוא .030 (קטן מ-0.05), ולכן הקשר הוא מובהק ולא מקרי. ההסבר הארוך על ממוצעים נועד להטעות כי מתאם אינו בודק הבדלי ממוצעים."
+            },
+            {
+                q: "בפלט של מבחן T הבלתי תלוי שלפניך, כיצד יש לפעול לאור תוצאת מבחן לווין?",
+                t: spss("Independent Samples Test","<tr><th></th><th colspan='2' style='text-align:center;'>Levene's Test</th><th colspan='3' style='text-align:center;'>t-test</th></tr><tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>",
+                `<tr><td class='row-title'>Equal variances assumed</td><td>1.25</td><td>.310</td><td>2.45</td><td>88</td><td>.016</td></tr><tr><td class='row-title'>Equal variances not assumed</td><td></td><td></td><td>2.10</td><td>65.4</td><td>.039</td></tr>`),
+                options: [
+                    "מבחן לווין מעיד על כך שהשונויות שונות במובהק ולכן יש לרדת באופן חד משמעי לקריאת השורה התחתונה המבטיחה תוצאה מהימנה ושמרנית למדגם (0.039) שמשנה את פני המסקנה המקורית ומפילה את השערת החוקר המרכזית בנוגע לכיוון ההשפעה של משתנה הבדיקה המופעל בקרב הנבדקים בניסוי הכפול והמבוקר.",
+                    "מבחן לווין לא רלוונטי כאשר מספר דרגות החופש (df) עולה על 50. המסקנה היא שאין הבדל מובהק בשום מקרה בין שתי הקבוצות המוצגות בטבלה זו מאחר והן עברו את סף ההתפלגות התקין ומייתרות בדיקות מובהקות משניות שנועדו למדגמים חסרים בלבד על פי שיטות קלאסיות בחקר הביצועים.",
+                    "יש לקרוא את השורה העליונה והמסקנה היא שיש הבדל מובהק.",
+                    "יש לחבר את ממוצעי ה-Sig הדו צדדי של שתי השורות כדי לקבל ערך מובהקות משוקלל וסופי אשר מצמצם את טעויות הדגימה האקראיות שיכלו להיווצר כתוצאה ממדידת שונויות משותפות במבחני סיום מהסוג המזווג המאפשר השוואת זוגות."
+                ], ans: 2,
+                exp: "שלב א: מבחן לווין הניב Sig=0.310 (גדול מ-0.05). ההנחה לשוויון שונויות נשמרת ולכן חובה לקרוא את השורה העליונה (Assumed). בשורה זו, ה-Sig של המבחן (t-test) עומד על 0.016 (<0.05). ולכן, דוחים את H0, ויש הבדל מובהק בין הקבוצות."
+            },
+            {
+                q: "מה היא המסקנה העולה במקרה שלפניך מתוך מבחן ה-T הבלתי תלוי?",
+                t: spss("Independent Samples Test","<tr><th></th><th colspan='2' style='text-align:center;'>Levene's Test</th><th colspan='3' style='text-align:center;'>t-test</th></tr><tr><th></th><th>F</th><th>Sig.</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>",
+                `<tr><td class='row-title'>Equal variances assumed</td><td>6.50</td><td>.012</td><td>1.90</td><td>120</td><td>.060</td></tr><tr><td class='row-title'>Equal variances not assumed</td><td></td><td></td><td>1.60</td><td>98.5</td><td>.113</td></tr>`),
+                options: [
+                    "קוראים את השורה העליונה ומכריזים על הבדל מובהק בין הקבוצות לאור העובדה ששתי השונויות סטו מן הממוצע הכללי במידה שווה ומבוקרת במסגרת עקומת הפעמון והנורמה הסטטיסטית הקפדנית של התוכנה האנליטית המורכבת שמבצעת נרמול לערכים חורגים באופן רציף ואוטומטי.",
+                    "מבחן לוין מובהק לחלוטין (0.012) ולכן המסקנה הגורפת היא שישנו קשר חזק וסימטרי בין כלל המשתנים המנבאים ללא כל תלות בקבוצתם הסטטיסטית העצמאית במערך הניסוי הכפול והמבוקר המשמש נקודת ייחוס ליתר המחקר הפורמלי כפי שהוצג בפני גורמי הבקרה המוסדיים.",
+                    "ההבדל בין שתי הקבוצות נמצא ממש על גבול המובהקות (0.060) ולכן נהוג באקדמיה לפסוק תמיד שמצאנו הבדל מובהק על חודו של קוץ במקרים כגון אלה המערבים שגיאות תקן מצומצמות ודרגות חופש גבוהות המאששות את אי התלות בין קבוצת הטיפול והביקורת לאורך זמן מחקר ממושך מהממוצע הארצי.",
+                    "אין הבדל מובהק."
+                ], ans: 3,
+                exp: "בדיקת לווין העלתה Sig=0.012 (<0.05). דוחים H0 - השונויות לא שוות! קופצים לשורה התחתונה (Not assumed). בשורה התחתונה ה-Sig הדו-צדדי הוא 0.113 (גדול מ-0.05). המסקנה היא שאין שום הבדל מובהק בין ממוצעי הקבוצות."
+            },
+            {
+                q: "מה קובע הנתון מינוס 5.50 (-5.50) בפלט מבחן T מזווג שלפניך?",
+                t: spss("Paired Samples Test","<tr><th></th><th>Mean</th><th>Std. Deviation</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>",
+                `<tr><td class='row-title'>Before - After</td><td>-5.50</td><td>2.10</td><td>-12.4</td><td>39</td><td>.000</td></tr>`),
+                options: [
+                    "זהו מדד העוצמה של הטיפול הנבדק אשר הוכח כמוריד את הערכים הכלליים ב-5.5 יחידות בממוצע עבור כל מטופל באשר הוא ללא הבחנת רקע נסיבתית, וזאת תוך שמירה על טעות תקן נמוכה במיוחד המבטיחה את אמינות ומהימנות התוצאות לאורך כל תקופת המעקב הקלינית במרפאות החוץ השונות המשתתפות במחקר השנתי הפעיל.",
+                    "שהמדידה ב'אחרי' הייתה בממוצע גבוהה יותר.",
+                    "הטיפול נכשל בצורה חרוצה כיוון שתוצאת ה-t יצאה במינוס מה שמעיד על נסיגה חריפה במצבם הקליני של המטופלים לעומת קבוצת הביקורת אשר הראתה שיפור ניכר בתוצאותיה במבדקי הבקרה הבלתי תלויים שנערכו במקביל לניסוי הנוכחי המבוסס על מתודולוגיה עיוורת לחלוטין וללא הטיית נסיין.",
+                    "המבחן הסטטיסטי אינו תקין ופסול להסקה, כיוון שסימן שלילי בעמודת הממוצע מעיד בהכרח על שונות שאינה שווה בין הזמנים, מצב המחייב מעבר מידי לחישובים המבוססים על דרגות חופש מקוזזות המשקפות סטייה אקראית רחבה בהרבה מזו שנחזתה בטרם יצא הפרויקט לדרכו המדעית."
+                ], ans: 1,
+                exp: "במבחן T תלוי החישוב מבוצע תמיד כ- (לפני מינוס אחרי). אם ממוצע ההפרשים יצא שלילי (-5.50), זה אומר מתמטית שהמדידה השנייה (ה'אחרי') הייתה בהכרח גדולה יותר מהראשונה. כלומר חלה עלייה בממוצע. ה-Sig הוא .000 ומאשר שזה שינוי מובהק."
+            },
+            {
+                q: "החוקר רוצה לבדוק האם חל שינוי בעקבות תוכנית התערבות, והפיק את הפלט הבא. מה המסקנה?",
+                t: spss("Paired Samples Test","<tr><th style='text-align:left'></th><th>Mean</th><th>t</th><th>df</th><th>Sig. (2-tailed)</th></tr>",
+                `<tr><td class='row-title'>Week 1 - Week 2</td><td>0.15</td><td>0.25</td><td>50</td><td>.804</td></tr>`),
+                options: [
+                    "חל שינוי מובהק ורצוי כיוון שהממוצע עלה ב-0.15 נקודות בהשוואה לנקודת ההתחלה של המחקר בשבוע הראשון, ויש לדווח על כך כהישג מחקרי משמעותי בפני וועדת האתיקה שאישרה את הפרוטוקול המורכב שיושם בקרב משתתפי קבוצת המיקוד הראשונית שנבדקה על ידי החוקר בסביבה מבוקרת וסטרילית.",
+                    "דוחים את השערת האפס במובהקות חלשה מאוד, ויש צורך לבצע מבחן מקביל לחקירה נוספת כדי לאמת את הנתונים באופן מוחלט ונטול פניות אקדמיות אשר עלולות להטות את מסקנות המחקר הנוכחי כלפי כיוון ההשערה החלופית ולסלף את תוחלת האוכלוסייה בה הניסוי נערך.",
+                    "התוצאה של t קטנה מ-1 (0.25) ולכן על פי הכללים המחמירים של ההתפלגות התקנית עלינו לאשר את השערת המחקר (H1) באופן מיידי וסופי ללא כל צורך בבדיקות המשך ארוכות ויקרות המכלות את זמנם ומשאביהם של החוקרים המובילים את הפרויקט במסגרת מוסד הלימודים הפורמלי.",
+                    "לא חל שינוי מובהק."
+                ], ans: 3,
+                exp: "הערך הקריטי היחיד כאן הוא ה-Sig (2-tailed). הוא עומד על 0.804 - מספר הגדול בהרבה מרף ה-0.05. לפיכך, אנו מסרבים לדחות את השערת האפס, ומסיקים כי כל 'שינוי' קל שהתקבל בממוצע (0.15) הוא טעות מקרית בלבד, ואין שינוי מובהק באוכלוסייה."
+            },
+            {
+                q: "בטבלה הבאה מתואר ניתוח שונות (ANOVA). מהו מספר הקבוצות הכולל שהושוו בניתוח זה, ומה המסקנה הנגזרת מן המבחן?",
+                t: spss("ANOVA","<tr><th style='text-align:left'></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr>",
+                `<tr><td class='row-title'>Between Groups</td><td>350.5</td><td>4</td><td>87.62</td><td>10.2</td><td>.000</td></tr><tr><td class='row-title'>Within Groups</td><td>1000.0</td><td>80</td><td>12.50</td><td></td><td></td></tr><tr><td class='row-title'>Total</td><td>1350.5</td><td>84</td><td></td><td></td><td></td></tr>`),
+                options: [
+                    "הושוו 80 קבוצות. לא נמצא הבדל מובהק בשל ממוצע השגיאות הרחב (12.50) המעיד על פיזור יתר ומונע את דחיית השערת האפס באופן אשר גוזר את דינו של הניסוי לכישלון טוטאלי ומאלץ את החוקר לאסוף נתונים חדשים מן השטח באמצעות מדגם כפול בגודלו כדי להקטין את השונות הפנימית של הנבדקים שהשתתפו בניסוי החלוץ המקורי.",
+                    "הושוו 5 קבוצות.",
+                    "הושוו 4 קבוצות, אשר כולן ללא יוצא מן הכלל שונות באופן סימטרי זו מזו בהתבסס על הממוצע הכללי המובהק של המדגם השלם המאופיין ברגישות גבוהה לתנודות עונתיות אקראיות המשפיעות על מובהקותו באופן עקיף ומורכב המחייב מודלים של תיקוני רציפות סדרתיים במתודה אסימפטוטית קפדנית ביותר.",
+                    "הושוו 84 קבוצות. ערך ה-F הגבוה מצביע על היעדר שונות מהותית בין המדגמים הבלתי תלויים דבר שמוביל בהכרח לקבלה גורפת של השערת האפס וקביעה שכל הקבוצות הן למעשה תת קבוצה של אוכלוסייה הומוגנית אחת רחבה נטולת סימני הכר משמעותיים."
+                ], ans: 1,
+                exp: "אנובה חד כיוונית מפרקת שונות בין ובתוך. ה-df של 'Between Groups' הוא 4. הכלל קובע ש- df=K-1 (K הוא מספר הקבוצות). לכן, אם df=4, היו בסך הכל 5 קבוצות. ה-Sig הוא 0.000, ולכן דוחים H0 - יש הבדל מובהק בין ממוצעי הקבוצות."
+            },
+            {
+                q: "חוקר ביצע מבחן שונות ומקבל את התוצאות מטה. איזה מבין הצעדים הבאים הוא הצעד הלוגי היחיד שעליו לעשות כעת?",
+                t: spss("ANOVA","<tr><th style='text-align:left'></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr>",
+                `<tr><td class='row-title'>Between Groups</td><td>12.5</td><td>2</td><td>6.25</td><td>0.75</td><td>.480</td></tr><tr><td class='row-title'>Within Groups</td><td>400.0</td><td>48</td><td>8.33</td><td></td><td></td></tr>`),
+                options: [
+                    "להמשיך במהירות למבחן פוסט-הוק מסוג Tukey כדי לאתר בפירוט היכן מסתתר השוני בין הקבוצות כפי שדורשת הפרוצדורה המלאה באנובה וזאת על מנת שלא להחמיץ אפקטים סמויים העשויים להתברר כמועילים מאוד למחקר המתהווה בתחום זה של המדע המדויק המחפש קשרים נסתרים בתוך מדגמים ענקיים במיוחד בעלי מורכבות סוציו אקונומית משתנה לאורך תקופות ארוכות טווח.",
+                    "לבחון בקפידה את השונויות הפנימיות בעזרת מבחן T תלוי מותאם, על מנת לראות אם ישנו אפקט מוסווה במדגם שמטה את השגיאה המקרית לכדי טעות מסוג שני הפוגעת בכוחו של המבחן לדחות השערות שגויות במסגרת תוחלת האוכלוסייה הרחבה ממנה נלקחו המשתתפים באופן רנדומלי תחת פיקוח הדוק של סטטיסטיקאים נטולי עניין אישי בתוצאות הנחקרות.",
+                    "לאחד שתי קבוצות סמוכות באוכלוסייה ולהריץ מחדש את מבחן פישר המדויק עקב המובהקות הבינונית שהתגלתה במודל הכולל ואשר איננה מאפשרת הסקה תקנית ללא הפעלת תיקון רציפות מקובל המנכה את מרכיבי הסטייה האקראית מהסכום הכולל של ריבועי השונות המוסברת בטבלה המרכזית כמתואר בתהליכי קבלת ההחלטות הנהוגים במודלים מתמטיים של התפלגויות צולבות במערכות מידע דינאמיות בזמן אמת.",
+                    "לסיים את הניתוח."
+                ], ans: 3,
+                exp: "ה-Sig הכללי של המבחן באנובה הוא 0.480. זהו ערך הגדול מ-0.05, מה שאומר שאנחנו לא דוחים את השערת האפס ואין שום הבדל מובהק בין הממוצעים של הקבוצות. 'חוק ברזל' סטטיסטי קובע שבמצב כזה עוצרים לחלוטין את הניתוח, ואסור לבצע מבחן פוסט-הוק."
+            },
+            {
+                q: "מה קובעת טבלת הפוסט-הוק לגבי הפערים בין הקבוצות השונות?",
+                t: spss("Multiple Comparisons (Tukey HSD)","<tr><th style='text-align:left'>(I) Group</th><th>(J) Group</th><th>Mean Difference (I-J)</th><th>Sig.</th></tr>",
+                `<tr><td rowspan='2' class='row-title'>Group 1</td><td>Group 2</td><td>-2.100</td><td>.510</td></tr><tr><td>Group 3</td><td>-15.500*</td><td>.001</td></tr>`),
+                options: [
+                    "שלושת הקבוצות שונות באופן מובהק זו מזו, ולכן מתקבל ממוצע שונות שלילי המגובה בכוכבית מובהקות בקצה הטבלה למען הדגשת הפער המוחלט הקיים בין תוחלות האוכלוסייה מהן נדגמו המשתתפים באופן מקרי לחלוטין וללא הטיות המפרות את אמינות הנתונים ששימשו בבסיס הניתוח המורכב שהוצג בפנינו כעת לאחר עיבוד מתמטי מקיף וקפדני בתוכנה.",
+                    "מכיוון שההפרש בין קבוצה 1 לקבוצה 3 הוא שלילי באופן מוחלט, לא ניתן בכלל לקבוע שמדובר בהבדל מובהק על אף המובהקות התאורטית המצוינת בעמודת ה-Sig שאינה מתחשבת בכיוון ההפרש אלא רק בפיזור האסימפטוטי המשותף לכלל המדגם הנבחן מול ערכי הממוצע השולי שחושבו בטבלה קודמת בדו\"ח המחקר ונדחו מפאת טעות אקראית בהזנתם.",
+                    "ישנו הבדל מובהק בין קבוצה 1 לקבוצה 3 בלבד.",
+                    "קבוצה 1 היא הקבוצה בעלת הממוצע הגבוה ביותר ללא כל צל של ספק סטטיסטי נראה לעין בהשוואה לחברותיה בקבוצת הניסוי והביקורת המקבילה אשר עברה את אותה הפרוצדורה המחקרית המורכבת בניסוי כפול הסמיות האחרון שנערך במסגרת מעבדות המחקר הרשמיות כפי שתוארו בפרק השיטה בספרות האקדמית העכשווית."
+                ], ans: 2,
+                exp: "בדיקת מבחן פוסט-הוק נעשית שורה-שורה. בהשוואה בין קבוצה 1 לקבוצה 2 ה-Sig הוא 0.510 (כלומר אין הבדל מובהק). בהשוואה בין קבוצה 1 לקבוצה 3 ה-Sig הוא 0.001 בתוספת כוכבית המעידה על מובהקות מלאה. לכן, מבין הזוגות המוצגים כאן, רק בין קבוצה 1 לקבוצה 3 קיים הבדל אמיתי."
+            },
+            {
+                q: "בטבלת הפוסט-הוק שלפניך, ההפרש בין קבוצה C לקבוצה D מסומן כ- 24.50*. מה משמעות הסימן החיובי שמופיע בהפרש (I-J)?",
+                t: null,
+                options: [
+                    "קבוצה D גדולה פי 24.50 מקבוצה C במונחים מוחלטים וגורפים, אך ללא שום מובהקות תואמת במבחנים האסימפטוטיים הנלווים הדרושים לאישוש הטענה המרכזית בקרב מרבית החוקרים הפעילים בתחום זה של המדע המדויק הדורש חובת הוכחה משמעותית מעל לכל ספק סביר וראוי במסגרת תקנות הפרסום הבינלאומיות של האיגוד הפסיכולוגי האמריקאי הפועל כיום.",
+                    "המבחן בוצע בצורה שגויה לחלוטין כיוון שמבחן פוסט הוק תקין אמור להפיק תוצאות שליליות תמיד בתור כלל אצבע בהשוואת זוגות חסרי תלות בעלי פיזור נורמלי המיוצג באמצעות ציוני תקן סביב הממוצע הכללי המבוקר בניסוי הראשי שהוליד את נתוני המחקר המובאים לפנינו כעת לשם הערכה סופית לפני קבלת ההחלטה על נטישת או המשך הניסוי הקליני הנוכחי באוכלוסייה.",
+                    "שתי הקבוצות (C ו-D) נעות בכיוון חיובי ומקביל לאורך ציר ההתפלגות המשותף שלהן תחת המודל הרב-גורמי המוצע המנסה לאמוד את עוצמת השפעתן על המשתנה הרציף המוגדר כיעד המחקר המוצהר של הגורם הבודק, וזאת ללא קשר למובהקות הכללית שהתקבלה במבחני ה-F הקודמים באנובה הסטנדרטית שהורצה בשלב הראשון של המבחן הרב שלבי.",
+                    "הממוצע של קבוצה C גדול מהממוצע של קבוצה D ב-24.50 יחידות."
+                ], ans: 3,
+                exp: "מבחן הפוסט הוק עובד על פי חיסור מתמטי פשוט: קבוצה ראשונה פחות קבוצה שנייה (I - J). אם תוצאת החיסור C פחות D היא חיובית (24.50), הרי שהמספר הראשון (הממוצע של קבוצה C) היה גדול יותר מהמספר השני."
+            },
+            {
+                q: "חוקרת בודקת מודל דו-גורמי הבוחן את 'אזור המגורים' ו-'מגדר' על רמת 'הכנסה'. איזה מן האפקטים שבפלט נמצא כמובהק סטטיסטית?",
+                t: spss("Tests of Between-Subjects Effects","<tr><th style='text-align:left'>Source</th><th>df</th><th>F</th><th>Sig.</th></tr>",
+                `<tr><td class='row-title'>Region</td><td>2</td><td>1.25</td><td>.290</td></tr><tr><td class='row-title'>Gender</td><td>1</td><td>8.50</td><td>.005</td></tr><tr><td class='row-title'>Region * Gender</td><td>2</td><td>0.50</td><td>.610</td></tr>`),
+                options: [
+                    "האפקט העיקרי של אזור המגורים (Region) בלבד, לאור העובדה שדרגות החופש שלו כפולות משל השאר ומבססות מודל חסון וגמיש יותר ליחידת מדידה בעלת סטיית תקן רחבה מהמקובל במדגמים קטנים דומים בעלי אופי שמי כפול הדורשים התייחסות פרטנית ומחמירה יותר לעומת נתונים סטטיסטיים רגילים המאופיינים בתנודות עונתיות ניתנות לחיזוי מראש במערכי מחקר חצי-ניסויים קלאסיים.",
+                    "אפקט האינטראקציה (Region * Gender) הוא ללא ספק החזק והמובהק ביותר במודל הכולל, ולכן חל איסור מוחלט לפרש אפקטים עיקריים כלל בסיטואציה זו המהווה הפרה בוטה של הכללים הסטטיסטיים הנהוגים בבחינת תוצאות אינטראקטיביות צולבות במערכות רב-משתניות מורכבות הנשענות על שגיאות אקראיות המאזנות זו את זו באופן קבוע סביב האפס האסימפטוטי המוחלט כפי שניתן לחשב מתמטית על בסיס הטבלה עצמה.",
+                    "האפקט העיקרי של המגדר (Gender).",
+                    "שני האפקטים העיקריים מובהקים לחלוטין ויש לקבל אותם, אך האינטראקציה אינה מובהקת כנדרש בהנחות אנובה מורכבות למדגמים בלתי תלויים המבקשים לדחות את השערת האפס באמצעות חלוקת שונויות משותפות המייצרות ערכי F גבוהים באופן מופרז מהרף התחתון המומלץ."
+                ], ans: 2,
+                exp: "אנובה דו-כיוונית בוחנת מספר השערות במקביל. Region קיבל 0.290 (לא מובהק). אינטראקציה (Region*Gender) קיבלה 0.610 (לא מובהק). רק Gender קיבל ציון Sig של 0.005 (קטן מ-0.05), ולכן הוא מהווה את האפקט המובהק היחיד שמשפיע על ההכנסה במודל זה."
+            },
+            {
+                q: "לפניך פלט של ניתוח שונות דו-כיווני הבוחן כיצד 'שיטת לימוד' ו'שעת הלימוד' משפיעות על רמת 'ריכוז'. מהי המסקנה העיקרית שעולה מהפלט לגבי האינטראקציה?",
+                t: spss("Tests of Between-Subjects Effects","<tr><th style='text-align:left'>Source</th><th>df</th><th>F</th><th>Sig.</th></tr>",
+                `<tr><td class='row-title'>Method</td><td>1</td><td>12.5</td><td>.001</td></tr><tr><td class='row-title'>Time</td><td>1</td><td>4.10</td><td>.045</td></tr><tr><td class='row-title'>Method * Time</td><td>1</td><td>9.20</td><td>.003</td></tr>`),
+                options: [
+                    "אין שום משמעות מעשית לאינטראקציה מכיוון שהאפקטים העיקריים חזקים ומובהקים לחלוטין, ולכן הם מבטלים אותה תיאורטית בהתאם למשפט הגבול המרכזי של ההתפלגות השואפת לממוצע מדגמי שמרני ויציב לאורך כל תקופת המדידה החוזרת שמבצע החוקר על משתתפי קבוצת המיקוד הראשונית ללא תלות ברמות המשתנים הבלתי תלויים השונים במערך הניסוי הקפדני כפי שאושר על ידי ועדות הבקרה.",
+                    "האינטראקציה אינה מובהקת בשל ערך F הגבוה באופן מלאכותי מ-5, מה שמעיד על טעות חמורה בחישוב השגיאה המקרית של תוכנת הניתוח ומאלץ גישה חלופית א-פרמטרית להסדרת הנתונים החסרים כפי שמקובל במקרים אלה הדורשים עיבוד נתונים סטטיסטי מחמיר באמצעות נוסחאות גיבוי של פירסון המסוגלות לאתר הטיות קצה בקטגוריות בעלות שכיחויות נמוכות המסכנות את תוצאת האנובה המוצגת כעת לעינינו על המסך המרכזי.",
+                    "יעילותה של שיטת הלימוד משתנה או תלויה בשעת הלימוד בה היא מבוצעת.",
+                    "שיטת הלימוד הוכחה כמשפיעה פחות מאשר שעת הלימוד בגלל מכפלת האפקטים שיוצרת את אפקט הצלבת הנתונים המדויק אשר מעניק עדיפות ברורה למשתנה בעל סטיית התקן הנמוכה ביותר מבין השניים במבחנים דו זנביים בלבד הנשענים על השערות מחקר כיווניות ברורות שהוגדרו מראש."
+                ], ans: 2,
+                exp: "שורת ההכפלה (Method * Time) מייצגת את אפקט האינטראקציה המורכב. ה-Sig שלה הוא 0.003 (כלומר היא מובהקת לחלוטין). אינטראקציה מובהקת פירושה שההשפעה של משתנה אחד אינה אחידה לאורך כל הדרך, אלא 'תלויה' ברמה של המשתנה השני. במילים אחרות, שיטת הלימוד עובדת בצורה שונה בשעות שונות."
+            },
+            {
+                q: "מה קובע פלט האנובה הדו-כיוונית לגבי השפעת הטיפול (Treatment)?",
+                t: spss("Tests of Between-Subjects Effects","<tr><th style='text-align:left'>Source</th><th>df</th><th>F</th><th>Sig.</th></tr>",
+                `<tr><td class='row-title'>Treatment</td><td>1</td><td>2.10</td><td>.180</td></tr><tr><td class='row-title'>Gender</td><td>1</td><td>8.50</td><td>.005</td></tr><tr><td class='row-title'>Treatment * Gender</td><td>1</td><td>0.12</td><td>.730</td></tr>`),
+                options: [
+                    "הטיפול הוא הגורם הדומיננטי ביותר בהצלחת המודל וזאת על סמך היעדר האינטראקציה המובהקת שמאפשרת לאפקטים העיקריים לבלוט בצורה משמעותית מעל לשונות השגיאה הטבעית המקובלת באוכלוסיות סגורות נטולות פיזור קיצוני המשבש את מהימנות הנתונים הנאספים לאורך זמן מחקר רב הכולל תצפיות מרובות בנקודות ציון שונות לאורך שנות המעקב אחר משתתפי הפרויקט הקליני הסגור בבתי החולים המשתתפים בניסוי הפעיל.",
+                    "הטיפול משפיע בצורה מובהקת רק בקרב גברים כפי שעולה משורת האינטראקציה והאפקט המשותף של המגדר שזכה לציון מובהקות יוצא מן הכלל המאשש את כל השערות החוקר מהשלב המקדמי של בניית מערך הניסוי הפסיכולוגי הזה אשר ביקש להוכיח הבדלים ניכרים בתוחלות האוכלוסייה הרחבה ממנה נלקחו הדגימות האקראיות כנדרש בנהלי האתיקה הרשמיים המפורסמים במחקרים פרה-קליניים מובילים מן הסוג המוצג כאן בפנינו לאישור סופי ומעשי בשטח המעבדה.",
+                    "לטיפול אין אפקט עיקרי מובהק על התוצאה.",
+                    "מכיוון שהאינטראקציה אינה מובהקת, יש לחבר את השונויות של שני האפקטים העיקריים כדי לקבל את תוחלת ההשפעה הכללית של הטיפול אשר תהפוך למובהקת וודאית בעקבות תיקון דרגות החופש הכפול שהתווספו בניתוח משני למדגם התצפיות החסרות המהוות פקטור משמעותי בניתוחי שונות רב מימדיים הכוללים משתני דמי קטגוריאליים מחמירים מאוד כפי שניתן לראות במקרה של המגדר והטיפול הכושל."
+                ], ans: 2,
+                exp: "באנובה דו כיוונית, כדי לבדוק השפעה של משתנה ספציפי (כאפקט עיקרי מבודד), מסתכלים ישירות על השורה שלו. ה-Sig של Treatment הוא .180. כיוון שהמספר הזה גדול מ-0.05, המסקנה החד משמעית היא שאין לטיפול שום אפקט עיקרי מובהק, והוא אינו משפיע על התוצאות."
+            },
+            {
+                q: "על פי טבלת העקיבות הפנימית (Reliability Statistics) המצורפת, האם החוקר יכול להסתמך על השאלון שיצר כמדד אחיד?",
+                t: spss("Reliability Statistics","<tr><th>Cronbach's Alpha</th><th>N of Items</th></tr>",
+                `<tr><td>.910</td><td>15</td></tr>`),
+                options: [
+                    "לא. הערך שמוצג גדול מ-0.05 ולכן הוא אינו עומד במבחן המובהקות הנדרש להסמכת השאלון במחקר מדעי תקני ומקובל כפי שנהוג לפרסם בכתבי העת המובילים בפסיכולוגיה חברתית אשר דורשים הוכחה להפרכת השערת האפס באמצעות חסינות של משתנים שמיים וקטגוריאליים בטבלאות התדירויות המקדימות שמופעלות תדיר בכל מערך נסיוני מורכב הכולל משתני מרווח בעלי הטיה עקיפה ימנית מובהקת המשבשת סטיות.",
+                    "לא, עקב מספר הפריטים המופרז (15) המעוות את מדד האלפא כלפי מעלה בצורה שקרית ומנפח את השונות של המודל כולו ללא הצדקה מחקרית או בסיס תיאורטי מוצק שיצדיק שימוש במדגם קטן כל כך ביחס לכמות השאלות שהועברו לנבדקים במסגרת מבחני הרצה מקדימים שנעשו בסביבה סטרילית וחסרת תוקף אקולוגי כלשהו שיאפשר הכללה לאוכלוסייה הרחבה ממנה הגיעו המשתתפים באופן מדגמי אקראי וללא כל סינון קפדני.",
+                    "כן, אך רק לאחר ביצוע מחיקה מבוקרת של לפחות 5 פריטים בעייתיים כדי להגיע לעקיבות מתונה ומקובלת של 0.50 כפי שנדרש בחוגי הפסיכולוגיה הקלינית אשר מחמירים מאוד עם שאלונים ארוכים מדי הנוטים לייצר אפקט נשירה כבד בקרב הנבדקים השונים המאבדים את הריכוז שלהם באמצע תהליך מילוי השאלון הארוך באופן מופרז מהמקובל במערכי הניסוי השגרתיים של תלמידי תואר ראשון במדעי ההתנהגות השונים והמורכבים במוסדות להשכלה גבוהה במרכז הארץ או בפריפריה הסטטיסטית שלה.",
+                    "כן. רמת המהימנות שלו היא מצוינת (0.910)."
+                ], ans: 3,
+                exp: "מבחן אלפא של קרונבך בודק עקיבות פנימית של שאלון. כאן החוקים מתהפכים: אנו מחפשים מספר כמה שיותר גבוה. אלפא מעל 0.70 מעידה על שאלון אמין שפריטיו קשורים זה לזה. אלפא של 0.910 היא תוצאה מעולה שמוכיחה שכל 15 הפריטים עובדים בהרמוניה."
+            },
+            {
+                q: "התבונן בטבלת 'Item-Total Statistics'. איזו מהפעולות הבאות תתרום לשיפור משמעותי בשאלון שחיבר החוקר?",
+                t: spss("Item-Total Statistics","<tr><th style='text-align:left'></th><th>Cronbach's Alpha if Item Deleted</th></tr>",
+                `<tr><td class='row-title'>Item_1</td><td>.680</td></tr><tr><td class='row-title'>Item_2</td><td>.650</td></tr><tr><td class='row-title'>Item_3</td><td>.890</td></tr>`,
+                "Overall Alpha = .670"),
+                options: [
+                    "השארת השאלון כפי שהוא כעת, מכיוון שמחיקת פריטים לרוב אינה משפיעה על השלמות הכללית של המדד העקיב ולרוב רק מוסיפה רעש סטטיסטי לבדיקה החוזרת בקרב קבוצת הביקורת אשר עלולה לסבול מנשירה המונית בשל חוסר התאמה בין אורכי השאלונים השונים המחולקים בנקודות הזמן החופפות של הפרויקט הניסויי רחב ההיקף שבוצע זה עתה בשטח המחקר הרלוונטי למסגרת הקורס הנלמד בתוכנית הלימודים הפורמלית במוסד האקדמי במרכז הארץ.",
+                    "מחיקת פריט 2, אשר מחזיק בציון האלפא הנמוך ביותר מבין האפשרויות המוצגות ובכך גורר את הממוצע הכללי של השאלון הגלובלי מעט מטה לעבר אי יציבות ומאלץ שימוש במבחנים לא פרמטריים מורכבים במיוחד אשר אינם הולמים את כישורי החוקר המתחיל בשלב זה של איסוף הנתונים הראשוני והגולמי שטרם נוקה מערכים קיצוניים בעייתיים המשבשים את פעולת החישוב של תוכנת העיבוד האוטומטית המותקנת במעבדות ההוראה הרשמיות של האוניברסיטה המארחת.",
+                    "מחיקת פריט 3.",
+                    "איחוד של שלושת הפריטים למשתנה אחד על ידי פקודת compute מיוחדת וחישוב ממוצע צולב על מנת לייצר משתנה גלובלי המבטל סטיות מקומיות בבחינה המקדימה ומגדיל את כוחו של המבחן הסטטיסטי לדחות השערות שווא הנובעות מדגימת חסר אקראית אשר אינה משקפת נאמנה את יחסי הגומלין האמתיים השוררים בין פריטי השאלון הקוגניטיבי המועבר לנבדקים בסביבה חסרת תוקף אקולוגי ממשי היכול להעיד על התנהגותם האמיתית מחוץ למעבדה בחיים האמיתיים מעבר לכותלי האקדמיה."
+                ], ans: 2,
+                exp: "הטבלה 'Cronbach's Alpha if Item Deleted' מתארת מה יקרה לאלפא הכוללת אם החוקר יחליט לזרוק פריט מסוים. האלפא הנוכחית היא רק 0.670. אם החוקר ימחק את 'Item_3', מדד המהימנות של השאלון יזנק ל-0.890. לכן פריט 3 פוגע בתיאום הכללי, ומחיקתו היא הצעד הנבון."
+            },
+            {
+                q: "מה מייצגת עמודת ה-Valid Percent (אחוז תקף) בטבלת שכיחויות רגילה, ומדוע היא מועדפת על פני עמודת ה-Percent באקדמיה?",
+                t: null,
+                options: [
+                    "היא מאששת באופן סטטיסטי חותך את תקינות המדגם ופוסלת אוטומטית שגיאות הקלדה פוטנציאליות שחורגות מעקומת הפעמון ומאיימות על יציבות המודל הכללי שאותו מנסה החוקר לבנות באמצעות סדרת רגרסיות עוקבות מרובות משתנים השואבות את נתוניהן ישירות מתוך טבלאות הפרופורציה הבסיסיות הללו המשמשות תשתית לכל המערך האנליטי המורכב המצפה לחוקר בשלבים המתקדמים יותר של המחקר השנתי הפעיל.",
+                    "היא מציגה את האחוזים המצטברים מן הקטגוריה הגבוהה לנמוכה ובכך יוצרת התפלגות שכיחויות קלה יותר לקריאה חזותית מהירה של החוקר המחפש לאתר חריגות מקומיות בתוך המדגם הקטן במיוחד עימו הוא נאלץ לעבוד עקב אילוצי תקציב חמורים אשר מנעו ממנו איסוף נתונים נרחב יותר בקרב אוכלוסיות יעד רחבות ומגוונות מחוץ לאזור מגוריו הקרוב המאופיין ברקע סוציו אקונומי הומוגני שאינו מייצג את הכלל נאמנה.",
+                    "אין שום הבדל בין השתיים והן זהות מתמטית בכל מצב נתון ללא תלות בסוג המדגם או בכמות החוסרים הקיימת בבסיס הנתונים הגולמי, ולכן העדפה של האחת על פני השנייה מהווה עניין קוסמטי גרידא אשר אינו משפיע כהוא זה על מסקנותיו של החוקר הרציני המתמקד במובהקות בלבד ומתעלם משיעורי התגובה החלקיים המופיעים בדוחות הראשוניים המופקים טרם ניקוי המאגר על ידי עוזרי המחקר המנוסים המועסקים בפרויקט הייעודי של האוניברסיטה המארחת.",
+                    "היא מנכה ומסירה מחישוב האחוזים מקרים של ערכים חסרים (Missing)."
+                ], ans: 3,
+                exp: "עמודת Percent הסטנדרטית ב-SPSS מחשבת אחוזים מתוך מכלול המשתתפים כולו, גם כאלה שדילגו על השאלה הספציפית ולא ענו עליה. ה-Valid Percent מבצעת פעולה חכמה יותר: היא מתעלמת ממי שלא ענה (Missing Values) ומציגה את החלוקה באחוזים האמיתית אך ורק מתוך הנתונים התקפים."
+            },
+            {
+                q: "מתוך הטבלה המצורפת, מהו ה'שכיח' (Mode) עבור צבע הרכב בישראל?",
+                t: spss("Frequencies: Car Color","<tr><th style='text-align:left'></th><th>Frequency</th><th>Percent</th></tr>",
+                `<tr><td class='row-title'>White</td><td>250</td><td>55.6</td></tr><tr><td class='row-title'>Silver</td><td>120</td><td>26.7</td></tr><tr><td class='row-title'>Black</td><td>80</td><td>17.8</td></tr>`),
+                options: [
+                    "250",
+                    "55.6%",
+                    "Black (שחור) מאחר והוא נמצא בתחתית החלוקה הדיכוטומית בהתפלגות הטבלאית ומושך את עקומת הנורמל שמאלה בצורה המסכנת את יציבות הממוצע בטווח הארוך של מחזור המכירות הכללי בענף הרכב הישראלי המושפע ממגמות מתחלפות בעולם הייבוא הבינלאומי של מכוניות משפחתיות וקומפקטיות מהמזרח הרחוק אל עבר המערב התעשייתי והמתקדם המעדיף צבעים כהים בשנים האחרונות.",
+                    "White (לבן)."
+                ], ans: 3,
+                exp: "ה'שכיח' מוגדר תמיד בתור *שם הערך או הקטגוריה* אשר זכו למספר ההופעות הרב ביותר. אסור להתבלבל ולבחור במספר שמייצג את הספירה עצמה (250). מכיוון שמכוניות לבנות הופיעו הכי הרבה פעמים במדגם הנוכחי, השכיח הוא קטגוריית הצבע הלבן."
+            },
+            {
+                q: "אם התקבלו התוצאות הבאות לגבי משתנה רציף מסוים: ממוצע = 50, וסטיית תקן = 0. מה זה אומר על המדגם?",
+                t: null,
+                options: [
+                    "שהייתה שגיאת דגימה או שהמחשב קרס בזמן חישוב התוצאות, כיוון שסטיית תקן לא יכולה להיות אפס על פי ההגדרה המתמטית של פיזור מרחבי מינימלי באוכלוסייה תקנית השואפת להתפלגות נורמלית מלאה בעלת תכונות פרמטריות עקיבות המאפשרות שימוש במבחנים מבוססי ממוצעים לאימות השערות סטטיסטיות רב ממדיות הכוללות הטיות קבועות המקזזות זו את זו סביב האפס האסימפטוטי המוחלט בעולם המדעי כפי שנוסח על ידי אבות הסטטיסטיקה הקלאסית בתחילת המאה הקודמת.",
+                    "שהמודל הסטטיסטי כולו אינו מובהק ולכן יש לחשב מחדש את משתני המרווח בטרם קבלת החלטה סופית על טיב ההתפלגות ואיכותה המדעית המחמירה הנדרשת מכתבי העת המקצועיים המהווים חומת מגן מפני מחקרים שגויים או מסולפים המציגים ממצאי שווא קליניים העלולים לפגוע בבריאות הציבור או במוניטין של המוסדות האקדמיים המאשרים את קיומם של ניסויים מן הסוג הזה המבוססים על מדגמי נוחות קטנים במיוחד בניגוד להנחיות הברורות והכתובות של רשויות הבקרה הארציות והבינלאומיות המוכרות לכל העוסקים במלאכת המחקר השוטפת.",
+                    "שהחציון בהכרח גדול מ-50 בשל הטיה שלילית בהתפלגות הציונים הכללית לעומת ממוצע המדגם שהתקבל בתוכנה בצורה שגויה לחלוטין וללא הפעלת תיקוני הרציפות המחויבים במדגמים חריגים מעין אלה הנוטים לעיוותים קיצוניים הדורשים קיזוז של שגיאת התקן השמרנית מתוך טווח רווח הסמך המקסימלי האפשרי שהוגדר במודל החלופי שאושר לאחרונה בוועדות התקינה של הפקולטה כחלק מרפורמת המדידות החדשה המונהגת החל משנת הלימודים הנוכחית בכלל המוסדות האקדמיים המחמירים בעבודתם המחקרית השוטפת.",
+                    "שכל התצפיות (האנשים) במדגם ללא יוצא מן הכלל קיבלו את הציון המדויק 50."
+                ], ans: 3,
+                exp: "סטיית תקן (Standard Deviation) היא מדד פיזור המראה עד כמה הנתונים 'רחוקים' מהממוצע שלהם במדגם הנתון. אם הסטייה היא בדיוק 0, הפירוש הבלעדי האפשרי מתמטית הוא שאין שום מרחק או פיזור כלל. כולם קיבלו לחלוטין ובדיוק את ציון הממוצע עצמו (50)."
+            },
+            {
+                q: "מה קורה כאשר רווח הסמך (Confidence Interval) עבור ממוצע ההפרשים במבחן T מזווג נע בין ערך תחתון שלילי לערך עליון חיובי (למשל ממינוס 1.2 ועד 4.5)?",
+                t: null,
+                options: [
+                    "ה-Sig הדו-צדדי יהיה בוודאות קטן מ-0.05 ותדחה השערת האפס כנדרש בבדיקות כיווניות מחמירות של מרווחי בר סמך כפולים במערך הניסוי הפנימי שהופעל על הנבדקים בתנאי מעבדה שמרניים מאוד שנועדו לבודד כל השפעה אפשרית של משתנים מתערבים העלולים לפגוע בתוקף המסקנות של הסטטיסטיקאי המעריך את הנתונים בזמן אמת.",
+                    "המבחן יסבול משונות גדולה ולכן יש לעבור לשימוש בניתוח שונות חד-גורמי כאמצעי גיבוי רשמי לאור ההפרעה שהתגלתה באומדני טעות התקן הקריטית למרווחים המוצגים לפנינו כעת ואשר מעידה על כשל טכני באיסוף הנתונים המקדים מן השטח המצריך התערבות מחקרית כירורגית לתיקון הפגם המובנה לפני המשך עיבוד הנתונים הסטנדרטיים בתוכנה המסחרית המקובלת באקדמיה.",
+                    "הממוצע יהיה שלילי ללא צל של ספק בהשוואה לקבוצת הביקורת אליה הוא משויך מכורח ההתפלגות הנורמלית המושלמת אשר מחייבת איזון הדדי בין זנבות העקומה במקרים של מרווחים חופפים בסביבת מבחני פירסון מתקדמים השומרים על חסינות המודל הליניארי הפשוט מפני הטיה שיטתית הנגרמת עקב תצפיות קיצוניות המסרבות להתיישר עם תוחלת האוכלוסייה הרחבה ממנה הן נדגמו מלכתחילה בשיטות שכבה רבודות.",
+                    "ה-Sig יהיה גדול מ-0.05 (כלומר, המבחן אינו מובהק)."
+                ], ans: 3,
+                exp: "רווח הסמך (Confidence Interval) משקף את הטווח שבו אנו בטוחים ב-95% שנמצא הפרש התוחלות האמיתי באוכלוסייה. אם הטווח מתחיל במספר שלילי ונגמר במספר חיובי, הוא 'חוצה את האפס'. אם האפס (שפירושו 'אין הבדל') כלול כאפשרות סבירה באוכלוסייה, הרי שהתוצאה במדגם בהכרח אינה מובהקת (Sig > 0.05)."
+            },
+            {
+                q: "מה קובע הפלט לגבי המודל הכולל?",
+                t: spss("ANOVA","<tr><th style='text-align:left'></th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr>",
+                `<tr><td class='row-title'>Between Groups</td><td>55.2</td><td>2</td><td>27.60</td><td>4.10</td><td>.025</td></tr><tr><td class='row-title'>Within Groups</td><td>250.0</td><td>38</td><td>6.57</td><td></td><td></td></tr>`),
+                options: [
+                    "המודל מובהק ובו 2 משתנים מסבירים המייצרים כוח הסבר רב מימדי המאשש את כל השערות החוקר בטרם נזדקק למבחנים משלימים העשויים לפגום בתהליך קבלת ההחלטות הליניארי והישיר בקרב שופטי כתבי העת המקצועיים הבוחנים את עבודתו של מחבר המאמר הסטטיסטי הנוכחי המוצג כאן לראשונה בפני הקהילה המדעית הבינלאומית הענפה שמתמקדת בניתוחי אורך מורכבים מסוג זה.",
+                    "המבחן משווה שתי קבוצות, ודוחה את השערת האפס בסבירות גבוהה מאוד על סמך פער תוחלות חריג בעוצמתו המעיד על הצלחה מסחררת של פרוטוקול ההתערבות שהופעל על המשתתפים במהלך תקופת איסוף הנתונים המבוקרת במרפאות החוץ האזוריות שפעלו תחת חסות המוסד האקדמי המארח את הפרויקט הקליני רחב ההיקף השנתי שמומן על ידי מענקים חיצוניים עצמאיים וחסרי פניות מקצועיות או אישיות.",
+                    "זהו מבחן לבדיקת מהימנות שאלון שצלח יפה ומבטיח כי כל הפריטים המרכיבים את סולם העמדות שהועבר לנבדקים מצויים בהרמוניה מוחלטת ועקיבות פנימית מעולה המאפשרת לאגדם יחדיו תחת כותרת אחת לצורך המשך עיבוד הנתונים הסטנדרטי בתוכנה האנליטית המקובלת בחוגי הפסיכולוגיה החברתית והקוגניטיבית כאחד במקרים דומים הדורשים בניית כלים פסיכומטריים חסונים למדגמי אוכלוסייה רוחביים גדולים מאוד.",
+                    "זהו מבחן המשווה תוחלות של 3 קבוצות. נמצא כי לפחות ממוצע אחד שונה באופן מובהק."
+                ], ans: 3,
+                exp: "פלט המורכב מ-'Between Groups' ו-'Within Groups' שייך אך ורק לניתוח שונות חד-כיווני (One-Way ANOVA). דרגות החופש ב-Between הן 2 (df = K-1), מה שאומר שיש 3 קבוצות במדגם השלם. כיוון שה-Sig הוא 0.025 (קטן מסף ה-0.05), המסקנה היא שקיים הבדל מובהק בממוצעים בין הקבוצות."
+            },
+            {
+                q: "באיזה מבחן בוצע שימוש בפלט שלפניך, ומהי מטרתו הסטטיסטית בעולם המחקר?",
+                t: spss("Chi-Square Tests","<tr><th style='text-align:left'></th><th>Value</th><th>df</th><th>Asymp. Sig. (2-sided)</th></tr>",
+                `<tr><td class='row-title'>Pearson Chi-Square</td><td>0.150<sup>a</sup></td><td>1</td><td>.700</td></tr>`,
+                "a. 0 cells (0.0%) have expected count less than 5."),
+                options: [
+                    "מבחן T למדגמים בלתי תלויים. המטרה היא להשוות ממוצעים בין שתי אוכלוסיות בעלות התפלגות נורמלית השואפת לפעמון סימטרי נטול חריגות תוך שמירה על הנחת שוויון שונויות קפדני הנבדק טרם המבחן עצמו במטרה למנוע סטיות תקן מנופחות המעוותות את המסקנה הסופית של המנתח.",
+                    "מבחן מהימנות פנימית אסימפטוטית למדגמים רב-שכבתיים. המטרה לבדוק אם השאלות עקביות ויוצרות מארג אחיד הניתן להכללה על פני כלל הנבדקים המרכיבים את השכבות הסוציו-אקונומיות השונות שהרכיבו את רשימת התפוצה ההתחלתית שממנה נגזר המדגם במתודולוגיית מחקר משולבת המקובלת באפידמיולוגיה חברתית.",
+                    "מבחן חי-בריבוע. המטרה לבדוק האם קיים קשר בין שני משתנים קטגוריאליים.",
+                    "מבחן ניתוח שונות (ANOVA). המטרה להשוות שונויות של 3 קבוצות שונות זו מזו המציגות פיזורים לא אחידים בבדיקות המקדמיות הנערכות במסגרת הנחות החובה למבחנים פרמטריים מרובי נבדקים הפעילים בסביבה מבוקרת וסטרילית שנועדה למנוע רעשי רקע מתערבים המאיימים על תוקפו הפנימי של הניסוי העכשווי שאנו מנתחים ברגעים אלו על המסך המרכזי במעבדה הסטטיסטית החדישה של הפקולטה האקדמית שלנו המאוישת על ידי סגל בכיר ומוסמך בתחום זה של המדע המדויק."
+                ], ans: 2,
+                exp: "הפלט צועק מכל כיוון אפשרי את השם 'Chi-Square' (חי בריבוע). זהו מבחן שכל ייעודו הסטטיסטי הוא בדיקה בלעדית של מציאת קשר/תלות בין שני משתנים המחולקים לקטגוריות שמיות (למשל: צבע שיער והעדפת תוכנית טלוויזיה). אגב, ה-Sig כאן הוא 0.700 ולכן אין קשר מובהק במדגם זה."
+            },
+            {
+                q: "מה המסקנה לגבי האינטראקציה בפלט הבא?",
+                t: spss("Tests of Between-Subjects Effects","<tr><th style='text-align:left'>Source</th><th>df</th><th>F</th><th>Sig.</th></tr>",
+                `<tr><td class='row-title'>Treatment</td><td>1</td><td>12.5</td><td>.001</td></tr><tr><td class='row-title'>Age_Group</td><td>1</td><td>4.10</td><td>.045</td></tr><tr><td class='row-title'>Treatment * Age_Group</td><td>1</td><td>8.80</td><td>.004</td></tr>`),
+                options: [
+                    "אין אינטראקציה כלל מכיוון שערך ה-F הכפול המופיע בטבלה מגמד את השפעתה ומבטל את המובהקות הסטטיסטית שהושגה בעמל רב על ידי החוקר במהלך איסוף הנתונים המתיש במרפאות השטח הפזורות לאורכה ולרוחבה של המדינה בה פועל המכון הרפואי היוקרתי העומד מאחורי הפרסום האקדמי הנכבד המונח כעת בפנינו לאישור סופי מן הוועדה המוסדית האחראית על מחקרים בבני אדם תחת הגבלות אתיות חמורות ובלתי מתפשרות הנועדות להגן על הציבור מפני הטיות מסחריות העלולות לפגום באיכות החומר הנאסף לצרכי פרסום עתידי בעיתונות הרפואית הבינלאומית היוצאת לאור פעם ברבעון במדינות המערב המפותח בלבד.",
+                    "האינטראקציה (Treatment * Age_Group) מובהקת (Sig=0.004).",
+                    "האינטראקציה מובהקת אבל האפקטים העיקריים חלשים ומתבטלים לאור המובהקות המופרזת של ההכפלה האנליטית שמשתקת למעשה את המודל כולו ומחייבת נטישה של התוצאות לטובת מודלים פשוטים יותר המבוססים על מבחני T נפרדים חסרי תלות פיזור העוקפים את הבעיה הטכנית החמורה שנוצרה כאן בתוכנת המחשב המסחרית המותקנת במעבדות ההוראה הזעירות המשמשות את הסטודנטים בשעות התרגול המאוחרות של ימי רביעי בערב כפי שנקבע במערכת השעות הסמסטריאלית שחולקה בתחילת שנת הלימודים הפורמלית על ידי המזכירות האקדמית הרשמית של החוג.",
+                    "המבחן פסול כי ה-F גדול מ-5 בשלושת האפקטים העיקריים."
+                ], ans: 1,
+                exp: "השורה של הכפל הכוללת את סימן הכוכבית (Treatment * Age_Group) מציגה את נתוני אפקט האינטראקציה בניתוח דו כיווני. ה-Sig שלה הוא 0.004 (<0.05). המשמעות הישירה של אינטראקציה מובהקת היא שההשפעה של הטיפול משתנה/תלויה ברמות השונות של קבוצות הגיל, ולא פועלת בוואקום באופן אחיד."
+            },
+            {
+                q: "האם יש צורך לבצע מבחן פוסט הוק כאשר ב-ANOVA דו גורמי, אפקט האינטראקציה אינו מובהק ושני האפקטים העיקריים גם הם אינם מובהקים כלל?",
+                t: null,
+                options: [
+                    "כן, פוסט הוק הוא תמיד חובת ביצוע באנובה על מנת שלא להסתמך על השערות שווא הנובעות מחולשת כוחו המובהק של המבחן הראשוני הנסמך על חלוקת שונויות משותפות המקשות על איתור הפערים הסמויים בין התת-קבוצות המרכיבות את הפסיפס הדמוגרפי המורכב של המדגם הנרחב שנאסף בשיטות רב-שכבתיות מקפידות ומבוקרות היטב טרם הפעלת התוכנה האנליטית המקצועית השמרנית בה אנו עושים שימוש כעת במעבדה.",
+                    "כן, אך ורק כדי להיות בטוחים מעל לכל ספק סביר וראוי במסגרת תקנות הפרסום הבינלאומיות של האיגוד הסטטיסטי האמריקאי הפועל כיום להסדרת נהלי הכתיבה המחמירים המונעים פרסומים בעלי תוצאות שגויות העלולות לעלות לציבור ביוקר רב לאור אימוץ פרקטיקות טיפול חסרות תועלת המבוססות על מדע לא מדויק הרווח לפרקים בשולי האקדמיה המודרנית המונעת מכוח ציוני הפרסום ולא מאיכות הנתונים המוצקים כפי שהיה נהוג בעבר המזהיר של המדעים המדויקים הללו אשר הניחו את היסודות לכל מה שאנו יודעים היום כעובדה גמורה בספרות הקלאסית המוכרת היטב.",
+                    "לא.",
+                    "מבצעים רק מבחן T מזווג במקום כאמצעי גיבוי רשמי לאור ההפרעה שהתגלתה באומדני טעות התקן הקריטית למרווחים המוצגים לפנינו כעת ואשר מעידה על כשל טכני באיסוף הנתונים המקדים מן השטח המצריך התערבות מחקרית כירורגית מקיפה לתיקון הפגם המובנה לפני המשך עיבוד הנתונים הסטנדרטיים בתוכנה המסחרית המקובלת באקדמיה העולמית זה שנים רבות ללא כל שינוי מהותי בגרסאות ההמשך ששוחררו על ידי החברה המפתחת מעבר לים כחלק ממדיניות השדרוג העונתית שלה למנויים הרשומים במערכת התמיכה המקוונת המספקת שירות יעיל ללקוחות מרוצים מכל רחבי תבל מדי יום ביומו ללא הפסקות או תקלות שרת נראות לעין."
+                ], ans: 2,
+                exp: "הכלל תקף גם כאן בדיוק כמו באנובה חד-כיוונית - פוסט הוק או התעמקות באפקטים מפורטים (Simple effects) מבוצעים רק ואך ורק אם מצאנו קודם לכן משהו מובהק שמצדיק את המשך החקירה. אם הכל לא מובהק, הניתוח נפסק מיד במקום ואין שום הצדקה להפעיל מבחני המשך מיותרים המנפחים שגיאות דגימה."
+            }
+        ];
 
-    <div class="question-card">
-        <div class="question-title">5. כלכלן מעוניין לבדוק האם קיים קשר ליניארי בין גיל העובד (בשנים) לבין השכר שלו (בשקלים). איזה מבחן עליו לבחור?</div>
-        <ul class="options">
-            <li>א. מבחן T בלתי תלוי</li>
-            <li>ב. חי בריבוע</li>
-            <li>ג. מתאם פירסון</li>
-            <li>ד. ANOVA</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> בדיקת קשר (ולא הבדל בממוצעים) בין שני משתנים כמותיים רציפים מתבצעת בעזרת מתאם פירסון.</div>
-        </details>
-    </div>
+        // --- Logic & App Flow ---
+        let currentQIndex = 0;
+        let score = 0;
+        let shuffledQuestions = [];
+        let userAnswers = [];
 
-    <div class="question-card">
-        <div class="question-title">6. אם רוצים לבדוק האם גברים מרוויחים בממוצע יותר מנשים באותה חברה, איזה מבחן יש לבצע?</div>
-        <ul class="options">
-            <li>א. מתאם פירסון</li>
-            <li>ב. חי בריבוע</li>
-            <li>ג. מבחן T למדגמים תלויים</li>
-            <li>ד. מבחן T למדגמים בלתי תלויים</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ד.</b> משתנה בלתי תלוי קטגוריאלי בעל 2 רמות (גברים/נשים) ומשתנה תלוי רציף (שכר). הקבוצות בלתי תלויות זו בזו.</div>
-        </details>
-    </div>
+        function initApp() {
+            // Shuffle all questions
+            shuffledQuestions = [...qData].sort(() => Math.random() - 0.5);
+            userAnswers = new Array(shuffledQuestions.length).fill(null);
+            
+            renderQuestion();
+            updateProgress();
+        }
 
-    <div class="question-card">
-        <div class="question-title">7. במבחן T בלתי תלוי, החוקר מסתכל תחילה על תוצאות מבחן Levene. מה תפקידו של מבחן זה?</div>
-        <ul class="options">
-            <li>א. לבדוק את המובהקות של ההבדל בין הממוצעים.</li>
-            <li>ב. לבדוק האם התפלגות הנתונים נורמלית.</li>
-            <li>ג. לבדוק את הנחת שוויון השונויות בין שתי הקבוצות.</li>
-            <li>ד. לוודא שהמדגמים באותו גודל בדיוק.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> מבחן לוין נועד לבדוק האם שונויות האוכלוסיות מהן נלקחו המדגמים שוות. על פי התוצאה שלו (מובהק או לא מובהק), נחליט באיזו שורה בטבלת ה-T להשתמש.</div>
-        </details>
-    </div>
+        function renderQuestion() {
+            const q = shuffledQuestions[currentQIndex];
+            document.getElementById('qText').innerHTML = `<strong>שאלה ${currentQIndex + 1}:</strong> ${q.q}`;
+            document.getElementById('qTable').innerHTML = q.t ? q.t : '';
+            
+            let optsHTML = '';
+            q.options.forEach((opt, idx) => {
+                let btnClass = 'opt-btn';
+                let disabledAttr = '';
+                
+                if (userAnswers[currentQIndex] !== null) {
+                    disabledAttr = 'disabled';
+                    if (idx === q.ans) btnClass += ' correct';
+                    else if (idx === userAnswers[currentQIndex]) btnClass += ' wrong';
+                }
 
-    <div class="question-card">
-        <div class="question-title">8. מתי נשתמש בשורה השנייה בטבלת מבחן T (Equal variances not assumed)?</div>
-        <ul class="options">
-            <li>א. כאשר ערך ה-Sig של מבחן T קטן מ-0.05.</li>
-            <li>ב. כאשר ערך ה-Sig של מבחן Levene גדול מ-0.05.</li>
-            <li>ג. כאשר הממוצעים של הקבוצות שווים.</li>
-            <li>ד. כאשר ערך ה-Sig של מבחן Levene קטן מ-0.05.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ד.</b> אם מבחן Levene מובהק (p < 0.05), המשמעות היא שהשונויות שונות במובהק. לכן לא נניח שוויון שונויות וניקח את השורה השנייה המבצעת תיקון.</div>
-        </details>
-    </div>
+                optsHTML += `<button class="${btnClass}" ${disabledAttr} onclick="handleAnswer(${idx})">${opt}</button>`;
+            });
+            document.getElementById('optGrid').innerHTML = optsHTML;
 
-    <div class="question-card">
-        <div class="question-title">9. חוקר בוחן את הקשר בין שעות שינה בלילה (רציף) לבין זמן תגובה במאיות שנייה (רציף). מה יראה מקדם שמסומן באות r?</div>
-        <ul class="options">
-            <li>א. את ההפרש בממוצע זמן התגובה.</li>
-            <li>ב. את כיוון ועוצמת הקשר הליניארי בין המשתנים.</li>
-            <li>ג. את הסיכוי שאחד המשתנים גורם לשני.</li>
-            <li>ד. את השונות המוסברת בלבד.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> האות r מייצגת את מקדם מתאם פירסון. הוא נע בין 1 ל-(1-) ומעיד על הכיוון והעוצמה. כדי לקבל שונות מוסברת צריך להעלות אותו בריבוע. סטטיסטיקה זו אינה מעידה על סיבתיות.</div>
-        </details>
-    </div>
+            const fbBox = document.getElementById('fbBox');
+            const nextBtn = document.getElementById('nextBtn');
 
-    <div class="question-card">
-        <div class="question-title">10. במבחן חי בריבוע, SPSS מוציא אזהרה מתחת לטבלה. מהי ההנחה המרכזית שSPSS מתריע עליה אם היא מופרת?</div>
-        <ul class="options">
-            <li>א. שהשכיחות המצופה בכל תא חייבת להיות גדולה מ-5 ללא יוצא מן הכלל.</li>
-            <li>ב. שאסור שיהיו יותר מ-20% מהתאים עם שכיחות מצופה קטנה מ-5.</li>
-            <li>ג. שהשכיחות הנצפית חייבת להיות שווה בדיוק לשכיחות המצופה.</li>
-            <li>ד. שהמדגם קטן מ-100 איש ולכן המבחן פסול.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> הכלל האסימפטוטי לחי בריבוע הוא שלכל היותר ל-20% מהתאים יהיה תדר מצופה (Expected count) קטן מ-5, ושלא יהיה אף תא עם תדר מצופה קטן מ-1.</div>
-        </details>
-    </div>
+            if (userAnswers[currentQIndex] !== null) {
+                showFeedback(currentQIndex, userAnswers[currentQIndex]);
+                nextBtn.style.display = 'inline-block';
+            } else {
+                fbBox.style.display = 'none';
+                fbBox.className = 'feedback';
+                nextBtn.style.display = 'none';
+            }
 
-    <div class="question-card">
-        <div class="question-title">11. סטודנט רוצה להשוות את ממוצע הציונים בקורס בין סטודנטים שהגיעו עם רקע אקדמי קודם, לבין סטודנטים ללא רקע אקדמי קודם. איזה מבחן יבצע?</div>
-        <ul class="options">
-            <li>א. מבחן T למדגמים בלתי תלויים</li>
-            <li>ב. מבחן T למדגמים תלויים</li>
-            <li>ג. ANOVA</li>
-            <li>ד. פוסט-הוק</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> יש לנו שתי קבוצות שונות (עם רקע / בלי רקע) שמשווים ביניהן משתנה כמותי רציף (ציון). </div>
-        </details>
-    </div>
+            if (currentQIndex === shuffledQuestions.length - 1 && userAnswers[currentQIndex] !== null) {
+                nextBtn.innerText = 'הגש מבחן וצפה בציון 🏆';
+            } else {
+                nextBtn.innerText = 'לשאלה הבאה ❯';
+            }
+        }
 
-    <div class="question-card">
-        <div class="question-title">12. מה ההבדל העיקרי בין מבחן Scheffe למבחן LSD במסגרת Post-Hoc?</div>
-        <ul class="options">
-            <li>א. LSD הוא המבחן השמרני ביותר ו-Scheffe נוטה למצוא יותר הבדלים מובהקים.</li>
-            <li>ב. שניהם זהים לחלוטין אך מתאימים לתוכנות שונות.</li>
-            <li>ג. Scheffe שמרני מאוד ומגן טוב יותר מפני טעות מסוג ראשון, בעוד LSD אינו מבצע שום תיקון לרמת המובהקות (מקביל למבחן T רגיל מרובה).</li>
-            <li>ד. Scheffe מניח אי-שוויון שונויות ו-LSD מניח שוויון שונויות.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> LSD (Least Significant Difference) לא עושה שום תיקון סטטיסטי להשוואות מרובות (הוא פשוט סדרת מבחני T), לכן הוא "ליברלי". שפה נחשב לשמרני ביותר ודורש פער גדול יותר בממוצעים כדי לקבוע מובהקות.</div>
-        </details>
-    </div>
+        function handleAnswer(selectedIdx) {
+            if (userAnswers[currentQIndex] !== null) return;
 
-    <div class="question-card">
-        <div class="question-title">13. בטבלת ANOVA מתקבל ערך F. כיצד הוא מחושב באופן כללי?</div>
-        <ul class="options">
-            <li>א. שונות בתוך הקבוצות (Within) חלקי השונות בין הקבוצות (Between).</li>
-            <li>ב. שונות בין הקבוצות (Between) חלקי השונות בתוך הקבוצות (Within).</li>
-            <li>ג. סכום הריבועים הכללי פחות הממוצע.</li>
-            <li>ד. הממוצע של הקבוצה הגדולה חלקי ממוצע הקבוצה הקטנה.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> סטטיסטי F הוא היחס (Ratio) בין השונות המוסברת (ההבדלים בין הקבוצות) לשונות הלא מוסברת (הפיזור בתוך כל קבוצה עצמה). ככל שהיחס גדול יותר, הסיכוי למובהקות עולה.</div>
-        </details>
-    </div>
+            userAnswers[currentQIndex] = selectedIdx;
+            const q = shuffledQuestions[currentQIndex];
+            
+            if (selectedIdx === q.ans) score++;
 
-    <div class="question-card">
-        <div class="question-title">14. במבחן פירסון חושב מתאם ונתקבל r = -0.89. מה ניתן להסיק?</div>
-        <ul class="options">
-            <li>א. קשר חלש מאוד מכיוון שהערך שלילי.</li>
-            <li>ב. קשר חזק והפוך: ככל שמשתנה אחד עולה, השני נוטה לרדת.</li>
-            <li>ג. טעות בחישוב, מתאם אינו יכול להיות קטן מאפס.</li>
-            <li>ד. קשר מובהק ללא תלות בגודל המדגם או בערך ה-p.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> מינוס מציין את כיוון הקשר (הפוך). הערך המוחלט 0.89 קרוב מאוד ל-1 ומציין קשר חזק מאוד. כדי לדעת אם הוא מובהק חובה לבדוק את ערך ה-p.</div>
-        </details>
-    </div>
+            renderQuestion();
+            updateProgress();
+        }
 
-    <div class="question-card">
-        <div class="question-title">15. כיצד מחושבות דרגות החופש (df) במבחן חי בריבוע לאי-תלות?</div>
-        <ul class="options">
-            <li>א. N - 2</li>
-            <li>ב. (מספר השורות פחות 1) כפול (מספר העמודות פחות 1)</li>
-            <li>ג. מספר השורות ועוד מספר העמודות</li>
-            <li>ד. N פחות מספר התאים בטבלה</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> נוסחת דרגות החופש בחי בריבוע לטבלה צולבת היא: df = (R-1) * (C-1).</div>
-        </details>
-    </div>
+        function showFeedback(idx, selectedIdx) {
+            const q = shuffledQuestions[idx];
+            const isCorrect = selectedIdx === q.ans;
+            const fbBox = document.getElementById('fbBox');
+            const fbIcon = document.getElementById('fbIcon');
+            const fbContent = document.getElementById('fbContent');
+            
+            if (isCorrect) {
+                fbBox.className = 'feedback is-correct';
+                fbIcon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> מצוין! תשובה נכונה.`;
+                fbContent.innerHTML = `<p><strong>הסבר מקצועי:</strong> ${q.exp}</p>`;
+            } else {
+                fbBox.className = 'feedback is-wrong';
+                fbIcon.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> טעות. שים לב לפרטים:`;
+                fbContent.innerHTML = `
+                    <div style="margin-bottom:10px;">התשובה שהיית צריך לבחור היא:</div>
+                    <div class="correct-answer-box">${q.options[q.ans]}</div>
+                    <p><strong>למה? הנה ההסבר הסטטיסטי לטעות:</strong> ${q.exp}</p>
+                `;
+            }
+        }
 
-    <h2>חלק ב': סיפור מקרה 1 (שאלות 16-32)</h2>
-    <div class="story">
-        חברת היי-טק גדולה ערכה סקר בקרב 300 מעובדיה. החוקר אסף נתונים על: מגדר (גבר, אישה), מחלקה (פיתוח, QA, שיווק), שכר בחודש בשקלים (רציף), וציון הערכת עובד שנתי (0-100, רציף). מטרת המחקר היא להבין אילו גורמים משפיעים על שכר והערכת העובדים.
-    </div>
+        function nextQuestion() {
+            if (currentQIndex < shuffledQuestions.length - 1) {
+                currentQIndex++;
+                renderQuestion();
+                updateProgress();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showResults();
+            }
+        }
 
-    <div class="question-card">
-        <div class="question-title">16. החוקר מפיק טבלת שכיחויות (Frequencies) למשתנה מחלקה. בטבלה מופיעות העמודות Percent ו- Valid Percent. הוא שם לב שהערכים ב-Percent נמוכים יותר מהערכים ב-Valid Percent. מה הסיבה?</div>
-        <ul class="options">
-            <li>א. ישנם עובדים שלא ציינו את המחלקה שלהם (Missing Values).</li>
-            <li>ב. זוהי טעות חישוב של תוכנת SPSS בהמרת משתנה קטגוריאלי.</li>
-            <li>ג. ה-Valid percent מחשב רק את עובדי הפיתוח.</li>
-            <li>ד. ה-Percent כולל חישוב מצטבר וה-Valid לא.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> עמודת ה-Percent מחשבת את האחוז מסך כל השורות (300), כולל הערכים החסרים. עמודת ה-Valid מנכה את החסרים ומחשבת אחוז רק מתוך אלו שענו, ולכן האחוז שם יהיה תמיד שווה או גבוה יותר.</div>
-        </details>
-    </div>
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            const percent = (answeredCount / shuffledQuestions.length) * 100;
+            
+            document.getElementById('qCount').innerText = `שאלה ${currentQIndex + 1} מתוך ${shuffledQuestions.length}`;
+            document.getElementById('scoreCount').innerText = `תשובות נכונות: ${score}`;
+            document.getElementById('pFill').style.width = `${percent}%`;
+        }
 
-    <div class="question-card">
-        <div class="question-title">17. נערך מבחן חי בריבוע כדי לבדוק האם יש קשר בין מגדר העובד למחלקה בה הוא עובד. טבלת Crosstab מראה: סך הכל 120 נשים, מהן 30 בפיתוח. סך הכל במחלקת פיתוח עובדים 100 אנשים (גברים ונשים). מתוך 300 נבדקים, מהו התדר המצופה (Expected) לנשים בפיתוח, בהנחת אי-תלות?</div>
-        <ul class="options">
-            <li>א. 30</li>
-            <li>ב. 40</li>
-            <li>ג. 60</li>
-            <li>ד. 50</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> הנוסחה לתדר מצופה: (סך שורה * סך עמודה) חלקי סך הכל N. במקרה זה: (120 נשים * 100 בפיתוח) / 300 = 12000 / 300 = 40. הערך המצופה הוא 40, למרות שבפועל נצפו 30.</div>
-        </details>
-    </div>
+        function showResults() {
+            document.getElementById('quizApp').style.display = 'none';
+            const resultsScreen = document.getElementById('resultsScreen');
+            resultsScreen.style.display = 'block';
 
-    <div class="question-card">
-        <div class="question-title">18. בפלט חי בריבוע של המבחן הקודם (מגדר ומחלקה), התקבל: Pearson Chi-Square = 8.45, df = 2, Asymp. Sig (2-sided) = .014. בהנחה שאלפא = 0.05, מה המסקנה?</div>
-        <ul class="options">
-            <li>א. לא קיים קשר מובהק כי .014 קטן מ-0.05.</li>
-            <li>ב. קיים קשר מובהק, יש תלות בין מגדר למחלקה.</li>
-            <li>ג. קיים קשר אך הוא לא מובהק כי df הוא רק 2.</li>
-            <li>ד. צריך לדחות את ההשערה החלופית ולאשש את השערת האפס.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> כאשר ערך ה-p (Sig) קטן מרמת המובהקות (0.05), אנו דוחים את השערת האפס המניחה אי-תלות, ומסיקים שקיים קשר מובהק.</div>
-        </details>
-    </div>
+            const percent = Math.round((score / shuffledQuestions.length) * 100);
+            
+            let curP = 0;
+            const scoreDisplay = document.getElementById('finalScore');
+            const tmr = setInterval(() => {
+                curP += 1;
+                if (curP >= percent) {
+                    curP = percent;
+                    clearInterval(tmr);
+                }
+                scoreDisplay.innerText = `${curP}%`;
+            }, 25);
 
-    <div class="question-card">
-        <div class="question-title">19. החוקר מריץ מבחן מתאם פירסון בין שכר לציון הערכה. בטבלת Correlations, תחת "ציון הערכה", בשורה של "שכר", מופיעים הנתונים הבאים: Pearson Correlation = .110, Sig (2-tailed) = .057. (N=300). החוקר הניח מראש השערה דו-כיוונית. מה המסקנה באלפא 0.05?</div>
-        <ul class="options">
-            <li>א. קיים מתאם חיובי מובהק בין השכר לציון ההערכה.</li>
-            <li>ב. לא נמצא קשר מובהק סטטיסטית בין שכר לציון הערכה.</li>
-            <li>ג. קיים קשר מובהק, יש לחלק את ה-Sig ב-2 בגלל שזה פירסון.</li>
-            <li>ד. הנתונים שגויים כיוון שמתאם לא יכול להיות 0.110.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> ערך ה-Sig הוא 0.057, שהוא מעט גדול מ-0.05. לכן, איננו יכולים לדחות את השערת האפס ברמת ביטחון של 95%. אין קשר מובהק. לא מחלקים ב-2 כי ההשערה הייתה דו-כיוונית מראש.</div>
-        </details>
-    </div>
+            let msg = "";
+            if (percent >= 90) msg = "מבריק! השליטה שלך בחומר הסטטיסטי פנומנלית. אתה מוכן במאת האחוזים למבחן. 🏆";
+            else if (percent >= 75) msg = "כל הכבוד! הישג מרשים, היכולת שלך לקרוא ולנתח את הפלטים טובה מאוד. 🌟";
+            else if (percent >= 60) msg = "עברת! אבל כדי להיות בטוח ביום המבחן, מומלץ לעבור שוב על ההסברים של השאלות בהן טעית. 👍";
+            else msg = "זה הזמן לחזרה מעמיקה. קרא היטב את ההסברים המפורטים כדי להבין את חוקי ה-Sig והנחות המבחנים השונים, ונסה שוב! 💪";
 
-    <div class="question-card">
-        <div class="question-title">20. בהמשך לשאלה הקודמת, אם החוקר היה משער השערה <b>חד-כיוונית</b> ("ככל שהשכר גבוה יותר, כך ציון ההערכה יהיה גבוה יותר"), מה היה ה- p-value הרלוונטי והאם התוצאה הייתה מובהקת (באלפא 0.05)?</div>
-        <ul class="options">
-            <li>א. ה-p היה 0.114 ולא מובהק.</li>
-            <li>ב. ה-p היה 0.0285 והתוצאה הייתה מובהקת.</li>
-            <li>ג. ה-p היה 0.057 ולא מובהק, השערה חד כיוונית לא משנה את ה-Sig בתוכנה.</li>
-            <li>ד. ה-p היה 0.110 (המתאם) והתוצאה לא מובהקת.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> במבחן חד-כיווני שהמגמה שלו תואמת לנתונים (הקשר אכן יצא חיובי), אנו מחלקים את ה-Sig הדו-כיווני ב-2. 0.057 חלקי 2 שווה 0.0285. מכיוון שזה קטן מ-0.05, בהשערה חד-כיוונית התוצאה הופכת למובהקת!</div>
-        </details>
-    </div>
+            document.getElementById('finalMsg').innerHTML = msg;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-    <div class="question-card">
-        <div class="question-title">21. בטבלת Correlations מופיע 1.000 בהצלבה של השכר עם עצמו. מה המשמעות הסטטיסטית?</div>
-        <ul class="options">
-            <li>א. שכר העובדים זהה לכולם.</li>
-            <li>ב. משתנה תמיד נמצא במתאם חיובי מושלם (1.0) עם עצמו.</li>
-            <li>ג. זהו ערך ה-R בריבוע (השונות המוסברת) של המודל.</li>
-            <li>ד. ה-N (גודל המדגם) של השכר לא חושב נכון.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> במטריצת מתאמים, האלכסון תמיד יראה 1 מכיוון שכל משתנה מתואם עם עצמו באופן מושלם.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">22. החוקר מבצע מבחן T בלתי תלוי להשוואת השכר בין גברים ונשים. בטבלת Independent Samples Test, במבחן Levene מופיע: F = 1.34, Sig = .248. איך יש להמשיך בקריאת הטבלה?</div>
-        <ul class="options">
-            <li>א. לעבור לשורת Equal variances assumed כי ה-Sig גדול מ-0.05.</li>
-            <li>ב. לעבור לשורת Equal variances not assumed כי ה-Sig גדול מ-0.05.</li>
-            <li>ג. לדחות את השערת האפס לגבי הבדל בשכר.</li>
-            <li>ד. המבחן לא תקף, צריך להשתמש ב-ANOVA.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> מבחן Levene אינו מובהק (.248 > .05), משמע לא דחינו את השערת שוויון השונויות. לכן אנו מניחים שהן שוות וקוראים מהשורה הראשונה (Equal variances assumed).</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">23. בשורה הראשונה בטבלת ה-T (מהשאלה הקודמת) מופיעים הנתונים הבאים: t = -2.50, df = 298, Sig (2-tailed) = .013. ממוצע נשים: 18,000, ממוצע גברים: 19,500. המסקנה היא:</div>
-        <ul class="options">
-            <li>א. אין הבדל מובהק בשכר בין גברים לנשים, כי t הוא מספר שלילי.</li>
-            <li>ב. יש הבדל מובהק, שכר הנשים גבוה משמעותית.</li>
-            <li>ג. יש הבדל מובהק, שכר הגברים גבוה משמעותית.</li>
-            <li>ד. יש הבדל, אך הוא לא מובהק סטטיסטית.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> ה-Sig (0.013) קטן מ-0.05, לכן ההבדל מובהק. לפי הממוצעים (גברים: 19,500 לעומת נשים: 18,000), לגברים יש שכר ממוצע גבוה יותר במובהק. (סימן המינוס ב-t רק מעיד שקבוצת הנשים הוזנה ראשונה בנוסחת ההפרש).</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">24. עבור אותו מבחן T מהשאלה הקודמת, עמודת רווח בר-סמך (95% Confidence Interval of the Difference) מציגה טווח של [2685- , 315-]. האם נתון זה תואם למסקנת המובהקות?</div>
-        <ul class="options">
-            <li>א. לא, אם יש מינוס ברווח הסמך סימן שהתוצאה לא מובהקת.</li>
-            <li>ב. כן, כיוון שרווח הסמך אינו מכיל את הערך אפס (0), זה מוכיח שיש הבדל מובהק ברמת ביטחון של 95%.</li>
-            <li>ג. לא ניתן לדעת, צריך לחשב את האמצע של רווח הסמך.</li>
-            <li>ד. כן, אך הטווח מעיד על כך שההשערה הייתה חייבת להיות חד כיוונית.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> כאשר רווח הסמך להפרש הממוצעים לא חוצה את האפס (שני הגבולות שליליים במקרה זה), אנו דוחים את השערת האפס. זה תמיד יתיישר עם Sig קטן מ-0.05.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">25. כיצד חושבו דרגות החופש (df = 298) במבחן ה-T בשאלה 23? בהנחה שהיו 300 נבדקים חוקיים ללא Missing.</div>
-        <ul class="options">
-            <li>א. לפי הנוסחה: N1 + N2 - 2 (או פשוט N-2).</li>
-            <li>ב. לפי מספר הגברים כפול מספר הנשים פחות 1.</li>
-            <li>ג. לפי הנוסחה ל-Satterthwaite בשורה השנייה בלבד.</li>
-            <li>ד. זוהי שגיאת תוכנה, ה-df אמור להיות 299 (N-1).</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> במבחן T למדגמים בלתי תלויים, דרגות החופש הרגילות (שורה ראשונה) מחושבות כ- N - 2 (כלומר סכום גדלי שני המדגמים פחות 2: 300 - 2 = 298).</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">26. החוקר מריץ מבחן ANOVA חד-כיווני כדי לבדוק האם ציון ההערכה שונה בין 3 המחלקות (פיתוח, שיווק, QA). טבלת ANOVA מציגה: F = 1.15, Sig = .319. מה המסקנה הנכונה?</div>
-        <ul class="options">
-            <li>א. צריך להמשיך למבחן פוסט-הוק כדי לגלות אילו מחלקות שונות.</li>
-            <li>ב. ציון ההערכה שונה במובהק בין כל המחלקות.</li>
-            <li>ג. לא נמצא הבדל מובהק בציון ההערכה הממוצע בין שלוש המחלקות.</li>
-            <li>ד. המחלקה הגדולה ביותר מושכת את הממוצע כלפי מטה.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> ה-Sig (0.319) גדול מ-0.05. משמע, נכשלנו בלדחות את השערת האפס. אין צורך (ואף שגוי) להמשיך למבחני Post-Hoc כשהמבחן הכללי לא מובהק.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">27. אילו השערת האפס (H0) נבדקה במבחן ה-ANOVA הקודם?</div>
-        <ul class="options">
-            <li>א. ממוצע ציון ההערכה במחלקת פיתוח שווה לממוצע בשיווק, שווה לממוצע ב-QA.</li>
-            <li>ב. לפחות ממוצע אחד שונה מהאחרים.</li>
-            <li>ג. השונות של ציון ההערכה שווה בין כל המחלקות.</li>
-            <li>ד. אין קשר ליניארי בין סוג המחלקה לציון.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> השערת האפס ב-ANOVA תמיד טוענת לשוויון כל הממוצעים באוכלוסיות (μ1 = μ2 = μ3).</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">28. החוקר עורך ANOVA נוספת, הפעם לגבי השכר בין 3 המחלקות. מתקבל F = 25.6, Sig = .000. הממוצעים מהגבוה לנמוך: פיתוח(1), שיווק(2), QA(3). הוא מבצע מבחן פוסט-הוק מסוג Tukey. בהשוואה בין מחלקת שיווק ל-QA בטבלת Multiple Comparisons מתקבל: Mean Diff = 850, Sig = .415. מה ניתן להסיק?</div>
-        <ul class="options">
-            <li>א. מחלקת שיווק מרוויחה מובהקות יותר מ-QA.</li>
-            <li>ב. מחלקת QA מרוויחה מובהקות יותר משיווק.</li>
-            <li>ג. למרות ההבדל במספרים (850 ש"ח), ההבדל בשכר בין שיווק ל-QA אינו מובהק סטטיסטית.</li>
-            <li>ד. פוסט-הוק עובד רק כשיש 4 מחלקות ומעלה.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> למרות שה-ANOVA הכללי יצא מובהק (יש הבדל *איפשהו*), ההשוואה הספציפית בטוקי בין שיווק ל-QA הניבה Sig של 0.415 (>0.05), כלומר ביניהן ספציפית אין הבדל מובהק, ורוב השונות המוסברת מגיעה מההבדל מול מחלקת הפיתוח.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">29. בטבלת ה-Multiple Comparisons מופיע לצד ההפרש בממוצע (Mean Difference) סימון של כוכבית (*). למשל במחלקת פיתוח מול QA נכתב *4500. מה מסמלת הכוכבית בפלט ה-SPSS?</div>
-        <ul class="options">
-            <li>א. התעלמות ממקרים חסרים (Missing).</li>
-            <li>ב. שההבדל הממוצע מובהק סטטיסטית (בדרך כלל באלפא 0.05).</li>
-            <li>ג. שמבחן Levene לא בוצע עבור השוואה זו.</li>
-            <li>ד. שהשערת האפס אוששה.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> SPSS מסמן אוטומטית בכוכבית את ההפרשים שרמת המובהקות שלהם קטנה מ-0.05 (מובהקים), לנוחות הקריאה.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">30. החוקר רוצה לדעת כמה אחוזים מהשונות בשכר מוסברים על ידי הציון בהערכת עובדים. בהנחה שחישב מתאם פירסון ויצא r = 0.40, מהי התשובה?</div>
-        <ul class="options">
-            <li>א. 40%</li>
-            <li>ב. 0.40%</li>
-            <li>ג. 16%</li>
-            <li>ד. 80%</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> אחוז השונות המוסברת מחושב על ידי העלאת מקדם המתאם (r) בריבוע והכפלתו ב-100. כלומר (0.4 * 0.4) = 0.16 = 16%.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">31. בטבלת Descriptives שהופקה לפני ה-ANOVA יש עמודה שנקראת Std. Error. מה מייצג מדד זה בשונה מהסטיית תקן (Std. Deviation)?</div>
-        <ul class="options">
-            <li>א. שגיאת תקן מייצגת את פיזור נתוני המדגם עצמו סביב הממוצע, וסטיית תקן מייצגת את הפיזור סביב החציון.</li>
-            <li>ב. שגיאת התקן מתייחסת לדיוק שבו ממוצע המדגם אומד את ממוצע האוכלוסייה (התפלגות הדגימה), בעוד שסטיית תקן מתארת את הפיזור של התצפיות במדגם.</li>
-            <li>ג. שניהם מושגים זהים לחלוטין ול-SPSS פשוט יש כפילות.</li>
-            <li>ד. שגיאת תקן מתייחסת לטעויות הקלדה בקובץ.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> סטיית תקן קשורה לפיזור בתוך המדגם הנתון. שגיאת תקן מחושבת על ידי חלוקת סטיית התקן בשורש N, והיא מתארת כמה הממוצע שלנו עשוי להיות רחוק מהממוצע האמיתי של האוכלוסייה.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">32. בבחינת טבלת ה-ANOVA לשכר (שהייתה מובהקת), הופיעו תחת דרגות החופש (df) הנתונים הבאים: Between Groups = 2, Within Groups = 297, Total = 299. למה השגיאה (Within Groups) שווה ל-297?</div>
-        <ul class="options">
-            <li>א. כי נוסחת df לתוך קבוצות ב-ANOVA היא (N-1).</li>
-            <li>ב. כי היא סכום של שתי השורות האחרות.</li>
-            <li>ג. כי הנוסחה היא (N - k), משמע סך הנבדקים (300) פחות מספר הקבוצות (3).</li>
-            <li>ד. כי המחשב הוריד 3 נבדקים שלא ענו על השאלון.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> דרגות חופש של שגיאה ב-ANOVA הן מספר התצפיות הכולל פחות מספר הקבוצות. 300 נבדקים פחות 3 מחלקות נותן 297.</div>
-        </details>
-    </div>
-
-    <h2>חלק ג': סיפור מקרה 2 (שאלות 33-50)</h2>
-    <div class="story">
-        במחקר קליני נבדקה יעילותן של תרופות להורדת לחץ דם. 150 נבדקים חולקו באופן אקראי ל-3 סוגי טיפול (תרופה A, תרופה B, פלצבו). נמדד לחץ דם סיסטולי ביום קבלת המטופל (Before) ולאחר 3 חודשים (After). בנוסף נשאל המטופל האם חווה תופעות לוואי (כן/לא). 
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">33. החוקר מריץ מבחן T למדגמים תלויים על כל 150 הנבדקים (ללא חלוקה לטיפול) כדי לבדוק האם הייתה ירידה כללית בלחץ הדם לאורך הזמן. אילו שני משתנים הוא יכניס ל-Paired Variables בתוכנה?</div>
-        <ul class="options">
-            <li>א. טיפול ו-לחץ דם אחרי.</li>
-            <li>ב. תופעות לוואי ו-לחץ דם לפני.</li>
-            <li>ג. לחץ דם לפני (Before) ולחץ דם אחרי (After).</li>
-            <li>ד. פלצבו ותרופה A.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> מבחן T למדגמים תלויים דורש הכנסת שני משתנים רציפים המייצגים את אותה תכונה שנמדדה פעמיים אצל אותו אדם.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">34. בטבלת Paired Samples Statistics (של כל 150 הנבדקים), מתקבל: ממוצע Before = 150.2, ממוצע After = 142.5. בטבלת Paired Samples Test מתקבל: Mean Difference = 7.7, t = 4.35, Sig (2-tailed) = .000. המסקנה היא:</div>
-        <ul class="options">
-            <li>א. הייתה עלייה מובהקת בלחץ הדם.</li>
-            <li>ב. לחץ הדם הממוצע נשאר כפי שהיה משום שאין רווח סמך.</li>
-            <li>ג. הייתה ירידה מובהקת בלחץ הדם באופן כללי במדגם.</li>
-            <li>ד. הטיפול גרם לתופעות לוואי.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> ה-Sig מצביע על מובהקות. הממוצע של 'אחרי' (142.5) נמוך משל 'לפני' (150.2), לכן זוהי ירידה. ההפרש חיובי כי הנוסחה שחושבה ע"י התוכנה הייתה Before - After.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">35. בטבלת Paired Samples Correlations של מבחן T תלוי (הבודק קשר בין המדידה הראשונה לשנייה), התקבל: Correlation = .780, Sig = .000. מה זה אומר?</div>
-        <ul class="options">
-            <li>א. שמבחן ה-T לא מהימן כי יש קשר חזק מדי.</li>
-            <li>ב. שקיים קשר חיובי מובהק וחזק בין לחץ הדם של הנבדק לפני הטיפול לבין לחץ הדם שלו אחרי הטיפול (מי שהיה גבוה לפני, נוטה להיות יחסית גבוה גם אחרי).</li>
-            <li>ג. ש-78% מהנבדקים החלימו.</li>
-            <li>ד. שאי אפשר להשתמש במבחן T ויש לעבור למתאם פירסון.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> SPSS אוטומטית מוציא את המתאם בין הצמדים. מתאם חיובי מובהק מעיד על עקביות בדירוג הנבדקים בין שתי המדידות.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">36. החוקר רוצה לדעת האם סוג הטיפול (A, B, פלצבו) משפיע על הסיכוי לדווח על תופעות לוואי (כן/לא). איזה מבחן עליו לבצע?</div>
-        <ul class="options">
-            <li>א. ניתוח שונות (ANOVA).</li>
-            <li>ב. מבחן T למדגמים בלתי תלויים.</li>
-            <li>ג. מבחן T למדגמים תלויים.</li>
-            <li>ד. חי בריבוע לאי-תלות.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ד.</b> סוג הטיפול הוא משתנה קטגוריאלי (3 רמות), תופעות לוואי הוא קטגוריאלי (2 רמות). המבחן לבדיקת קשר ביניהם הוא חי בריבוע.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">37. בפלט טבלת Crosstab למבחן הקודם (טיפול x תופעות לוואי), סך הכל דווחו 45 מקרים של תופעות לוואי (לכל סוגי הטיפול יחד). קבוצת פלצבו מונה 50 נבדקים בסך הכל (מתוך ה-150). מה התדר המצופה למספר תופעות הלוואי בקבוצת פלצבו בהנחת אי-תלות?</div>
-        <ul class="options">
-            <li>א. 15</li>
-            <li>ב. 25</li>
-            <li>ג. 45</li>
-            <li>ד. 50</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> (סך הכל תופעות לוואי * סך הכל נבדקי פלצבו) חלקי סך כל המדגם. 45 * 50 / 150 = 2250 / 150 = 15.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">38. מבחן החי בריבוע הניב Asymp. Sig (2-sided) = .003. בתצפיות נראו יותר תופעות לוואי בתרופה A לעומת פלצבו. המסקנה באלפא 0.01 היא:</div>
-        <ul class="options">
-            <li>א. יש לדחות את המבחן כי רמת המובהקות לא מתאימה לאלפא.</li>
-            <li>ב. אין קשר מובהק כיוון שהאלפא קטנה מדי.</li>
-            <li>ג. קיים קשר מובהק סטטיסטית, סוג הטיפול קשור בדיווח על תופעות לוואי.</li>
-            <li>ד. הטיפול יעיל במובהק להורדת לחץ דם.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> ערך ה-p (0.003) קטן גם מאלפא מחמירה של 0.01, לכן נדחה את השערת האפס המניחה אי-תלות ונסיק קשר מובהק.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">39. כדי לבחון האם יש הבדל בלחץ הדם ההתחלתי (Before) בין קבוצות הטיפול השונות לפני שהתחיל המחקר (כדי לוודא הקצאה רנדומלית מאוזנת), החוקר עורך ANOVA. ה-Sig מתקבל כ- .820. המסקנה היא:</div>
-        <ul class="options">
-            <li>א. יש צורך בפוסט-הוק לגלות את מקור השגיאה.</li>
-            <li>ב. אין הבדל מובהק בלחץ הדם ההתחלתי בין הקבוצות, ההקצאה הייתה מאוזנת.</li>
-            <li>ג. המחקר נכשל מכיוון שהקבוצות שונות זו מזו מראש.</li>
-            <li>ד. שונויות הקבוצות שונות מובהק זו מזו.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> Sig גדול מ-0.05 מצביע על כך שאין הבדל מובהק בתוחלות לחץ הדם ההתחלתי. משמע, הקבוצות דומות בתחילת הניסוי - וזה מצב רצוי בניסויים קליניים להוכחת בקרה אקראית טובה.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">40. החוקר יצר משתנה חדש של "שיפור בלחץ דם" (Before - After). כעת הוא רוצה להשוות את השיפור הממוצע בין 3 הקבוצות. איזה מבחן יבחר?</div>
-        <ul class="options">
-            <li>א. 3 מבחני T למדגמים תלויים.</li>
-            <li>ב. מבחן חי בריבוע.</li>
-            <li>ג. מבחן ANOVA חד-כיווני (עם משתנה התלוי "שיפור").</li>
-            <li>ד. מתאם פירסון בין תרופה לשיפור.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> השוואת ממוצע של משתנה רציף אחד ("שיפור") בין 3 קבוצות בלתי תלויות (A, B, פלצבו) מתבצעת בעזרת ANOVA.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">41. בטבלת Test of Homogeneity of Variances (מבחן Levene ל-ANOVA) מתקבל Sig = .042. מה המשמעות בבדיקת ANOVA ב-SPSS?</div>
-        <ul class="options">
-            <li>א. הנחת שוויון השונויות הופרה (השונויות שונות מובהקות), ויש לשקול מבחן מתקן כגון Welch או Brown-Forsythe.</li>
-            <li>ב. הממוצעים שונים מובהק ולכן לא צריך לקרוא את הטבלה הבאה.</li>
-            <li>ג. התוצאה לא מובהקת כי זה קרוב ל-0.05.</li>
-            <li>ד. יש להשתמש ב-LSD כמבחן פוסט-הוק.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> מכיוון שה-Sig במבחן לוין קטן מ-0.05, אנו דוחים את הנחת שוויון השונויות. ה-ANOVA הסטנדרטית רגישה להפרה זו, ויש לקרוא תוצאה מתוך מבחני תיקון (Robust tests of equality of means).</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">42. לאחר הפעלת מבחן Welch (תיקון ל-ANOVA) מתקבל Sig = .001. החוקר בוחר פוסט-הוק שאינו מניח שוויון שונויות. איזה מבין הבאים יתאים?</div>
-        <ul class="options">
-            <li>א. Tukey HSD</li>
-            <li>ב. Scheffe</li>
-            <li>ג. Games-Howell</li>
-            <li>ד. LSD</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> כאשר מופרת הנחת שוויון שונויות (לוין מובהק), פוסט הוק קלאסיים כמו Tukey או Scheffe אינם מדויקים. SPSS מספק משפחת מבחנים לזה בתחתית החלון, ו- Games-Howell הוא הנפוץ שבהם.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">43. בטבלת Multiple Comparisons של הפוסט-הוק, עמודת Mean Difference (I-J) עבור ההשוואה: (תרופה A) - (פלצבו), מראה את הערך 12.5. ה-Sig הוא .005. כיצד נפרש זאת?</div>
-        <ul class="options">
-            <li>א. תרופה A הורידה לחץ דם בממוצע 12.5 יחידות פחות מפלצבו, באופן מובהק.</li>
-            <li>ב. פלצבו הורידה יותר לחץ דם מתרופה A.</li>
-            <li>ג. תרופה A הביאה לשיפור גבוה במובהק של 12.5 יחידות לעומת פלצבו.</li>
-            <li>ד. הנתונים שגויים מכיוון שההפרש צריך להיות שלילי.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> (I - J) משמעו שהממוצע של I (תרופה A) פחות הממוצע של J (פלצבו) שווה 12.5. זהו ערך חיובי, מה שאומר שהשיפור של A גדול מזה של פלצבו. ה-Sig מראה שזה מובהק.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">44. חוקר מחשב מתאם פירסון בין גיל המטופל (בשנים) לבין כמות תופעות הלוואי (משתנה מספראלי, 0,1,2,3). הוא מקבל r = 0.05, Sig = .650. מה ההסבר?</div>
-        <ul class="options">
-            <li>א. קיים קשר חלש מאוד אך מובהק סטטיסטית.</li>
-            <li>ב. הגיל גורם לכך שאין תופעות לוואי.</li>
-            <li>ג. אין קשר מובהק סטטיסטית בין גיל המטופל לכמות תופעות הלוואי.</li>
-            <li>ד. מתאם פירסון חושב מחוץ לתחום ההיגיון הסטטיסטי ולכן לא חוקי.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> הערך Sig = .650 גדול בהרבה מ-0.05, לכן ההשערה בדבר אי-תלות לא נדחית. אין קשר.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">45. אם החוקר היה רוצה רק לבדוק תרופה A לעומת תרופה B (ללא קבוצת הפלצבו), באמצעות משתנה "שיפור", באיזה מבחן יכול היה להשתמש באופן לגיטימי?</div>
-        <ul class="options">
-            <li>א. מבחן T למדגמים בלתי תלויים.</li>
-            <li>ב. מבחן T למדגמים תלויים.</li>
-            <li>ג. חי בריבוע בלבד.</li>
-            <li>ד. רק פוסט-הוק ללא מבחן מקדים.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> השוואת שתי קבוצות בלתי תלויות במשתנה רציף (שיפור) תעשה לרוב באמצעות מבחן T למדגמים בלתי תלויים (אם כי גם ANOVA לשתי קבוצות תיתן תוצאה מקבילה לחלוטין).</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">46. במבחן ה-T (תרופה A מול B, שאלת 45), מבחן Levene הראה F = 0.5, Sig = .500. ה-t שנמדד היה 1.2 וה-Sig(2-tailed) שלו היה .235. מה קובעים?</div>
-        <ul class="options">
-            <li>א. שונויות שוות, יש הבדל מובהק בשיפור.</li>
-            <li>ב. שונויות אינן שוות, אין הבדל מובהק בשיפור.</li>
-            <li>ג. שונויות שוות, לא נמצא הבדל מובהק בשיפור בין שתי התרופות.</li>
-            <li>ד. שונויות אינן שוות, יש הבדל מובהק.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> לוין גדול מ-0.05 משמע מניחים שונויות שוות (Equal variances assumed). מבחן ה-T ב-Sig .235 גם הוא גדול מ-0.05, לכן לא מובהק, ואין הבדל ממשי בשיפור.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">47. ב-SPSS יש תפריט בשם "Analyze". תחת איזו קטגוריה בדרך כלל נמצא המבחן Chi-Square לטבלאות צולבות?</div>
-        <ul class="options">
-            <li>א. Compare Means</li>
-            <li>ב. Correlate</li>
-            <li>ג. Descriptive Statistics -> Crosstabs</li>
-            <li>ד. Regression</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> טבלאות צולבות (Crosstabs) ובקשת הסטטיסטי של Chi-Square נמצאים תחת התפריט התיאורי.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">48. תחת איזו קטגוריה ב-SPSS נפעיל את מבחן ANOVA חד-כיווני להשוואת ממוצעים?</div>
-        <ul class="options">
-            <li>א. Descriptive Statistics</li>
-            <li>ב. Compare Means -> One-Way ANOVA</li>
-            <li>ג. Nonparametric Tests</li>
-            <li>ד. Scale -> Reliability Analysis</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ב.</b> המבחן עוסק בהשוואת ממוצעים, ולכן נמצא תחת תפריט "השווה ממוצעים".</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">49. אם מופקת פלט Pearson Correlation והערך של r הוא 0.00 (או קרוב מאוד לאפס), כיצד ייראה ה-Scatterplot (תרשים פיזור) של הנתונים?</div>
-        <ul class="options">
-            <li>א. קו אלכסוני ישר המטפס מימין לשמאל.</li>
-            <li>ב. קו אלכסוני ישר היורד משמאל לימין.</li>
-            <li>ג. פיזור אקראי בצורת "ענן" ללא כיוון ברור.</li>
-            <li>ד. תרשים עמודות מסודר מהגבוה לנמוך.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: ג.</b> מתאם אפס מסמל שאין שום מגמה ליניארית (השתנות משותפת), והנקודות מפוזרות באקראי לחלוטין במרחב הדו-מימדי.</div>
-        </details>
-    </div>
-
-    <div class="question-card">
-        <div class="question-title">50. סיכום: במערך מחקר שבו רוצים לבדוק גם את ההשפעה של סוג הטיפול (A, B, פלצבו) וגם את ההשפעה של המגדר (גבר, אישה) במקביל, על השיפור בלחץ דם (משתנה רציף), איזה מבחן מתקדם (שלא התבקש בפירוט, אך חשוב לזיהוי) נצטרך?</div>
-        <ul class="options">
-            <li>א. Two-Way ANOVA (ניתוח שונות דו-כיווני).</li>
-            <li>ב. חי בריבוע תלת-מימדי.</li>
-            <li>ג. 6 מבחני T שונים.</li>
-            <li>ד. מתאם פירסון חלקי.</li>
-        </ul>
-        <details>
-            <summary>הצג תשובה והסבר</summary>
-            <div class="explanation"><b>תשובה נכונה: א.</b> כשיש שני משתנים בלתי תלויים קטגוריאליים (טיפול ומגדר) ומשתנה תלוי אחד רציף (שיפור), משתמשים ב-Two-Way ANOVA שיכולה לבדוק גם אינטראקציה בין המשתנים.</div>
-        </details>
-    </div>
-
+        // Start App
+        initApp();
+    </script>
 </body>
 </html>
