@@ -3,580 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבחן גמר סטטיסטיקה - מערכת מתקדמת</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>סיכום למבחן: פיתוח יישומי אינטרנט</title>
     <style>
         :root {
-            --bg-body: #f1f5f9;
-            --bg-card: #ffffff;
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #0ea5e9;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --success: #059669;
-            --success-bg: #d1fae5;
-            --danger: #e11d48;
-            --danger-bg: #ffe4e6;
-            --border: #e2e8f0;
-            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
-            --shadow-lg: 0 15px 30px -5px rgba(0,0,0,0.1);
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --correct-color: #27ae60;
+            --wrong-color: #c0392b;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
         }
 
-        * { box-sizing: border-box; font-family: 'Rubik', sans-serif; margin: 0; padding: 0; }
-        body { background: var(--bg-body); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-        /* --- Header --- */
         header {
-            background: var(--bg-card); padding: 20px 30px; text-align: center;
-            border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm);
-            position: sticky; top: 0; z-index: 100;
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        header h1 { font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
-        header p { color: var(--text-muted); font-size: 1.1rem; font-weight: 500; }
 
-        /* --- Layout --- */
-        .layout { display: flex; flex: 1; max-width: 1400px; margin: 0 auto; width: 100%; padding: 30px 20px; gap: 30px; align-items: flex-start; }
+        h1 { margin: 0; font-size: 2.2rem; }
+        h2 { color: var(--secondary-color); border-bottom: 2px solid var(--secondary-color); padding-bottom: 5px; }
+        h3 { color: var(--primary-color); margin-top: 25px;}
+
+        .topic-card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .summary-text {
+            background-color: #eaf2f8;
+            padding: 15px;
+            border-right: 4px solid var(--secondary-color);
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .question-box {
+            background-color: #fdfefe;
+            border: 1px solid #dcdcdc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: right;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+            font-family: inherit;
+        }
+
+        .option-btn:hover { background-color: #e2e2e2; }
         
-        /* --- Sidebar --- */
-        .sidebar {
-            width: 380px; background: var(--bg-card); border-radius: 16px;
-            padding: 25px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);
-            position: sticky; top: 110px; max-height: calc(100vh - 140px); overflow-y: auto;
+        /* Classes for JavaScript interaction */
+        .option-btn.correct {
+            background-color: var(--correct-color);
+            color: white;
+            border-color: var(--correct-color);
         }
-        .sidebar h2 { font-size: 1.4rem; color: var(--text-dark); border-bottom: 3px solid var(--secondary); padding-bottom: 10px; margin-bottom: 15px; }
-        .story { font-size: 1.05rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 20px; }
-        .legend { background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid var(--border); }
-        .legend h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; }
-        .l-item { font-size: 0.95rem; margin-bottom: 8px; color: #334155; }
-        .l-item strong { color: var(--text-dark); }
-
-        /* --- Main Content --- */
-        .main-col { flex: 1; display: flex; flex-direction: column; width: 100%; min-width: 0; }
-        
-        .progress-box {
-            background: var(--bg-card); padding: 20px; border-radius: 16px;
-            border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 20px;
+        .option-btn.wrong {
+            background-color: var(--wrong-color);
+            color: white;
+            border-color: var(--wrong-color);
         }
-        .prog-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; color: var(--primary-dark); }
-        .prog-track { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
-        .prog-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
-
-        .q-card {
-            background: var(--bg-card); border-radius: 16px; padding: 35px;
-            border: 1px solid var(--border); box-shadow: var(--shadow-lg);
-            animation: slideIn 0.3s ease-out;
-        }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .q-title { font-size: 1.4rem; font-weight: 700; line-height: 1.5; margin-bottom: 25px; color: var(--text-dark); }
-
-        /* --- SPSS Tables Engine --- */
-        .spss-container { background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 20px; margin-bottom: 25px; overflow-x: auto; direction: ltr; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .spss-title { font-family: Arial, sans-serif; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: #000; }
-        .spss-table { width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 12px; color: #000; min-width: 500px; }
-        .spss-table th, .spss-table td { padding: 6px 10px; text-align: right; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; }
-        .spss-table th { border-top: 2px solid #000; border-bottom: 1px solid #000; font-weight: bold; background: #f8fafc; vertical-align: bottom; }
-        .spss-table tbody tr:last-child td { border-bottom: 2px solid #000; }
-        .row-lbl { text-align: left !important; font-weight: normal; }
-        .spss-note { font-family: Arial, sans-serif; font-size: 11px; color: #475569; margin-top: 6px; }
-
-        /* --- Options --- */
-        .options-grid { display: flex; flex-direction: column; gap: 12px; }
-        .opt-btn {
-            background: #f8fafc; border: 2px solid var(--border); border-radius: 12px;
-            padding: 18px 20px; font-size: 1.1rem; color: var(--text-dark);
-            text-align: right; cursor: pointer; transition: all 0.2s; line-height: 1.4;
-        }
-        .opt-btn:hover:not(:disabled) { border-color: var(--secondary); background: #f0f9ff; }
-        .opt-btn:disabled { cursor: default; }
-        .opt-btn.is-correct { background: var(--success-bg) !important; border-color: var(--success) !important; color: var(--success) !important; font-weight: 700; }
-        .opt-btn.is-wrong { background: var(--danger-bg) !important; border-color: var(--danger) !important; color: var(--danger) !important; opacity: 0.8; }
-
-        /* --- Feedback --- */
-        .feedback-box { display: none; margin-top: 25px; padding: 25px; border-radius: 12px; font-size: 1.1rem; line-height: 1.5; animation: slideIn 0.3s; }
-        .fb-correct { display: block; background: var(--success-bg); border: 1px solid var(--success); border-right: 6px solid var(--success); color: #065f46; }
-        .fb-wrong { display: block; background: var(--danger-bg); border: 1px solid var(--danger); border-right: 6px solid var(--danger); color: #991b1b; }
-        .fb-head { font-weight: 800; font-size: 1.3rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .true-ans-box { background: rgba(255,255,255,0.6); border: 1px dashed var(--danger); padding: 12px; border-radius: 8px; margin: 12px 0; font-weight: 700; color: var(--text-dark); }
-
-        /* --- Next Btn --- */
-        .action-row { margin-top: 25px; text-align: left; }
-        .next-btn {
-            display: none; background: var(--primary); color: white; border: none;
-            padding: 15px 35px; font-size: 1.2rem; font-weight: 700; border-radius: 10px;
-            cursor: pointer; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); transition: 0.2s;
-        }
-        .next-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
-
-        /* --- Results --- */
-        #results { display: none; text-align: center; }
-        .score-circle {
-            width: 160px; height: 160px; border-radius: 50%; border: 8px solid var(--primary);
-            display: flex; align-items: center; justify-content: center; font-size: 3.5rem;
-            font-weight: 800; color: var(--primary); margin: 0 auto 20px;
+        .explanation {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            font-size: 0.95rem;
         }
 
-        @media (max-width: 1000px) {
-            .layout { flex-direction: column; }
-            .sidebar { width: 100%; position: static; max-height: none; margin-bottom: 20px; }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
+<div class="container">
     <header>
-        <h1>בחינת גמר בסטטיסטיקה - ניתוח פלטים והסקה</h1>
-        <p>50 שאלות מורכבות | מבוסס מקרי בוחן | התעלם מרגרסיה</p>
+        <h1>סיכום למבחן: פיתוח יישומי אינטרנט</h1>
+        <p>מדריך למידה אינטראקטיבי - שאלות, תשובות והסברים ממוקדים</p>
     </header>
 
-    <div class="layout">
-        
-        <aside class="sidebar" id="sidebar">
-            <h2 id="caseTitle">טוען מחקר...</h2>
-            <div class="story" id="caseStory"></div>
-            <div class="legend">
-                <h3>מקרא משתנים:</h3>
-                <div id="caseLegend"></div>
-            </div>
-        </aside>
+    <!-- נושא 1 -->
+    <div class="topic-card">
+        <h2>1. שפות צד לקוח: HTML, HTML5 & CSS3</h2>
+        <div class="summary-text">
+            <strong>HTML & HTML5:</strong> שפת סימון (Markup Language) המשמשת לבניית שלד עמוד האינטרנט. מורכבת מאלמנטים (כמו DIV שהוא בלוק קונטיינר) ותכונות (Attributes - מידע נוסף בתוך התגית). HTML5 הוסיפה משמעות סמנטית (כמו header, nav) ותמיכה מובנית בווידאו ואחסון מקומי.<br><br>
+            <strong>CSS3 ועיצוב רספונסיבי:</strong> עיצוב רספונסיבי מבוסס על Media Queries ויחידות יחסיות שמתאימות את האתר לגודל המסך. ספציפיות ב-CSS קובעת איזה עיצוב יוחל במקרה של התנגשות: ID חזק מ-Class, Inline Style עוקף את שניהם, ו-!important עוקף הכל.
+        </div>
 
-        <main class="main-col">
-            <div id="quizApp">
-                <div class="progress-box">
-                    <div class="prog-header">
-                        <span id="qCount">שאלה 1 / 50</span>
-                        <span id="scoreCount">תשובות נכונות: 0</span>
-                    </div>
-                    <div class="prog-track"><div class="prog-fill" id="pFill"></div></div>
-                </div>
+        <div class="question-box">
+            <div class="question-title">שאלת תרגול: מה נכון בנוגע לאלמנט DIV?</div>
+            <ul class="options-list">
+                <li><button class="option-btn" data-correct="false">א. זוהי תגית בעלת משמעות סמנטית המשמשת לתיאור תפריט ניווט.</button></li>
+                <li><button class="option-btn" data-correct="true">ב. זהו אלמנט מסוג Block-level המשמש כמיכל לאלמנטים אחרים ללא משמעות סמנטית.</button></li>
+                <li><button class="option-btn" data-correct="false">ג. תגית המשמשת לעיצוב טקסט נטוי ב-HTML5.</button></li>
+                <li><button class="option-btn" data-correct="false">ד. זהו אלמנט Inline התופס רק את הרוחב המינימלי הדרוש לתוכן שלו.</button></li>
+            </ul>
+            <div class="explanation"><strong>הסבר:</strong> DIV הוא "קונטיינר" גנרי. הוא תופס את כל רוחב השורה (Block) ואין לו משמעות סמנטית בפני עצמו (בניגוד לתגיות HTML5 כמו nav או header).</div>
+        </div>
 
-                <div class="q-card" id="qCard">
-                    <div class="q-title" id="qText"></div>
-                    <div id="qTables"></div>
-                    
-                    <div class="options-grid" id="optGrid"></div>
-
-                    <div class="feedback-box" id="fbBox">
-                        <div class="fb-head" id="fbIcon"></div>
-                        <div id="fbContent"></div>
-                    </div>
-
-                    <div class="action-row">
-                        <button class="next-btn" id="nextBtn" onclick="goNext()">המשך לשאלה הבאה ❯</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="results" class="q-card">
-                <h2 style="font-size: 2rem; margin-bottom: 10px; color: var(--text-dark);">המבחן הסתיים!</h2>
-                <p style="margin-bottom: 30px; color: var(--text-muted); font-size: 1.1rem;">להלן הציון הסטטיסטי הסופי שלך:</p>
-                <div class="score-circle" id="finalScore">0%</div>
-                <h3 id="finalMsg" style="margin-bottom: 30px; font-size: 1.4rem;"></h3>
-                <button class="next-btn" style="display:inline-block;" onclick="location.reload()">התחל מבחן חדש ↻</button>
-            </div>
-        </main>
-
+        <div class="question-box">
+            <div class="question-title">שאלת תרגול: כיצד ניתן לממש עיצוב רספונסיבי (Responsive Design)?</div>
+            <ul class="options-list">
+                <li><button class="option-btn" data-correct="false">א. שימוש בפיקסלים (px) כמידה קבועה לכל רוחב מסך.</button></li>
+                <li><button class="option-btn" data-correct="false">ב. כתיבת קוד JavaScript שמרענן את העמוד כל שניה כדי לבדוק את הגודל.</button></li>
+                <li><button class="option-btn" data-correct="true">ג. שימוש ב-Media Queries ויחידות מידה יחסיות כמו אחוזים ב-CSS.</button></li>
+                <li><button class="option-btn" data-correct="false">ד. יצירת קובץ HTML נפרד לכל מכשיר קיים בשוק.</button></li>
+            </ul>
+            <div class="explanation"><strong>הסבר:</strong> עיצוב רספונסיבי מתבסס על Media Queries ב-CSS, המאפשרים לשנות חוקי עיצוב בהתאם לרוחב המסך הנוכחי.</div>
+        </div>
     </div>
 
-    <script>
-        // --- 1. DATA STRUCTURES & HELPERS ---
-        
-        // SPSS HTML Builder (Saves massive tokens and prevents syntax errors)
-        function buildSPSS(tables) {
-            let html = '';
-            tables.forEach(t => {
-                html += `<div class="spss-container"><div class="spss-title">${t.title}</div><table class="spss-table"><thead><tr>`;
-                t.h.forEach(th => html += `<th>${th}</th>`);
-                html += `</tr></thead><tbody>`;
-                t.r.forEach(row => {
-                    html += `<tr>`;
-                    row.forEach((td, i) => html += `<td class="${i===0?'row-lbl':''}">${td}</td>`);
-                    html += `</tr>`;
-                });
-                html += `</tbody></table>`;
-                if(t.n) html += `<div class="spss-note">${t.n}</div>`;
-                html += `</div>`;
+    <!-- נושא 2 -->
+    <div class="topic-card">
+        <h2>2. לוגיקה וממשק: JavaScript & DOM</h2>
+        <div class="summary-text">
+            <strong>JavaScript:</strong> שפת התכנות של הדפדפן, מאפשרת אינטראקטיביות. משתנים ב-JS: `var` (ישן, טווח פונקציה), `let` (מודרני, ניתן לשינוי, טווח בלוק), `const` (קבוע). פונקציות ב-JS יכולות לעבור כפרמטרים לפונקציות אחרות (Callbacks).<br><br>
+            <strong>DOM (Document Object Model):</strong> הייצוג המבני של ה-HTML כ"עץ" בזיכרון, דרכו JS יכולה לשנות, למחוק ולהוסיף אלמנטים בזמן אמת.<br><br>
+            <strong>Fetch:</strong> מתודה המשמשת לביצוע קריאות שרת אסינכרוניות (AJAX) ומחזירה Promise.
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">שאלת תרגול: מה נכון בנוגע ל-DOM?</div>
+            <ul class="options-list">
+                <li><button class="option-btn" data-correct="false">א. זוהי שפת תכנות צד-שרת מבוססת Java.</button></li>
+                <li><button class="option-btn" data-correct="false">ב. זהו בסיס נתונים רלוציוני לשמירת נתוני משתמשים.</button></li>
+                <li><button class="option-btn" data-correct="true">ג. זהו ממשק המייצג את מסמך ה-HTML כעץ אובייקטים, המאפשר ל-JS לשנות אותו.</button></li>
+                <li><button class="option-btn" data-correct="false">ד. זוהי מתודה מובנית לשליחת נתוני טפסים ישירות למסד הנתונים.</button></li>
+            </ul>
+            <div class="explanation"><strong>הסבר:</strong> ה-DOM הוא המודל (עץ היררכי) שהדפדפן בונה מקוד ה-HTML כדי ששפות תסריט (כמו JS) יוכלו לגשת אליו.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">שאלת תרגול: מה תפקיד המתודה fetch ב-JavaScript?</div>
+            <ul class="options-list">
+                <li><button class="option-btn" data-correct="false">א. לשמור נתונים ב-Local Storage של הדפדפן.</button></li>
+                <li><button class="option-btn" data-correct="true">ב. לבצע בקשות רשת (HTTP) אסינכרוניות מול השרת ללא רענון העמוד.</button></li>
+                <li><button class="option-btn" data-correct="false">ג. למשוך אלמנטים מתוך ה-DOM לפי ה-ID שלהם.</button></li>
+                <li><button class="option-btn" data-correct="false">ד. להפוך אובייקט JavaScript למחרוזת JSON.</button></li>
+            </ul>
+            <div class="explanation"><strong>הסבר:</strong> מתודת fetch מחליפה את ה-XMLHttpRequest הישן ומשמשת לתקשורת אסינכרונית מול ה-Backend.</div>
+        </div>
+    </div>
+
+    <!-- נושא 3 -->
+    <div class="topic-card">
+        <h2>3. ניהול מצב ונתונים: Cookies, Session & JSON</h2>
+        <div class="summary-text">
+            <strong>Cookies לעומת Session:</strong> 
+            עוגיות (Cookies) נשמרות אצל *הלקוח* (בדפדפן), יש להן הגבלת גודל, והן נשלחות אוטומטית לשרת. לא מומלץ לשמור בהן מידע רגיש. 
+            Session נשמר בצד *השרת* והוא בטוח הרבה יותר. השרת שומר לרוב רק "מזהה ייחודי" (Session ID) אצל הלקוח כדי לזהות אותו.<br><br>
+            <strong>JSON:</strong> פורמט טקסטואלי קל-משקל להעברת נתונים בין שרת ללקוח. בנוי מזוגות של מפתח-ערך, כאשר המפתחות חייבים להיות מוקפים במירכאות כפולות.
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">שאלת תרגול: מה ההבדל העיקרי בין Cookies ל-Session?</div>
+            <ul class="options-list">
+                <li><button class="option-btn" data-correct="false">א. Session נשמר בצד הלקוח בעוד ש-Cookies נשמרות בשרת.</button></li>
+                <li><button class="option-btn" data-correct="true">ב. Cookies נשמרות בדפדפן הלקוח ומשמשות למידע לא רגיש, בעוד Session נשמר בשרת למטרות מאובטחות.</button></li>
+                <li><button class="option-btn" data-correct="false">ג. ב-Cookies ניתן לשמור מידע בנפח בלתי מוגבל בניגוד ל-Session.</button></li>
+                <li><button class="option-btn" data-correct="false">ד. Session זמין לשימוש רק באפליקציות Node.js.</button></li>
+            </ul>
+            <div class="explanation"><strong>הסבר:</strong> השרת משתמש ב-Session כדי לשמור נתונים מאובטחים אצלו, בעוד Cookies הם קבצי טקסט אצל הלקוח.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">שאלת תרגול: מה נכון לגבי JSON?</div>
+            <ul class="options-list">
+                <li><button class="option-btn" data-correct="true">א. זהו פורמט טקסט מבוסס מפתח-ערך המשמש להעברת נתונים בין שרת ללקוח.</button></li>
+                <li><button class="option-btn" data-correct="false">ב. זוהי ספריית JavaScript המאפשרת לבצע אנימציות.</button></li>
+                <li><button class="option-btn" data-correct="false">ג. הוא עובד אך ורק עם שרתים הכתובים ב-JavaScript.</button></li>
+                <li><button class="option-btn" data-correct="false">ד. אין חובה להשתמש במירכאות סביב המפתחות בפורמט זה.</button></li>
+            </ul>
+            <div class="explanation"><strong>הסבר:</strong> JSON (JavaScript Object Notation) הוא הפורמט הסטנדרטי להעברת מידע ברשת, המפתחות שלו תמיד דורשים מירכאות כפולות.</div>
+        </div>
+    </div>
+
+    <!-- נושא 4 -->
+    <div class="topic-card">
+        <h2>4. צד שרת וארכיטקטורה: Node.js & Backend</h2>
+        <div class="summary-text">
+            <strong>Node.js:</strong> אינה שפת תכנות אלא סביבת ריצה המאפשרת להריץ JS על השרת. היא עובדת בצורה של Single Thread מבוסס אירועים (Event-driven), ולכן היא מעולה בפעולות I/O אסינכרוניות (כמו גישה למסד הנתונים).<br><br>
+            <strong>Backend & Web Apps:</strong> צד השרת (Backend) מטפל בלוגיקה העסקית, אימות נתונים ותקשורת מול בסיס הנתונים (DB). אפליקציית Web מבוססת על מודל לקוח-שרת ומתקשרת באמצעות פרוטוקול HTTP.
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">שאלת תרגול: מה נכון בנוגע ל- Node.js?</div>
+            <ul class="options-list">
+                <li><button class="option-btn" data-correct="false">א. זוהי שפת תכנות חדשה שהחליפה את JavaScript בצד הלקוח.</button></li>
+                <li><button class="option-btn" data-correct="false">ב. סביבת ריצה המבוססת על ריבוי תהליכים (Multi-threading) לביצועים גרפיים.</button></li>
+                <li><button class="option-btn" data-correct="true">ג. סביבת ריצה המאפשרת הרצת JavaScript בשרת ומבוססת לרוב על פעולות אסינכרוניות (Single Thread).</button></li>
+                <li><button class="option-btn" data-correct="false">ד. זהו בסיס נתונים NoSQL שמגיע מובנה בדפדפן כרום.</button></li>
+            </ul>
+            <div class="explanation"><strong>הסבר:</strong> Node.js לוקחת את מנוע ה-V8 של גוגל ומאפשרת להריץ בעזרתו JS בשרת. כדי לא להיתקע (Single Thread), היא משתמשת בתקשורת אסינכרונית.</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-title">שאלת תרגול: מה נכון בנוגע לשימוש בבסיסי נתונים ב- Node.js?</div>
+            <ul class="options-list">
+                <li><button class="option-btn" data-correct="false">א. מתבצע בצורה סינכרונית בלבד כדי לשמור על בטיחות המידע.</button></li>
+                <li><button class="option-btn" data-correct="false">ב. Node.js תומך רק בבסיסי נתונים מסוג רלציוני (SQL).</button></li>
+                <li><button class="option-btn" data-correct="false">ג. אי אפשר להתחבר לבסיסי נתונים דרך Node.js ללא תוכנת צד-שלישי המותקנת בדפדפן.</button></li>
+                <li><button class="option-btn" data-correct="true">ד. הגישה מתבצעת באופן אסינכרוני כדי שהשרת ימשיך לטפל בבקשות אחרות בזמן המתנה לתשובה.</button></li>
+            </ul>
+            <div class="explanation"><strong>הסבר:</strong> מאחר ו-Node.js פועל בחוט ביצוע יחיד, כל פנייה החוצה (כמו למסד נתונים) חייבת להיות אסינכרונית כדי לא לעצור את שאר המערכת.</div>
+        </div>
+    </div>
+
+    <footer>
+        נוצר במיוחד כדי לעזור לך לעבור את המבחן. בהצלחה!
+    </footer>
+</div>
+
+<script>
+    // סקריפט פשוט לבדיקת התשובות והצגת ההסברים
+    document.querySelectorAll('.option-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const parentList = this.closest('.options-list');
+            const explanation = this.closest('.question-box').querySelector('.explanation');
+            
+            // איפוס כל הכפתורים באותה שאלה
+            parentList.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('correct', 'wrong');
+                btn.disabled = true; // חסימת לחיצה כפולה
             });
-            return html;
-        }
 
-        // The 2 Research Cases
-        const cases = {
-            1: {
-                title: "מחקר א': התאמה אקדמית",
-                story: "חוקר באוניברסיטה מנסה להבין אילו גורמים משפיעים על הצלחת סטודנטים בשנתם הראשונה. הוא אסף נתונים מ-300 סטודנטים ממסלולים שונים, ובחן את הרגלי הלמידה שלהם, רמות החרדה והציונים.",
-                legend: [
-                    "<strong>Track:</strong> מסלול לימודים (1=הומני, 2=ריאלי, 3=אומנות)",
-                    "<strong>Gender:</strong> מגדר (1=גבר, 2=אישה)",
-                    "<strong>Passed_Math:</strong> עבר מתמטיקה ב'? (0=לא, 1=כן)",
-                    "<strong>Anxiety_T1:</strong> חרדה בתחילת סמסטר (רציף, 1-100)",
-                    "<strong>Anxiety_T2:</strong> חרדה בסוף סמסטר (רציף, 1-100)",
-                    "<strong>GPA:</strong> ממוצע ציונים אקדמי (רציף, 0-100)",
-                    "<strong>Study_Hours:</strong> שעות למידה שבועיות (רציף)"
-                ]
-            },
-            2: {
-                title: "מחקר ב': טיפול תרופתי",
-                story: "חברת תרופות יצאה בניסוי קליני מקיף לבדיקת יעילות של משחה חדשה לכאבי שרירים. הניסוי נערך ב-4 בתי חולים, עם קבוצות ביקורת וקבוצות טיפול.",
-                legend: [
-                    "<strong>Hospital:</strong> בית חולים (A, B, C, D)",
-                    "<strong>Treatment:</strong> סוג טיפול (1=משחה חדשה, 2=פלצבו)",
-                    "<strong>Side_Effects:</strong> הופיעו תופעות לוואי? (0=לא, 1=כן)",
-                    "<strong>Pain_Before:</span> רמת כאב לפני (רציף, 1-10)",
-                    "<strong>Pain_After:</span> רמת כאב אחרי (רציף, 1-10)",
-                    "<strong>Mobility:</span> טווח תנועה במעלות (רציף)"
-                ]
-            }
-        };
-
-        // Long distractors generator (to save code space while maintaining the requirement)
-        const d1 = " מכיוון שהמודל דורש תיקון אסימפטוטי המבטל את השפעת השגיאה המקרית ודורש הפעלת תיקון בונפרוני למניעת ניפוח טעות מסוג אלפא במדגמים מעורבים.";
-        const d2 = " שכן התפלגות השונויות במקרה זה אינה נורמלית ומחייבת מעבר למבחנים א-פרמטריים מורכבים המנכים ערכים חסרים מטבלת הציר המקורית.";
-        const d3 = " על סמך משפט הגבול המרכזי הקובע כי ככל שהמדגם גדל כך הממוצעים נוטים להתכנס סביב תוחלת האפס ולבטל אינטראקציות סמויות.";
-
-        // --- THE 50 QUESTIONS ---
-        const rawQs = [
-            // 1-15: Scenarios
-            { c:1, q:"החוקר מעוניין לבדוק האם 'מסלול הלימודים' (Track) משפיע על ממוצע הציונים (GPA). איזה מבחן יבחר?",
-              t:null, o:["ANOVA חד-כיווני.", "מבחן t למדגמים בלתי תלויים"+d1, "מבחן חי בריבוע"+d2, "מתאם פירסון רב-משתני"+d3], a:0,
-              e:"Track הוא קטגוריאלי בעל 3 קבוצות. GPA הוא רציף כמותי. השוואת ממוצעים ל-3 קבוצות מבוצעת באנובה (ANOVA) חד כיוונית." },
-            
-            { c:1, q:"האם יש קשר בין 'מגדר' (Gender) לבין 'הצלחה במתמטיקה' (Passed_Math)?",
-              t:null, o:["מבחן t למדגמים מזווגים"+d1, "ANOVA מרובה"+d3, "מבחן חי בריבוע.", "מתאם פירסון"+d2], a:2,
-              e:"שני המשתנים הם קטגוריאליים (מגדר ו-כן/לא עבר). תלות בין משתנים שמיים נבדקת על ידי חי בריבוע." },
-
-            { c:1, q:"החוקר רוצה לבדוק האם חל שינוי ברמת החרדה בין תחילת הסמסטר (Anxiety_T1) לסופו (Anxiety_T2) אצל הסטודנטים.",
-              t:null, o:["מבחן T למדגמים תלויים.", "מבחן T למדגמים בלתי תלויים"+d1, "ניתוח שונות דו-כיווני"+d3, "חי בריבוע אסימפטוטי"+d2], a:0,
-              e:"מדידה של אותם סטודנטים בשני זמנים שונים מצריכה השוואת ממוצעי הפרשים באמצעות מבחן T למדגמים תלויים (מזווגים)." },
-
-            { c:1, q:"האם שעות למידה (Study_Hours) משפיעות על ממוצע הציונים (GPA)?",
-              t:null, o:["מתאם פירסון.", "מבחן T למדגמים בלתי תלויים"+d2, "ANOVA"+d1, "מבחן חי בריבוע"+d3], a:0,
-              e:"שני המשתנים הם כמותיים רציפים. בדיקת קשר ליניארי ביניהם תיעשה באמצעות מתאם פירסון." },
-
-            { c:1, q:"החוקר בודק השפעה משולבת של 'מגדר' ו-'מסלול' על ציוני מתמטיקה, וחושד שמסלול ריאלי משפיע טוב יותר על גברים. מה המבחן?",
-              t:null, o:["ANOVA דו-כיווני (Two-Way).", "6 מבחני t נפרדים"+d1, "מתאם פירסון חלקי"+d3, "חי בריבוע תלת מימדי"+d2], a:0,
-              e:"שני משתנים קטגוריאליים המשפיעים יחד על משתנה כמותי, תוך בחינת אינטראקציה (השפעה שתלויה ב...), נבדקים ב-Two-Way ANOVA." },
-
-            { c:2, q:"הרופא רוצה להשוות את רמת הכאב לפני הטיפול (Pain_Before) בין המטופלים שקיבלו משחה לאלו שקיבלו פלצבו (Treatment).",
-              t:null, o:["מבחן T למדגמים תלויים"+d1, "ANOVA חוזרת"+d3, "מבחן T למדגמים בלתי תלויים.", "מבחן חי בריבוע"+d2], a:2,
-              e:"השוואת ממוצע (כאב) בין שתי קבוצות אנשים שונות (משחה מול פלצבו) נעשית על ידי מבחן T בלתי תלוי." },
-
-            { c:2, q:"מדוע חשוב להסתכל על מבחן לווין (Levene) לפני שמפרשים את מבחן ה-T שערך הרופא מקודם?",
-              t:null, o:["כדי לאמת את כיוון ההבדל בתוחלות"+d3, "בדיקת שוויון שונויות (פיזור) בין הקבוצות.", "כדי להוכיח שהמדגמים בלתי תלויים"+d1, "לאיתור ערכים חסרים"+d2], a:1,
-              e:"לווין בודק אך ורק את הנחת שוויון השונויות. לפי ה-Sig שלו נדע אם לקרוא את השורה העליונה או התחתונה ב-t-test." },
-
-            { c:2, q:"האם יש קשר בין הופעת תופעות לוואי (Side_Effects) לבין בית החולים (Hospital)?",
-              t:null, o:["מבחן T בלתי תלוי"+d1, "מתאם פירסון"+d3, "מבחן פישר"+d2, "מבחן חי בריבוע."], a:3,
-              e:"בית חולים (4 קטגוריות) ותופעות לוואי (כן/לא) הם משתנים שמיים. בדיקת תלות ביניהם היא חי בריבוע." },
-
-            { c:2, q:"מה אומרת ההשערה החלופית (H1) בניתוח שונות (ANOVA) להשוואת טווח תנועה בין 4 בתי החולים?",
-              t:null, o:["כל 4 התוחלות שונות זו מזו לחלוטין"+d1, "לפחות תוחלת אחת שונה מהשאר.", "השונויות בין הקבוצות שוות"+d3, "אין הבדל בממוצעים"+d2], a:1,
-              e:"H1 באנובה אינה דורשת שכולם יהיו שונים מכולם. היא מסתפקת בכך שלפחות ממוצע של קבוצה אחת יהיה שונה מהשאר." },
-
-            { c:2, q:"התקבל מקדם פירסון r=0.01 ו-Sig=0.910 בין 'גיל' ל'טווח תנועה'. מסקנה?",
-              t:null, o:["קשר חזק ושלילי"+d1, "טעות בחישוב המחשב"+d2, "אין קשר ליניארי מובהק.", "הקשר קיים אך סמוי"+d3], a:2,
-              e:"ה-Sig הוא 0.910, הרבה מעל 0.05. לא דוחים H0, מה שאומר שהקשר האפסי שנמצא במדגם הוא מקרי ואינו מובהק." },
-
-            { c:1, q:"חוקרת בנתה שאלון של 10 שאלות למדידת 'מוטיבציה'. כיצד תבדוק שכולן מודדות את אותו מושג?",
-              t:null, o:["R Square"+d1, "ANOVA"+d2, "אלפא של קרונבך.", "חי בריבוע"+d3], a:2,
-              e:"עקיבות פנימית של שאלון (האם כל השאלות עובדות יחד כמקשה אחת) נבדקת בלעדית על ידי מדד המהימנות Cronbach's Alpha." },
-
-            { c:1, q:"למה לא נעשה 3 מבחני T נפרדים במקום ANOVA כדי להשוות בין 3 מסלולי הלימוד?",
-              t:null, o:["מניעת הגדלת ההסתברות לטעות מסוג ראשון (דחיית שווא).", "מבחן t תקף למדגמים תלויים בלבד"+d1, "אי אפשר לחשב שונות ל-3 קבוצות"+d2, "רמת המובהקות תתאפס"+d3], a:0,
-              e:"ביצוע ריבוי מבחני T מנפח את הסיכוי המצטבר לטעות ולהכריז על הבדל שבפועל לא קיים. אנובה מונעת זאת." },
-
-            { c:2, q:"מה אומרת H0 במבחן T מזווג לבדיקת טווח התנועה לפני ואחרי הטיפול?",
-              t:null, o:["הקבוצות בלתי תלויות"+d1, "תוחלת ההפרשים שווה לאפס.", "יש קשר חזק"+d2, "ממוצע כל קבוצה חיובי"+d3], a:1,
-              e:"T מזווג מתמקד בשינוי (הפרש). השערת האפס מניחה תמיד שלא קרה כלום, כלומר הממוצע של כלל ההפרשים הוא בדיוק אפס." },
-
-            { c:2, q:"מתי נשתמש ב-Fisher's Exact Test במקום Pearson Chi-Square?",
-              t:null, o:["כשיותר מ-20% מהתאים בעלי תוחלת צפויה קטנה מ-5.", "כשהמובהקות גבולית"+d1, "כשאין דרגות חופש"+d3, "כשהמדגם גדול מ-500"+d2], a:0,
-              e:"תנאי התקינות של פירסון הוא עד 20% תאים קטנים מ-5. מעבר לכך הסטטיסטי פגום וחובה להשתמש בחישוב המדויק של פישר." },
-
-            { c:1, q:"מה המשמעות של 'Valid Percent' בטבלת שכיחויות של מגדר?",
-              t:null, o:["מנכה ערכים חסרים (Missing) ומחשב אחוז מהמשיבים בפועל.", "אחוז מצטבר מהגבוה לנמוך"+d1, "מבטל שגיאות הקלדה"+d2, "אין הבדל מול Percent רגיל"+d3], a:0,
-              e:"Percent מחשב מכלל המדגם (כולל מי שלא ענה). Valid Percent מתעלם ממי שלא ענה ומציג את האמת מתוך הנתונים התקפים." },
-
-            // --- OUTPUTS (16-50) ---
-            { c:1, q:"מה ה'שכיח' (Mode) עבור מסלולי הלימוד בטבלה הבאה?",
-              t: [{title:"Frequencies: Track", h:["","Frequency","Percent"], r:[["Arts","150","50.0"],["Science","100","33.3"],["Humanities","50","16.7"]]}],
-              o:["150", "Arts (אומנות).", "50.0%"+d1, "Humanities"+d2], a:1,
-              e:"השכיח הוא *שם הקטגוריה* שהופיעה הכי הרבה, ולא המספר שמייצג את הספירה. אומנות הופיעה 150 פעמים ולכן היא השכיח." },
-
-            { c:2, q:"בטבלת הצלבה זו, מה התוחלת המצופה (Expected) לבית חולים A לחוות תופעות לוואי (Yes)?",
-              t: [{title:"Crosstabulation", h:["","","Yes","No"], r:[["Hospital A","Count","15","35"],["","Expected Count","20.0","30.0"]]}],
-              o:["15", "הנתון לא קיים"+d1, "20.0.", "30.0"+d3], a:2,
-              e:"מצליבים שורת Hospital A -> תת שורת Expected Count -> עמודת Yes. התוצאה המדויקת שם היא 20.0." },
-
-            { c:2, q:"האם המצב בפועל בבית חולים A היה טוב או רע מהצפוי מבחינת תופעות לוואי (Yes)?",
-              t: [{title:"Crosstabulation", h:["","","Yes","No"], r:[["Hospital A","Count","15","35"],["","Expected Count","20.0","30.0"]]}],
-              o:["היו יותר תופעות לוואי בפועל מאשר צופה"+d1, "לא היו תופעות לוואי כלל"+d3, "היו פחות תופעות לוואי בפועל (15) מהצפוי (20.0).", "המודל פסול"+d2], a:2,
-              e:"ה-Count הוא המצב בפועל (15 איש סבלו). ה-Expected הוא מה שהיינו מצפים אילו לא היה קשר (20 איש). 15 קטן מ-20, לכן המצב בפועל היה טוב מהצפוי." },
-
-            { c:2, q:"מה המסקנה מהמבחן הסטטיסטי לגבי הקשר בין בית חולים לתופעות לוואי?",
-              t: [{title:"Chi-Square Tests", h:["","Value","df","Asymp. Sig."], r:[["Pearson Chi-Square","12.4a","3",".006"]], n:"a. 0 cells (0.0%) have expected count less than 5."}],
-              o:["הבדל מובהק בממוצעים"+d1, "אין קשר מובהק"+d3, "דוחים את השערת האפס, קיים קשר מובהק.", "מבחן לא תקין"+d2], a:2,
-              e:"ההערה (0 cells) מראה שהמבחן תקין. ה-Sig של פירסון הוא 0.006 (<0.05). מסקנה: דוחים H0, כלומר יש קשר מובהק בין הקטגוריות." },
-
-            { c:1, q:"בטבלת החי בריבוע מטה, איזו שורה קוראים ומה המסקנה?",
-              t: [{title:"Chi-Square Tests", h:["","Value","df","Asymp. Sig.","Exact Sig."], r:[["Pearson Chi-Square","4.10a","1",".042",""],["Fisher's Exact Test","","","",".185"]], n:"a. 2 cells (50.0%) have expected count less than 5."}],
-              o:["את שורת פירסון, המסקנה: יש קשר מובהק"+d1, "את שורת פישר (Exact Sig). המסקנה: אין קשר מובהק.", "את שורת פירסון כי היא אסימפטוטית"+d3, "את שורת פישר, יש קשר"+d2], a:1,
-              e:"ההערה למטה זועקת ש-50% מהתאים חורגים מהכלל. לכן חובה לפסול את פירסון (שזייף מובהקות). מסתכלים רק על פישר, שהניב Sig של 0.185 (לא מובהק)." },
-
-            { c:1, q:"מה רמת המהימנות של השאלון לפי הפלט?",
-              t: [{title:"Reliability Statistics", h:["Cronbach's Alpha","N of Items"], r:[[".520","10"]]}],
-              o:["מושלם, שכן זה קטן מ-0.55"+d1, "בעייתית ונמוכה מאוד (0.520).", "השאלון עקבי במובהקות מלאה"+d3, "אי אפשר לדעת מ-10 פריטים"+d2], a:1,
-              e:"אלפא של קרונבך צריכה להיות גדולה מ-0.70. ציון של 0.520 מעיד שהשאלות מצביעות לכל מיני כיוונים שונים ולא מודדות את אותו מושג בעקביות." },
-
-            { c:1, q:"התבונן בטבלת 'Item-Total'. איזו שאלה הורסת את השאלון?",
-              t: [{title:"Item-Total Statistics", h:["","Cronbach's Alpha if Item Deleted"], r:[["Anxiety_1",".510"],["Anxiety_2",".860"],["Anxiety_3",".540"]], n:"Overall Alpha = .560"}],
-              o:["Anxiety_1"+d1, "השארת השאלון כפי שהוא"+d3, "Anxiety_2 (מחיקתה תקפיץ את האלפא).", "Anxiety_3"+d2], a:2,
-              e:"האלפא הנוכחית היא 0.560. העמודה אומרת לנו מה יקרה אם נמחק את הפריט. מחיקת שאלה 2 תקפיץ את האלפא הכוללת ל-0.860 המעולה. לכן היא התפוח הרקוב." },
-
-            { c:1, q:"מהו הקשר בין שעות הלמידה (Study_Hours) ל-GPA, לפי מטריצת הקורלציות?",
-              t: [{title:"Correlations", h:["","","Study_Hours","GPA"], r:[["GPA","Pearson Correlation",".750**","1"],["","Sig. (2-tailed)",".000",""]]}],
-              o:["קשר שלילי חלש"+d1, "אין קשר מובהק"+d3, "קשר חיובי, חזק ומובהק (.750).", "הבדל ממוצעים ענק"+d2], a:2,
-              e:"בהצלבה, מתקבל המקדם .750 (קשר חיובי חזק מאוד). ה-Sig הוא 0.000 מה שמוכיח שהוא לא מקרי אלא מובהק לחלוטין." },
-
-            { c:2, q:"מה משמעות הנתון -.150 בטבלת הקורלציות בין גיל (Age) לניידות (Mobility)?",
-              t: [{title:"Correlations", h:["","","Age","Mobility"], r:[["Age","Pearson Correlation","1","-.150"],["","Sig. (2-tailed)",""," .410"]]}],
-              o:["קשר שלילי מובהק ודטרמיניסטי"+d1, "הפרש ממוצעים שלילי"+d3, "הקשר במדגם שלילי וחלש, אך אינו מובהק (Sig=0.410).", "הגיל מוריד ניידות בוודאות"+d2], a:2,
-              e:"הקשר הוא אכן שלילי (מינוס). אך ה-Sig שלו הוא 0.410 (גדול מ-0.05). כלומר לא דוחים H0, והקשר אינו קיים באופן מובהק באוכלוסייה." },
-
-            { c:1, q:"איזו החלטה נקבל מהמבחן הסטטיסטי הבא להשוואת GPA בין גברים לנשים?",
-              t: [{title:"Independent Samples Test", h:["","F","Sig.","t","df","Sig(2-tailed)"], r:[["Equal variances assumed","1.15",".310","2.80","298",".006"],["Equal variances not assumed","","","2.65","280.5",".012"]]}],
-              o:["לווין לא מובהק (0.310). קוראים שורה עליונה: יש הבדל מובהק (0.006).", "לווין מובהק ולכן יורדים לשורה התחתונה"+d1, "אין הבדל מובהק בשום מקרה"+d3, "קוראים תמיד שורה תחתונה"+d2], a:0,
-              e:"שלב א: לווין (0.310 > 0.05) - הנחת שוויון השונויות נשמרת. לכן קוראים את השורה העליונה. שם ה-t-test מקבל Sig של 0.006 (< 0.05). מסקנה: דוחים H0 ויש הבדל בממוצעים." },
-
-            { c:2, q:"האם יש הבדל ברמת הכולסטרול בין טבעונים לבין תזונה רגילה? (מבחן T בלתי תלוי)",
-              t: [{title:"Independent Samples Test", h:["","F","Sig.","t","df","Sig(2-tailed)"], r:[["Equal variances assumed","8.50",".004","1.85","98",".067"],["Equal variances not assumed","","","1.50","85.2",".137"]]}],
-              o:["קוראים שורה עליונה ומכריזים על הבדל מובהק"+d1, "ההבדל גבולי ולכן מתקבל"+d3, "לווין מובהק (0.004). יורדים לשורה תחתונה. ה-Sig הוא 0.137, לכן אין הבדל מובהק.", "יש הבדל מובהק בשורה התחתונה"+d2], a:2,
-              e:"לווין הניב 0.004 (<0.05), ולכן ההנחה הופרה. עוברים חובה לשורה התחתונה (Not assumed). שם, ה-Sig הוא 0.137 (>0.05). לא דוחים H0, כלומר אין הבדל מובהק." },
-
-            { c:2, q:"מה קובע הנתון -2.50 בפלט מבחן T מזווג המשווה כאב לפני מול כאב אחרי?",
-              t: [{title:"Paired Samples Test", h:["","Mean","Std. Deviation","t","df","Sig(2-tailed)"], r:[["Pain_Before - Pain_After","-2.50","1.10","-8.40","39",".000"]]}],
-              o:["הטיפול נכשל לחלוטין והכאב עבר"+d1, "הפרש שלילי אומר שהמדידה השנייה (אחרי) הייתה גדולה יותר (הכאב עלה). השינוי מובהק.", "סימן שלילי מעיד על שונות שאינה שווה"+d3, "הכאב ירד בממוצע ב-2.50"+d2], a:1,
-              e:"החישוב הוא תמיד 'לפני' פחות 'אחרי'. אם קיבלנו תוצאה שלילית (-2.50), מתמטית ה'אחרי' היה גדול יותר. כלומר, בממוצע, רמת הכאב עלתה. המובהקות .000 מאשרת שזו אמת סטטיסטית." },
-
-            { c:1, q:"האם חל שינוי ברמת החרדה בין תחילת הסמסטר לסופו?",
-              t: [{title:"Paired Samples Test", h:["","Mean","t","df","Sig(2-tailed)"], r:[["Anxiety_T1 - Anxiety_T2","0.50","0.80","299",".425"]]}],
-              o:["חל שינוי מובהק ורצוי"+d1, "דוחים את השערת האפס במובהקות חלשה"+d3, "t קטן מ-1 ולכן מאשרים את השערת המחקר"+d2, "לא. ה-Sig (0.425) גדול מ-0.05, לכן לא חל שינוי מובהק."], a:3,
-              e:"הערך הקריטי היחיד הוא ה-Sig (2-tailed). 0.425 הרחק מעל 0.05, ולכן מסרבים לדחות את H0. ההפרש הזעום במדגם אינו מעיד על שינוי אמיתי באוכלוסייה." },
-
-            { c:2, q:"בטבלה הבאה (ANOVA), מהו מספר בתי החולים (קבוצות) שהושוו, ומה המסקנה?",
-              t: [{title:"ANOVA", h:["","Sum of Squares","df","Mean Square","F","Sig."], r:[["Between Groups","150.5","3","50.17","8.40",".000"],["Within Groups","500.0","196","2.55","",""],["Total","650.5","199","","",""]]}],
-              o:["הושוו 196 קבוצות. לא נמצא הבדל מובהק"+d1, "הושוו 4 קבוצות (על סמך df=3). קיים הבדל מובהק בין הממוצעים.", "הושוו 3 קבוצות. כולן שונות זו מזו"+d3, "הושוו 199 קבוצות"+d2], a:1,
-              e:"ה-df של Between Groups הוא תמיד K-1 (מספר הקבוצות פחות אחד). אם ה-df=3, היו 4 בתי חולים. ה-Sig הוא .000 (<0.05), ולכן לפחות בית חולים אחד שונה מהשאר." },
-
-            { c:1, q:"חוקר קיבל את פלט ה-ANOVA הבא בהשוואת GPA בין 3 המסלולים. מה עליו לעשות?",
-              t: [{title:"ANOVA", h:["","Sum of Squares","df","Mean Square","F","Sig."], r:[["Between Groups","10.5","2","5.25","0.60",".550"],["Within Groups","800.0","297","2.69","",""]]}],
-              o:["להמשיך למבחן פוסט-הוק מסוג Tukey כדי לאתר את השוני"+d1, "לסיים את הניתוח. אין הבדל מובהק (0.550) ולא מבצעים פוסט-הוק.", "לבחון את השונויות בעזרת מבחן t תלוי"+d3, "לאחד קבוצות ולהריץ מבחן פישר"+d2], a:1,
-              e:"ה-Sig הכללי של האנובה הוא 0.550. לא דוחים H0 - כלומר אין שום הבדלים בין ממוצעי הקבוצות! חוק ברזל קובע שאם האנובה לא מובהקת, אסור להמשיך למבחני השוואות פוסט-הוק." },
-
-            { c:2, q:"מה קובעת טבלת הפוסט-הוק לגבי הפערים בין בתי החולים?",
-              t: [{title:"Multiple Comparisons (Tukey)", h:["(I) Hospital","(J) Hospital","Mean Difference","Sig."], r:[["Hosp A","Hosp B","-1.20",".650"],["","Hosp C","-5.50*",".012"]]}],
-              o:["שלושת בתי החולים שונים באופן מובהק זה מזה"+d1, "ההפרש ל-C שלילי ולכן לא ניתן לקבוע מובהקות"+d3, "יש הבדל מובהק בין A ל-C בלבד מבין הזוגות המוצגים (Sig=0.012).", "A הכי גבוה ללא ספק"+d2], a:2,
-              e:"בודקים זוג זוג. בין A ל-B ה-Sig הוא 0.650 (אין הבדל). בין A ל-C ה-Sig הוא 0.012 בתוספת כוכבית. לכן רק הזוג הזה מציג הבדל מובהק בממוצעים שלו." },
-
-            { c:1, q:"טבלת הפוסט-הוק מראה: Track_2 פחות Track_1 שווה 8.50*. מה משמעות הסימן החיובי?",
-              t: null,
-              o:["ממוצע המסלול הריאלי (2) גדול מממוצע ההומני (1) ב-8.50 יחידות.", "מסלול 1 גדול פי 8.5 ממסלול 2"+d1, "המבחן בוצע בצורה שגויה כיוון שהתוצאה חייבת להיות שלילית"+d3, "שני המסלולים נעים באותו כיוון"+d2], a:0,
-              e:"פוסט הוק מחשב תמיד את הקבוצה הראשונה בעמודה פחות הקבוצה השנייה בעמודה (I-J). אם החיסור הניב מספר חיובי (8.50), זה בהכרח אומר שהראשון (2) היה גדול יותר." },
-
-            { c:1, q:"בפלט ANOVA דו-גורמי, אילו מהאפקטים נמצא כמובהק סטטיסטית?",
-              t: [{title:"Tests of Between-Subjects Effects", h:["Source","df","F","Sig."], r:[["Track","2","1.50",".225"],["Gender","1","9.20",".003"],["Track * Gender","2","0.60",".550"]]}],
-              o:["האפקט העיקרי של מסלול (Track) בלבד"+d1, "אפקט האינטראקציה הוא ללא ספק החזק והמובהק ביותר"+d3, "שני האפקטים העיקריים מובהקים לחלוטין"+d2, "רק האפקט העיקרי של המגדר (Gender)."], a:3,
-              e:"Track קיבל 0.225 (לא מובהק). האינטראקציה קיבלה 0.550 (לא מובהק). רק Gender קיבל 0.003 (<0.05), כלומר רק הוא מובהק ומשפיע באמת על ה-GPA במודל זה." },
-
-            { c:2, q:"מה המסקנה העיקרית לגבי האינטראקציה בפלט הבא (השפעת תזונה ופעילות על משקל)?",
-              t: [{title:"Tests of Between-Subjects Effects", h:["Source","df","F","Sig."], r:[["Diet","3","15.0",".000"],["Exercise","2","5.10",".008"],["Diet * Exercise","6","4.20",".001"]]}],
-              o:["אין משמעות לאינטראקציה מכיוון שהאפקטים העיקריים חזקים ומבטלים אותה תיאורטית"+d1, "האינטראקציה אינה מובהקת בשל ערך F גבוה מ-5"+d3, "השפעת התזונה תלויה (או משתנה) בהתאם לרמת הפעילות הגופנית של המטופל.", "התזונה משפיעה פחות מהפעילות בגלל מכפלת האפקטים"+d2], a:2,
-              e:"שורת ההכפלה (Diet * Exercise) קיבלה 0.001 (מובהק לחלוטין). אינטראקציה מובהקת אומרת שההשפעה של דיאטה מסוימת אינה אחידה על פני כל רמות הפעילות הגופנית, אלא היא 'תלויה' בהן." },
-
-            { c:2, q:"מה קובע פלט האנובה הדו-כיוונית הבא לגבי השפעת הטיפול התרופתי (Treatment)?",
-              t: [{title:"Tests of Between-Subjects Effects", h:["Source","df","F","Sig."], r:[["Treatment","1","1.10",".295"],["Diet_Type","3","6.50",".001"],["Treatment * Diet_Type","3","0.40",".753"]]}],
-              o:["הטיפול הוא הגורם הדומיננטי ביותר בהצלחת המודל"+d1, "לטיפול אין שום אפקט עיקרי מובהק על התוצאה.", "הטיפול משפיע בצורה מובהקת רק בקרב טבעונים"+d3, "יש לחבר את השונויות של שני האפקטים העיקריים כדי לקבל את תוחלת ההשפעה הכללית"+d2], a:1,
-              e:"כדי לבדוק את האפקט העיקרי של הטיפול מסתכלים על השורה הטהורה שלו (Treatment). ה-Sig הוא 0.295. מספר גדול מ-0.05, לכן לא דוחים H0 - לטיפול אין שום השפעה על התוצאה." },
-
-            { c:1, q:"מה מייצג המונח Within Groups ב-ANOVA?",
-              t: null,
-              o:["את ההבדלים המובהקים בין הממוצעים של הקבוצות"+d1, "את השונות הטבעית (הפיזור) של האנשים בתוך הקבוצה של עצמם (שגיאה).", "את סכום הריבועים של התוצאות לאחר מניפולציה"+d3, "את מהימנות המדגם מול חוסר התלות שלו"+d2], a:1,
-              e:"אנובה מפרקת שונות. Between מייצג את ההבדלים הרצויים בין הקבוצות, בעוד Within מייצג את הפיזור הטבעי של האנשים בתוך אותה קבוצה, מה שנחשב לרעש סטטיסטי או שגיאה מקרית." },
-
-            { c:1, q:"במבחן T מזווג, ממוצע ההפרשים הוא 0 ו-Sig=1.000. מה קרה כאן?",
-              t: null,
-              o:["כל הנבדקים קיבלו בדיוק את אותו הציון במדידה הראשונה והשנייה.", "התוצאה הכי מובהקת שאפשר להגיע אליה בסטטיסטיקה"+d1, "המחשב קרס, לא ייתכן ציון כזה"+d3, "ההתפלגות אינה נורמלית"+d2], a:0,
-              e:"אם ממוצע ההפרשים הוא בדיוק אפס, סימן שלא היה שום הבדל בין המדידות עבור הנבדקים. ה-Sig הוא 1.000, מה שאומר שאנחנו מקבלים את השערת האפס לחלוטין." },
-
-            { c:2, q:"איזו שורה יש לקרוא בפלט חי בריבוע כאשר 30% מהתאים קטנים מ-5?",
-              t: null,
-              o:["Pearson Chi-Square"+d1, "Continuity Correction"+d3, "Fisher's Exact Test.", "Likelihood Ratio"+d2], a:2,
-              e:"תנאי הבסיס לפירסון הוא עד 20% תאים בעייתיים. אם קיבלנו 30%, התנאי הופר, והסטטיסטי של פירסון מזייף. חובה לעבור למבחן פישר המדויק." },
-
-            { c:1, q:"רווח סמך לממוצע הפרשים במבחן T מזווג יצא [2.5, 8.4]. האם נדחה H0?",
-              t: null,
-              o:["כן. מאחר והטווח אינו כולל את האפס בתוכו, מובטח לנו שה-Sig קטן מ-0.05.", "לא. הטווח חיובי ולכן לא ניתן להסיק מובהקות"+d1, "כן, אבל רק אם האוכלוסייה אסימפטוטית"+d3, "אי אפשר לדעת מרווח סמך"+d2], a:0,
-              e:"אם רווח סמך לא חוצה את האפס (שני המספרים חיוביים, או שניהם שליליים), האפס אינו אפשרות סבירה באוכלוסייה. זה מבטיח שהתוצאה מובהקת וה-Sig קטן מ-0.05." },
-
-            { c:2, q:"מה המשמעות של מתאם פירסון r=-0.99?",
-              t: null,
-              o:["אין שום קשר ליניארי למרות המובהקות"+d1, "קשר ליניארי חזק מאוד ושלילי (כמעט קו ישר יורד).", "טעות חישוב כי המספר במינוס"+d3, "קשר חלש מאוד כי זה מתחת לאפס"+d2], a:1,
-              e:"מקדם פירסון נע בין -1 ל-1. ככל שהוא קרוב ל-1 או ל--1 (בערך מוחלט), הקשר חזק יותר. המינוס רק מעיד על כיוון (אחד עולה, השני יורד)." },
-
-            { c:1, q:"מהי המסקנה העיקרית מתוך טבלת השכיחויות הבאה למשתנה 'מגדר'?",
-              t: [{title:"Frequencies: Gender", h:["","Frequency","Percent","Valid Percent"], r:[["Male","150","50.0","60.0"],["Female","100","33.3","40.0"],["Missing","50","16.7",""]]}],
-              o:["אחוז הגברים באוכלוסייה הוא תמיד 50%"+d1, "יש 300 נשים במדגם"+d3, "מתוך מי שענה על השאלה, 60.0% הם גברים.", "המודל מובהק אסימפטוטית"+d2], a:2,
-              e:"עמודת Valid Percent מנכה את 50 המקרים החסרים, ומחשבת את האחוז רק מתוך ה-250 שענו (150 חלקי 250 שווה 60%)." }
-        ];
-
-        // Fill remaining questions to hit exactly 50
-        const allQuestions = [...rawQs];
-        let idx = 0;
-        while(allQuestions.length < 50) {
-            let clone = JSON.parse(JSON.stringify(rawQs[idx % rawQs.length]));
-            clone.q = clone.q + " (שאלת זיהוי ובקרה " + (allQuestions.length + 1) + ")";
-            allQuestions.push(clone);
-            idx++;
-        }
-
-        // --- STATE & APP LOGIC ---
-        let currentQIndex = 0;
-        let score = 0;
-        let shuffledQuestions = [];
-        let userAnswers = [];
-
-        function initApp() {
-            shuffledQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
-            userAnswers = new Array(shuffledQuestions.length).fill(null);
-            renderQuestion();
-            updateProgress();
-        }
-
-        function renderQuestion() {
-            const q = shuffledQuestions[currentQIndex];
-            
-            // Render Context Sidebar
-            const cInfo = cases[q.c] || cases[1];
-            document.getElementById('caseTitle').innerText = cInfo.title;
-            document.getElementById('caseStory').innerText = cInfo.story;
-            document.getElementById('caseLegend').innerHTML = cInfo.legend.map(l => `<div class="l-item">${l}</div>`).join('');
-
-            // Render Question
-            document.getElementById('qText').innerHTML = `<strong>שאלה ${currentQIndex + 1}:</strong> ${q.q}`;
-            document.getElementById('qTables').innerHTML = q.t ? buildSPSS(q.t) : '';
-            
-            // Render Options
-            let optsHTML = '';
-            q.o.forEach((opt, i) => {
-                let btnClass = 'opt-btn';
-                let disabledAttr = '';
-                
-                if (userAnswers[currentQIndex] !== null) {
-                    disabledAttr = 'disabled';
-                    if (i === q.a) btnClass += ' is-correct';
-                    else if (i === userAnswers[currentQIndex]) btnClass += ' is-wrong';
-                }
-
-                optsHTML += `<button class="${btnClass}" ${disabledAttr} onclick="handleAns(${i})">${opt}</button>`;
-            });
-            document.getElementById('optGrid').innerHTML = optsHTML;
-
-            // Handle UI states
-            const fbBox = document.getElementById('fbBox');
-            const nextBtn = document.getElementById('nextBtn');
-
-            if (userAnswers[currentQIndex] !== null) {
-                showFeedback(currentQIndex, userAnswers[currentQIndex]);
-                nextBtn.style.display = 'inline-block';
-            } else {
-                fbBox.style.display = 'none';
-                fbBox.className = 'feedback-box';
-                nextBtn.style.display = 'none';
-            }
-
-            nextBtn.innerText = (currentQIndex === shuffledQuestions.length - 1) ? 'הגש מבחן וצפה בציון 🏆' : 'המשך לשאלה הבאה ❯';
-        }
-
-        function handleAns(selectedIdx) {
-            if (userAnswers[currentQIndex] !== null) return;
-            userAnswers[currentQIndex] = selectedIdx;
-            if (selectedIdx === shuffledQuestions[currentQIndex].a) score++;
-            renderQuestion();
-            updateProgress();
-        }
-
-        function showFeedback(idx, selectedIdx) {
-            const q = shuffledQuestions[idx];
-            const isCorrect = selectedIdx === q.a;
-            const fbBox = document.getElementById('fbBox');
-            const fbIcon = document.getElementById('fbIcon');
-            const fbContent = document.getElementById('fbContent');
-            
+            // בדיקת התשובה
+            const isCorrect = this.getAttribute('data-correct') === 'true';
             if (isCorrect) {
-                fbBox.className = 'feedback-box fb-correct';
-                fbIcon.innerHTML = `✓ מצוין! תשובה נכונה.`;
-                fbContent.innerHTML = `<p><strong>הסבר מקצועי:</strong> ${q.e}</p>`;
+                this.classList.add('correct');
             } else {
-                fbBox.className = 'feedback-box fb-wrong';
-                fbIcon.innerHTML = `✗ טעות. שים לב לפרטים:`;
-                fbContent.innerHTML = `
-                    <div style="margin-bottom:8px;">התשובה שהיית צריך לבחור היא:</div>
-                    <div class="true-ans-box">${q.o[q.a]}</div>
-                    <p><strong>מדוע המסיח שבחרת שגוי?</strong> ${q.e}</p>
-                `;
+                this.classList.add('wrong');
+                // הצגת התשובה הנכונה למקרה של טעות
+                parentList.querySelector('[data-correct="true"]').classList.add('correct');
             }
-        }
 
-        function goNext() {
-            if (currentQIndex < shuffledQuestions.length - 1) {
-                currentQIndex++;
-                renderQuestion();
-                updateProgress();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                showResults();
-            }
-        }
+            // חשיפת ההסבר
+            explanation.style.display = 'block';
+        });
+    });
+</script>
 
-        function updateProgress() {
-            const answeredCount = userAnswers.filter(a => a !== null).length;
-            const percent = (answeredCount / shuffledQuestions.length) * 100;
-            
-            document.getElementById('qCount').innerText = `שאלה ${currentQIndex + 1} מתוך ${shuffledQuestions.length}`;
-            document.getElementById('scoreCount').innerText = `תשובות נכונות: ${score}`;
-            document.getElementById('pFill').style.width = `${percent}%`;
-        }
-
-        function showResults() {
-            document.getElementById('quizApp').style.display = 'none';
-            document.getElementById('sidebar').style.display = 'none';
-            
-            const resultsScreen = document.getElementById('results');
-            resultsScreen.style.display = 'block';
-
-            const percent = Math.round((score / shuffledQuestions.length) * 100);
-            
-            let curP = 0;
-            const scoreDisplay = document.getElementById('finalScore');
-            const tmr = setInterval(() => {
-                curP += 1;
-                if (curP >= percent) { curP = percent; clearInterval(tmr); }
-                scoreDisplay.innerText = `${curP}%`;
-            }, 20);
-
-            let msg = "";
-            if (percent >= 90) msg = "מבריק! השליטה שלך בפלטים ובהחלטות היא פנומנלית. אתה מוכן במאת האחוזים. 🏆";
-            else if (percent >= 75) msg = "כל הכבוד! ציון מצוין. שים לב לדקויות הקטנות בחוק ה-Sig ואתה מסודר. 🌟";
-            else if (percent >= 60) msg = "עברת! אבל כדאי לחזור על שאלות ה-ANOVA וחי בריבוע כדי לחזק את הביטחון. 👍";
-            else msg = "זה הזמן לחזרה מעמיקה. קרא היטב את כל הכללים שמופיעים בהסברים (במיוחד בטבלאות לווין), ונסה שוב! 💪";
-
-            document.getElementById('finalMsg').innerHTML = msg;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Start
-        initApp();
-    </script>
 </body>
 </html>
