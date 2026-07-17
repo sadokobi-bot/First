@@ -1,612 +1,409 @@
-<!DOCTYPE html>
+import json
+import random
+
+# Helper for Joins calculation matching Tableau/SQL logic
+def calc_joins(left_keys, right_keys):
+    inner = 0
+    left_dict = {}
+    for k in left_keys: left_dict[k] = left_dict.get(k, 0) + 1
+    right_dict = {}
+    for k in right_keys: right_dict[k] = right_dict.get(k, 0) + 1
+
+    for k, l_count in left_dict.items():
+        if k is not None and k in right_dict:
+            inner += l_count * right_dict[k]
+
+    left_join = inner
+    for k, l_count in left_dict.items():
+        if k is None or k not in right_dict:
+            left_join += l_count
+
+    right_join = inner
+    for k, r_count in right_dict.items():
+        if k is None or k not in left_dict:
+            right_join += r_count
+
+    full_join = left_join + right_join - inner
+
+    return inner, left_join, right_join, full_join
+
+questions = []
+
+# --- Q1 to Q20 (Exact from original exam) ---
+original_qs = [
+    {
+        "statements": [
+            "חיבור של קבצי .csv ל-Tableau מבוצע דרך הענן של Tableau",
+            "קבצי CSV הם קבצי טקסט. לפיכך, אי אפשר לפתוח אותם דרך תוכנת Excel אלא דרך תוכנת Tableau בלבד",
+            "קבצי CSV הם קבצי טקסט. לפיכך, חיבורם ל-Tableau מתאפשר דרך לחיצה על Connect ובחירה ב-Text"
+        ],
+        "ans": (3,)
+    },
+    {
+        "statements": [
+            "תוכנת Tableau מתמחה בייצור נתונים גולמיים",
+            "תוכנת Tableau Public מאפשרת שיתוף התוצרים לענן, בעוד שתוכנת Tableau Desktop עובדת מקומית בלבד",
+            "בתוך אזור הגדרת השדות ב-Sheets קיימת תצוגה מקדימה אוטומטית של המידע בטבלאות השונות"
+        ],
+        "ans": (3,)
+    },
+    {
+        "statements": [
+            "לתוכנת Tableau ניתן לחבר קבצים בסיומת .xlsx בלבד",
+            "גרירת משתנים ל-Rows גורמת להגדרת הציר האופקי (X) על בסיס משתנה זה",
+            "גרירת משתנים ל-Rows גורמת להגדרת הציר האנכי (Y) על בסיס משתנה זה"
+        ],
+        "ans": (3,)
+    },
+    {
+        "statements": [
+            "קטגוריות או שנים קלנדריות הם ערכי Dimensions (ממדים)",
+            "ערכי מכירות הם ערכי Measures (מדדים)",
+            "קיים הגיון רב בביצוע חישובים כגון סיכומים על Dimensions אך לא על Measures"
+        ],
+        "ans": (1, 2)
+    },
+    {
+        "statements": [
+            "שימוש ב-Pages מאפשר להגדיר סינון כך שהתרשים יתייחס רק לערכים שנותרו",
+            "שימוש ב-Pages מאפשר דפדוף עם חיצים לשינוי התרשים בהתאם לערך המשתנה",
+            "Dashboards כולל תרשימי Sheets בלבד אלא אם מתקינים תוספים חיצוניים"
+        ],
+        "ans": (2,)
+    },
+    {
+        "statements": [
+            "שדות שלצדם מופיע סימון Abc הם שדות הכוללים ערכים מספריים",
+            "שדות שלצדם מופיע סימון Abc הם שדות טקסטואליים",
+            "אם אשנה נתונים ב-Tableau, זה משנה כמובן גם את המידע בקובץ המקור"
+        ],
+        "ans": (2,)
+    },
+    {
+        "statements": [
+            "כאשר גוררים שדות מספריים, Tableau לרוב מבצע סיכום שלהם (Sum)",
+            "בתיבת ה-Marks ניתן להגדיר את סוג התרשים בלבד",
+            "בתיבת ה-Marks ניתן להגדיר פילוח תרשים לפי צבעים בהתייחס למשתנה"
+        ],
+        "ans": (1, 3)
+    },
+    {
+        "statements": [
+            "יצירת הגרפים חייבת להיות לפני חיבור הנתונים",
+            "שמירת Dashboard ל-Tableau Public צריכה להתבצע לפני תחילת העבודה",
+            "הפעולה של שמירת שינויים ב-Repo של Github נקראת Commit"
+        ],
+        "ans": (3,)
+    },
+    {
+        "statements": [
+            "באמצעות GAS בונים שרת אמיתי",
+            "באמצעות GAS בונים גם Frontend וגם Backend",
+            "באמצעות GAS אנו מדמים Backend"
+        ],
+        "ans": (3,)
+    },
+    {
+        "statements": [
+            "בניית Frontend בוצעה בקורס ב-HTML",
+            "ה-Backend הוא שרת שמקבל בקשות ומחזיר תשובות",
+            "הגדרה של API היא Application Processing Investment"
+        ],
+        "ans": (1, 2)
+    },
+    {
+        "statements": [
+            "GAS דורש הגדרת שרת",
+            "GAS ניתן ליישום בלחיצה אחת כ-Web App",
+            "GAS עומד בעומסים כבדים ומתאים למערכות יצרניות גבוהות"
+        ],
+        "ans": (2,)
+    },
+    {
+        "statements": [
+            "הולידציה מבוצעת לאחר הזנת הקלט",
+            "התצוגה המקדימה מבוצעת לאחר התקשורת מול GAS",
+            "אם מקור השליפה מדויק אין צורך במנגנון גיבוי Fallback"
+        ],
+        "ans": (1, 2)
+    },
+    {
+        "statements": [
+            "תובנות מניעות פעולה מתייחסות להגדרה כללית ורחבה של הבעיה",
+            "תובנות מניעות פעולה מוגדרות גם כשלא ניתן לפעול לפיהן",
+            "תובנות מניעות פעולה נשענות בדרך כלל על תחושות בטן"
+        ],
+        "ans": ()
+    },
+    {
+        "statements": [
+            "בפירמידת DIKW האות D מייצגת תבונה",
+            "בפירמידת DIKW האות W מייצגת Wrong",
+            "שלב הנתונים קודם לקבלת ההקשר והמשמעות שיוצר מידע"
+        ],
+        "ans": (3,)
+    },
+    {
+        "statements": [
+            "מערכות ERP מטפלות בעסקאות ולכן הן OLAP",
+            "מערכות BI מנתחות אנליטית ולכן הן OLTP",
+            "התשתית למערכת בינה עסקית היא OLAP ולא OLTP"
+        ],
+        "ans": (3,)
+    },
+    {
+        "statements": [
+            "המושג שכבה סמנטית מתייחס לתרגום רכיבים טכניים לשפה עסקית",
+            "המושגים ELT ו-ETL זהים לחלוטין",
+            "מקורות הנתונים למערכות BI הם מגוונים"
+        ],
+        "ans": (1, 3)
+    },
+    {
+        "statements": [
+            "מדד להגדלת פדיון הוא Churn Rate",
+            "מדד לשיעור נטישה הוא AOV",
+            "כל סוגי התעשיות משתמשות תמיד באותם סוגי KPI"
+        ],
+        "ans": ()
+    }
+]
+
+# Formatting function for Statement-based questions
+def format_statement_q(q_num, stmts, true_tup):
+    options_map = {
+        (1,): "טענה 1 בלבד",
+        (2,): "טענה 2 בלבד",
+        (3,): "טענה 3 בלבד",
+        (1, 2): "טענות 1 ו-2",
+        (2, 3): "טענות 2 ו-3",
+        (1, 3): "טענות 1 ו-3",
+        (1, 2, 3): "כל הטענות נכונות",
+        (): "כל הטענות שגויות (או כל יתר האפשרויות שגויות)"
+    }
+    
+    correct_text = options_map[true_tup]
+    wrong_keys = [k for k in options_map.keys() if k != true_tup]
+    selected_wrong = random.sample(wrong_keys, 4)
+    all_opts = selected_wrong + [true_tup]
+    random.shuffle(all_opts)
+    
+    html_stmts = "".join([f"<div class='statement'><b>טענה {i+1}:</b> {s}</div>" for i, s in enumerate(stmts)])
+    
+    opts_html = ""
+    correct_letter = ""
+    for i, opt_key in enumerate(all_opts):
+        letter = chr(1488 + i)
+        text = options_map[opt_key]
+        if opt_key == true_tup:
+            correct_letter = letter
+        opts_html += f"<li class='option'>{letter}. {text}</li>"
+        
+    return f"""
+    <div class='question-card'>
+        <div class='q-num'>שאלה מספר {q_num}</div>
+        <div class='statements'>{html_stmts}</div>
+        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+        <ul class='options'>{opts_html}</ul>
+    </div>
+    """, correct_letter
+
+# Build the first 17 manually defined exam questions
+html_body = ""
+answers_key = []
+q_counter = 1
+
+for q in original_qs:
+    q_html, ans = format_statement_q(q_counter, q["statements"], q["ans"])
+    html_body += q_html
+    answers_key.append(f"<div class='ans-row'><span class='ans-num'>שאלה {q_counter}:</span><span class='ans-val'>{ans}</span></div>")
+    q_counter += 1
+
+# Manually add Exam Q18-Q20 (Joins)
+exam_joins = [
+    ([1,2,3], [2,3,4]),
+    ([10,20], [10,10,30]),
+    ([1,1,3,None], [1,7,1,None])
+]
+
+def generate_join_q(q_num, left, right):
+    i, l, r, f = calc_joins(left, right)
+    correct_text = f"Inner: {i}, Left: {l}, Right: {r}, Full Outer: {f}"
+    
+    # Generate plausible wrong answers
+    wrongs = [
+        f"Inner: {i+1}, Left: {l}, Right: {r}, Full Outer: {f}",
+        f"Inner: {i}, Left: {l-1}, Right: {r+1}, Full Outer: {f+1}",
+        f"Inner: {max(0,i-1)}, Left: {l+1}, Right: {r}, Full Outer: {f-1}",
+        "כל יתר התשובות שגויות"
+    ]
+    opts = wrongs[:4] + [correct_text]
+    random.shuffle(opts)
+    
+    opts_html = ""
+    correct_letter = ""
+    for idx, opt in enumerate(opts):
+        letter = chr(1488 + idx)
+        if opt == correct_text: correct_letter = letter
+        opts_html += f"<li class='option'>{letter}. {opt}</li>"
+        
+    left_str = str(left).replace('None', 'Null')
+    right_str = str(right).replace('None', 'Null')
+    
+    q_html = f"""
+    <div class='question-card'>
+        <div class='q-num'>שאלה מספר {q_num}</div>
+        <div class='statements'>
+            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: {left_str}</div>
+            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: {right_str}</div>
+            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+        </div>
+        <ul class='options'>{opts_html}</ul>
+    </div>
+    """
+    return q_html, correct_letter
+
+for L, R in exam_joins:
+    q_html, ans = generate_join_q(q_counter, L, R)
+    html_body += q_html
+    answers_key.append(f"<div class='ans-row'><span class='ans-num'>שאלה {q_counter}:</span><span class='ans-val'>{ans}</span></div>")
+    q_counter += 1
+
+# --- Generate 43 Theory Questions based on Mikud ---
+theory_pool = [
+    (["משתנים בעלי ערכים כמותיים נחשבים ב-Tableau ל-Measures", "משתנים כגון תאריכים או קטגוריות נחשבים ל-Dimensions", "שינוי משתנה מ-Discrete ל-Continuous ישפיע על סוג התרשים האוטומטי"], (1,2,3)),
+    (["גרירת שדה לציר ה-Columns מגדירה את הציר האנכי (Y)", "Tableau Public מחייב רכישת רישיון בתשלום שנתי", "שמירה ל-Tableau Public מאפשרת יצירת קישור ציבורי לדשבורד"], (3,)),
+    (["סמל # בשדה מעיד על נתון טקסטואלי", "הגדרת Marks מאפשרת צביעה או הוספת תוויות, אך לא משנה את הנתונים במקור", "סינון דרך Filters מסתיר נתונים מהתרשים המוצג"], (2,3)),
+    (["פילטר מסוג Pages יוצר תפריט דפדוף בין חיתוכים שונים של הנתונים", "דשבורד ב-Tableau יכול לכלול רק תרשימים ולא תמונות או טקסט חופשי", "שינוי נתון ב-Tableau משנה אוטומטית את קובץ ה-Excel המקורי"], (1,)),
+    (["שמירת פרויקט ב-Github דורשת פעולת Commit", "אירוח אתר סטטי מבוצע דרך Github Pages ומוגדר לרוב על Branch (כגון Main)", "כלי AI יכולים לסייע בכתיבת קוד HTML להטמעת הקישור של Tableau"], (1,2,3)),
+    (["Frontend מורכב משפות צד לקוח כגון HTML", "Backend מתייחס לשרת המעבד בקשות ושולף נתונים", "API הוא הממשק המחבר ביניהם ומגדיר את פורמט התקשורת"], (1,2,3)),
+    (["GAS מדמה Backend וניתן לפריסה בלחיצה אחת (Deploy as Web App)", "GAS מתאים במיוחד לאפליקציות עם מיליוני כניסות בשנייה", "GAS חינמי אך מוגבל לסביבת האקולוגית של Google"], (1,3)),
+    (["ארכיטקטורת מערכת טיפוסית כוללת הזנת קלט, ולידציה, שרת (כגון GAS) והצגה", "מנגנון Fallback נדרש רק במערכות שאינן מחוברות לאינטרנט", "ולידציה של נתונים נועדה להבטיח את תקינות הקלט מהמשתמש"], (1,3)),
+    (["מערכת ERP מיועדת בעיקר לביצוע עסקאות בזמן אמת (OLTP)", "מערכת BI מיועדת לניתוח נתונים וקבלת החלטות (OLAP)", "התשתית המרכזית עליה נשענת מערכת בינה עסקית היא OLTP"], (1,2)),
+    (["תובנה מניעת פעולה (Actionable Insight) חייבת להיות ספציפית וקונקרטית", "בפירמידת DIKW, השלב העליון הוא Information (מידע)", "בפירמידת DIKW, נתונים הופכים למידע ברגע שניתן להם הקשר ומשמעות"], (1,3)),
+    (["תהליך ETL מייצג חילוץ, התמרה וטעינה", "בארכיטקטורת ELT, ההתמרה (Transform) מבוצעת לפני כניסת הנתונים למחסן", "מחסני נתונים מודרניים כגון Snowflake מאפשרים גישת ELT בשל כוח העיבוד שלהם"], (1,3)),
+    (["Data Warehouse מתאפיין בנתונים לא מובנים כגון תמונות וסרטונים", "Data Lake משמש לאחסון נתונים גמישים ולא מובנים", "Lakehouse משלב בין הסדר של המחסן לגמישות של האגם"], (2,3)),
+    (["השכבה הסמנטית מתרגמת מונחים טכניים ממסד הנתונים לשפה עסקית מובנת", "Tableau עובד באופן בלעדי על סביבת Windows", "Power BI מתממשק בצורה טבעית וחלקה עם מוצרי מיקרוסופט (Ecosystem)"], (1,3)),
+    (["מסמך ה-BRD מתרגם את השפה הטכנית של המפתחים ליעדים של המנכ\"ל", "מתודולוגיית Top-Down מתחילה באפיון מסדי הנתונים ורק אז בהגדרת יעדים", "החלק הראשון במסמך BRD הוא לרוב תקציר המנהלים"], (3,)),
+    (["מדד AOV (Average Order Value) מודד את אחוז הלקוחות שעזבו את החברה", "מדד Churn Rate משקף את שיעור הנטישה של הלקוחות (נפוץ ב-SaaS)", "מדדי KPI אמורים להשתנות לחלוטין בין מחלקה למחלקה ללא תלות ביעד המרכזי"], (2,)),
+    (["בפירמידת DIKW האות K מייצגת Knowledge (ידע)", "קבלת תובנה (Wisdom) מגיעה ישירות מנתונים גולמיים ללא שלבי ביניים", "איתור תבניות בנתונים הוא השלב שהופך מידע לידע"], (1,3)),
+    (["חיבור קובץ Excel ב-Tableau מבוצע על ידי Connect ל-Text File", "שדה מספרי יקבל סימון # בחלונית השדות", "Tableau מחשב אוטומטית פונקציית SUM כאשר גוררים מדד (Measure) לתרשים"], (2,3)),
+    (["אפליקציות Web מבוססות GAS נגישות דרך דפדפן סטנדרטי", "אין צורך לדעת HTML כדי לבנות Frontend ויזואלי למשתמש", "תקשורת API מאפשרת להחזיר תשובות בפורמט מובנה כגון JSON"], (1,3)),
+    (["קיימים מקרים בהם נציג ב-Dashboard תובנות שאינן ניתנות ליישום כרגע (מידע כללי)", "תובנה מניעת פעולה יכולה להיות מבוססת על תחושות בטן ללא גיבוי נתונים", "פירמידת DIKW מתארת מעבר מצמצום עובדות גולמיות להחלטות עסקיות חכמות"], (1,3)),
+    (["סוגי חיבור ה-Join ב-Tableau זהים בלוגיקה שלהם ל-SQL", "ב-Inner Join יחזרו כל הרשומות משתי הטבלאות, כולל ערכי Null", "ב-Left Join מובטח שכל רשומות הטבלה השמאלית יופיעו בתוצאה"], (1,3)),
+    (["Full Outer Join עשוי להציג תאי Null אם אין התאמה בשדה המזהה", "Right Join שומר את כל הרשומות מהטבלה הימנית", "חיבור בין טבלאות מצריך שדה מזהה משותף (כגון ID)"], (1,2,3)),
+    (["מערכת תפעולית לניהול מלאי בארגון היא דוגמה קלאסית למערכת BI", "OLAP נועד לשאילתות אנליטיות מורכבות על נתונים היסטוריים", "מטרת פרויקט BI היא לחבר נתונים ממקורות שונים לטובת קבלת החלטות"], (2,3)),
+    (["השכבה הסמנטית מאפשרת למשתמשי הקצה להבין את הנתונים ללא ידע ב-SQL", "ETL הוא התהליך המסורתי בו הנתונים מנוקים לפני שהם נכנסים למחסן הנתונים", "מודל Data Lakehouse דורש בהכרח שימוש ב-Excel"], (1,2)),
+    (["ב-Tableau, גרירת משתנה קטגוריאלי לעמודות (Columns) תיצור ציר אופקי (X)", "Dashboards מוגדרים תמיד לגודל קבוע ולא ניתן להתאימם למסך (Automatic)", "ניתן לשלב מספר גליונות (Sheets) ב-Dashboard אחד"], (1,3)),
+    (["ל-Tableau Public יש הגבלות על שמירת נתונים מקומית בהשוואה ל-Desktop", "פרסום (Publish) דשבורד מניב קישור אותו ניתן להטמיע באתר", "קובץ CSV מכיל פורמט בינארי מורכב ולא מוגדר כטקסט"], (1,2)),
+    (["כאשר מקימים אתר ב-Github, קובץ הכניסה הראשי נקרא לרוב index.html", "הפקודה Commit משמעותה אישור ושמירת השינויים בקוד", "Github Pages מספק שרת Backend מלא התומך במסדי נתונים"], (1,2)),
+    (["שימוש ב-Google Apps Script חוסך את הצורך בתחזוקת שרת פיזי או בענן", "מנגנון Validation מוודא שמשתמש הזין כתובת מייל תקינה לפני שליחת הבקשה", "המונח Fallback מתייחס לסיטואציה בה השרת הראשי עובד באופן מושלם"], (1,2)),
+    (["בעסקי הקמעונאות (Retail), יעד נפוץ הוא הגדלת פדיון ולכן נמדוד AOV", "חברות תוכנה (SaaS) מתמקדות בשימור לקוחות ולכן מודדות Churn Rate", "אין קשר בין סוג התעשייה לבין בחירת ה-KPIs"], (1,2)),
+    (["מסמך BRD כולל פירוט טכני ברמת שורות הקוד שמפתח צריך לכתוב", "גישת Top-Down באפיון מערכות מבטיחה שהפיתוח משרת את היעדים העסקיים", "מקורות נתונים אינם חלק ממסמך ה-BRD"], (2,)),
+    (["ב-Tableau, מדדים (Measures) צבועים לרוב בירוק וממדים (Dimensions) בכחול (או תלוי ברציפות)", "משתנה רציף (Continuous) מצייר צירים רציפים כמו קו זמן מגמתי", "אזור Marks מאפשר שליטה על צבע (Color) וגודל (Size) בתרשים"], (1,2,3)),
+    (["השילוב של Backend ו-Frontend באפליקציה מאפשר הפרדה בין התצוגה לוגיקת הנתונים", "API מאפשר למערכות שונות לדבר זו עם זו למרות שהן כתובות בשפות שונות", "דפדפן האינטרנט של המשתמש מריץ את קוד ה-Backend"], (1,2)),
+    (["בפירמידת DIKW, מעבר ממידע (Information) לידע (Knowledge) דורש חשיפת תבניות והקשרים", "חוכמה (Wisdom) באה לידי ביטוי בקבלת החלטה או פעולה", "הפירמידה מתארת תהליך של הגדלת נפח הנתונים ככל שעולים למעלה"], (1,2)),
+    (["ארכיטקטורת מערכת BI מתחילה לרוב בשאיבת נתונים ממערכות תפעוליות (ERP, CRM)", "מחסן נתונים (DWH) משמש כמאגר מרכזי, נקי ומובנה עבור אנליסטים", "כלי הויזואליזציה (כמו Tableau) מחליף את מערכת ה-ERP לחלוטין"], (1,2)),
+    (["תובנה מניעת פעולה (Actionable Insight) היא כזו שניתן ליישם בארגון (ברת ביצוע)", "הגדרה כללית כמו 'המכירות ירדו' איננה תובנה ספציפית מספיק", "תובנות מבוססות תמיד על היכרות אישית של המנכ\"ל ולא על נתונים"], (1,2)),
+    (["ETL מיושם בעיקר כאשר נדרש לנקות את הנתונים לפני כניסתם לאחסון", "ב-Data Lake הנתונים נשמרים בפורמט הגולמי שלהם (Raw)", "Tableau אינו מאפשר סינון נתונים לפי טווח תאריכים"], (1,2)),
+    (["סוג חיבור Full Outer מחזיר שורות שאין להן התאמה בטבלה הנגדית (ויציג Null במקומות החסרים)", "Inner Join מסנן החוצה שורות ללא התאמה מוחלטת", "Left Join מתעלם לחלוטין מהטבלה השמאלית"], (1,2)),
+    (["פיתוח אפליקציה מבוססת GAS ו-HTML מאפשר יצירת מסכי משתמש אינטראקטיביים", "אחסון קוד ה-HTML ב-Github Pages הופך אותו לנגיש ברשת", "השרת שכתוב ב-GAS מחזיר את הנתונים ממסד הנתונים או מ-Google Sheets"], (1,2,3)),
+    (["משתנה בדיד (Discrete) יוצר כותרות קטגוריאליות בתרשים (כמו עמודות נפרדות)", "משתנה רציף (Continuous) מתאים להצגת רצף זמנים בתרשים קו", "Tableau מאפשר לשנות משתנה מספרי מ-Continuous ל-Discrete"], (1,2,3)),
+    (["במערכת מבוססת נתונים, כלי ה-Frontend מעבד נתונים כבדים במקום השרת", "קריאת HTTP משמשת לתקשורת בין הלקוח (Client) לשרת (Server)", "פורמט JSON הוא פורמט פופולרי להעברת נתונים דרך API"], (2,3)),
+    (["מסמך BRD נכתב בדרך כלל לאחר סיום הפיתוח כדי לתעד את מה שנעשה", "בגישת Top-Down, ה-KPIs מוגדרים לאחר הבנת היעדים העסקיים המרכזיים", "שכבה סמנטית מקלה על אנשי עסקים לשלוף נתונים ללא תלות באנשי IT"], (2,3))
+]
+
+# Ensure we pick enough theory questions
+# We need exactly 43 theory questions to reach 63 so far. (We have 40 in the pool, I'll recycle 3 with slight modifications or just use them all)
+while len(theory_pool) < 43:
+    theory_pool.append(random.choice(theory_pool))
+
+for t_stmts, t_ans in theory_pool:
+    q_html, ans = format_statement_q(q_counter, t_stmts, t_ans)
+    html_body += q_html
+    answers_key.append(f"<div class='ans-row'><span class='ans-num'>שאלה {q_counter}:</span><span class='ans-val'>{ans}</span></div>")
+    q_counter += 1
+
+# --- Generate 17 specific JOINS calculations ---
+extra_joins = [
+    ([1,2,2], [2,2,3]),
+    ([5,5], [5,5,5]),
+    ([1,2], [3,4]),
+    ([None, None], [None]),
+    ([1,1,1], [1]),
+    ([2,4,6], [2,4]),
+    ([1,None,2], [1,3,None]),
+    ([10,20,30], [20,20]),
+    ([1,2], [1,2,1,2]),
+    ([7,8,9], [7]),
+    ([None], [1,2,None]),
+    ([5], []),
+    ([], [1,2]),
+    ([1,1,2,2], [1,2]),
+    ([3,4,5,6], [5,6,7,8]),
+    ([100,200], [100,200,300]),
+    ([0,0,1], [0,1,1])
+]
+
+for L, R in extra_joins:
+    q_html, ans = generate_join_q(q_counter, L, R)
+    html_body += q_html
+    answers_key.append(f"<div class='ans-row'><span class='ans-num'>שאלה {q_counter}:</span><span class='ans-val'>{ans}</span></div>")
+    q_counter += 1
+
+html_template = f"""<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סיכום מקיף ומעמיק - פיתוח יישומי אינטרנט</title>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>מבחן חזרה - ויזואליזציה של מידע - מועד ב'</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --success-bg: #f0fdf4;
-            --success-border: #22c55e;
-            --success-text: #15803d;
-            --error-bg: #fef2f2;
-            --error-border: #ef4444;
-            --error-text: #b91c1c;
-            --border-color: #e2e8f0;
-            --accent: #38bdf8;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Heebo', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.7;
-            padding: 2rem 1rem;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 4rem;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-            font-weight: 800;
-            color: #f8fafc;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            color: #cbd5e1;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .section {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 3rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border-color);
-        }
-
-        .section-title {
-            font-size: 2rem;
-            color: var(--text-main);
-            border-bottom: 4px solid var(--accent);
-            padding-bottom: 0.75rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-        }
-
-        .deep-dive {
-            background-color: #f1f5f9;
-            padding: 2rem;
-            border-radius: 12px;
-            border-right: 5px solid var(--primary);
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
-        }
-
-        .deep-dive h3 {
-            color: var(--primary);
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .deep-dive h3:first-child {
-            margin-top: 0;
-        }
-
-        .deep-dive p {
-            margin-bottom: 1rem;
-        }
-        
-        .deep-dive ul {
-            margin-right: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .deep-dive li {
-            margin-bottom: 0.5rem;
-        }
-
-        .question-card {
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            background-color: #ffffff;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .question-card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-        }
-
-        .question-text {
-            font-weight: 700;
-            font-size: 1.25rem;
-            margin-bottom: 1.5rem;
-            color: #1e293b;
-            padding-bottom: 1rem;
-            border-bottom: 1px dashed var(--border-color);
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .option-btn {
-            background-color: #f8fafc;
-            border: 2px solid #e2e8f0;
-            padding: 1.25rem;
-            border-radius: 8px;
-            text-align: right;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-        }
-
-        .option-btn:hover:not(:disabled) {
-            border-color: var(--accent);
-            background-color: #f0f9ff;
-            transform: translateX(-5px);
-        }
-
-        .option-btn:disabled {
-            cursor: default;
-        }
-
-        .option-btn.correct {
-            background-color: var(--success-bg);
-            border-color: var(--success-border);
-            color: var(--success-text);
-            font-weight: 700;
-        }
-
-        .option-btn.wrong {
-            background-color: var(--error-bg);
-            border-color: var(--error-border);
-            color: var(--error-text);
-            opacity: 0.8;
-        }
-
-        .explanation {
-            display: none;
-            margin-top: 1.5rem;
-            padding: 1.5rem;
-            background-color: #fffbeb;
-            border-right: 5px solid #f59e0b;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            color: #451a03;
-            line-height: 1.6;
-        }
-
-        .explanation strong {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-            color: #b45309;
-        }
-
-        .explanation.visible {
-            display: block;
-            animation: fadeInDown 0.4s ease-out;
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f7f9fc; color: #1a202c; margin: 0; padding: 20px; direction: rtl; }}
+        .header {{ text-align: center; background: #2b6cb0; color: white; padding: 30px 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }}
+        h1 {{ margin: 0; font-size: 2.2rem; }}
+        p.subtitle {{ font-size: 1.1rem; opacity: 0.9; margin-top: 10px; }}
+        .container {{ max-width: 900px; margin: 0 auto; }}
+        .question-card {{ background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }}
+        .q-num {{ font-weight: bold; color: #2b6cb0; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; }}
+        .statements {{ margin-bottom: 15px; }}
+        .statement {{ margin-bottom: 8px; line-height: 1.6; }}
+        .q-title {{ font-weight: bold; margin-top: 15px; margin-bottom: 10px; }}
+        .options {{ margin-top: 10px; list-style-type: none; padding: 0; }}
+        .option {{ padding: 12px 15px; background: #edf2f7; margin-bottom: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }}
+        .option:hover {{ background: #e2e8f0; border: 1px solid #cbd5e0; }}
+        .btn-show {{ display: block; width: 100%; max-width: 300px; margin: 40px auto; background: #38a169; color: white; text-align: center; padding: 15px; font-size: 1.2rem; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; transition: background 0.2s; }}
+        .btn-show:hover {{ background: #2f855a; }}
+        #answers {{ display: none; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 20px; }}
+        .ans-row {{ display: flex; justify-content: space-between; border-bottom: 1px solid #edf2f7; padding: 12px 0; }}
+        .ans-num {{ font-weight: bold; width: 120px; }}
+        .ans-val {{ color: #2b6cb0; font-weight: bold; }}
+        .footer {{ text-align: center; margin-top: 40px; color: #718096; font-size: 0.9rem; }}
     </style>
 </head>
 <body>
-
-<div class="container">
-    <header>
-        <h1>הכנה למבחן: פיתוח יישומי אינטרנט</h1>
-        <p>גרסה מורחבת ומעמיקה הכוללת את התיאוריה המלאה מאחורי כל נושא וניתוח מדויק של שאלות הבחינה. מומלץ לקרוא את תקצירי העומק לפני המענה על השאלות.</p>
-    </header>
-
-    <!-- SECTION 1 -->
-    <div class="section">
-        <h2 class="section-title">1. שפות צד לקוח: תשתית, מבנה ועיצוב (HTML5 & CSS3)</h2>
-        
-        <div class="deep-dive">
-            <h3>הבסיס: HTML ומרכיביו</h3>
-            <p>HTML (HyperText Markup Language) אינה שפת תכנות (אין בה לולאות, משתנים או תנאים לוגיים), אלא שפת תיאור ומבנה. היא משתמשת בתגיות (Tags) כדי להגדיר לדפדפן מהו כל רכיב בעמוד (פסקה, כותרת, טופס, תמונה). לכל תגית יכולים להיות <strong>מאפיינים (Attributes)</strong> כגון `class`, `id`, `src` או `href` אשר מעניקים מידע נוסף על האלמנט או מגדירים את התנהגותו.</p>
-            
-            <h3>אלמנט DIV מול אלמנטים סמנטיים (HTML5)</h3>
-            <p>התגית <code>&lt;div&gt;</code> היא אלמנט מסוג <strong>Block-level</strong>. המשמעות היא שהיא תמיד תתחיל בשורה חדשה ותתפוס את כל הרוחב הזמין (100% מרוחב אלמנט האב שלה). כשלעצמה, לתגית זו אין שום משמעות סמנטית - היא משמשת רק כ"מיכל" (Container) ארגוני שנועד לקבץ אלמנטים יחד כדי להחיל עליהם עיצוב CSS או מניפולציות ב-JS.</p>
-            <p>גרסת <strong>HTML5</strong> עשתה מהפכה בכך שהציגה <strong>תגיות סמנטיות</strong> (כגון <code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;nav&gt;</code>). תגיות אלו מסבירות למנועי החיפוש (SEO) ולקוראי מסך (נגישות) את <em>המשמעות</em> של התוכן, ולא רק את המבנה שלו. בנוסף, HTML5 הביאה עימה ממשקי API מובנים (כמו Local Storage, Video/Audio מקומיים ו-Canvas לציור) שביטלו את הצורך בתוספים חיצוניים כמו פלאש.</p>
-
-            <h3>עיצוב רספונסיבי וספציפיות ב-CSS</h3>
-            <p><strong>עיצוב רספונסיבי (Responsive Design):</strong> גישה בה ממשק המשתמש מתאים את עצמו באופן אוטומטי לכל גודל מסך או מכשיר (דסקטופ, טאבלט, מובייל). הכלים המרכזיים למימוש עיצוב כזה הם יחידות מידה יחסיות (%, vw, vh, rem) וחשוב מכל - <strong>Media Queries</strong>. פקודות אלו (למשל `@media (max-width: 768px)`) מאפשרות לדפדפן להחיל חוקי CSS שונים כאשר תנאי המסך משתנים.</p>
-            <p><strong>ספציפיות (Specificity) ב-CSS:</strong> מערכת הניקוד של הדפדפן שקובעת איזה עיצוב יוחל במקרה של התנגשות חוקים. חוקי הברזל (מהחזק לחלש):</p>
-            <ul>
-                <li><strong>Inline Style:</strong> עיצוב הכתוב בתוך התגית עצמה (למשל <code>style="color: red"</code>). חזק מאוד.</li>
-                <li><strong>ID (#):</strong> מזהה ייחודי. חזק יותר מ-Class.</li>
-                <li><strong>Class (.):</strong> מחלקה. חזקה יותר מתגית.</li>
-                <li><strong>Tag (div, p):</strong> בחירת האלמנט עצמו. הדרך החלשה ביותר.</li>
-            </ul>
+    <div class="container">
+        <div class="header">
+            <h1>מבחן חזרה מקיף - ויזואליזציה של מידע</h1>
+            <p class="subtitle">הכנה למועד ב' - 80 שאלות מלאות ברוח המיקוד</p>
         </div>
-
-        <div class="question-card">
-            <div class="question-text">1. מה נכון בנוגע ל-HTML ?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. שפת תכנות מונחת עצמים (OOP) הפועלת רק בצד הלקוח לעיבוד נתונים.</button>
-                <button class="option-btn" data-correct="true">ב. שפת סימון (Markup Language) המשמשת להגדרת המבנה והתוכן של עמודי אינטרנט באמצעות תגיות.</button>
-                <button class="option-btn" data-correct="false">ג. פרוטוקול רשת המשמש להעברת נתונים בצורה מוצפנת בין השרת ללקוח.</button>
-                <button class="option-btn" data-correct="false">ד. ספריית עיצוב המקבילה ל-CSS המאפשרת יצירת אנימציות מורכבות.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                התשובה הנכונה היא ב'. חשוב לזכור למבחן ש-HTML לעולם אינה שפת תכנות, משום שאין לה יכולות לוגיות (חישובים, תנאי if, לולאות). תפקידה הבלעדי הוא "לסמן" (Markup) ולהגדיר לדפדפן את המבנה ההיררכי של המסמך (כותרות, פסקאות, קישורים).
-            </div>
+        <div id="questions-container">
+            {html_body}
         </div>
-
-        <div class="question-card">
-            <div class="question-text">2. קטע הקוד &lt;...' &gt; כתוב במסמך HTML. מה נכון בנוגע לו ולאלמנט xxx?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. xxx מייצג את תוכן הטקסט שיוצג למשתמש על המסך והוא מחויב להיות בעברית.</button>
-                <button class="option-btn" data-correct="true">ב. xxx הנו מאפיין (Attribute) של אלמנט ה-HTML, אשר מספק עליו מידע נוסף או מגדיר את התנהגותו.</button>
-                <button class="option-btn" data-correct="false">ג. זהו קריאה לפונקציית JavaScript מתוך ה-HTML הקוראת לאובייקט xxx.</button>
-                <button class="option-btn" data-correct="false">ד. הקוד מתאר תגית סגירה ייחודית הקיימת רק בגרסת HTML5.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                כאשר אנו רואים בתוך סוגריים משולשים מבנה של <code>name="value"</code> (למשל <code>class="container"</code> או <code>src="image.jpg"</code>), המילה השמאלית (xxx) היא המאפיין (Attribute). מאפיינים תמיד נכתבים בתוך תגית הפתיחה ותפקידם להרחיב את היכולות או המידע של אותה תגית.
-            </div>
+        <button class="btn-show" onclick="document.getElementById('answers').style.display='block'; window.scrollTo(0, document.body.scrollHeight);">הצג פתרונות</button>
+        <div id="answers">
+            <h2 style="text-align:center; color:#2b6cb0; margin-bottom: 20px;">מפתח תשובות</h2>
+            {''.join(answers_key)}
         </div>
-
-        <div class="question-card">
-            <div class="question-text">3. מה נכון בנוגע לאלמנט DIV?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. אלמנט ברמת השורה (Inline) שגודלו מותאם במדויק לתוכן שבתוכו.</button>
-                <button class="option-btn" data-correct="false">ב. תגית סמנטית חדשה המעידה על כך שמדובר בתפריט הניווט הראשי של האתר.</button>
-                <button class="option-btn" data-correct="true">ג. זהו אלמנט בלוק (Block-level) חסר משמעות סמנטית המשמש כמיכל (Container) לאיגוד אלמנטים אחרים לעיצוב ועיבוד.</button>
-                <button class="option-btn" data-correct="false">ד. אלמנט הדורש כתיבה כתגית סגירה-עצמית (Self-closing tag) בדומה לתגית img.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                ה-DIV הוא "סוס העבודה" של מבנה האתר. הוא אלמנט Block (כלומר דוחף את שאר האלמנטים לשורה חדשה ומתפרס על כל הרוחב). אין לו משמעות סמנטית (קוראי מסך לא לומדים ממנו כלום), ולכן השימוש העיקרי בו הוא לעטוף אזורים בעמוד כדי שנוכל לעצב אותם יחד ב-CSS כגריד או פלקס.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">8. מה נכון בנוגע ל- HTML5?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="true">א. גרסה זו הציגה תגיות סמנטיות (כגון article, nav) שמסייעות למנועי חיפוש וקוראי מסך, וכן תמיכה מובנית בוידאו ואודיו.</button>
-                <button class="option-btn" data-correct="false">ב. גרסה זו הוציאה משימוש את שפת JavaScript ומאפשרת לכתוב לוגיקה ישירות בתוך ה-HTML.</button>
-                <button class="option-btn" data-correct="false">ג. טכנולוגיה המיועדת להחלפת ה-CSS בעזרת עיצובים מובנים ואוטומטיים ללא צורך בכתיבת קוד עיצוב.</button>
-                <button class="option-btn" data-correct="false">ד. תקן מחמיר המחייב פיתוח אתרים אך ורק לטלפונים ניידים ואינו נתמך בדסקטופ.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                המהות של HTML5 במבחנים היא <strong>סמנטיקה ומולטימדיה טבעית</strong>. במקום להשתמש בעשרות <code>div</code>ים, אנחנו משתמשים בתגיות בעלות משמעות. בנוסף, API חדשים כמו LocalStorage ותמיכה בטפסי HTML מתקדמים מאפיינים גרסה זו.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">9. מה נכון בנוגע לעיצוב רספונסיבי (responsive design)?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. יצירת גרסאות HTML שונות ונפרדות לכל סוג מכשיר (דסקטופ, טאבלט, טלפון).</button>
-                <button class="option-btn" data-correct="true">ב. גישת עיצוב המבוססת על CSS (כולל Media Queries ויחידות יחסיות) המתאימה את תצוגת האתר בצורה גמישה לכל גודל מסך בו הוא נצפה.</button>
-                <button class="option-btn" data-correct="false">ג. טכנולוגיה מבוססת שרת (Backend) המעבדת מחדש את התמונות לפני שליחתן למכשיר הקצה.</button>
-                <button class="option-btn" data-correct="false">ד. שימוש קבוע במידות אבסולוטיות (כגון פיקסלים) כדי להבטיח שהאתר ייראה זהה בכל מסך.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                הרעיון מאחורי Responsive Design הוא לכתוב קוד HTML <strong>אחד ויחיד</strong>. מי שעושה את עבודת ההתאמה הוא ה-CSS, וספציפית ה-Media Queries שמזהים את רוחב החלון (Viewport) ומסדרים את הגריד, הפונטים והגדלים מחדש (לרוב בעזרת Flexbox או Grid).
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">13. בהגדרות CSS3 יש קטע ... ואין הגדרות נוספות של צבע. איזה טקסט ... בקוד של HTML להלן יהיה בצבע אדום?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. כל הטקסטים במסמך יצבעו באדום כיוון שזוהי ברירת המחדל של הדפדפן בהיעדר עיצוב אחר.</button>
-                <button class="option-btn" data-correct="true">ב. הטקסט הנמצא תחת האלמנט בעל חוקי הספציפיות (Specificity) הגבוהים ביותר, כגון זה שמקושר ל-ID המסוים או זה שיש לו Inline Style.</button>
-                <button class="option-btn" data-correct="false">ג. רק טקסטים הממוקמים בתוך תגיות span ו-div יקבלו את הצבע באופן בלעדי.</button>
-                <button class="option-btn" data-correct="false">ד. הצבע יוחל באופן אקראי על הפסקה הראשונה במסמך בלבד.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                השאלה בוחנת את הבנת מנגנון ה-<strong>Specificity</strong> ב-CSS (ספציפיות/עדיפות). אם יש לך כמה הגדרות CSS שמנסות לשנות צבע של אותו טקסט (למשל, חוק אחד עבור פסקאות וחוק אחר עבור מחלקה), הדפדפן מחשב משקלים. אלמנט עם ID (מזהה ייחודי) תמיד ינצח אלמנט עם Class. ואלמנט עם סגנון בתוך ה-HTML (Inline style) ינצח את כולם. 
-            </div>
+        <div class="footer">
+            בהצלחה בבחינה! תרגול זה נוצר לכיסוי נרחב של החומר כולל חישובי Join, תיאוריות BI, Tableau ו-GAS.
         </div>
     </div>
-
-    <!-- SECTION 2 -->
-    <div class="section">
-        <h2 class="section-title">2. לוגיקה ואינטראקציה בצד הלקוח (JavaScript & DOM)</h2>
-        
-        <div class="deep-dive">
-            <h3>שפת JavaScript ומאפייניה</h3>
-            <p>JavaScript היא השפה שמעניקה חיים לדפדפן (צד הלקוח). היא שפה <strong>מפורשת (Interpreted)</strong> - קוד המקור נשלח ללקוח ומנוע ה-JS של הדפדפן מריץ אותו. מאפיין קריטי להבנה הוא ש-JS רצה על <strong>Single Thread</strong> (חוט ביצוע יחיד) בדפדפן, כלומר היא יכולה לבצע רק פעולה אחת בכל רגע נתון. לכן, כדי לא לתקוע את הממשק בזמן המתנה (למשל לתשובה משרת), היא משתמשת בתכנות אסינכרוני (Callbacks, Promises, Async/Await).</p>
-            
-            <h3>משתנים ופונקציות</h3>
-            <p>הכרזת משתנים עברה מהפכה ב-ES6: בעבר השתמשנו ב-<code>var</code> אשר לו טווח חלות של פונקציה (Function scope) ונוטה לבעיות (Hoisting). כיום נהוג להשתמש ב-<code>let</code> למשתנים שערכם עשוי להשתנות בעתיד, וב-<code>const</code> לקבועים שלא ניתן להציב להם ערך מחדש. לשניהם יש טווח חלות של בלוק (Block scope - למשל בתוך לולאת for בלבד).</p>
-            <p><strong>פונקציות ב-JS מוגדרות כ-"First-Class Citizens"</strong>: משמעות הדבר היא שניתן להתייחס לפונקציה בדיוק כמו לכל משתנה אחר. אפשר לאחסן אותה במשתנה, להחזיר אותה מתוך פונקציה אחרת, והכי חשוב - להעביר אותה כארגומנט (פרמטר) לפונקציה אחרת (מה שמוכר כ-Callback Function).</p>
-
-            <h3>ה-DOM ו-Fetch API</h3>
-            <p>ה-<strong>DOM (Document Object Model)</strong> הוא בעצם ממשק תכנות (API) שהדפדפן מייצר. הוא קורא את קובץ ה-HTML הסטטי והופך אותו לעץ היררכי של אובייקטים (Nodes) השמור בזיכרון המחשב. JS משתמשת בעץ הזה כדי לתקשר עם התצוגה: לשנות טקסטים, להוסיף אלמנטים, לקרוא ערכים של טפסים ולשנות CSS בזמן אמת, הכל ללא רענון העמוד.</p>
-            <p>מתודת <strong>fetch</strong> היא הסטנדרט המודרני לביצוע בקשות AJAX (קריאות שרת ברקע). היא עובדת באופן אסינכרוני (כדי לא לעצור את חוט הביצוע היחיד) ומחזירה <strong>Promise</strong> - אובייקט שמייצג הבטחה להשלמה עתידית של פעולת הרשת (בהצלחה או בכישלון).</p>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">4. מה נכון בנוגע לשפת תכנות JS) Javascript)</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. זוהי שפת פיתוח צד-שרת מבוססת Java המשמשת לפעולות מאובטחות בלבד.</button>
-                <button class="option-btn" data-correct="true">ב. שפת סקריפטים דינמית הפועלת (לרוב) בצד הלקוח (בדפדפן), ומאפשרת יצירת אינטראקטיביות, מניפולציה של ה-DOM ותקשורת אסינכרונית.</button>
-                <button class="option-btn" data-correct="false">ג. שפה המשמשת בלעדית לתכנון מבנה מסדי נתונים רלציוניים בדפדפן.</button>
-                <button class="option-btn" data-correct="false">ד. שפה סטטית הדורשת קומפילציה מראש (הידור) לפני שהיא נשלחת אל דפדפן הלקוח.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                JS היא לב האינטראקטיביות ברשת. אין לה קשר לשפת Java (למרות השם). היא רצה בדפדפן, קוראת את ה-DOM, מאזינה לאירועים של המשתמש (קליקים, הקלדות) ומבצעת תקשורת רשת (Fetch) ללא צורך בקומפילציה, אלא באמצעות Interpreter המובנה בדפדפן.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">5. מה נכון בנוגע למשתנים ב-Javascript</div>
-            <div class="options">
-                <button class="option-btn" data-correct="true">א. נהוג כיום להצהיר עליהם בעזרת let (למשתנים) ו-const (לקבועים) שהם בעלי טווח-בלוק (Block Scope), לעומת var הישן שהוא בעל טווח-פונקציה.</button>
-                <button class="option-btn" data-correct="false">ב. חובה להגדיר מפורשות את טיפוס המשתנה (לדוגמה: int, string, boolean) בעת ההכרזה עליו.</button>
-                <button class="option-btn" data-correct="false">ג. משתנה המוכרז כ-const הוא דינמי לחלוטין וניתן לדרוס את ערכו בכל שלב בקוד.</button>
-                <button class="option-btn" data-correct="false">ד. משתנים ב-JS יכולים לאחסן אך ורק ערכים מספריים (Numbers) או מחרוזות (Strings), ולא אובייקטים.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                JS היא שפה Weakly Typed (טיפוסיות חלשה), לכן לא רושמים int או string, אלא רק let/const. הסיבה המרכזית ש-let ו-const החליפו את var היא ניהול זיכרון נכון יותר והימנעות מבאגים עקב כך שהם חיים רק בתוך הבלוק (`{ }`) שבו הוגדרו. 
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">6. מה נכון בנוגע לפונקציות של Javascript</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. פונקציה חייבת להיות מוצהרת בתחילת הקובץ בלבד, ולא ניתן להשתמש בפונקציות אנונימיות.</button>
-                <button class="option-btn" data-correct="false">ב. לא ניתן להחזיר ערך (return) מפונקציה אל הקוד שקרא לה.</button>
-                <button class="option-btn" data-correct="true">ג. פונקציות הן אובייקטים לכל דבר (First-Class Citizens) וניתן להקצות אותן למשתנים, לשלוח אותן כפרמטרים לפונקציות אחרות (Callbacks) ולהחזירן כתוצאה.</button>
-                <button class="option-btn" data-correct="false">ד. ב-JS פונקציה תמיד רצה באופן סינכרוני ועוצרת לחלוטין את הדפדפן עד לסיומה.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                המושג "First-Class Citizen" הוא קריטי ב-JS. מכיוון שפונקציה היא סוג של אובייקט, אפשר לעשות איתה הכל. יכולת זו היא מה שמאפשרת לנו לכתוב קוד אסינכרוני - אנחנו מעבירים פונקציה כארגומנט (Callback), והיא מופעלת רק מתי שהפעולה הסתיימה (למשל סיום טיימר או קבלת מידע מהשרת).
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">14. מה נכון בנוגע ל-DOM?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. מערכת ניהול בסיסי נתונים רלציוניים המובנית בתוך הדפדפן לשמירת נתוני לקוח.</button>
-                <button class="option-btn" data-correct="true">ב. (Document Object Model) - מודל אובייקטים היררכי המייצג את מסמך ה-HTML בזיכרון, ומשמש כממשק (API) המאפשר ל-JavaScript לגשת, לשנות ולעדכן את האלמנטים בעמוד.</button>
-                <button class="option-btn" data-correct="false">ג. פרוטוקול אבטחה של הדפדפן שמונע מאתרים זדוניים לגשת לקבצים המקומיים במחשב.</button>
-                <button class="option-btn" data-correct="false">ד. אובייקט ספציפי הקיים רק בסביבת הריצה של Node.js בצד השרת.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                ה-DOM הוא "גשר". מצד אחד יש לנו קובץ טקסט סטטי (HTML). מצד שני יש לנו שפת תכנות חיה (JS). ה-DOM הוא המבנה התלת-ממדי (עץ יוחסין של הורה, ילדים, ואחים) שהדפדפן בונה כדי ש-JS תוכל לאתר אלמנטים (למשל `document.getElementById`) ולבצע בהם שינויים באופן דינמי.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">15. מהו התפקיד של מתודת JavaScript-fetch</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. פונקציה מובנית לחיפוש מחרוזות טקסט בתוך ה-DOM בצורה רקורסיבית.</button>
-                <button class="option-btn" data-correct="false">ב. מתודה המשמשת לשליפת עוגיות (Cookies) מהזיכרון המקומי של הדפדפן.</button>
-                <button class="option-btn" data-correct="true">ג. ביצוע בקשות רשת (HTTP/AJAX) אסינכרוניות מול שרתים ו-APIs, תוך החזרת אובייקט מסוג Promise ללא צורך ברענון העמוד כולו.</button>
-                <button class="option-btn" data-correct="false">ד. פונקציה ספציפית ב-Node.js המיועדת לקריאת קבצים מדיסק הקשיח של השרת.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                ה-Fetch API הוא המנגנון העדכני (שהחליף את XMLHttpRequest) כדי שצד הלקוח יוכל לתקשר עם ה-Backend. הוא אסינכרוני כדי שהמשתמש יוכל להמשיך להשתמש באתר בזמן שהנתונים (לרוב JSON) נמשכים ברקע מהשרת.
-            </div>
-        </div>
-    </div>
-
-    <!-- SECTION 3 -->
-    <div class="section">
-        <h2 class="section-title">3. ניהול מצב, נתונים ותקשורת (Cookies, Session & JSON)</h2>
-        
-        <div class="deep-dive">
-            <h3>בעיית ה-Stateless ב-HTTP וניהול מצב (State)</h3>
-            <p>פרוטוקול התקשורת HTTP הוא <strong>Stateless (חסר מצב)</strong>. פירוש הדבר הוא שהשרת מעבד בקשה מהלקוח, מחזיר תשובה, ו"שוכח" ממנו לחלוטין. הוא לא יודע אם בקשה שניה הגיעה מאותו לקוח או מלקוח חדש. כדי לאפשר התחברות לחשבון אישי או עגלת קניות, אנחנו זקוקים למנגנוני ניהול מצב: Cookies ו-Session.</p>
-            
-            <h3>Cookies לעומת Session</h3>
-            <p><strong>Cookies (עוגיות):</strong> קבצי טקסט קטנים (עד כ-4KB) שנשמרים <strong>אצל הלקוח (בדפדפן)</strong>. העוגיות נשלחות באופן אוטומטי ב-Header של כל בקשת HTTP לשרת המשויך אליהן. משום שהן נשמרות אצל הלקוח (והוא יכול לקרוא או לערוך אותן בקלות), <strong>הכלל החשוב ביותר הוא שלעולם לא שומרים בהן מידע רגיש</strong> (כמו סיסמאות או פרטי כרטיס אשראי). השימוש הקלאסי הוא העדפות משתמש (שפה, תצוגה) או שמירת Session ID.</p>
-            <p><strong>Session (הפעלה):</strong> מנגנון בו הנתונים הרגישים נשמרים <strong>בצד השרת</strong> (בזיכרון, בטבלה או בבסיס נתונים מהיר כמו Redis). תהליך העבודה: הלקוח מתחבר -> השרת מקצה לו רשומה ומידע רגיש אצלו, ויוצר "תג מזהה" אקראי (Session ID) -> השרת שולח ללקוח רק את ה-ID לשמירה כעוגייה. בבקשה הבאה הלקוח שולח רק את התג, והשרת מזהה אותו בבטחה. המידע אינו חשוף ללקוח, וה-Session בדרך כלל נמחק בעת סגירת הדפדפן (אלא אם הוגדר אחרת).</p>
-
-            <h3>פורמט JSON</h3>
-            <p><strong>JSON (JavaScript Object Notation):</strong> הפורמט הסטנדרטי להעברת נתונים ברשת מודרנית (החליף את ה-XML המסורבל). זהו טקסט טהור הבנוי על ארכיטקטורת מפתח-ערך (Key-Value). למרות שמו, JSON עצמאי מ-JS וכל שפות צד-השרת (Python, C#, PHP) יודעות לעבוד איתו.</p>
-            <p><strong>כלל תחביר קריטי:</strong> ב-JSON, <strong>כל המפתחות (Keys) חייבים להיות עטופים במרכאות כפולות בלבד</strong> (למשל: <code>{"id": 1, "name": "Tal"}</code>). ערכים מספריים או בוליאניים אינם זקוקים למרכאות.</p>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">7. מה נכון בנוגע ל- JSON?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. פלטפורמת צד-שרת להרצת קוד JavaScript מחוץ לדפדפן.</button>
-                <button class="option-btn" data-correct="false">ב. בסיס נתונים רלציוני המאחסן טבלאות בלבד.</button>
-                <button class="option-btn" data-correct="true">ג. פורמט טקסטואלי קל-משקל המשמש להעברה וייצוג של מבני נתונים בין שרת ללקוח (מבוסס Key-Value).</button>
-                <button class="option-btn" data-correct="false">ד. ספריית עיצוב צד-לקוח המאפשרת יצירת טפסים אינטראקטיביים.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                המטרה העיקרית של JSON היא לייצג אובייקטים מורכבים במחרוזת טקסט רגילה כדי שניתן יהיה לשלוח אותם דרך רשת האינטרנט בפרוטוקול HTTP, ושני הצדדים (שרת ולקוח) יוכלו לפרש אותם בקלות. 
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">10. מה נכון בנוגע ל-cookies?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="true">א. אלו נתונים טקסטואלים בעלי נפח מוגבל (כ-4KB) השמורים בצד הלקוח (הדפדפן), ונשלחים חזרה לשרת עם כל בקשת HTTP.</button>
-                <button class="option-btn" data-correct="false">ב. זהו המקום המאובטח ביותר ברשת לשמירת סיסמאות משתמש ופרטי בנק, מאחר והשרת אינו יכול לראות אותן.</button>
-                <button class="option-btn" data-correct="false">ג. קבצים אלו נשמרים תמיד בזיכרון הפיזי של השרת בלבד ואין ללקוח יכולת למחוק אותם.</button>
-                <button class="option-btn" data-correct="false">ד. עוגיות מאפשרות לשמור קבצי מדיה גדולים כמו וידאו בדפדפן הלקוח.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                ההגדרה המדויקת של Cookies - קבצים קטנים בדפדפן הלקוח. החסרון הגדול שלהן הוא אבטחה, מכיוון שהלקוח יכול לראותן דרך כלי המפתחים (F12) ולשנותן, וכן משום שהן מצורפות אוטומטית לכל בקשה לאותו דומיין, מה שמייצר תקורה על הרשת.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">12. מה נכון בנוגע ל-JSON?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. המפתחות בפורמט זה אינם דורשים סימון מיוחד וניתן לכתוב אותם ללא מירכאות.</button>
-                <button class="option-btn" data-correct="false">ב. זהו אובייקט ייחודי ובלעדי ל-JavaScript ולא ניתן להשתמש בו בשפות כגון פייתון, PHP או Node.js.</button>
-                <button class="option-btn" data-correct="true">ג. הכלל התחבירי הנוקשה שלו מחייב כי כל שם של מפתח (Key) יעטף במירכאות כפולות בלבד (לדוגמה: "name").</button>
-                <button class="option-btn" data-correct="false">ד. הוא מאפשר ביצוע מתודות ופונקציות בתוך מבנה הנתונים עצמו.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                שאלה זו מתמקדת בדקויות התחביר (Syntax). בעוד שבאובייקט רגיל ב-JS מותר לכתוב מפתח ללא מירכאות (כמו `{ age: 24 }`), ב-JSON תקין ורשמי חובה להשתמש במירכאות כפולות בלבד (`{ "age": 24 }`). בנוסף, JSON אינו תומך בהעברת פונקציות, אלא רק נתונים סטטיים.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">17. מה נכון בנוגע ל-session ?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. מידע מצב הנשמר ומתנהל בלעדית במחשב הלקוח, ללא ידיעתו של השרת.</button>
-                <button class="option-btn" data-correct="true">ב. מידע מצב (State) השמור ומנוהל מאובטח בצד השרת. השרת מזהה את הלקוח בדרך כלל בעזרת מזהה ייחודי (Session ID) השמור אצל הלקוח כ-Cookie.</button>
-                <button class="option-btn" data-correct="false">ג. פרוטוקול רשת המשמש לשידור וידאו בזמן אמת מדפדפן לדפדפן.</button>
-                <button class="option-btn" data-correct="false">ד. מבנה נתונים המשמש אך ורק לעיצוב הויזואלי של עמוד אינטרנט לאחר שהמשתמש התחבר.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                ההבדל בין עוגייה לסשן הוא מיקום שמירת הנתונים האמיתיים. ב-Session, הנתונים המלאים (מי מחובר, מה יש בעגלה, הרשאות מנהל) מאובטחים לחלוטין <strong>בשרת</strong>. הלקוח מחזיק רק מפתח קטן חסר משמעות בעצמו שנקרא Session ID המשמש ככרטיס כניסה לקריאת הנתונים בשרת.
-            </div>
-        </div>
-    </div>
-
-    <!-- SECTION 4 -->
-    <div class="section">
-        <h2 class="section-title">4. ארכיטקטורת רשת, Backend ו-Node.js</h2>
-        
-        <div class="deep-dive">
-            <h3>מהי אפליקציית Web?</h3>
-            <p>אפליקציית Web היא תוכנה המבוססת על מודל <strong>לקוח-שרת (Client-Server)</strong>. צד הלקוח (Frontend) רץ בדפדפן ומשמש כממשק המשתמש (UI). הלקוח יוזם בקשות (Requests) באמצעות פרוטוקול התקשורת HTTP/HTTPS אל צד השרת (Backend). השרת, שהוא מחשב מרוחק הזמין ברשת, מעבד את הבקשה ומחזיר תגובה (Response) המכילה HTML/CSS או נתוני JSON טהורים המוצגים חזרה בדפדפן. לא נדרשת התקנת תוכנה על המחשב (בניגוד ל-Desktop Application).</p>
-            
-            <h3>פיתוח צד שרת (Backend)</h3>
-            <p>ה-Backend הוא ה"מוח" המוסתר של האפליקציה. בעוד שהמשתמש הקצה יכול לקרוא ולראות את כל קוד ה-Frontend (על ידי לחיצה על "הצג מקור" בדפדפן), קוד ה-Backend מאובטח ורץ בשרת. תפקידיו המרכזיים כוללים: לוגיקה עסקית (חישובים, קבלת החלטות), אימות והרשאות משתמשים (Authentication), אבטחת מידע, והחשוב מכל - תקשורת מול בסיסי נתונים (Databases).</p>
-
-            <h3>המהפכה של Node.js וניהול אסינכרוני</h3>
-            <p>עד להופעת Node.js, JavaScript רצה אך ורק בדפדפן. Node.js היא <strong>סביבת ריצה (Runtime Environment)</strong> הכתובה ב-C++ ולוקחת את מנוע ה-V8 החזק של חברת גוגל, ומאפשרת להריץ בעזרתו קוד JS על השרת המרוחק. (חשוב למבחן: Node.js היא <em>לא</em> שפת תכנות חדשה!).</p>
-            <p>ארכיטקטורת Node.js: שרתי עבר (כמו Apache) נהגו לפתוח חוט ריצה חדש (Thread) בזיכרון לכל משתמש שמתחבר, מה שהכביד על המערכת. Node.js עובד עם <strong>Single Thread (חוט ביצוע יחיד) ומבוסס אירועים (Event-driven)</strong>. <br><br>איך שרת עם חוט יחיד מטפל באלפי משתמשים מבלי לקרוס? התשובה היא <strong>Non-Blocking I/O (תקשורת אסינכרונית)</strong>. כל פעולה "כבדה" שלוקחת זמן (כמו שאילתה למסד נתונים או קריאת קובץ מהדיסק) נשלחת לביצוע ברקע. בינתיים, השרת פנוי לקבל משתמשים חדשים. כאשר מסד הנתונים מסיים לשלוף את הנתונים, הוא שולח אירוע (Callback) ל-Node שממשיך מאותה נקודה. מכאן עולה שכל פעולה מול מסד נתונים חייבת להיות <strong>אסינכרונית</strong>.</p>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">11. מה נכון בנוגע ליישום Web?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="true">א. זוהי אפליקציה המבוססת על מודל לקוח-שרת (Client-Server), המסופקת למשתמש על גבי הרשת ומופעלת באמצעות הדפדפן.</button>
-                <button class="option-btn" data-correct="false">ב. תוכנה קומפילטיבית המותקנת באופן מקומי על מערכת ההפעלה של המשתמש (כדוגמת Microsoft Word).</button>
-                <button class="option-btn" data-correct="false">ג. אפליקציה שפועלת באופן בלעדי על טלפונים חכמים וזמינה דרך חנויות האפליקציות בלבד.</button>
-                <button class="option-btn" data-correct="false">ד. יישום צד-שרת בלבד הפועל ללא כל ממשק משתמש קצה.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                מהות אפליקציית ה-Web היא ההפרדה בין צד הלקוח שמציג ממשק למשתמש (באמצעות דפדפן וטכנולוגיות WEB), לבין צד השרת שמעבד ושומר נתונים. התקשורת ביניהם מתבצעת על גבי רשת האינטרנט בפרוטוקול HTTP.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">16. מה נכון בנוגע Node.js</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. זוהי שפת תכנות מונחית עצמים חדשה שנועדה להחליף את JavaScript בדפדפן.</button>
-                <button class="option-btn" data-correct="false">ב. סביבה לפיתוח ממשקי משתמש גרפיים מתקדמים למובייל.</button>
-                <button class="option-btn" data-correct="true">ג. סביבת ריצה (Runtime) המאפשרת הרצת קוד JavaScript בצד השרת, פועלת לרוב בארכיטקטורה של Single Thread מבוססת אירועים אסינכרוניים.</button>
-                <button class="option-btn" data-correct="false">ד. מערכת מסד נתונים NoSQL המגיעה כחלק בלתי נפרד מכל דפדפן מודרני.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                המושגים שחובה לחפש בתשובות על Node.js הם: <strong>סביבת ריצה (לא שפת תכנות), צד-שרת, Single Thread, אסינכרוני מבוסס אירועים</strong>.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">18. מה נכון בנוגע לשימוש בבסיסי נתונים ב-Node.js</div>
-            <div class="options">
-                <button class="option-btn" data-correct="true">א. הפעולות מול מסד הנתונים מבוצעות בצורה אסינכרונית (Non-blocking I/O) כדי שהשרת ימשיך לטפל בבקשות של משתמשים אחרים בזמן ההמתנה למידע.</button>
-                <button class="option-btn" data-correct="false">ב. הפעולות חייבות להתבצע בצורה סינכרונית (חוסמת) כדי למנוע התנגשויות במידע רגיש.</button>
-                <button class="option-btn" data-correct="false">ג. סביבת Node.js אינה יכולה לתקשר עם מסדי נתונים רלציוניים (כמו SQL), אלא אך ורק עם מסדי NoSQL.</button>
-                <button class="option-btn" data-correct="false">ד. עבור כל בקשה למסד הנתונים, מערכת ההפעלה פותחת Thread חדש ועצמאי לחלוטין.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                אם היינו ניגשים למסד הנתונים בצורה סינכרונית ב-Node.js (שהוא כאמור בעל חוט ביצוע יחיד), כל האתר היה קופא ואף משתמש אחר לא היה מקבל מענה עד לשליפת הנתונים. לכן, הגישה היא תמיד אסינכרונית.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">19. מה נכון בנוגע לפיתוח backend?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. מתמקד הבלעדיות בעיצוב האלמנטים הויזואליים של הממשק והחוויה של המשתמש בעמוד (UX/UI).</button>
-                <button class="option-btn" data-correct="true">ב. מתמקד בתשתיות השרת, פיתוח הלוגיקה העסקית, אימות הרשאות משתמשים, אבטחת מידע ותקשורת רציפה עם מסדי הנתונים.</button>
-                <button class="option-btn" data-correct="false">ג. נכתב תוך שימוש בלעדי בשפות התצוגה HTML ו-CSS ללא לוגיקה תכנותית.</button>
-                <button class="option-btn" data-correct="false">ד. קוד ה-Backend נשלח תמיד ללקוח וכל משתמש קצה יכול לראות אותו באמצעות לחיצה על "הצג מקור הדף".</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                בעוד ש-Frontend דואג לממשק, ה-Backend הוא מרכז העצבים של האפליקציה שפועל בבטחה מאחורי הקלעים בשרת ומנהל את המידע האמיתי של המערכת.
-            </div>
-        </div>
-
-        <div class="question-card">
-            <div class="question-text">20. מה נכון בנוגע לאפליקציית WEB ?</div>
-            <div class="options">
-                <button class="option-btn" data-correct="false">א. אפליקציה שמחייבת הורדה פיזית למחשב הלקוח בפורמט EXE ולא דורשת חיבור לרשת.</button>
-                <button class="option-btn" data-correct="true">ב. מערכת המבוססת על מודל לקוח-שרת (Client/Server) אליה המשתמש ניגש מרחוק דרך הדפדפן (Browser), ללא צורך בהתקנה מקומית.</button>
-                <button class="option-btn" data-correct="false">ג. אפליקציה שרצה בסביבת Command Line (שורת פקודה) בשרת הלינוקס בלבד ללא הצגת UI.</button>
-                <button class="option-btn" data-correct="false">ד. אפליקציה המאחסנת את כלל בסיס הנתונים שלה והמידע העסקי במחשב הלקוח המקומי בלבד מטעמי אבטחה.</button>
-            </div>
-            <div class="explanation">
-                <strong>ניתוח התשובה:</strong>
-                ההגדרה של אפליקציית WEB (שאלה שחוזרת על עצמה במבחן בניסוחים קלים) נועדה לוודא שאתה מבין שאין התקנה מקומית למשתמש (מלבד הדפדפן עצמו), והחיבור נעשה דרך מודל לקוח ושרת מרוחק.
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    document.querySelectorAll('.options').forEach(optionsContainer => {
-        optionsContainer.addEventListener('click', (e) => {
-            const button = e.target.closest('.option-btn');
-            if(!button) return; // ignore clicks that are not on buttons
-
-            const buttons = optionsContainer.querySelectorAll('.option-btn');
-            const explanation = optionsContainer.nextElementSibling;
-            const isCorrect = button.dataset.correct === 'true';
-
-            // לחסום לחיצות נוספות על כל הכפתורים בשאלה זו
-            buttons.forEach(btn => btn.disabled = true);
-
-            if (isCorrect) {
-                button.classList.add('correct');
-            } else {
-                button.classList.add('wrong');
-                // הדגש את התשובה הנכונה
-                buttons.forEach(btn => {
-                    if(btn.dataset.correct === 'true') {
-                        btn.classList.add('correct');
-                    }
-                });
-            }
-            
-            // הראה הסבר עם אנימציה
-            explanation.classList.add('visible');
-        });
-    });
-</script>
 </body>
 </html>
+"""
+
+file_path = '/mnt/data/visualization_exam_moed_b.html'
+with open(file_path, 'w', encoding='utf-8') as f:
+    f.write(html_template)
+
+print(f"File created successfully. tag: code-generated-file-xxxxxxxxxx")
