@@ -2,687 +2,1609 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>מבחן חזרה - ויזואליזציה של מידע - מועד ב'</title>
+    <title>מבחן חזרה אינטראקטיבי - ויזואליזציה של מידע - מועד ב'</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f7f9fc; color: #1a202c; margin: 0; padding: 20px; direction: rtl; }
-        .header { text-align: center; background: #2b6cb0; color: white; padding: 30px 20px; border-radius: 12px; margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header { text-align: center; background: #2b6cb0; color: white; padding: 30px 20px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         h1 { margin: 0; font-size: 2.2rem; }
         p.subtitle { font-size: 1.1rem; opacity: 0.9; margin-top: 10px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        .question-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .q-num { font-weight: bold; color: #2b6cb0; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; }
-        .statements { margin-bottom: 15px; }
-        .statement { margin-bottom: 8px; line-height: 1.6; }
-        .q-title { font-weight: bold; margin-top: 15px; margin-bottom: 10px; }
-        .options { margin-top: 10px; list-style-type: none; padding: 0; }
-        .option { padding: 12px 15px; background: #edf2f7; margin-bottom: 8px; border-radius: 6px; cursor: pointer; transition: background 0.2s; border: 1px solid transparent; }
-        .option:hover { background: #e2e8f0; border: 1px solid #cbd5e0; }
-        .btn-show { display: block; width: 100%; max-width: 300px; margin: 40px auto; background: #38a169; color: white; text-align: center; padding: 15px; font-size: 1.2rem; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; transition: background 0.2s; }
-        .btn-show:hover { background: #2f855a; }
-        #answers { display: none; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 20px; }
-        .ans-row { display: flex; justify-content: space-between; border-bottom: 1px solid #edf2f7; padding: 12px 0; }
-        .ans-num { font-weight: bold; width: 120px; }
-        .ans-val { color: #2b6cb0; font-weight: bold; }
-        .footer { text-align: center; margin-top: 40px; color: #718096; font-size: 0.9rem; }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        .quiz-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .btn-nav { background: #4299e1; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s; font-size: 1rem;}
+        .btn-nav:hover:not(:disabled) { background: #3182ce; }
+        .btn-nav:disabled { background: #cbd5e0; cursor: not-allowed; }
+        .btn-finish { background: #38a169; display: none; }
+        .btn-finish:hover { background: #2f855a; }
+        
+        .question-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 30px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); min-height: 350px; display: none; /* All hidden by default */ }
+        .question-card.active { display: block; }
+        
+        .q-num { font-weight: bold; color: #2b6cb0; font-size: 1.4rem; margin-bottom: 20px; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; }
+        .statements { margin-bottom: 20px; font-size: 1.1rem; }
+        .statement { margin-bottom: 12px; line-height: 1.6; }
+        .q-title { font-weight: bold; margin-top: 15px; margin-bottom: 15px; font-size: 1.1rem; }
+        
+        .options { list-style-type: none; padding: 0; margin: 0; }
+        .option { padding: 15px 20px; background: #edf2f7; margin-bottom: 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; font-size: 1.05rem; }
+        .option:hover { background: #e2e8f0; border-color: #cbd5e0; transform: translateY(-1px); }
+        
+        /* Feedback styles */
+        .option.correct { background: #c6f6d5 !important; border-color: #38a169 !important; color: #22543d; font-weight: bold; }
+        .option.incorrect { background: #fed7d7 !important; border-color: #e53e3e !important; color: #742a2a; }
+        .answered .option { cursor: default; pointer-events: none; }
+        
+        #results-container { display: none; text-align: center; background: white; padding: 50px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        #results-container h2 { color: #2b6cb0; font-size: 2.5rem; margin-bottom: 20px; }
+        #final-score { font-size: 1.5rem; font-weight: bold; color: #2d3748; }
+        
+        .progress-text { font-weight: bold; color: #4a5568; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>מבחן חזרה מקיף - ויזואליזציה של מידע</h1>
-            <p class="subtitle">הכנה למועד ב' - 80 שאלות מלאות ברוח המיקוד</p>
+            <h1>מבחן חזרה אינטראקטיבי - ויזואליזציה של מידע</h1>
+            <p class="subtitle">הכנה למועד ב' - 80 שאלות (שאלה אחת בכל פעם)</p>
         </div>
-        <div id="questions-container">
+        
+        <div id="quiz-container">
+            <div class="quiz-controls">
+                <button class="btn-nav" id="btn-prev" onclick="prevQuestion()" disabled>שאלה קודמת</button>
+                <div class="progress-text" id="progress-text">שאלה 1 מתוך 80</div>
+                <button class="btn-nav" id="btn-next" onclick="nextQuestion()">שאלה הבאה</button>
+                <button class="btn-nav btn-finish" id="btn-finish" onclick="finishQuiz()">סיים מבחן</button>
+            </div>
             
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 1</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> חיבור של קבצי .csv ל-Tableau מבוצע דרך הענן של Tableau</div><div class='statement'><b>טענה 2:</b> קבצי CSV הם קבצי טקסט. לפיכך, אי אפשר לפתוח אותם דרך תוכנת Excel אלא דרך תוכנת Tableau בלבד</div><div class='statement'><b>טענה 3:</b> קבצי CSV הם קבצי טקסט. לפיכך, חיבורם ל-Tableau מתאפשר דרך לחיצה על Connect ובחירה ב-Text</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות נכונות</li><li class='option'>ב. טענה 3 בלבד</li><li class='option'>ג. טענה 1 בלבד</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. טענות 2 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 2</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> תוכנת Tableau מתמחה בייצור נתונים גולמיים</div><div class='statement'><b>טענה 2:</b> תוכנת Tableau Public מאפשרת שיתוף התוצרים לענן, בעוד שתוכנת Tableau Desktop עובדת מקומית בלבד</div><div class='statement'><b>טענה 3:</b> בתוך אזור הגדרת השדות ב-Sheets קיימת תצוגה מקדימה אוטומטית של המידע בטבלאות השונות</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-3</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ה. טענה 3 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 3</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> לתוכנת Tableau ניתן לחבר קבצים בסיומת .xlsx בלבד</div><div class='statement'><b>טענה 2:</b> גרירת משתנים ל-Rows גורמת להגדרת הציר האופקי (X) על בסיס משתנה זה</div><div class='statement'><b>טענה 3:</b> גרירת משתנים ל-Rows גורמת להגדרת הציר האנכי (Y) על בסיס משתנה זה</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות נכונות</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענה 2 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 4</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> קטגוריות או שנים קלנדריות הם ערכי Dimensions (ממדים)</div><div class='statement'><b>טענה 2:</b> ערכי מכירות הם ערכי Measures (מדדים)</div><div class='statement'><b>טענה 3:</b> קיים הגיון רב בביצוע חישובים כגון סיכומים על Dimensions אך לא על Measures</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-2</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. כל הטענות נכונות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 5</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> שימוש ב-Pages מאפשר להגדיר סינון כך שהתרשים יתייחס רק לערכים שנותרו</div><div class='statement'><b>טענה 2:</b> שימוש ב-Pages מאפשר דפדוף עם חיצים לשינוי התרשים בהתאם לערך המשתנה</div><div class='statement'><b>טענה 3:</b> Dashboards כולל תרשימי Sheets בלבד אלא אם מתקינים תוספים חיצוניים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות נכונות</li><li class='option'>ב. טענות 1 ו-2</li><li class='option'>ג. טענות 2 ו-3</li><li class='option'>ד. טענה 3 בלבד</li><li class='option'>ה. טענה 2 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 6</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> שדות שלצדם מופיע סימון Abc הם שדות הכוללים ערכים מספריים</div><div class='statement'><b>טענה 2:</b> שדות שלצדם מופיע סימון Abc הם שדות טקסטואליים</div><div class='statement'><b>טענה 3:</b> אם אשנה נתונים ב-Tableau, זה משנה כמובן גם את המידע בקובץ המקור</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. טענה 2 בלבד</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. טענות 1 ו-3</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 7</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> כאשר גוררים שדות מספריים, Tableau לרוב מבצע סיכום שלהם (Sum)</div><div class='statement'><b>טענה 2:</b> בתיבת ה-Marks ניתן להגדיר את סוג התרשים בלבד</div><div class='statement'><b>טענה 3:</b> בתיבת ה-Marks ניתן להגדיר פילוח תרשים לפי צבעים בהתייחס למשתנה</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-3</li><li class='option'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ג. טענות 1 ו-2</li><li class='option'>ד. טענה 1 בלבד</li><li class='option'>ה. טענות 2 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 8</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> יצירת הגרפים חייבת להיות לפני חיבור הנתונים</div><div class='statement'><b>טענה 2:</b> שמירת Dashboard ל-Tableau Public צריכה להתבצע לפני תחילת העבודה</div><div class='statement'><b>טענה 3:</b> הפעולה של שמירת שינויים ב-Repo של Github נקראת Commit</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות נכונות</li><li class='option'>ב. טענה 2 בלבד</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. טענה 1 בלבד</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 9</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> באמצעות GAS בונים שרת אמיתי</div><div class='statement'><b>טענה 2:</b> באמצעות GAS בונים גם Frontend וגם Backend</div><div class='statement'><b>טענה 3:</b> באמצעות GAS אנו מדמים Backend</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-2</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. טענה 2 בלבד</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענה 3 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 10</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> בניית Frontend בוצעה בקורס ב-HTML</div><div class='statement'><b>טענה 2:</b> ה-Backend הוא שרת שמקבל בקשות ומחזיר תשובות</div><div class='statement'><b>טענה 3:</b> הגדרה של API היא Application Processing Investment</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 2 בלבד</li><li class='option'>ב. טענות 2 ו-3</li><li class='option'>ג. טענות 1 ו-2</li><li class='option'>ד. טענה 3 בלבד</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 11</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> GAS דורש הגדרת שרת</div><div class='statement'><b>טענה 2:</b> GAS ניתן ליישום בלחיצה אחת כ-Web App</div><div class='statement'><b>טענה 3:</b> GAS עומד בעומסים כבדים ומתאים למערכות יצרניות גבוהות</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענה 2 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 12</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> הולידציה מבוצעת לאחר הזנת הקלט</div><div class='statement'><b>טענה 2:</b> התצוגה המקדימה מבוצעת לאחר התקשורת מול GAS</div><div class='statement'><b>טענה 3:</b> אם מקור השליפה מדויק אין צורך במנגנון גיבוי Fallback</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-3</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. טענות 1 ו-2</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 13</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> תובנות מניעות פעולה מתייחסות להגדרה כללית ורחבה של הבעיה</div><div class='statement'><b>טענה 2:</b> תובנות מניעות פעולה מוגדרות גם כשלא ניתן לפעול לפיהן</div><div class='statement'><b>טענה 3:</b> תובנות מניעות פעולה נשענות בדרך כלל על תחושות בטן</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 2 בלבד</li><li class='option'>ב. טענה 3 בלבד</li><li class='option'>ג. טענות 1 ו-2</li><li class='option'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 14</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> בפירמידת DIKW האות D מייצגת תבונה</div><div class='statement'><b>טענה 2:</b> בפירמידת DIKW האות W מייצגת Wrong</div><div class='statement'><b>טענה 3:</b> שלב הנתונים קודם לקבלת ההקשר והמשמעות שיוצר מידע</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ג. טענה 1 בלבד</li><li class='option'>ד. כל הטענות נכונות</li><li class='option'>ה. טענות 1 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 15</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מערכות ERP מטפלות בעסקאות ולכן הן OLAP</div><div class='statement'><b>טענה 2:</b> מערכות BI מנתחות אנליטית ולכן הן OLTP</div><div class='statement'><b>טענה 3:</b> התשתית למערכת בינה עסקית היא OLAP ולא OLTP</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. טענות 2 ו-3</li><li class='option'>ד. טענות 1 ו-2</li><li class='option'>ה. טענה 2 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 16</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> המושג שכבה סמנטית מתייחס לתרגום רכיבים טכניים לשפה עסקית</div><div class='statement'><b>טענה 2:</b> המושגים ELT ו-ETL זהים לחלוטין</div><div class='statement'><b>טענה 3:</b> מקורות הנתונים למערכות BI הם מגוונים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ב. טענה 2 בלבד</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. כל הטענות נכונות</li><li class='option'>ה. טענות 1 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 17</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מדד להגדלת פדיון הוא Churn Rate</div><div class='statement'><b>טענה 2:</b> מדד לשיעור נטישה הוא AOV</div><div class='statement'><b>טענה 3:</b> כל סוגי התעשיות משתמשות תמיד באותם סוגי KPI</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-2</li><li class='option'>ב. טענות 2 ו-3</li><li class='option'>ג. טענה 1 בלבד</li><li class='option'>ד. כל הטענות נכונות</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 18</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2, 3]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 3, 4]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+            <div id="questions-wrapper">
+                <!-- Question 1 -->
+                <div class='question-card active' id='q-1'>
+                    <div class='q-num'>שאלה 1</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> חיבור של קבצי .csv ל-Tableau מבוצע דרך הענן של Tableau</div>
+                        <div class='statement'><b>טענה 2:</b> קבצי CSV הם קבצי טקסט. לפיכך, אי אפשר לפתוח אותם דרך תוכנת Excel אלא דרך תוכנת Tableau בלבד</div>
+                        <div class='statement'><b>טענה 3:</b> קבצי CSV הם קבצי טקסט. לפיכך, חיבורם ל-Tableau מתאפשר דרך לחיצה על Connect ובחירה ב-Text</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(1, "א")'>א. כל הטענות נכונות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(1, "ב")'>ב. טענה 3 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(1, "ג")'>ג. טענה 1 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(1, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(1, "ה")'>ה. טענות 2 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 2 -->
+                <div class='question-card' id='q-2'>
+                    <div class='q-num'>שאלה 2</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> תוכנת Tableau מתמחה בייצור נתונים גולמיים</div>
+                        <div class='statement'><b>טענה 2:</b> תוכנת Tableau Public מאפשרת שיתוף התוצרים לענן, בעוד שתוכנת Tableau Desktop עובדת מקומית בלבד</div>
+                        <div class='statement'><b>טענה 3:</b> בתוך אזור הגדרת השדות ב-Sheets קיימת תצוגה מקדימה אוטומטית של המידע בטבלאות השונות</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(2, "א")'>א. טענות 1 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(2, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(2, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(2, "ד")'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ה' onclick='selectOption(2, "ה")'>ה. טענה 3 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 3 -->
+                <div class='question-card' id='q-3'>
+                    <div class='q-num'>שאלה 3</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> לתוכנת Tableau ניתן לחבר קבצים בסיומת .xlsx בלבד</div>
+                        <div class='statement'><b>טענה 2:</b> גרירת משתנים ל-Rows גורמת להגדרת הציר האופקי (X) על בסיס משתנה זה</div>
+                        <div class='statement'><b>טענה 3:</b> גרירת משתנים ל-Rows גורמת להגדרת הציר האנכי (Y) על בסיס משתנה זה</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(3, "א")'>א. כל הטענות נכונות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(3, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(3, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(3, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(3, "ה")'>ה. טענה 2 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 4 -->
+                <div class='question-card' id='q-4'>
+                    <div class='q-num'>שאלה 4</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> קטגוריות או שנים קלנדריות הם ערכי Dimensions (ממדים)</div>
+                        <div class='statement'><b>טענה 2:</b> ערכי מכירות הם ערכי Measures (מדדים)</div>
+                        <div class='statement'><b>טענה 3:</b> קיים הגיון רב בביצוע חישובים כגון סיכומים על Dimensions אך לא על Measures</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(4, "א")'>א. טענות 1 ו-2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(4, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(4, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(4, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(4, "ה")'>ה. כל הטענות נכונות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 5 -->
+                <div class='question-card' id='q-5'>
+                    <div class='q-num'>שאלה 5</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> שימוש ב-Pages מאפשר להגדיר סינון כך שהתרשים יתייחס רק לערכים שנותרו</div>
+                        <div class='statement'><b>טענה 2:</b> שימוש ב-Pages מאפשר דפדוף עם חיצים לשינוי התרשים בהתאם לערך המשתנה</div>
+                        <div class='statement'><b>טענה 3:</b> Dashboards כולל תרשימי Sheets בלבד אלא אם מתקינים תוספים חיצוניים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(5, "א")'>א. כל הטענות נכונות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(5, "ב")'>ב. טענות 1 ו-2</li>
+                        <li class='option' data-val='ג' onclick='selectOption(5, "ג")'>ג. טענות 2 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(5, "ד")'>ד. טענה 3 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(5, "ה")'>ה. טענה 2 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 6 -->
+                <div class='question-card' id='q-6'>
+                    <div class='q-num'>שאלה 6</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> שדות שלצדם מופיע סימון Abc הם שדות הכוללים ערכים מספריים</div>
+                        <div class='statement'><b>טענה 2:</b> שדות שלצדם מופיע סימון Abc הם שדות טקסטואליים</div>
+                        <div class='statement'><b>טענה 3:</b> אם אשנה נתונים ב-Tableau, זה משנה כמובן גם את המידע בקובץ המקור</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(6, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(6, "ב")'>ב. טענה 2 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(6, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(6, "ד")'>ד. טענות 1 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(6, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 7 -->
+                <div class='question-card' id='q-7'>
+                    <div class='q-num'>שאלה 7</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> כאשר גוררים שדות מספריים, Tableau לרוב מבצע סיכום שלהם (Sum)</div>
+                        <div class='statement'><b>טענה 2:</b> בתיבת ה-Marks ניתן להגדיר את סוג התרשים בלבד</div>
+                        <div class='statement'><b>טענה 3:</b> בתיבת ה-Marks ניתן להגדיר פילוח תרשים לפי צבעים בהתייחס למשתנה</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(7, "א")'>א. טענות 1 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(7, "ב")'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ג' onclick='selectOption(7, "ג")'>ג. טענות 1 ו-2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(7, "ד")'>ד. טענה 1 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(7, "ה")'>ה. טענות 2 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 8 -->
+                <div class='question-card' id='q-8'>
+                    <div class='q-num'>שאלה 8</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> יצירת הגרפים חייבת להיות לפני חיבור הנתונים</div>
+                        <div class='statement'><b>טענה 2:</b> שמירת Dashboard ל-Tableau Public צריכה להתבצע לפני תחילת העבודה</div>
+                        <div class='statement'><b>טענה 3:</b> הפעולה של שמירת שינויים ב-Repo של Github נקראת Commit</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(8, "א")'>א. כל הטענות נכונות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(8, "ב")'>ב. טענה 2 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(8, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(8, "ד")'>ד. טענה 1 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(8, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 9 -->
+                <div class='question-card' id='q-9'>
+                    <div class='q-num'>שאלה 9</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> באמצעות GAS בונים שרת אמיתי</div>
+                        <div class='statement'><b>טענה 2:</b> באמצעות GAS בונים גם Frontend וגם Backend</div>
+                        <div class='statement'><b>טענה 3:</b> באמצעות GAS אנו מדמים Backend</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(9, "א")'>א. טענות 1 ו-2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(9, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(9, "ג")'>ג. טענה 2 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(9, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(9, "ה")'>ה. טענה 3 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 10 -->
+                <div class='question-card' id='q-10'>
+                    <div class='q-num'>שאלה 10</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> בניית Frontend בוצעה בקורס ב-HTML</div>
+                        <div class='statement'><b>טענה 2:</b> ה-Backend הוא שרת שמקבל בקשות ומחזיר תשובות</div>
+                        <div class='statement'><b>טענה 3:</b> הגדרה של API היא Application Processing Investment</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(10, "א")'>א. טענה 2 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(10, "ב")'>ב. טענות 2 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(10, "ג")'>ג. טענות 1 ו-2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(10, "ד")'>ד. טענה 3 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(10, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 11 -->
+                <div class='question-card' id='q-11'>
+                    <div class='q-num'>שאלה 11</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> GAS דורש הגדרת שרת</div>
+                        <div class='statement'><b>טענה 2:</b> GAS ניתן ליישום בלחיצה אחת כ-Web App</div>
+                        <div class='statement'><b>טענה 3:</b> GAS עומד בעומסים כבדים ומתאים למערכות יצרניות גבוהות</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(11, "א")'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ב' onclick='selectOption(11, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(11, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(11, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(11, "ה")'>ה. טענה 2 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 12 -->
+                <div class='question-card' id='q-12'>
+                    <div class='q-num'>שאלה 12</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> הולידציה מבוצעת לאחר הזנת הקלט</div>
+                        <div class='statement'><b>טענה 2:</b> התצוגה המקדימה מבוצעת לאחר התקשורת מול GAS</div>
+                        <div class='statement'><b>טענה 3:</b> אם מקור השליפה מדויק אין צורך במנגנון גיבוי Fallback</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(12, "א")'>א. טענות 1 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(12, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(12, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(12, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(12, "ה")'>ה. טענות 1 ו-2</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 13 -->
+                <div class='question-card' id='q-13'>
+                    <div class='q-num'>שאלה 13</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> תובנות מניעות פעולה מתייחסות להגדרה כללית ורחבה של הבעיה</div>
+                        <div class='statement'><b>טענה 2:</b> תובנות מניעות פעולה מוגדרות גם כשלא ניתן לפעול לפיהן</div>
+                        <div class='statement'><b>טענה 3:</b> תובנות מניעות פעולה נשענות בדרך כלל על תחושות בטן</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(13, "א")'>א. טענה 2 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(13, "ב")'>ב. טענה 3 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(13, "ג")'>ג. טענות 1 ו-2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(13, "ד")'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ה' onclick='selectOption(13, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 14 -->
+                <div class='question-card' id='q-14'>
+                    <div class='q-num'>שאלה 14</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> בפירמידת DIKW האות D מייצגת תבונה</div>
+                        <div class='statement'><b>טענה 2:</b> בפירמידת DIKW האות W מייצגת Wrong</div>
+                        <div class='statement'><b>טענה 3:</b> שלב הנתונים קודם לקבלת ההקשר והמשמעות שיוצר מידע</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(14, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(14, "ב")'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ג' onclick='selectOption(14, "ג")'>ג. טענה 1 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(14, "ד")'>ד. כל הטענות נכונות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(14, "ה")'>ה. טענות 1 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 15 -->
+                <div class='question-card' id='q-15'>
+                    <div class='q-num'>שאלה 15</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מערכות ERP מטפלות בעסקאות ולכן הן OLAP</div>
+                        <div class='statement'><b>טענה 2:</b> מערכות BI מנתחות אנליטית ולכן הן OLTP</div>
+                        <div class='statement'><b>טענה 3:</b> התשתית למערכת בינה עסקית היא OLAP ולא OLTP</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(15, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(15, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(15, "ג")'>ג. טענות 2 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(15, "ד")'>ד. טענות 1 ו-2</li>
+                        <li class='option' data-val='ה' onclick='selectOption(15, "ה")'>ה. טענה 2 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 16 -->
+                <div class='question-card' id='q-16'>
+                    <div class='q-num'>שאלה 16</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> המושג שכבה סמנטית מתייחס לתרגום רכיבים טכניים לשפה עסקית</div>
+                        <div class='statement'><b>טענה 2:</b> המושגים ELT ו-ETL זהים לחלוטין</div>
+                        <div class='statement'><b>טענה 3:</b> מקורות הנתונים למערכות BI הם מגוונים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(16, "א")'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ב' onclick='selectOption(16, "ב")'>ב. טענה 2 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(16, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(16, "ד")'>ד. כל הטענות נכונות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(16, "ה")'>ה. טענות 1 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 17 -->
+                <div class='question-card' id='q-17'>
+                    <div class='q-num'>שאלה 17</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מדד להגדלת פדיון הוא Churn Rate</div>
+                        <div class='statement'><b>טענה 2:</b> מדד לשיעור נטישה הוא AOV</div>
+                        <div class='statement'><b>טענה 3:</b> כל סוגי התעשיות משתמשות תמיד באותם סוגי KPI</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(17, "א")'>א. טענות 1 ו-2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(17, "ב")'>ב. טענות 2 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(17, "ג")'>ג. טענה 1 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(17, "ד")'>ד. כל הטענות נכונות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(17, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 18 -->
+                <div class='question-card' id='q-18'>
+                    <div class='q-num'>שאלה 18</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2, 3]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 3, 4]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(18, "א")'>א. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(18, "ב")'>ב. Inner: 2, Left: 2, Right: 4, Full Outer: 5</li>
+                        <li class='option' data-val='ג' onclick='selectOption(18, "ג")'>ג. Inner: 3, Left: 3, Right: 3, Full Outer: 4</li>
+                        <li class='option' data-val='ד' onclick='selectOption(18, "ד")'>ד. Inner: 2, Left: 3, Right: 3, Full Outer: 4</li>
+                        <li class='option' data-val='ה' onclick='selectOption(18, "ה")'>ה. Inner: 1, Left: 4, Right: 3, Full Outer: 3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 19 -->
+                <div class='question-card' id='q-19'>
+                    <div class='q-num'>שאלה 19</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [10, 20]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [10, 10, 30]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(19, "א")'>א. Inner: 1, Left: 4, Right: 3, Full Outer: 3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(19, "ב")'>ב. Inner: 2, Left: 2, Right: 4, Full Outer: 5</li>
+                        <li class='option' data-val='ג' onclick='selectOption(19, "ג")'>ג. Inner: 3, Left: 3, Right: 3, Full Outer: 4</li>
+                        <li class='option' data-val='ד' onclick='selectOption(19, "ד")'>ד. Inner: 2, Left: 3, Right: 3, Full Outer: 4</li>
+                        <li class='option' data-val='ה' onclick='selectOption(19, "ה")'>ה. כל יתר התשובות שגויות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 20 -->
+                <div class='question-card' id='q-20'>
+                    <div class='q-num'>שאלה 20</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 3, Null]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 7, 1, Null]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(20, "א")'>א. Inner: 5, Left: 6, Right: 6, Full Outer: 8</li>
+                        <li class='option' data-val='ב' onclick='selectOption(20, "ב")'>ב. Inner: 4, Left: 5, Right: 7, Full Outer: 9</li>
+                        <li class='option' data-val='ג' onclick='selectOption(20, "ג")'>ג. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(20, "ד")'>ד. Inner: 3, Left: 7, Right: 6, Full Outer: 7</li>
+                        <li class='option' data-val='ה' onclick='selectOption(20, "ה")'>ה. Inner: 4, Left: 6, Right: 6, Full Outer: 8</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 21 -->
+                <div class='question-card' id='q-21'>
+                    <div class='q-num'>שאלה 21</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> משתנים בעלי ערכים כמותיים נחשבים ב-Tableau ל-Measures</div>
+                        <div class='statement'><b>טענה 2:</b> משתנים כגון תאריכים או קטגוריות נחשבים ל-Dimensions</div>
+                        <div class='statement'><b>טענה 3:</b> שינוי משתנה מ-Discrete ל-Continuous ישפיע על סוג התרשים האוטומטי</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(21, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(21, "ב")'>ב. כל הטענות נכונות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(21, "ג")'>ג. טענה 1 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(21, "ד")'>ד. טענות 1 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(21, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 22 -->
+                <div class='question-card' id='q-22'>
+                    <div class='q-num'>שאלה 22</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> גרירת שדה לציר ה-Columns מגדירה את הציר האנכי (Y)</div>
+                        <div class='statement'><b>טענה 2:</b> Tableau Public מחייב רכישת רישיון בתשלום שנתי</div>
+                        <div class='statement'><b>טענה 3:</b> שמירה ל-Tableau Public מאפשרת יצירת קישור ציבורי לדשבורד</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(22, "א")'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ב' onclick='selectOption(22, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(22, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(22, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(22, "ה")'>ה. טענות 1 ו-2</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 23 -->
+                <div class='question-card' id='q-23'>
+                    <div class='q-num'>שאלה 23</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> סמל # בשדה מעיד על נתון טקסטואלי</div>
+                        <div class='statement'><b>טענה 2:</b> הגדרת Marks מאפשרת צביעה או הוספת תוויות, אך לא משנה את הנתונים במקור</div>
+                        <div class='statement'><b>טענה 3:</b> סינון דרך Filters מסתיר נתונים מהתרשים המוצג</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(23, "א")'>א. טענות 1 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(23, "ב")'>ב. טענה 3 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(23, "ג")'>ג. טענה 2 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(23, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(23, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 24 -->
+                <div class='question-card' id='q-24'>
+                    <div class='q-num'>שאלה 24</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> פילטר מסוג Pages יוצר תפריט דפדוף בין חיתוכים שונים של הנתונים</div>
+                        <div class='statement'><b>טענה 2:</b> דשבורד ב-Tableau יכול לכלול רק תרשימים ולא תמונות או טקסט חופשי</div>
+                        <div class='statement'><b>טענה 3:</b> שינוי נתון ב-Tableau משנה אוטומטית את קובץ ה-Excel המקורי</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(24, "א")'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ב' onclick='selectOption(24, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(24, "ג")'>ג. טענות 1 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(24, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(24, "ה")'>ה. טענה 3 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 25 -->
+                <div class='question-card' id='q-25'>
+                    <div class='q-num'>שאלה 25</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> שמירת פרויקט ב-Github דורשת פעולת Commit</div>
+                        <div class='statement'><b>טענה 2:</b> אירוח אתר סטטי מבוצע דרך Github Pages ומוגדר לרוב על Branch (כגון Main)</div>
+                        <div class='statement'><b>טענה 3:</b> כלי AI יכולים לסייע בכתיבת קוד HTML להטמעת הקישור של Tableau</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(25, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(25, "ב")'>ב. כל הטענות נכונות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(25, "ג")'>ג. טענות 1 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(25, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(25, "ה")'>ה. טענות 2 ו-3</li>
+                    </ul>
+                </div>
+
+                <!-- Question 26 -->
+                <div class='question-card' id='q-26'>
+                    <div class='q-num'>שאלה 26</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> Frontend מורכב משפות צד לקוח כגון HTML</div>
+                        <div class='statement'><b>טענה 2:</b> Backend מתייחס לשרת המעבד בקשות ושולף נתונים</div>
+                        <div class='statement'><b>טענה 3:</b> API הוא הממשק המחבר ביניהם ומגדיר את פורמט התקשורת</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(26, "א")'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ב' onclick='selectOption(26, "ב")'>ב. טענה 3 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(26, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(26, "ד")'>ד. טענות 1 ו-2</li>
+                        <li class='option' data-val='ה' onclick='selectOption(26, "ה")'>ה. טענות 2 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 27 -->
+                <div class='question-card' id='q-27'>
+                    <div class='q-num'>שאלה 27</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> GAS מדמה Backend וניתן לפריסה בלחיצה אחת (Deploy as Web App)</div>
+                        <div class='statement'><b>טענה 2:</b> GAS מתאים במיוחד לאפליקציות עם מיליוני כניסות בשנייה</div>
+                        <div class='statement'><b>טענה 3:</b> GAS חינמי אך מוגבל לסביבת האקולוגית של Google</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(27, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(27, "ב")'>ב. כל הטענות נכונות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(27, "ג")'>ג. טענות 1 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(27, "ד")'>ד. טענה 3 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(27, "ה")'>ה. טענות 1 ו-2</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 28 -->
+                <div class='question-card' id='q-28'>
+                    <div class='q-num'>שאלה 28</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> ארכיטקטורת מערכת טיפוסית כוללת הזנת קלט, ולידציה, שרת (כגון GAS) והצגה</div>
+                        <div class='statement'><b>טענה 2:</b> מנגנון Fallback נדרש רק במערכות שאינן מחוברות לאינטרנט</div>
+                        <div class='statement'><b>טענה 3:</b> ולידציה של נתונים נועדה להבטיח את תקינות הקלט מהמשתמש</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(28, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(28, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(28, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(28, "ד")'>ד. טענה 3 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(28, "ה")'>ה. טענה 2 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 29 -->
+                <div class='question-card' id='q-29'>
+                    <div class='q-num'>שאלה 29</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מערכת ERP מיועדת בעיקר לביצוע עסקאות בזמן אמת (OLTP)</div>
+                        <div class='statement'><b>טענה 2:</b> מערכת BI מיועדת לניתוח נתונים וקבלת החלטות (OLAP)</div>
+                        <div class='statement'><b>טענה 3:</b> התשתית המרכזית עליה נשענת מערכת בינה עסקית היא OLTP</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(29, "א")'>א. טענות 1 ו-2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(29, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(29, "ג")'>ג. טענה 2 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(29, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(29, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 30 -->
+                <div class='question-card' id='q-30'>
+                    <div class='q-num'>שאלה 30</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> תובנה מניעת פעולה (Actionable Insight) חייבת להיות ספציפית וקונקרטית</div>
+                        <div class='statement'><b>טענה 2:</b> בפירמידת DIKW, השלב העליון הוא Information (מידע)</div>
+                        <div class='statement'><b>טענה 3:</b> בפירמידת DIKW, נתונים הופכים למידע ברגע שניתן להם הקשר ומשמעות</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(30, "א")'>א. טענות 1 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(30, "ב")'>ב. טענות 1 ו-2</li>
+                        <li class='option' data-val='ג' onclick='selectOption(30, "ג")'>ג. טענות 2 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(30, "ד")'>ד. כל הטענות נכונות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(30, "ה")'>ה. טענה 2 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 31 -->
+                <div class='question-card' id='q-31'>
+                    <div class='q-num'>שאלה 31</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> תהליך ETL מייצג חילוץ, התמרה וטעינה</div>
+                        <div class='statement'><b>טענה 2:</b> בארכיטקטורת ELT, ההתמרה (Transform) מבוצעת לפני כניסת הנתונים למחסן</div>
+                        <div class='statement'><b>טענה 3:</b> מחסני נתונים מודרניים כגון Snowflake מאפשרים גישת ELT בשל כוח העיבוד שלהם</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(31, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(31, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(31, "ג")'>ג. טענה 2 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(31, "ד")'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ה' onclick='selectOption(31, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 32 -->
+                <div class='question-card' id='q-32'>
+                    <div class='q-num'>שאלה 32</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> Data Warehouse מתאפיין בנתונים לא מובנים כגון תמונות וסרטונים</div>
+                        <div class='statement'><b>טענה 2:</b> Data Lake משמש לאחסון נתונים גמישים ולא מובנים</div>
+                        <div class='statement'><b>טענה 3:</b> Lakehouse משלב בין הסדר של המחסן לגמישות של האגם</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(32, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(32, "ב")'>ב. טענה 2 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(32, "ג")'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ד' onclick='selectOption(32, "ד")'>ד. כל הטענות נכונות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(32, "ה")'>ה. טענות 1 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 33 -->
+                <div class='question-card' id='q-33'>
+                    <div class='q-num'>שאלה 33</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> השכבה הסמנטית מתרגמת מונחים טכניים ממסד הנתונים לשפה עסקית מובנת</div>
+                        <div class='statement'><b>טענה 2:</b> Tableau עובד באופן בלעדי על סביבת Windows</div>
+                        <div class='statement'><b>טענה 3:</b> Power BI מתממשק בצורה טבעית וחלקה עם מוצרי מיקרוסופט (Ecosystem)</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(33, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(33, "ב")'>ב. טענה 2 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(33, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(33, "ד")'>ד. טענות 1 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(33, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 34 -->
+                <div class='question-card' id='q-34'>
+                    <div class='q-num'>שאלה 34</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מסמך ה-BRD מתרגם את השפה הטכנית של המפתחים ליעדים של המנכ"ל</div>
+                        <div class='statement'><b>טענה 2:</b> מתודולוגיית Top-Down מתחילה באפיון מסדי הנתונים ורק אז בהגדרת יעדים</div>
+                        <div class='statement'><b>טענה 3:</b> החלק הראשון במסמך BRD הוא לרוב תקציר המנהלים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(34, "א")'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ב' onclick='selectOption(34, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(34, "ג")'>ג. טענות 2 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(34, "ד")'>ד. טענות 1 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(34, "ה")'>ה. טענה 3 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 35 -->
+                <div class='question-card' id='q-35'>
+                    <div class='q-num'>שאלה 35</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מדד AOV (Average Order Value) מודד את אחוז הלקוחות שעזבו את החברה</div>
+                        <div class='statement'><b>טענה 2:</b> מדד Churn Rate משקף את שיעור הנטישה של הלקוחות (נפוץ ב-SaaS)</div>
+                        <div class='statement'><b>טענה 3:</b> מדדי KPI אמורים להשתנות לחלוטין בין מחלקה למחלקה ללא תלות ביעד המרכזי</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(35, "א")'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ב' onclick='selectOption(35, "ב")'>ב. טענה 2 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(35, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(35, "ד")'>ד. טענות 1 ו-2</li>
+                        <li class='option' data-val='ה' onclick='selectOption(35, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 36 -->
+                <div class='question-card' id='q-36'>
+                    <div class='q-num'>שאלה 36</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> בפירמידת DIKW האות K מייצגת Knowledge (ידע)</div>
+                        <div class='statement'><b>טענה 2:</b> קבלת תובנה (Wisdom) מגיעה ישירות מנתונים גולמיים ללא שלבי ביניים</div>
+                        <div class='statement'><b>טענה 3:</b> איתור תבניות בנתונים הוא השלב שהופך מידע לידע</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(36, "א")'>א. טענה 1 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(36, "ב")'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ג' onclick='selectOption(36, "ג")'>ג. טענה 2 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(36, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(36, "ה")'>ה. טענות 1 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 37 -->
+                <div class='question-card' id='q-37'>
+                    <div class='q-num'>שאלה 37</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> חיבור קובץ Excel ב-Tableau מבוצע על ידי Connect ל-Text File</div>
+                        <div class='statement'><b>טענה 2:</b> שדה מספרי יקבל סימון # בחלונית השדות</div>
+                        <div class='statement'><b>טענה 3:</b> Tableau מחשב אוטומטית פונקציית SUM כאשר גוררים מדד (Measure) לתרשים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(37, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(37, "ב")'>ב. טענות 1 ו-2</li>
+                        <li class='option' data-val='ג' onclick='selectOption(37, "ג")'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ד' onclick='selectOption(37, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(37, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 38 -->
+                <div class='question-card' id='q-38'>
+                    <div class='q-num'>שאלה 38</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> אפליקציות Web מבוססות GAS נגישות דרך דפדפן סטנדרטי</div>
+                        <div class='statement'><b>טענה 2:</b> אין צורך לדעת HTML כדי לבנות Frontend ויזואלי למשתמש</div>
+                        <div class='statement'><b>טענה 3:</b> תקשורת API מאפשרת להחזיר תשובות בפורמט מובנה כגון JSON</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(38, "א")'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ב' onclick='selectOption(38, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(38, "ג")'>ג. טענות 1 ו-2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(38, "ד")'>ד. טענה 1 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(38, "ה")'>ה. טענות 2 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 39 -->
+                <div class='question-card' id='q-39'>
+                    <div class='q-num'>שאלה 39</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> קיימים מקרים בהם נציג ב-Dashboard תובנות שאינן ניתנות ליישום כרגע (מידע כללי)</div>
+                        <div class='statement'><b>טענה 2:</b> תובנה מניעת פעולה יכולה להיות מבוססת על תחושות בטן ללא גיבוי נתונים</div>
+                        <div class='statement'><b>טענה 3:</b> פירמידת DIKW מתארת מעבר מצמצום עובדות גולמיות להחלטות עסקיות חכמות</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(39, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(39, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(39, "ג")'>ג. טענות 1 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(39, "ד")'>ד. כל הטענות נכונות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(39, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 40 -->
+                <div class='question-card' id='q-40'>
+                    <div class='q-num'>שאלה 40</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> סוגי חיבור ה-Join ב-Tableau זהים בלוגיקה שלהם ל-SQL</div>
+                        <div class='statement'><b>טענה 2:</b> ב-Inner Join יחזרו כל הרשומות משתי הטבלאות, כולל ערכי Null</div>
+                        <div class='statement'><b>טענה 3:</b> ב-Left Join מובטח שכל רשומות הטבלה השמאלית יופיעו בתוצאה</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(40, "א")'>א. טענות 1 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(40, "ב")'>ב. טענה 2 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(40, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(40, "ד")'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ה' onclick='selectOption(40, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+
+                <!-- Question 41 -->
+                <div class='question-card' id='q-41'>
+                    <div class='q-num'>שאלה 41</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> Full Outer Join עשוי להציג תאי Null אם אין התאמה בשדה המזהה</div>
+                        <div class='statement'><b>טענה 2:</b> Right Join שומר את כל הרשומות מהטבלה הימנית</div>
+                        <div class='statement'><b>טענה 3:</b> חיבור בין טבלאות מצריך שדה מזהה משותף (כגון ID)</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(41, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(41, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(41, "ג")'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ד' onclick='selectOption(41, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(41, "ה")'>ה. כל הטענות נכונות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 42 -->
+                <div class='question-card' id='q-42'>
+                    <div class='q-num'>שאלה 42</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מערכת תפעולית לניהול מלאי בארגון היא דוגמה קלאסית למערכת BI</div>
+                        <div class='statement'><b>טענה 2:</b> OLAP נועד לשאילתות אנליטיות מורכבות על נתונים היסטוריים</div>
+                        <div class='statement'><b>טענה 3:</b> מטרת פרויקט BI היא לחבר נתונים ממקורות שונים לטובת קבלת החלטות</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(42, "א")'>א. טענות 1 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(42, "ב")'>ב. כל הטענות נכונות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(42, "ג")'>ג. טענות 2 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(42, "ד")'>ד. טענה 1 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(42, "ה")'>ה. טענה 2 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 43 -->
+                <div class='question-card' id='q-43'>
+                    <div class='q-num'>שאלה 43</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> השכבה הסמנטית מאפשרת למשתמשי הקצה להבין את הנתונים ללא ידע ב-SQL</div>
+                        <div class='statement'><b>טענה 2:</b> ETL הוא התהליך המסורתי בו הנתונים מנוקים לפני שהם נכנסים למחסן הנתונים</div>
+                        <div class='statement'><b>טענה 3:</b> מודל Data Lakehouse דורש בהכרח שימוש ב-Excel</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(43, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(43, "ב")'>ב. טענות 1 ו-2</li>
+                        <li class='option' data-val='ג' onclick='selectOption(43, "ג")'>ג. טענות 2 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(43, "ד")'>ד. כל הטענות נכונות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(43, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 44 -->
+                <div class='question-card' id='q-44'>
+                    <div class='q-num'>שאלה 44</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> ב-Tableau, גרירת משתנה קטגוריאלי לעמודות (Columns) תיצור ציר אופקי (X)</div>
+                        <div class='statement'><b>טענה 2:</b> Dashboards מוגדרים תמיד לגודל קבוע ולא ניתן להתאימם למסך (Automatic)</div>
+                        <div class='statement'><b>טענה 3:</b> ניתן לשלב מספר גליונות (Sheets) ב-Dashboard אחד</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(44, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(44, "ב")'>ב. כל הטענות נכונות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(44, "ג")'>ג. טענות 1 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(44, "ד")'>ד. טענה 1 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(44, "ה")'>ה. טענה 3 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 45 -->
+                <div class='question-card' id='q-45'>
+                    <div class='q-num'>שאלה 45</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> ל-Tableau Public יש הגבלות על שמירת נתונים מקומית בהשוואה ל-Desktop</div>
+                        <div class='statement'><b>טענה 2:</b> פרסום (Publish) דשבורד מניב קישור אותו ניתן להטמיע באתר</div>
+                        <div class='statement'><b>טענה 3:</b> קובץ CSV מכיל פורמט בינארי מורכב ולא מוגדר כטקסט</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(45, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(45, "ב")'>ב. טענה 3 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(45, "ג")'>ג. טענה 2 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(45, "ד")'>ד. טענה 1 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(45, "ה")'>ה. טענות 1 ו-2</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 46 -->
+                <div class='question-card' id='q-46'>
+                    <div class='q-num'>שאלה 46</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> כאשר מקימים אתר ב-Github, קובץ הכניסה הראשי נקרא לרוב index.html</div>
+                        <div class='statement'><b>טענה 2:</b> הפקודה Commit משמעותה אישור ושמירת השינויים בקוד</div>
+                        <div class='statement'><b>טענה 3:</b> Github Pages מספק שרת Backend מלא התומך במסדי נתונים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(46, "א")'>א. טענה 2 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(46, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(46, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(46, "ד")'>ד. טענה 3 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(46, "ה")'>ה. טענות 1 ו-2</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 47 -->
+                <div class='question-card' id='q-47'>
+                    <div class='q-num'>שאלה 47</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> שימוש ב-Google Apps Script חוסך את הצורך בתחזוקת שרת פיזי או בענן</div>
+                        <div class='statement'><b>טענה 2:</b> מנגנון Validation מוודא שמשתמש הזין כתובת מייל תקינה לפני שליחת הבקשה</div>
+                        <div class='statement'><b>טענה 3:</b> המונח Fallback מתייחס לסיטואציה בה השרת הראשי עובד באופן מושלם</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(47, "א")'>א. כל הטענות נכונות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(47, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(47, "ג")'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ד' onclick='selectOption(47, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(47, "ה")'>ה. טענות 1 ו-2</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 48 -->
+                <div class='question-card' id='q-48'>
+                    <div class='q-num'>שאלה 48</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> בעסקי הקמעונאות (Retail), יעד נפוץ הוא הגדלת פדיון ולכן נמדוד AOV</div>
+                        <div class='statement'><b>טענה 2:</b> חברות תוכנה (SaaS) מתמקדות בשימור לקוחות ולכן מודדות Churn Rate</div>
+                        <div class='statement'><b>טענה 3:</b> אין קשר בין סוג התעשייה לבין בחירת ה-KPIs</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(48, "א")'>א. טענות 1 ו-2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(48, "ב")'>ב. טענות 2 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(48, "ג")'>ג. טענה 3 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(48, "ד")'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ה' onclick='selectOption(48, "ה")'>ה. טענות 1 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 49 -->
+                <div class='question-card' id='q-49'>
+                    <div class='q-num'>שאלה 49</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מסמך BRD כולל פירוט טכני ברמת שורות הקוד שמפתח צריך לכתוב</div>
+                        <div class='statement'><b>טענה 2:</b> גישת Top-Down באפיון מערכות מבטיחה שהפיתוח משרת את היעדים העסקיים</div>
+                        <div class='statement'><b>טענה 3:</b> מקורות נתונים אינם חלק ממסמך ה-BRD</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(49, "א")'>א. טענה 2 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(49, "ב")'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ג' onclick='selectOption(49, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(49, "ד")'>ד. טענות 1 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(49, "ה")'>ה. טענות 2 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 50 -->
+                <div class='question-card' id='q-50'>
+                    <div class='q-num'>שאלה 50</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> ב-Tableau, מדדים (Measures) צבועים לרוב בירוק וממדים (Dimensions) בכחול (או תלוי ברציפות)</div>
+                        <div class='statement'><b>טענה 2:</b> משתנה רציף (Continuous) מצייר צירים רציפים כמו קו זמן מגמתי</div>
+                        <div class='statement'><b>טענה 3:</b> אזור Marks מאפשר שליטה על צבע (Color) וגודל (Size) בתרשים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(50, "א")'>א. טענות 1 ו-2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(50, "ב")'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ג' onclick='selectOption(50, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(50, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(50, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 51 -->
+                <div class='question-card' id='q-51'>
+                    <div class='q-num'>שאלה 51</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> השילוב של Backend ו-Frontend באפליקציה מאפשר הפרדה בין התצוגה לוגיקת הנתונים</div>
+                        <div class='statement'><b>טענה 2:</b> API מאפשר למערכות שונות לדבר זו עם זו למרות שהן כתובות בשפות שונות</div>
+                        <div class='statement'><b>טענה 3:</b> דפדפן האינטרנט של המשתמש מריץ את קוד ה-Backend</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(51, "א")'>א. טענות 1 ו-2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(51, "ב")'>ב. כל הטענות נכונות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(51, "ג")'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ד' onclick='selectOption(51, "ד")'>ד. טענה 3 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(51, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 52 -->
+                <div class='question-card' id='q-52'>
+                    <div class='q-num'>שאלה 52</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> בפירמידת DIKW, מעבר ממידע (Information) לידע (Knowledge) דורש חשיפת תבניות והקשרים</div>
+                        <div class='statement'><b>טענה 2:</b> חוכמה (Wisdom) באה לידי ביטוי בקבלת החלטה או פעולה</div>
+                        <div class='statement'><b>טענה 3:</b> הפירמידה מתארת תהליך של הגדלת נפח הנתונים ככל שעולים למעלה</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(52, "א")'>א. טענה 1 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(52, "ב")'>ב. טענות 2 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(52, "ג")'>ג. טענות 1 ו-2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(52, "ד")'>ד. כל הטענות נכונות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(52, "ה")'>ה. טענה 3 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 53 -->
+                <div class='question-card' id='q-53'>
+                    <div class='q-num'>שאלה 53</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> ארכיטקטורת מערכת BI מתחילה לרוב בשאיבת נתונים ממערכות תפעוליות (ERP, CRM)</div>
+                        <div class='statement'><b>טענה 2:</b> מחסן נתונים (DWH) משמש כמאגר מרכזי, נקי ומובנה עבור אנליסטים</div>
+                        <div class='statement'><b>טענה 3:</b> כלי הויזואליזציה (כמו Tableau) מחליף את מערכת ה-ERP לחלוטין</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(53, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(53, "ב")'>ב. טענות 1 ו-2</li>
+                        <li class='option' data-val='ג' onclick='selectOption(53, "ג")'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ד' onclick='selectOption(53, "ד")'>ד. טענות 1 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(53, "ה")'>ה. כל הטענות נכונות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 54 -->
+                <div class='question-card' id='q-54'>
+                    <div class='q-num'>שאלה 54</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> תובנה מניעת פעולה (Actionable Insight) היא כזו שניתן ליישם בארגון (ברת ביצוע)</div>
+                        <div class='statement'><b>טענה 2:</b> הגדרה כללית כמו 'המכירות ירדו' איננה תובנה ספציפית מספיק</div>
+                        <div class='statement'><b>טענה 3:</b> תובנות מבוססות תמיד על היכרות אישית של המנכ"ל ולא על נתונים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(54, "א")'>א. כל הטענות נכונות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(54, "ב")'>ב. טענה 2 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(54, "ג")'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ד' onclick='selectOption(54, "ד")'>ד. טענות 1 ו-2</li>
+                        <li class='option' data-val='ה' onclick='selectOption(54, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 55 -->
+                <div class='question-card' id='q-55'>
+                    <div class='q-num'>שאלה 55</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> ETL מיושם בעיקר כאשר נדרש לנקות את הנתונים לפני כניסתם לאחסון</div>
+                        <div class='statement'><b>טענה 2:</b> ב-Data Lake הנתונים נשמרים בפורמט הגולמי שלהם (Raw)</div>
+                        <div class='statement'><b>טענה 3:</b> Tableau אינו מאפשר סינון נתונים לפי טווח תאריכים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(55, "א")'>א. טענות 1 ו-2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(55, "ב")'>ב. כל הטענות נכונות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(55, "ג")'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ד' onclick='selectOption(55, "ד")'>ד. טענה 1 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(55, "ה")'>ה. טענה 2 בלבד</li>
+                    </ul>
+                </div>
+
+                <!-- Question 56 -->
+                <div class='question-card' id='q-56'>
+                    <div class='q-num'>שאלה 56</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> סוג חיבור Full Outer מחזיר שורות שאין להן התאמה בטבלה הנגדית (ויציג Null במקומות החסרים)</div>
+                        <div class='statement'><b>טענה 2:</b> Inner Join מסנן החוצה שורות ללא התאמה מוחלטת</div>
+                        <div class='statement'><b>טענה 3:</b> Left Join מתעלם לחלוטין מהטבלה השמאלית</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(56, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(56, "ב")'>ב. טענות 2 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(56, "ג")'>ג. טענות 1 ו-2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(56, "ד")'>ד. טענה 1 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(56, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 57 -->
+                <div class='question-card' id='q-57'>
+                    <div class='q-num'>שאלה 57</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> פיתוח אפליקציה מבוססת GAS ו-HTML מאפשר יצירת מסכי משתמש אינטראקטיביים</div>
+                        <div class='statement'><b>טענה 2:</b> אחסון קוד ה-HTML ב-Github Pages הופך אותו לנגיש ברשת</div>
+                        <div class='statement'><b>טענה 3:</b> השרת שכתוב ב-GAS מחזיר את הנתונים ממסד הנתונים או מ-Google Sheets</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(57, "א")'>א. טענה 2 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(57, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(57, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(57, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(57, "ה")'>ה. טענה 1 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 58 -->
+                <div class='question-card' id='q-58'>
+                    <div class='q-num'>שאלה 58</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> משתנה בדיד (Discrete) יוצר כותרות קטגוריאליות בתרשים (כמו עמודות נפרדות)</div>
+                        <div class='statement'><b>טענה 2:</b> משתנה רציף (Continuous) מתאים להצגת רצף זמנים בתרשים קו</div>
+                        <div class='statement'><b>טענה 3:</b> Tableau מאפשר לשנות משתנה מספרי מ-Continuous ל-Discrete</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(58, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(58, "ב")'>ב. כל הטענות נכונות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(58, "ג")'>ג. טענות 2 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(58, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(58, "ה")'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 59 -->
+                <div class='question-card' id='q-59'>
+                    <div class='q-num'>שאלה 59</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> במערכת מבוססת נתונים, כלי ה-Frontend מעבד נתונים כבדים במקום השרת</div>
+                        <div class='statement'><b>טענה 2:</b> קריאת HTTP משמשת לתקשורת בין הלקוח (Client) לשרת (Server)</div>
+                        <div class='statement'><b>טענה 3:</b> פורמט JSON הוא פורמט פופולרי להעברת נתונים דרך API</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(59, "א")'>א. כל הטענות נכונות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(59, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(59, "ג")'>ג. טענה 1 בלבד</li>
+                        <li class='option' data-val='ד' onclick='selectOption(59, "ד")'>ד. טענה 2 בלבד</li>
+                        <li class='option' data-val='ה' onclick='selectOption(59, "ה")'>ה. טענות 2 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 60 -->
+                <div class='question-card' id='q-60'>
+                    <div class='q-num'>שאלה 60</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מסמך BRD נכתב בדרך כלל לאחר סיום הפיתוח כדי לתעד את מה שנעשה</div>
+                        <div class='statement'><b>טענה 2:</b> בגישת Top-Down, ה-KPIs מוגדרים לאחר הבנת היעדים העסקיים המרכזיים</div>
+                        <div class='statement'><b>טענה 3:</b> שכבה סמנטית מקלה על אנשי עסקים לשלוף נתונים ללא תלות באנשי IT</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(60, "א")'>א. טענה 3 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(60, "ב")'>ב. טענה 1 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(60, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(60, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(60, "ה")'>ה. טענות 1 ו-3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 61 -->
+                <div class='question-card' id='q-61'>
+                    <div class='q-num'>שאלה 61</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> במערכת מבוססת נתונים, כלי ה-Frontend מעבד נתונים כבדים במקום השרת</div>
+                        <div class='statement'><b>טענה 2:</b> קריאת HTTP משמשת לתקשורת בין הלקוח (Client) לשרת (Server)</div>
+                        <div class='statement'><b>טענה 3:</b> פורמט JSON הוא פורמט פופולרי להעברת נתונים דרך API</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(61, "א")'>א. טענות 1 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(61, "ב")'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ג' onclick='selectOption(61, "ג")'>ג. כל הטענות נכונות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(61, "ד")'>ד. טענות 2 ו-3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(61, "ה")'>ה. טענה 3 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 62 -->
+                <div class='question-card' id='q-62'>
+                    <div class='q-num'>שאלה 62</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> בעסקי הקמעונאות (Retail), יעד נפוץ הוא הגדלת פדיון ולכן נמדוד AOV</div>
+                        <div class='statement'><b>טענה 2:</b> חברות תוכנה (SaaS) מתמקדות בשימור לקוחות ולכן מודדות Churn Rate</div>
+                        <div class='statement'><b>טענה 3:</b> אין קשר בין סוג התעשייה לבין בחירת ה-KPIs</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(62, "א")'>א. טענות 2 ו-3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(62, "ב")'>ב. טענות 1 ו-3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(62, "ג")'>ג. טענות 1 ו-2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(62, "ד")'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ה' onclick='selectOption(62, "ה")'>ה. טענה 3 בלבד</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 63 -->
+                <div class='question-card' id='q-63'>
+                    <div class='q-num'>שאלה 63</div>
+                    <div class='statements'>
+                        <div class='statement'><b>טענה 1:</b> מסמך ה-BRD מתרגם את השפה הטכנית של המפתחים ליעדים של המנכ"ל</div>
+                        <div class='statement'><b>טענה 2:</b> מתודולוגיית Top-Down מתחילה באפיון מסדי הנתונים ורק אז בהגדרת יעדים</div>
+                        <div class='statement'><b>טענה 3:</b> החלק הראשון במסמך BRD הוא לרוב תקציר המנהלים</div>
+                    </div>
+                    <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(63, "א")'>א. טענה 2 בלבד</li>
+                        <li class='option' data-val='ב' onclick='selectOption(63, "ב")'>ב. טענה 3 בלבד</li>
+                        <li class='option' data-val='ג' onclick='selectOption(63, "ג")'>ג. טענות 2 ו-3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(63, "ד")'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li>
+                        <li class='option' data-val='ה' onclick='selectOption(63, "ה")'>ה. כל הטענות נכונות</li>
+                    </ul>
+                </div>
+
+                <!-- Question 64 -->
+                <div class='question-card' id='q-64'>
+                    <div class='q-num'>שאלה 64</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2, 2]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 2, 3]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(64, "א")'>א. Inner: 4, Left: 4, Right: 6, Full Outer: 7</li>
+                        <li class='option' data-val='ב' onclick='selectOption(64, "ב")'>ב. Inner: 4, Left: 5, Right: 5, Full Outer: 6</li>
+                        <li class='option' data-val='ג' onclick='selectOption(64, "ג")'>ג. Inner: 5, Left: 5, Right: 5, Full Outer: 6</li>
+                        <li class='option' data-val='ד' onclick='selectOption(64, "ד")'>ד. Inner: 3, Left: 6, Right: 5, Full Outer: 5</li>
+                        <li class='option' data-val='ה' onclick='selectOption(64, "ה")'>ה. כל יתר התשובות שגויות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 65 -->
+                <div class='question-card' id='q-65'>
+                    <div class='q-num'>שאלה 65</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [5, 5]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [5, 5, 5]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(65, "א")'>א. Inner: 6, Left: 5, Right: 7, Full Outer: 7</li>
+                        <li class='option' data-val='ב' onclick='selectOption(65, "ב")'>ב. Inner: 6, Left: 6, Right: 6, Full Outer: 6</li>
+                        <li class='option' data-val='ג' onclick='selectOption(65, "ג")'>ג. Inner: 7, Left: 6, Right: 6, Full Outer: 6</li>
+                        <li class='option' data-val='ד' onclick='selectOption(65, "ד")'>ד. Inner: 5, Left: 7, Right: 6, Full Outer: 5</li>
+                        <li class='option' data-val='ה' onclick='selectOption(65, "ה")'>ה. כל יתר התשובות שגויות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 66 -->
+                <div class='question-card' id='q-66'>
+                    <div class='q-num'>שאלה 66</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [3, 4]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(66, "א")'>א. Inner: 0, Left: 1, Right: 3, Full Outer: 5</li>
+                        <li class='option' data-val='ב' onclick='selectOption(66, "ב")'>ב. Inner: 1, Left: 2, Right: 2, Full Outer: 4</li>
+                        <li class='option' data-val='ג' onclick='selectOption(66, "ג")'>ג. Inner: 0, Left: 3, Right: 2, Full Outer: 3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(66, "ד")'>ד. Inner: 0, Left: 2, Right: 2, Full Outer: 4</li>
+                        <li class='option' data-val='ה' onclick='selectOption(66, "ה")'>ה. כל יתר התשובות שגויות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 67 -->
+                <div class='question-card' id='q-67'>
+                    <div class='q-num'>שאלה 67</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [Null, Null]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [Null]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(67, "א")'>א. Inner: 0, Left: 1, Right: 2, Full Outer: 4</li>
+                        <li class='option' data-val='ב' onclick='selectOption(67, "ב")'>ב. Inner: 0, Left: 2, Right: 1, Full Outer: 3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(67, "ג")'>ג. Inner: 1, Left: 2, Right: 1, Full Outer: 3</li>
+                        <li class='option' data-val='ד' onclick='selectOption(67, "ד")'>ד. Inner: 0, Left: 3, Right: 1, Full Outer: 2</li>
+                        <li class='option' data-val='ה' onclick='selectOption(67, "ה")'>ה. כל יתר התשובות שגויות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 68 -->
+                <div class='question-card' id='q-68'>
+                    <div class='q-num'>שאלה 68</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 1]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(68, "א")'>א. Inner: 3, Left: 2, Right: 4, Full Outer: 4</li>
+                        <li class='option' data-val='ב' onclick='selectOption(68, "ב")'>ב. Inner: 4, Left: 3, Right: 3, Full Outer: 3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(68, "ג")'>ג. Inner: 2, Left: 4, Right: 3, Full Outer: 2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(68, "ד")'>ד. Inner: 3, Left: 3, Right: 3, Full Outer: 3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(68, "ה")'>ה. כל יתר התשובות שגויות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 69 -->
+                <div class='question-card' id='q-69'>
+                    <div class='q-num'>שאלה 69</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [2, 4, 6]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 4]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(69, "א")'>א. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(69, "ב")'>ב. Inner: 2, Left: 3, Right: 2, Full Outer: 3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(69, "ג")'>ג. Inner: 1, Left: 4, Right: 2, Full Outer: 2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(69, "ד")'>ד. Inner: 2, Left: 2, Right: 3, Full Outer: 4</li>
+                        <li class='option' data-val='ה' onclick='selectOption(69, "ה")'>ה. Inner: 3, Left: 3, Right: 2, Full Outer: 3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 70 -->
+                <div class='question-card' id='q-70'>
+                    <div class='q-num'>שאלה 70</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, Null, 2]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 3, Null]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(70, "א")'>א. Inner: 1, Left: 3, Right: 3, Full Outer: 5</li>
+                        <li class='option' data-val='ב' onclick='selectOption(70, "ב")'>ב. Inner: 0, Left: 4, Right: 3, Full Outer: 4</li>
+                        <li class='option' data-val='ג' onclick='selectOption(70, "ג")'>ג. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(70, "ד")'>ד. Inner: 1, Left: 2, Right: 4, Full Outer: 6</li>
+                        <li class='option' data-val='ה' onclick='selectOption(70, "ה")'>ה. Inner: 2, Left: 3, Right: 3, Full Outer: 5</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 71 -->
+                <div class='question-card' id='q-71'>
+                    <div class='q-num'>שאלה 71</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [10, 20, 30]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [20, 20]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(71, "א")'>א. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(71, "ב")'>ב. Inner: 2, Left: 3, Right: 3, Full Outer: 5</li>
+                        <li class='option' data-val='ג' onclick='selectOption(71, "ג")'>ג. Inner: 2, Left: 4, Right: 2, Full Outer: 4</li>
+                        <li class='option' data-val='ד' onclick='selectOption(71, "ד")'>ד. Inner: 3, Left: 4, Right: 2, Full Outer: 4</li>
+                        <li class='option' data-val='ה' onclick='selectOption(71, "ה")'>ה. Inner: 1, Left: 5, Right: 2, Full Outer: 3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 72 -->
+                <div class='question-card' id='q-72'>
+                    <div class='q-num'>שאלה 72</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2, 1, 2]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(72, "א")'>א. Inner: 4, Left: 3, Right: 5, Full Outer: 5</li>
+                        <li class='option' data-val='ב' onclick='selectOption(72, "ב")'>ב. Inner: 5, Left: 4, Right: 4, Full Outer: 4</li>
+                        <li class='option' data-val='ג' onclick='selectOption(72, "ג")'>ג. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(72, "ד")'>ד. Inner: 3, Left: 5, Right: 4, Full Outer: 3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(72, "ה")'>ה. Inner: 4, Left: 4, Right: 4, Full Outer: 4</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 73 -->
+                <div class='question-card' id='q-73'>
+                    <div class='q-num'>שאלה 73</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [7, 8, 9]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [7]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(73, "א")'>א. Inner: 2, Left: 3, Right: 1, Full Outer: 3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(73, "ב")'>ב. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ג' onclick='selectOption(73, "ג")'>ג. Inner: 0, Left: 4, Right: 1, Full Outer: 2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(73, "ד")'>ד. Inner: 1, Left: 2, Right: 2, Full Outer: 4</li>
+                        <li class='option' data-val='ה' onclick='selectOption(73, "ה")'>ה. Inner: 1, Left: 3, Right: 1, Full Outer: 3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 74 -->
+                <div class='question-card' id='q-74'>
+                    <div class='q-num'>שאלה 74</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [Null]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2, Null]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(74, "א")'>א. Inner: 0, Left: 0, Right: 4, Full Outer: 5</li>
+                        <li class='option' data-val='ב' onclick='selectOption(74, "ב")'>ב. Inner: 0, Left: 1, Right: 3, Full Outer: 4</li>
+                        <li class='option' data-val='ג' onclick='selectOption(74, "ג")'>ג. Inner: 1, Left: 1, Right: 3, Full Outer: 4</li>
+                        <li class='option' data-val='ד' onclick='selectOption(74, "ד")'>ד. Inner: 0, Left: 2, Right: 3, Full Outer: 3</li>
+                        <li class='option' data-val='ה' onclick='selectOption(74, "ה")'>ה. כל יתר התשובות שגויות</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 75 -->
+                <div class='question-card' id='q-75'>
+                    <div class='q-num'>שאלה 75</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [5]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: []</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(75, "א")'>א. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ב' onclick='selectOption(75, "ב")'>ב. Inner: 0, Left: 2, Right: 0, Full Outer: 0</li>
+                        <li class='option' data-val='ג' onclick='selectOption(75, "ג")'>ג. Inner: 1, Left: 1, Right: 0, Full Outer: 1</li>
+                        <li class='option' data-val='ד' onclick='selectOption(75, "ד")'>ד. Inner: 0, Left: 1, Right: 0, Full Outer: 1</li>
+                        <li class='option' data-val='ה' onclick='selectOption(75, "ה")'>ה. Inner: 0, Left: 0, Right: 1, Full Outer: 2</li>
+                    </ul>
+                </div>
+
+                <!-- Question 76 -->
+                <div class='question-card' id='q-76'>
+                    <div class='q-num'>שאלה 76</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: []</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(76, "א")'>א. Inner: 1, Left: 0, Right: 2, Full Outer: 2</li>
+                        <li class='option' data-val='ב' onclick='selectOption(76, "ב")'>ב. Inner: 0, Left: -1, Right: 3, Full Outer: 3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(76, "ג")'>ג. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(76, "ד")'>ד. Inner: 0, Left: 0, Right: 2, Full Outer: 2</li>
+                        <li class='option' data-val='ה' onclick='selectOption(76, "ה")'>ה. Inner: 0, Left: 1, Right: 2, Full Outer: 1</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 77 -->
+                <div class='question-card' id='q-77'>
+                    <div class='q-num'>שאלה 77</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 2, 2]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(77, "א")'>א. Inner: 4, Left: 4, Right: 4, Full Outer: 4</li>
+                        <li class='option' data-val='ב' onclick='selectOption(77, "ב")'>ב. Inner: 5, Left: 4, Right: 4, Full Outer: 4</li>
+                        <li class='option' data-val='ג' onclick='selectOption(77, "ג")'>ג. Inner: 4, Left: 3, Right: 5, Full Outer: 5</li>
+                        <li class='option' data-val='ד' onclick='selectOption(77, "ד")'>ד. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(77, "ה")'>ה. Inner: 3, Left: 5, Right: 4, Full Outer: 3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 78 -->
+                <div class='question-card' id='q-78'>
+                    <div class='q-num'>שאלה 78</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [3, 4, 5, 6]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [5, 6, 7, 8]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(78, "א")'>א. Inner: 1, Left: 5, Right: 4, Full Outer: 5</li>
+                        <li class='option' data-val='ב' onclick='selectOption(78, "ב")'>ב. Inner: 3, Left: 4, Right: 4, Full Outer: 6</li>
+                        <li class='option' data-val='ג' onclick='selectOption(78, "ג")'>ג. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ד' onclick='selectOption(78, "ד")'>ד. Inner: 2, Left: 4, Right: 4, Full Outer: 6</li>
+                        <li class='option' data-val='ה' onclick='selectOption(78, "ה")'>ה. Inner: 2, Left: 3, Right: 5, Full Outer: 7</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 79 -->
+                <div class='question-card' id='q-79'>
+                    <div class='q-num'>שאלה 79</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [100, 200]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [100, 200, 300]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(79, "א")'>א. Inner: 2, Left: 1, Right: 4, Full Outer: 4</li>
+                        <li class='option' data-val='ב' onclick='selectOption(79, "ב")'>ב. Inner: 3, Left: 2, Right: 3, Full Outer: 3</li>
+                        <li class='option' data-val='ג' onclick='selectOption(79, "ג")'>ג. Inner: 1, Left: 3, Right: 3, Full Outer: 2</li>
+                        <li class='option' data-val='ד' onclick='selectOption(79, "ד")'>ד. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(79, "ה")'>ה. Inner: 2, Left: 2, Right: 3, Full Outer: 3</li>
+                    </ul>
+                </div>
+                
+                <!-- Question 80 -->
+                <div class='question-card' id='q-80'>
+                    <div class='q-num'>שאלה 80</div>
+                    <div class='statements'>
+                        <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [0, 0, 1]</div>
+                        <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [0, 1, 1]</div>
+                        <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
+                    </div>
+                    <ul class='options'>
+                        <li class='option' data-val='א' onclick='selectOption(80, "א")'>א. Inner: 3, Left: 5, Right: 4, Full Outer: 3</li>
+                        <li class='option' data-val='ב' onclick='selectOption(80, "ב")'>ב. Inner: 4, Left: 3, Right: 5, Full Outer: 5</li>
+                        <li class='option' data-val='ג' onclick='selectOption(80, "ג")'>ג. Inner: 5, Left: 4, Right: 4, Full Outer: 4</li>
+                        <li class='option' data-val='ד' onclick='selectOption(80, "ד")'>ד. כל יתר התשובות שגויות</li>
+                        <li class='option' data-val='ה' onclick='selectOption(80, "ה")'>ה. Inner: 4, Left: 4, Right: 4, Full Outer: 4</li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
-        <ul class='options'><li class='option'>א. כל יתר התשובות שגויות</li><li class='option'>ב. Inner: 2, Left: 2, Right: 4, Full Outer: 5</li><li class='option'>ג. Inner: 3, Left: 3, Right: 3, Full Outer: 4</li><li class='option'>ד. Inner: 2, Left: 3, Right: 3, Full Outer: 4</li><li class='option'>ה. Inner: 1, Left: 4, Right: 3, Full Outer: 3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 19</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [10, 20]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [10, 10, 30]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 1, Left: 4, Right: 3, Full Outer: 3</li><li class='option'>ב. Inner: 2, Left: 2, Right: 4, Full Outer: 5</li><li class='option'>ג. Inner: 3, Left: 3, Right: 3, Full Outer: 4</li><li class='option'>ד. Inner: 2, Left: 3, Right: 3, Full Outer: 4</li><li class='option'>ה. כל יתר התשובות שגויות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 20</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 3, Null]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 7, 1, Null]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 5, Left: 6, Right: 6, Full Outer: 8</li><li class='option'>ב. Inner: 4, Left: 5, Right: 7, Full Outer: 9</li><li class='option'>ג. כל יתר התשובות שגויות</li><li class='option'>ד. Inner: 3, Left: 7, Right: 6, Full Outer: 7</li><li class='option'>ה. Inner: 4, Left: 6, Right: 6, Full Outer: 8</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 21</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> משתנים בעלי ערכים כמותיים נחשבים ב-Tableau ל-Measures</div><div class='statement'><b>טענה 2:</b> משתנים כגון תאריכים או קטגוריות נחשבים ל-Dimensions</div><div class='statement'><b>טענה 3:</b> שינוי משתנה מ-Discrete ל-Continuous ישפיע על סוג התרשים האוטומטי</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. כל הטענות נכונות</li><li class='option'>ג. טענה 1 בלבד</li><li class='option'>ד. טענות 1 ו-3</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 22</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> גרירת שדה לציר ה-Columns מגדירה את הציר האנכי (Y)</div><div class='statement'><b>טענה 2:</b> Tableau Public מחייב רכישת רישיון בתשלום שנתי</div><div class='statement'><b>טענה 3:</b> שמירה ל-Tableau Public מאפשרת יצירת קישור ציבורי לדשבורד</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. טענות 1 ו-2</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 23</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> סמל # בשדה מעיד על נתון טקסטואלי</div><div class='statement'><b>טענה 2:</b> הגדרת Marks מאפשרת צביעה או הוספת תוויות, אך לא משנה את הנתונים במקור</div><div class='statement'><b>טענה 3:</b> סינון דרך Filters מסתיר נתונים מהתרשים המוצג</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-3</li><li class='option'>ב. טענה 3 בלבד</li><li class='option'>ג. טענה 2 בלבד</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 24</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> פילטר מסוג Pages יוצר תפריט דפדוף בין חיתוכים שונים של הנתונים</div><div class='statement'><b>טענה 2:</b> דשבורד ב-Tableau יכול לכלול רק תרשימים ולא תמונות או טקסט חופשי</div><div class='statement'><b>טענה 3:</b> שינוי נתון ב-Tableau משנה אוטומטית את קובץ ה-Excel המקורי</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. טענות 1 ו-3</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענה 3 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 25</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> שמירת פרויקט ב-Github דורשת פעולת Commit</div><div class='statement'><b>טענה 2:</b> אירוח אתר סטטי מבוצע דרך Github Pages ומוגדר לרוב על Branch (כגון Main)</div><div class='statement'><b>טענה 3:</b> כלי AI יכולים לסייע בכתיבת קוד HTML להטמעת הקישור של Tableau</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. כל הטענות נכונות</li><li class='option'>ג. טענות 1 ו-3</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. טענות 2 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 26</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> Frontend מורכב משפות צד לקוח כגון HTML</div><div class='statement'><b>טענה 2:</b> Backend מתייחס לשרת המעבד בקשות ושולף נתונים</div><div class='statement'><b>טענה 3:</b> API הוא הממשק המחבר ביניהם ומגדיר את פורמט התקשורת</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ב. טענה 3 בלבד</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענות 1 ו-2</li><li class='option'>ה. טענות 2 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 27</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> GAS מדמה Backend וניתן לפריסה בלחיצה אחת (Deploy as Web App)</div><div class='statement'><b>טענה 2:</b> GAS מתאים במיוחד לאפליקציות עם מיליוני כניסות בשנייה</div><div class='statement'><b>טענה 3:</b> GAS חינמי אך מוגבל לסביבת האקולוגית של Google</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. כל הטענות נכונות</li><li class='option'>ג. טענות 1 ו-3</li><li class='option'>ד. טענה 3 בלבד</li><li class='option'>ה. טענות 1 ו-2</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 28</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> ארכיטקטורת מערכת טיפוסית כוללת הזנת קלט, ולידציה, שרת (כגון GAS) והצגה</div><div class='statement'><b>טענה 2:</b> מנגנון Fallback נדרש רק במערכות שאינן מחוברות לאינטרנט</div><div class='statement'><b>טענה 3:</b> ולידציה של נתונים נועדה להבטיח את תקינות הקלט מהמשתמש</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענה 3 בלבד</li><li class='option'>ה. טענה 2 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 29</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מערכת ERP מיועדת בעיקר לביצוע עסקאות בזמן אמת (OLTP)</div><div class='statement'><b>טענה 2:</b> מערכת BI מיועדת לניתוח נתונים וקבלת החלטות (OLAP)</div><div class='statement'><b>טענה 3:</b> התשתית המרכזית עליה נשענת מערכת בינה עסקית היא OLTP</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-2</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. טענה 2 בלבד</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 30</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> תובנה מניעת פעולה (Actionable Insight) חייבת להיות ספציפית וקונקרטית</div><div class='statement'><b>טענה 2:</b> בפירמידת DIKW, השלב העליון הוא Information (מידע)</div><div class='statement'><b>טענה 3:</b> בפירמידת DIKW, נתונים הופכים למידע ברגע שניתן להם הקשר ומשמעות</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-3</li><li class='option'>ב. טענות 1 ו-2</li><li class='option'>ג. טענות 2 ו-3</li><li class='option'>ד. כל הטענות נכונות</li><li class='option'>ה. טענה 2 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 31</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> תהליך ETL מייצג חילוץ, התמרה וטעינה</div><div class='statement'><b>טענה 2:</b> בארכיטקטורת ELT, ההתמרה (Transform) מבוצעת לפני כניסת הנתונים למחסן</div><div class='statement'><b>טענה 3:</b> מחסני נתונים מודרניים כגון Snowflake מאפשרים גישת ELT בשל כוח העיבוד שלהם</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. טענה 2 בלבד</li><li class='option'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 32</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> Data Warehouse מתאפיין בנתונים לא מובנים כגון תמונות וסרטונים</div><div class='statement'><b>טענה 2:</b> Data Lake משמש לאחסון נתונים גמישים ולא מובנים</div><div class='statement'><b>טענה 3:</b> Lakehouse משלב בין הסדר של המחסן לגמישות של האגם</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. טענה 2 בלבד</li><li class='option'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ד. כל הטענות נכונות</li><li class='option'>ה. טענות 1 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 33</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> השכבה הסמנטית מתרגמת מונחים טכניים ממסד הנתונים לשפה עסקית מובנת</div><div class='statement'><b>טענה 2:</b> Tableau עובד באופן בלעדי על סביבת Windows</div><div class='statement'><b>טענה 3:</b> Power BI מתממשק בצורה טבעית וחלקה עם מוצרי מיקרוסופט (Ecosystem)</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. טענה 2 בלבד</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. טענות 1 ו-3</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 34</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מסמך ה-BRD מתרגם את השפה הטכנית של המפתחים ליעדים של המנכ"ל</div><div class='statement'><b>טענה 2:</b> מתודולוגיית Top-Down מתחילה באפיון מסדי הנתונים ורק אז בהגדרת יעדים</div><div class='statement'><b>טענה 3:</b> החלק הראשון במסמך BRD הוא לרוב תקציר המנהלים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. טענות 2 ו-3</li><li class='option'>ד. טענות 1 ו-3</li><li class='option'>ה. טענה 3 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 35</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מדד AOV (Average Order Value) מודד את אחוז הלקוחות שעזבו את החברה</div><div class='statement'><b>טענה 2:</b> מדד Churn Rate משקף את שיעור הנטישה של הלקוחות (נפוץ ב-SaaS)</div><div class='statement'><b>טענה 3:</b> מדדי KPI אמורים להשתנות לחלוטין בין מחלקה למחלקה ללא תלות ביעד המרכזי</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ב. טענה 2 בלבד</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענות 1 ו-2</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 36</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> בפירמידת DIKW האות K מייצגת Knowledge (ידע)</div><div class='statement'><b>טענה 2:</b> קבלת תובנה (Wisdom) מגיעה ישירות מנתונים גולמיים ללא שלבי ביניים</div><div class='statement'><b>טענה 3:</b> איתור תבניות בנתונים הוא השלב שהופך מידע לידע</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 1 בלבד</li><li class='option'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ג. טענה 2 בלבד</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענות 1 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 37</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> חיבור קובץ Excel ב-Tableau מבוצע על ידי Connect ל-Text File</div><div class='statement'><b>טענה 2:</b> שדה מספרי יקבל סימון # בחלונית השדות</div><div class='statement'><b>טענה 3:</b> Tableau מחשב אוטומטית פונקציית SUM כאשר גוררים מדד (Measure) לתרשים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. טענות 1 ו-2</li><li class='option'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 38</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> אפליקציות Web מבוססות GAS נגישות דרך דפדפן סטנדרטי</div><div class='statement'><b>טענה 2:</b> אין צורך לדעת HTML כדי לבנות Frontend ויזואלי למשתמש</div><div class='statement'><b>טענה 3:</b> תקשורת API מאפשרת להחזיר תשובות בפורמט מובנה כגון JSON</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. טענות 1 ו-2</li><li class='option'>ד. טענה 1 בלבד</li><li class='option'>ה. טענות 2 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 39</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> קיימים מקרים בהם נציג ב-Dashboard תובנות שאינן ניתנות ליישום כרגע (מידע כללי)</div><div class='statement'><b>טענה 2:</b> תובנה מניעת פעולה יכולה להיות מבוססת על תחושות בטן ללא גיבוי נתונים</div><div class='statement'><b>טענה 3:</b> פירמידת DIKW מתארת מעבר מצמצום עובדות גולמיות להחלטות עסקיות חכמות</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. טענות 1 ו-3</li><li class='option'>ד. כל הטענות נכונות</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 40</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> סוגי חיבור ה-Join ב-Tableau זהים בלוגיקה שלהם ל-SQL</div><div class='statement'><b>טענה 2:</b> ב-Inner Join יחזרו כל הרשומות משתי הטבלאות, כולל ערכי Null</div><div class='statement'><b>טענה 3:</b> ב-Left Join מובטח שכל רשומות הטבלה השמאלית יופיעו בתוצאה</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-3</li><li class='option'>ב. טענה 2 בלבד</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 41</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> Full Outer Join עשוי להציג תאי Null אם אין התאמה בשדה המזהה</div><div class='statement'><b>טענה 2:</b> Right Join שומר את כל הרשומות מהטבלה הימנית</div><div class='statement'><b>טענה 3:</b> חיבור בין טבלאות מצריך שדה מזהה משותף (כגון ID)</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. כל הטענות נכונות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 42</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מערכת תפעולית לניהול מלאי בארגון היא דוגמה קלאסית למערכת BI</div><div class='statement'><b>טענה 2:</b> OLAP נועד לשאילתות אנליטיות מורכבות על נתונים היסטוריים</div><div class='statement'><b>טענה 3:</b> מטרת פרויקט BI היא לחבר נתונים ממקורות שונים לטובת קבלת החלטות</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-3</li><li class='option'>ב. כל הטענות נכונות</li><li class='option'>ג. טענות 2 ו-3</li><li class='option'>ד. טענה 1 בלבד</li><li class='option'>ה. טענה 2 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 43</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> השכבה הסמנטית מאפשרת למשתמשי הקצה להבין את הנתונים ללא ידע ב-SQL</div><div class='statement'><b>טענה 2:</b> ETL הוא התהליך המסורתי בו הנתונים מנוקים לפני שהם נכנסים למחסן הנתונים</div><div class='statement'><b>טענה 3:</b> מודל Data Lakehouse דורש בהכרח שימוש ב-Excel</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. טענות 1 ו-2</li><li class='option'>ג. טענות 2 ו-3</li><li class='option'>ד. כל הטענות נכונות</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 44</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> ב-Tableau, גרירת משתנה קטגוריאלי לעמודות (Columns) תיצור ציר אופקי (X)</div><div class='statement'><b>טענה 2:</b> Dashboards מוגדרים תמיד לגודל קבוע ולא ניתן להתאימם למסך (Automatic)</div><div class='statement'><b>טענה 3:</b> ניתן לשלב מספר גליונות (Sheets) ב-Dashboard אחד</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. כל הטענות נכונות</li><li class='option'>ג. טענות 1 ו-3</li><li class='option'>ד. טענה 1 בלבד</li><li class='option'>ה. טענה 3 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 45</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> ל-Tableau Public יש הגבלות על שמירת נתונים מקומית בהשוואה ל-Desktop</div><div class='statement'><b>טענה 2:</b> פרסום (Publish) דשבורד מניב קישור אותו ניתן להטמיע באתר</div><div class='statement'><b>טענה 3:</b> קובץ CSV מכיל פורמט בינארי מורכב ולא מוגדר כטקסט</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. טענה 3 בלבד</li><li class='option'>ג. טענה 2 בלבד</li><li class='option'>ד. טענה 1 בלבד</li><li class='option'>ה. טענות 1 ו-2</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 46</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> כאשר מקימים אתר ב-Github, קובץ הכניסה הראשי נקרא לרוב index.html</div><div class='statement'><b>טענה 2:</b> הפקודה Commit משמעותה אישור ושמירת השינויים בקוד</div><div class='statement'><b>טענה 3:</b> Github Pages מספק שרת Backend מלא התומך במסדי נתונים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 2 בלבד</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענה 3 בלבד</li><li class='option'>ה. טענות 1 ו-2</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 47</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> שימוש ב-Google Apps Script חוסך את הצורך בתחזוקת שרת פיזי או בענן</div><div class='statement'><b>טענה 2:</b> מנגנון Validation מוודא שמשתמש הזין כתובת מייל תקינה לפני שליחת הבקשה</div><div class='statement'><b>טענה 3:</b> המונח Fallback מתייחס לסיטואציה בה השרת הראשי עובד באופן מושלם</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות נכונות</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. טענות 1 ו-2</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 48</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> בעסקי הקמעונאות (Retail), יעד נפוץ הוא הגדלת פדיון ולכן נמדוד AOV</div><div class='statement'><b>טענה 2:</b> חברות תוכנה (SaaS) מתמקדות בשימור לקוחות ולכן מודדות Churn Rate</div><div class='statement'><b>טענה 3:</b> אין קשר בין סוג התעשייה לבין בחירת ה-KPIs</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-2</li><li class='option'>ב. טענות 2 ו-3</li><li class='option'>ג. טענה 3 בלבד</li><li class='option'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ה. טענות 1 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 49</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מסמך BRD כולל פירוט טכני ברמת שורות הקוד שמפתח צריך לכתוב</div><div class='statement'><b>טענה 2:</b> גישת Top-Down באפיון מערכות מבטיחה שהפיתוח משרת את היעדים העסקיים</div><div class='statement'><b>טענה 3:</b> מקורות נתונים אינם חלק ממסמך ה-BRD</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 2 בלבד</li><li class='option'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענות 1 ו-3</li><li class='option'>ה. טענות 2 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 50</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> ב-Tableau, מדדים (Measures) צבועים לרוב בירוק וממדים (Dimensions) בכחול (או תלוי ברציפות)</div><div class='statement'><b>טענה 2:</b> משתנה רציף (Continuous) מצייר צירים רציפים כמו קו זמן מגמתי</div><div class='statement'><b>טענה 3:</b> אזור Marks מאפשר שליטה על צבע (Color) וגודל (Size) בתרשים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-2</li><li class='option'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 51</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> השילוב של Backend ו-Frontend באפליקציה מאפשר הפרדה בין התצוגה לוגיקת הנתונים</div><div class='statement'><b>טענה 2:</b> API מאפשר למערכות שונות לדבר זו עם זו למרות שהן כתובות בשפות שונות</div><div class='statement'><b>טענה 3:</b> דפדפן האינטרנט של המשתמש מריץ את קוד ה-Backend</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-2</li><li class='option'>ב. כל הטענות נכונות</li><li class='option'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ד. טענה 3 בלבד</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 52</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> בפירמידת DIKW, מעבר ממידע (Information) לידע (Knowledge) דורש חשיפת תבניות והקשרים</div><div class='statement'><b>טענה 2:</b> חוכמה (Wisdom) באה לידי ביטוי בקבלת החלטה או פעולה</div><div class='statement'><b>טענה 3:</b> הפירמידה מתארת תהליך של הגדלת נפח הנתונים ככל שעולים למעלה</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 1 בלבד</li><li class='option'>ב. טענות 2 ו-3</li><li class='option'>ג. טענות 1 ו-2</li><li class='option'>ד. כל הטענות נכונות</li><li class='option'>ה. טענה 3 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 53</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> ארכיטקטורת מערכת BI מתחילה לרוב בשאיבת נתונים ממערכות תפעוליות (ERP, CRM)</div><div class='statement'><b>טענה 2:</b> מחסן נתונים (DWH) משמש כמאגר מרכזי, נקי ומובנה עבור אנליסטים</div><div class='statement'><b>טענה 3:</b> כלי הויזואליזציה (כמו Tableau) מחליף את מערכת ה-ERP לחלוטין</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. טענות 1 ו-2</li><li class='option'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ד. טענות 1 ו-3</li><li class='option'>ה. כל הטענות נכונות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 54</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> תובנה מניעת פעולה (Actionable Insight) היא כזו שניתן ליישם בארגון (ברת ביצוע)</div><div class='statement'><b>טענה 2:</b> הגדרה כללית כמו 'המכירות ירדו' איננה תובנה ספציפית מספיק</div><div class='statement'><b>טענה 3:</b> תובנות מבוססות תמיד על היכרות אישית של המנכ"ל ולא על נתונים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות נכונות</li><li class='option'>ב. טענה 2 בלבד</li><li class='option'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ד. טענות 1 ו-2</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 55</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> ETL מיושם בעיקר כאשר נדרש לנקות את הנתונים לפני כניסתם לאחסון</div><div class='statement'><b>טענה 2:</b> ב-Data Lake הנתונים נשמרים בפורמט הגולמי שלהם (Raw)</div><div class='statement'><b>טענה 3:</b> Tableau אינו מאפשר סינון נתונים לפי טווח תאריכים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-2</li><li class='option'>ב. כל הטענות נכונות</li><li class='option'>ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ד. טענה 1 בלבד</li><li class='option'>ה. טענה 2 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 56</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> סוג חיבור Full Outer מחזיר שורות שאין להן התאמה בטבלה הנגדית (ויציג Null במקומות החסרים)</div><div class='statement'><b>טענה 2:</b> Inner Join מסנן החוצה שורות ללא התאמה מוחלטת</div><div class='statement'><b>טענה 3:</b> Left Join מתעלם לחלוטין מהטבלה השמאלית</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. טענות 2 ו-3</li><li class='option'>ג. טענות 1 ו-2</li><li class='option'>ד. טענה 1 בלבד</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 57</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> פיתוח אפליקציה מבוססת GAS ו-HTML מאפשר יצירת מסכי משתמש אינטראקטיביים</div><div class='statement'><b>טענה 2:</b> אחסון קוד ה-HTML ב-Github Pages הופך אותו לנגיש ברשת</div><div class='statement'><b>טענה 3:</b> השרת שכתוב ב-GAS מחזיר את הנתונים ממסד הנתונים או מ-Google Sheets</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 2 בלבד</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענה 1 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 58</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> משתנה בדיד (Discrete) יוצר כותרות קטגוריאליות בתרשים (כמו עמודות נפרדות)</div><div class='statement'><b>טענה 2:</b> משתנה רציף (Continuous) מתאים להצגת רצף זמנים בתרשים קו</div><div class='statement'><b>טענה 3:</b> Tableau מאפשר לשנות משתנה מספרי מ-Continuous ל-Discrete</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. כל הטענות נכונות</li><li class='option'>ג. טענות 2 ו-3</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 59</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> במערכת מבוססת נתונים, כלי ה-Frontend מעבד נתונים כבדים במקום השרת</div><div class='statement'><b>טענה 2:</b> קריאת HTTP משמשת לתקשורת בין הלקוח (Client) לשרת (Server)</div><div class='statement'><b>טענה 3:</b> פורמט JSON הוא פורמט פופולרי להעברת נתונים דרך API</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. כל הטענות נכונות</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. טענה 1 בלבד</li><li class='option'>ד. טענה 2 בלבד</li><li class='option'>ה. טענות 2 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 60</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מסמך BRD נכתב בדרך כלל לאחר סיום הפיתוח כדי לתעד את מה שנעשה</div><div class='statement'><b>טענה 2:</b> בגישת Top-Down, ה-KPIs מוגדרים לאחר הבנת היעדים העסקיים המרכזיים</div><div class='statement'><b>טענה 3:</b> שכבה סמנטית מקלה על אנשי עסקים לשלוף נתונים ללא תלות באנשי IT</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 3 בלבד</li><li class='option'>ב. טענה 1 בלבד</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענות 1 ו-3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 61</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> במערכת מבוססת נתונים, כלי ה-Frontend מעבד נתונים כבדים במקום השרת</div><div class='statement'><b>טענה 2:</b> קריאת HTTP משמשת לתקשורת בין הלקוח (Client) לשרת (Server)</div><div class='statement'><b>טענה 3:</b> פורמט JSON הוא פורמט פופולרי להעברת נתונים דרך API</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 1 ו-3</li><li class='option'>ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ג. כל הטענות נכונות</li><li class='option'>ד. טענות 2 ו-3</li><li class='option'>ה. טענה 3 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 62</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> בעסקי הקמעונאות (Retail), יעד נפוץ הוא הגדלת פדיון ולכן נמדוד AOV</div><div class='statement'><b>טענה 2:</b> חברות תוכנה (SaaS) מתמקדות בשימור לקוחות ולכן מודדות Churn Rate</div><div class='statement'><b>טענה 3:</b> אין קשר בין סוג התעשייה לבין בחירת ה-KPIs</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענות 2 ו-3</li><li class='option'>ב. טענות 1 ו-3</li><li class='option'>ג. טענות 1 ו-2</li><li class='option'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ה. טענה 3 בלבד</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 63</div>
-        <div class='statements'><div class='statement'><b>טענה 1:</b> מסמך ה-BRD מתרגם את השפה הטכנית של המפתחים ליעדים של המנכ"ל</div><div class='statement'><b>טענה 2:</b> מתודולוגיית Top-Down מתחילה באפיון מסדי הנתונים ורק אז בהגדרת יעדים</div><div class='statement'><b>טענה 3:</b> החלק הראשון במסמך BRD הוא לרוב תקציר המנהלים</div></div>
-        <div class='q-title'>הטענה / הטענות הנכונה / הנכונות:</div>
-        <ul class='options'><li class='option'>א. טענה 2 בלבד</li><li class='option'>ב. טענה 3 בלבד</li><li class='option'>ג. טענות 2 ו-3</li><li class='option'>ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)</li><li class='option'>ה. כל הטענות נכונות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 64</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2, 2]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 2, 3]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 4, Left: 4, Right: 6, Full Outer: 7</li><li class='option'>ב. Inner: 4, Left: 5, Right: 5, Full Outer: 6</li><li class='option'>ג. Inner: 5, Left: 5, Right: 5, Full Outer: 6</li><li class='option'>ד. Inner: 3, Left: 6, Right: 5, Full Outer: 5</li><li class='option'>ה. כל יתר התשובות שגויות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 65</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [5, 5]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [5, 5, 5]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 6, Left: 5, Right: 7, Full Outer: 7</li><li class='option'>ב. Inner: 6, Left: 6, Right: 6, Full Outer: 6</li><li class='option'>ג. Inner: 7, Left: 6, Right: 6, Full Outer: 6</li><li class='option'>ד. Inner: 5, Left: 7, Right: 6, Full Outer: 5</li><li class='option'>ה. כל יתר התשובות שגויות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 66</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [3, 4]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 0, Left: 1, Right: 3, Full Outer: 5</li><li class='option'>ב. Inner: 1, Left: 2, Right: 2, Full Outer: 4</li><li class='option'>ג. Inner: 0, Left: 3, Right: 2, Full Outer: 3</li><li class='option'>ד. Inner: 0, Left: 2, Right: 2, Full Outer: 4</li><li class='option'>ה. כל יתר התשובות שגויות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 67</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [Null, Null]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [Null]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 0, Left: 1, Right: 2, Full Outer: 4</li><li class='option'>ב. Inner: 0, Left: 2, Right: 1, Full Outer: 3</li><li class='option'>ג. Inner: 1, Left: 2, Right: 1, Full Outer: 3</li><li class='option'>ד. Inner: 0, Left: 3, Right: 1, Full Outer: 2</li><li class='option'>ה. כל יתר התשובות שגויות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 68</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 1]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 3, Left: 2, Right: 4, Full Outer: 4</li><li class='option'>ב. Inner: 4, Left: 3, Right: 3, Full Outer: 3</li><li class='option'>ג. Inner: 2, Left: 4, Right: 3, Full Outer: 2</li><li class='option'>ד. Inner: 3, Left: 3, Right: 3, Full Outer: 3</li><li class='option'>ה. כל יתר התשובות שגויות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 69</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [2, 4, 6]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 4]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. כל יתר התשובות שגויות</li><li class='option'>ב. Inner: 2, Left: 3, Right: 2, Full Outer: 3</li><li class='option'>ג. Inner: 1, Left: 4, Right: 2, Full Outer: 2</li><li class='option'>ד. Inner: 2, Left: 2, Right: 3, Full Outer: 4</li><li class='option'>ה. Inner: 3, Left: 3, Right: 2, Full Outer: 3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 70</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, Null, 2]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 3, Null]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 1, Left: 3, Right: 3, Full Outer: 5</li><li class='option'>ב. Inner: 0, Left: 4, Right: 3, Full Outer: 4</li><li class='option'>ג. כל יתר התשובות שגויות</li><li class='option'>ד. Inner: 1, Left: 2, Right: 4, Full Outer: 6</li><li class='option'>ה. Inner: 2, Left: 3, Right: 3, Full Outer: 5</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 71</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [10, 20, 30]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [20, 20]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. כל יתר התשובות שגויות</li><li class='option'>ב. Inner: 2, Left: 3, Right: 3, Full Outer: 5</li><li class='option'>ג. Inner: 2, Left: 4, Right: 2, Full Outer: 4</li><li class='option'>ד. Inner: 3, Left: 4, Right: 2, Full Outer: 4</li><li class='option'>ה. Inner: 1, Left: 5, Right: 2, Full Outer: 3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 72</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2, 1, 2]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 4, Left: 3, Right: 5, Full Outer: 5</li><li class='option'>ב. Inner: 5, Left: 4, Right: 4, Full Outer: 4</li><li class='option'>ג. כל יתר התשובות שגויות</li><li class='option'>ד. Inner: 3, Left: 5, Right: 4, Full Outer: 3</li><li class='option'>ה. Inner: 4, Left: 4, Right: 4, Full Outer: 4</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 73</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [7, 8, 9]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [7]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 2, Left: 3, Right: 1, Full Outer: 3</li><li class='option'>ב. כל יתר התשובות שגויות</li><li class='option'>ג. Inner: 0, Left: 4, Right: 1, Full Outer: 2</li><li class='option'>ד. Inner: 1, Left: 2, Right: 2, Full Outer: 4</li><li class='option'>ה. Inner: 1, Left: 3, Right: 1, Full Outer: 3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 74</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [Null]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2, Null]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 0, Left: 0, Right: 4, Full Outer: 5</li><li class='option'>ב. Inner: 0, Left: 1, Right: 3, Full Outer: 4</li><li class='option'>ג. Inner: 1, Left: 1, Right: 3, Full Outer: 4</li><li class='option'>ד. Inner: 0, Left: 2, Right: 3, Full Outer: 3</li><li class='option'>ה. כל יתר התשובות שגויות</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 75</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [5]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: []</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. כל יתר התשובות שגויות</li><li class='option'>ב. Inner: 0, Left: 2, Right: 0, Full Outer: 0</li><li class='option'>ג. Inner: 1, Left: 1, Right: 0, Full Outer: 1</li><li class='option'>ד. Inner: 0, Left: 1, Right: 0, Full Outer: 1</li><li class='option'>ה. Inner: 0, Left: 0, Right: 1, Full Outer: 2</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 76</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: []</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 1, Left: 0, Right: 2, Full Outer: 2</li><li class='option'>ב. Inner: 0, Left: -1, Right: 3, Full Outer: 3</li><li class='option'>ג. כל יתר התשובות שגויות</li><li class='option'>ד. Inner: 0, Left: 0, Right: 2, Full Outer: 2</li><li class='option'>ה. Inner: 0, Left: 1, Right: 2, Full Outer: 1</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 77</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 2, 2]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 4, Left: 4, Right: 4, Full Outer: 4</li><li class='option'>ב. Inner: 5, Left: 4, Right: 4, Full Outer: 4</li><li class='option'>ג. Inner: 4, Left: 3, Right: 5, Full Outer: 5</li><li class='option'>ד. כל יתר התשובות שגויות</li><li class='option'>ה. Inner: 3, Left: 5, Right: 4, Full Outer: 3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 78</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [3, 4, 5, 6]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [5, 6, 7, 8]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 1, Left: 5, Right: 4, Full Outer: 5</li><li class='option'>ב. Inner: 3, Left: 4, Right: 4, Full Outer: 6</li><li class='option'>ג. כל יתר התשובות שגויות</li><li class='option'>ד. Inner: 2, Left: 4, Right: 4, Full Outer: 6</li><li class='option'>ה. Inner: 2, Left: 3, Right: 5, Full Outer: 7</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 79</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [100, 200]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [100, 200, 300]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 2, Left: 1, Right: 4, Full Outer: 4</li><li class='option'>ב. Inner: 3, Left: 2, Right: 3, Full Outer: 3</li><li class='option'>ג. Inner: 1, Left: 3, Right: 3, Full Outer: 2</li><li class='option'>ד. כל יתר התשובות שגויות</li><li class='option'>ה. Inner: 2, Left: 2, Right: 3, Full Outer: 3</li></ul>
-    </div>
-    
-    <div class='question-card'>
-        <div class='q-num'>שאלה מספר 80</div>
-        <div class='statements'>
-            <div class='statement'>הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה השמאלית הם: [0, 0, 1]</div>
-            <div class='statement'>ערכי השדה המזהה (ID) בטבלה הימנית הם: [0, 1, 1]</div>
-            <div class='statement'>בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?</div>
-        </div>
-        <ul class='options'><li class='option'>א. Inner: 3, Left: 5, Right: 4, Full Outer: 3</li><li class='option'>ב. Inner: 4, Left: 3, Right: 5, Full Outer: 5</li><li class='option'>ג. Inner: 5, Left: 4, Right: 4, Full Outer: 4</li><li class='option'>ד. כל יתר התשובות שגויות</li><li class='option'>ה. Inner: 4, Left: 4, Right: 4, Full Outer: 4</li></ul>
-    </div>
-    
-        </div>
-        <button class="btn-show" onclick="document.getElementById('answers').style.display='block'; window.scrollTo(0, document.body.scrollHeight);">הצג פתרונות</button>
-        <div id="answers">
-            <h2 style="text-align:center; color:#2b6cb0; margin-bottom: 20px;">מפתח תשובות</h2>
-            <div class='ans-row'><span class='ans-num'>שאלה 1:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 2:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 3:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 4:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 5:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 6:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 7:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 8:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 9:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 10:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 11:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 12:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 13:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 14:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 15:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 16:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 17:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 18:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 19:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 20:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 21:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 22:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 23:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 24:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 25:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 26:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 27:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 28:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 29:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 30:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 31:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 32:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 33:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 34:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 35:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 36:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 37:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 38:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 39:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 40:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 41:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 42:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 43:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 44:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 45:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 46:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 47:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 48:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 49:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 50:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 51:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 52:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 53:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 54:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 55:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 56:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 57:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 58:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 59:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 60:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 61:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 62:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 63:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 64:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 65:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 66:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 67:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 68:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 69:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 70:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 71:</span><span class='ans-val'>ג</span></div><div class='ans-row'><span class='ans-num'>שאלה 72:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 73:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 74:</span><span class='ans-val'>ב</span></div><div class='ans-row'><span class='ans-num'>שאלה 75:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 76:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 77:</span><span class='ans-val'>א</span></div><div class='ans-row'><span class='ans-num'>שאלה 78:</span><span class='ans-val'>ד</span></div><div class='ans-row'><span class='ans-num'>שאלה 79:</span><span class='ans-val'>ה</span></div><div class='ans-row'><span class='ans-num'>שאלה 80:</span><span class='ans-val'>ה</span></div>
-        </div>
-        <div class="footer">
-            בהצלחה בבחינה! תרגול זה נוצר לכיסוי נרחב של החומר כולל חישובי Join, תיאוריות BI, Tableau ו-GAS.
+        
+        <div id="results-container">
+            <h2>כל הכבוד! סיימת את המבחן.</h2>
+            <div id="final-score"></div>
+            <p style="margin-top:20px; color:#718096;">תרגול מצוין! חזור על השאלות שטעית בהן. ה-100 לגמרי בדרך!</p>
+            <button class="btn-nav" style="margin-top: 30px; background: #2b6cb0; padding: 15px 30px; font-size: 1.2rem;" onclick="location.reload()">התחל מחדש</button>
         </div>
     </div>
+
+    <script>
+        // The correct answers dictionary mapped from the previous generation
+        const correctAnswers = {
+            1: "ב", 2: "ה", 3: "ג", 4: "א", 5: "ה", 6: "ב", 7: "א", 8: "ג", 9: "ה", 10: "ג",
+            11: "ה", 12: "ה", 13: "ד", 14: "א", 15: "א", 16: "ה", 17: "ה", 18: "ד", 19: "ד", 20: "ה",
+            21: "ב", 22: "ג", 23: "ד", 24: "ב", 25: "ב", 26: "ג", 27: "ג", 28: "ב", 29: "א", 30: "א",
+            31: "ב", 32: "א", 33: "ד", 34: "ה", 35: "ב", 36: "ה", 37: "א", 38: "ב", 39: "ג", 40: "א",
+            41: "ה", 42: "ג", 43: "ב", 44: "ג", 45: "ה", 46: "ה", 47: "ה", 48: "א", 49: "א", 50: "ג",
+            51: "א", 52: "ג", 53: "ב", 54: "ד", 55: "א", 56: "ג", 57: "ג", 58: "ב", 59: "ה", 60: "ד",
+            61: "ד", 62: "ג", 63: "ב", 64: "ב", 65: "ב", 66: "ד", 67: "ב", 68: "ד", 69: "ב", 70: "א",
+            71: "ג", 72: "ה", 73: "ה", 74: "ב", 75: "ד", 76: "ד", 77: "א", 78: "ד", 79: "ה", 80: "ה"
+        };
+        
+        let currentQuestion = 1;
+        const totalQuestions = 80;
+        let score = 0;
+
+        function showQuestion(qNum) {
+            // Hide all questions
+            document.querySelectorAll('.question-card').forEach(q => {
+                q.classList.remove('active');
+            });
+            // Show target question
+            const targetQ = document.getElementById('q-' + qNum);
+            if(targetQ) {
+                targetQ.classList.add('active');
+            }
+            
+            // Update progress text
+            document.getElementById('progress-text').innerText = `שאלה ${qNum} מתוך ${totalQuestions}`;
+            
+            // Manage button visibility and state
+            document.getElementById('btn-prev').disabled = (qNum === 1);
+            
+            if (qNum === totalQuestions) {
+                document.getElementById('btn-next').style.display = 'none';
+                document.getElementById('btn-finish').style.display = 'inline-block';
+            } else {
+                document.getElementById('btn-next').style.display = 'inline-block';
+                document.getElementById('btn-finish').style.display = 'none';
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function selectOption(qNum, selectedValue) {
+            const card = document.getElementById('q-' + qNum);
+            
+            // Prevent changing answer if already answered
+            if (card.classList.contains('answered')) return;
+            
+            card.classList.add('answered');
+            const correctVal = correctAnswers[qNum];
+            
+            const allOptions = card.querySelectorAll('.option');
+            
+            // Apply colors based on correct/incorrect
+            allOptions.forEach(li => {
+                const val = li.getAttribute('data-val');
+                if (val === correctVal) {
+                    li.classList.add('correct'); // Highlight correct answer
+                }
+                if (val === selectedValue && selectedValue !== correctVal) {
+                    li.classList.add('incorrect'); // Highlight wrong answer
+                }
+            });
+            
+            if (selectedValue === correctVal) {
+                score++;
+            }
+        }
+
+        function finishQuiz() {
+            document.getElementById('quiz-container').style.display = 'none';
+            const resDiv = document.getElementById('results-container');
+            resDiv.style.display = 'block';
+            
+            const pct = Math.round((score / totalQuestions) * 100);
+            document.getElementById('final-score').innerText = `ענית נכונה על ${score} מתוך ${totalQuestions} שאלות (${pct}%)`;
+        }
+        
+        // Initialize the first question on load
+        window.onload = function() {
+            showQuestion(1);
+        }
+    </script>
 </body>
 </html>
