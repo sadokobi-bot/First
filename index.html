@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מבחן חזרה אינטראקטיבי - ויזואליזציה של מידע - מועד ב'</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/hebrew@latest/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.0/index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/assistant@5.0.0/index.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --primary-light: #818cf8;
+            --primary: #0891b2;
+            --primary-dark: #0e7490;
+            --primary-light: #22d3ee;
+            --primary-soft: #ecfeff;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
             --success: #10b981;
             --success-light: #d1fae5;
             --success-dark: #065f46;
@@ -22,39 +23,41 @@
             --danger-dark: #991b1b;
             --bg: #f8fafc;
             --card: #ffffff;
-            --text: #1e293b;
+            --text: #0f172a;
             --text-secondary: #64748b;
             --border: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-            --radius: 16px;
+            --border-light: #f1f5f9;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --radius: 14px;
             --radius-sm: 10px;
         }
         
         body {
-            font-family: 'Heebo', 'Assistant', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f0f9ff 100%);
             min-height: 100vh;
             color: var(--text);
             line-height: 1.7;
-            padding: 20px;
+            padding: 24px;
         }
         
         .container {
-            max-width: 900px;
+            max-width: 880px;
             margin: 0 auto;
         }
         
         .header {
             text-align: center;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 40px 30px;
+            background: var(--card);
+            padding: 48px 32px 40px;
             border-radius: var(--radius);
-            margin-bottom: 30px;
-            box-shadow: var(--shadow-lg);
+            margin-bottom: 28px;
+            box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            border: 1px solid var(--border-light);
         }
         
         .header::before {
@@ -63,22 +66,32 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light), #a78bfa);
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--accent));
+        }
+        
+        .header-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-soft), #cffafe);
+            border-radius: 20px;
+            margin-bottom: 16px;
+            font-size: 2rem;
         }
         
         .header h1 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), #7c3aed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
+            color: var(--text);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
         
         .header .subtitle {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
             font-weight: 400;
         }
@@ -86,9 +99,10 @@
         .progress-bar-container {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 20px 25px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
         }
         
         .progress-bar-wrapper {
@@ -101,21 +115,22 @@
         .progress-text {
             font-weight: 600;
             color: var(--text);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
         
         .score-badge {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-            padding: 6px 16px;
+            background: var(--success-light);
+            color: var(--success-dark);
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 700;
+            border: 1px solid #a7f3d0;
         }
         
         .progress-track {
-            height: 8px;
-            background: #e2e8f0;
+            height: 6px;
+            background: var(--border-light);
             border-radius: 10px;
             overflow: hidden;
         }
@@ -138,54 +153,56 @@
         
         .btn-nav {
             background: var(--card);
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            padding: 12px 24px;
+            color: var(--primary-dark);
+            border: 1.5px solid var(--border);
+            padding: 11px 22px;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 0.92rem;
             font-family: inherit;
             display: flex;
             align-items: center;
             gap: 8px;
+            box-shadow: var(--shadow-sm);
         }
         
         .btn-nav:hover:not(:disabled) {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            transform: translateY(-1px);
             box-shadow: var(--shadow);
         }
         
         .btn-nav:disabled {
             opacity: 0.4;
             cursor: not-allowed;
-            border-color: #cbd5e0;
-            color: #cbd5e0;
         }
         
         .btn-finish {
-            background: linear-gradient(135deg, var(--success), #059669);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
             display: none;
+            box-shadow: var(--shadow);
         }
         
         .btn-finish:hover {
-            background: linear-gradient(135deg, #059669, #047857);
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--primary-dark), #155e75);
+            transform: translateY(-1px);
             box-shadow: var(--shadow-lg);
         }
         
         .question-card {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 35px;
-            box-shadow: var(--shadow-lg);
+            padding: 32px;
+            box-shadow: var(--shadow);
             display: none;
             animation: fadeIn 0.4s ease;
+            border: 1px solid var(--border-light);
         }
         
         .question-card.active {
@@ -193,34 +210,44 @@
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .q-num {
-            font-weight: 800;
-            color: var(--primary);
-            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-size: 0.95rem;
             margin-bottom: 20px;
-            display: inline-block;
-            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
-            padding: 8px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-soft);
+            padding: 8px 16px;
             border-radius: 30px;
-            border: 1px solid #c7d2fe;
+            border: 1px solid #a5f3fc;
+        }
+        
+        .q-num::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
         }
         
         .statements {
-            margin-bottom: 25px;
-            background: #f8fafc;
+            margin-bottom: 24px;
+            background: #fafbfc;
             border-radius: var(--radius-sm);
-            padding: 20px;
-            border-right: 4px solid var(--primary-light);
+            padding: 22px 24px;
+            border: 1px solid var(--border-light);
         }
         
         .statement {
             margin-bottom: 14px;
             line-height: 1.8;
-            font-size: 1.02rem;
+            font-size: 1rem;
             color: var(--text);
         }
         
@@ -230,12 +257,13 @@
         
         .statement b {
             color: var(--primary-dark);
+            font-weight: 700;
         }
         
         .q-title {
             font-weight: 700;
-            margin-bottom: 18px;
-            font-size: 1.05rem;
+            margin-bottom: 16px;
+            font-size: 1rem;
             color: var(--text);
         }
         
@@ -246,38 +274,24 @@
         }
         
         .option {
-            padding: 16px 22px;
-            background: #f8fafc;
-            margin-bottom: 12px;
+            padding: 15px 20px;
+            background: #fafbfc;
+            margin-bottom: 10px;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all 0.25s ease;
-            border: 2px solid var(--border);
-            font-size: 1rem;
+            transition: all 0.2s ease;
+            border: 1.5px solid var(--border);
+            font-size: 0.98rem;
             font-weight: 500;
             position: relative;
-            overflow: hidden;
-        }
-        
-        .option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 0;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.05));
-            transition: width 0.3s ease;
-        }
-        
-        .option:hover::before {
-            width: 100%;
+            color: var(--text);
         }
         
         .option:hover {
-            border-color: var(--primary-light);
-            transform: translateX(-4px);
-            box-shadow: var(--shadow);
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            transform: translateX(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
         .option.correct {
@@ -291,6 +305,7 @@
         .option.correct::after {
             content: ' ✓';
             font-weight: 900;
+            color: var(--success);
         }
         
         .option.incorrect {
@@ -304,17 +319,18 @@
         .option.incorrect::after {
             content: ' ✗';
             font-weight: 900;
+            color: var(--danger);
         }
         
         @keyframes correctPulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            50% { transform: scale(1.01); }
         }
         
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
         
         .answered .option {
@@ -324,10 +340,10 @@
         
         .explanation {
             margin-top: 20px;
-            padding: 20px 24px;
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            padding: 20px 22px;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
             border-radius: var(--radius-sm);
-            border-right: 4px solid var(--primary);
+            border: 1px solid #fde68a;
             animation: slideDown 0.4s ease;
             display: none;
         }
@@ -337,24 +353,24 @@
         }
         
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
+            from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .explanation-title {
             font-weight: 800;
-            color: var(--primary-dark);
+            color: #92400e;
             margin-bottom: 10px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
         .explanation-content {
-            color: #1e40af;
+            color: #78350f;
             line-height: 1.8;
-            font-size: 0.98rem;
+            font-size: 0.95rem;
         }
         
         #results-container {
@@ -365,38 +381,41 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow-lg);
             animation: fadeIn 0.6s ease;
+            border: 1px solid var(--border-light);
         }
         
         #results-container h2 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), #7c3aed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
+            color: var(--text);
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
         }
         
         .result-score {
-            font-size: 4rem;
+            font-size: 4.5rem;
             font-weight: 900;
-            color: var(--primary);
-            margin: 20px 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 16px 0;
+            line-height: 1;
         }
         
         .result-details {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
         
         .result-bar {
-            height: 16px;
-            background: #e2e8f0;
+            height: 12px;
+            background: var(--border-light);
             border-radius: 10px;
             overflow: hidden;
-            margin: 30px auto;
-            max-width: 500px;
+            margin: 24px auto;
+            max-width: 480px;
         }
         
         .result-bar-fill {
@@ -407,48 +426,52 @@
         }
         
         .btn-restart {
-            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 16px 40px;
+            padding: 14px 36px;
             border-radius: var(--radius-sm);
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-family: inherit;
-            margin-top: 20px;
+            margin-top: 16px;
+            box-shadow: var(--shadow);
         }
         
         .btn-restart:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
         
         .emoji-result {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            animation: bounce 1s ease infinite;
+            font-size: 4.5rem;
+            margin-bottom: 16px;
+            animation: bounce 1.5s ease infinite;
         }
         
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-12px); }
         }
         
         @media (max-width: 640px) {
-            body { padding: 10px; }
+            body { padding: 12px; }
+            .header { padding: 32px 20px; }
             .header h1 { font-size: 1.5rem; }
-            .question-card { padding: 20px; }
-            .btn-nav { padding: 10px 16px; font-size: 0.85rem; }
-            .option { padding: 14px 18px; font-size: 0.95rem; }
+            .question-card { padding: 22px; }
+            .btn-nav { padding: 10px 14px; font-size: 0.85rem; }
+            .option { padding: 13px 16px; font-size: 0.92rem; }
+            .result-score { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 מבחן חזרה - ויזואליזציה של מידע</h1>
+            <div class="header-icon">📊</div>
+            <h1>מבחן חזרה - ויזואליזציה של מידע</h1>
             <p class="subtitle">הכנה למועד ב' - 80 שאלות עם הסברים מפורטים</p>
         </div>
         
@@ -469,9 +492,7 @@
                 <button class="btn-nav" id="btn-next" onclick="nextQuestion()">הבאה ←</button>
             </div>
             
-            <div id="questions-wrapper">
-                <!-- Questions will be inserted here by JS -->
-            </div>
+            <div id="questions-wrapper"></div>
         </div>
         
         <div id="results-container">
@@ -1947,7 +1968,6 @@
             answeredQuestions[qNum] = selectedValue;
             document.getElementById('score-badge').innerText = `✓ ${score} נכונות`;
             
-            // Show explanation
             const exp = document.getElementById('exp-' + qNum);
             if (exp) {
                 setTimeout(() => exp.classList.add('show'), 300);
