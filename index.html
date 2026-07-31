@@ -1681,19 +1681,19 @@ function loadMonths() {
 function apiPost(params) {
     return fetch(SCRIPT_URL, {
         method: 'POST',
-        body: params.toString(),
-        headers: { 'Content-Type': 'text/plain' }
+        body: params // אנו מעבירים את ה-URLSearchParams ישירות
     }).then(function(r) { return r.json(); });
 }
-
+    
 function apiGet(action, extra) {
-    var url = SCRIPT_URL + '?action=' + action;
+    // הוספת פרמטר t עם חותמת זמן כדי למנוע מהדפדפן לשמור Cache
+    var url = SCRIPT_URL + '?action=' + action + '&t=' + new Date().getTime();
     if (extra) {
         for (var k in extra) url += '&' + k + '=' + encodeURIComponent(extra[k]);
     }
     return fetch(url).then(function(r) { return r.json(); });
 }
-
+    
 document.getElementById('trackerForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var btn = document.getElementById('submitBtn');
