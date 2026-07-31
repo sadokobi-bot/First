@@ -3,2005 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מבחן חזרה אינטראקטיבי - ויזואליזציה של מידע - מועד ב'</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/heebo@5.0.0/index.css">
+    <title>מעקב פיננסי</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
         :root {
-            --primary: #0891b2;
-            --primary-dark: #0e7490;
-            --primary-light: #22d3ee;
-            --primary-soft: #ecfeff;
-            --accent: #f59e0b;
-            --accent-light: #fef3c7;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-highlight: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --input-bg: rgba(15, 23, 42, 0.4);
             --success: #10b981;
-            --success-light: #d1fae5;
-            --success-dark: #065f46;
-            --danger: #ef4444;
-            --danger-light: #fee2e2;
-            --danger-dark: #991b1b;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #0f172a;
-            --text-secondary: #64748b;
-            --border: #e2e8f0;
-            --border-light: #f1f5f9;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-            --radius: 14px;
-            --radius-sm: 10px;
+            --error: #ef4444;
         }
-        
+
         body {
-            font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f0f9ff 100%);
-            min-height: 100vh;
-            color: var(--text);
-            line-height: 1.7;
-            padding: 24px;
-        }
-        
-        .container {
-            max-width: 880px;
-            margin: 0 auto;
-        }
-        
-        .header {
-            text-align: center;
-            background: var(--card);
-            padding: 48px 32px 40px;
-            border-radius: var(--radius);
-            margin-bottom: 28px;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--border-light);
-        }
-        
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--accent));
-        }
-        
-        .header-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, var(--primary-soft), #cffafe);
-            border-radius: 20px;
-            margin-bottom: 16px;
-            font-size: 2rem;
-        }
-        
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text);
-            margin-bottom: 8px;
-            letter-spacing: -0.02em;
-        }
-        
-        .header .subtitle {
-            font-size: 1.05rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-        
-        .progress-bar-container {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 20px 24px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
-        }
-        
-        .progress-bar-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        
-        .progress-text {
-            font-weight: 600;
-            color: var(--text);
-            font-size: 0.9rem;
-        }
-        
-        .score-badge {
-            background: var(--success-light);
-            color: var(--success-dark);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            border: 1px solid #a7f3d0;
-        }
-        
-        .progress-track {
-            height: 6px;
-            background: var(--border-light);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
-            border-radius: 10px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 1.25%;
-        }
-        
-        .quiz-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-        
-        .btn-nav {
-            background: var(--card);
-            color: var(--primary-dark);
-            border: 1.5px solid var(--border);
-            padding: 11px 22px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            font-size: 0.92rem;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .btn-nav:hover:not(:disabled) {
-            background: var(--primary-soft);
-            border-color: var(--primary);
-            color: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow);
-        }
-        
-        .btn-nav:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        
-        .btn-finish {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            display: none;
-            box-shadow: var(--shadow);
-        }
-        
-        .btn-finish:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #155e75);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .question-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 32px;
-            box-shadow: var(--shadow);
-            display: none;
-            animation: fadeIn 0.4s ease;
-            border: 1px solid var(--border-light);
-        }
-        
-        .question-card.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .q-num {
-            font-weight: 700;
-            color: var(--primary-dark);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--primary-soft);
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid #a5f3fc;
-        }
-        
-        .q-num::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--primary);
-            border-radius: 50%;
-        }
-        
-        .statements {
-            margin-bottom: 24px;
-            background: #fafbfc;
-            border-radius: var(--radius-sm);
-            padding: 22px 24px;
-            border: 1px solid var(--border-light);
-        }
-        
-        .statement {
-            margin-bottom: 14px;
-            line-height: 1.8;
-            font-size: 1rem;
-            color: var(--text);
-        }
-        
-        .statement:last-child {
-            margin-bottom: 0;
-        }
-        
-        .statement b {
-            color: var(--primary-dark);
-            font-weight: 700;
-        }
-        
-        .q-title {
-            font-weight: 700;
-            margin-bottom: 16px;
-            font-size: 1rem;
-            color: var(--text);
-        }
-        
-        .options {
-            list-style-type: none;
-            padding: 0;
             margin: 0;
-        }
-        
-        .option {
-            padding: 15px 20px;
-            background: #fafbfc;
-            margin-bottom: 10px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1.5px solid var(--border);
-            font-size: 0.98rem;
-            font-weight: 500;
-            position: relative;
-            color: var(--text);
-        }
-        
-        .option:hover {
-            border-color: var(--primary);
-            background: var(--primary-soft);
-            transform: translateX(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .option.correct {
-            background: linear-gradient(135deg, var(--success-light), #a7f3d0) !important;
-            border-color: var(--success) !important;
-            color: var(--success-dark);
-            font-weight: 700;
-            animation: correctPulse 0.5s ease;
-        }
-        
-        .option.correct::after {
-            content: ' ✓';
-            font-weight: 900;
-            color: var(--success);
-        }
-        
-        .option.incorrect {
-            background: linear-gradient(135deg, var(--danger-light), #fecaca) !important;
-            border-color: var(--danger) !important;
-            color: var(--danger-dark);
-            font-weight: 600;
-            animation: shake 0.4s ease;
-        }
-        
-        .option.incorrect::after {
-            content: ' ✗';
-            font-weight: 900;
-            color: var(--danger);
-        }
-        
-        @keyframes correctPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.01); }
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            75% { transform: translateX(4px); }
-        }
-        
-        .answered .option {
-            cursor: default;
-            pointer-events: none;
-        }
-        
-        .explanation {
-            margin-top: 20px;
-            padding: 20px 22px;
-            background: linear-gradient(135deg, #fffbeb, #fef3c7);
-            border-radius: var(--radius-sm);
-            border: 1px solid #fde68a;
-            animation: slideDown 0.4s ease;
-            display: none;
-        }
-        
-        .explanation.show {
-            display: block;
-        }
-        
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .explanation-title {
-            font-weight: 800;
-            color: #92400e;
-            margin-bottom: 10px;
-            font-size: 0.95rem;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
         }
-        
-        .explanation-content {
-            color: #78350f;
-            line-height: 1.8;
-            font-size: 0.95rem;
+
+        .container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
         }
-        
-        #results-container {
-            display: none;
-            text-align: center;
-            background: var(--card);
-            padding: 60px 40px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            animation: fadeIn 0.6s ease;
-            border: 1px solid var(--border-light);
+
+        h2 {
+            margin: 0 0 32px 0;
+            font-weight: 500;
+            font-size: 1.5rem;
+            letter-spacing: -0.025em;
+            text-align: right;
         }
-        
-        #results-container h2 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--text);
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-        }
-        
-        .result-score {
-            font-size: 4.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 16px 0;
-            line-height: 1;
-        }
-        
-        .result-details {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
+
+        .form-group {
             margin-bottom: 24px;
+            text-align: right;
         }
-        
-        .result-bar {
-            height: 12px;
-            background: var(--border-light);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 24px auto;
-            max-width: 480px;
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
         }
-        
-        .result-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--primary-light));
-            border-radius: 10px;
-            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .btn-restart {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            padding: 14px 36px;
-            border-radius: var(--radius-sm);
+
+        input, select {
+            width: 100%;
+            padding: 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            color: var(--text-main);
             font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
             font-family: inherit;
-            margin-top: 16px;
-            box-shadow: var(--shadow);
         }
-        
-        .btn-restart:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+
+        input:focus, select:focus {
+            border-color: var(--glass-highlight);
+            background: rgba(15, 23, 42, 0.6);
+            box-shadow: 0 0 0 1px var(--glass-highlight);
         }
-        
-        .emoji-result {
-            font-size: 4.5rem;
-            margin-bottom: 16px;
-            animation: bounce 1.5s ease infinite;
+
+        input::placeholder {
+            color: #475569;
         }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
+
+        select option {
+            background: #0f172a;
+            color: var(--text-main);
         }
-        
-        @media (max-width: 640px) {
-            body { padding: 12px; }
-            .header { padding: 32px 20px; }
-            .header h1 { font-size: 1.5rem; }
-            .question-card { padding: 22px; }
-            .btn-nav { padding: 10px 14px; font-size: 0.85rem; }
-            .option { padding: 13px 16px; font-size: 0.92rem; }
-            .result-score { font-size: 3.5rem; }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: var(--text-main);
+            color: #0f172a;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s ease, background 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e2e8f0;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #statusMessage {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.875rem;
+            min-height: 20px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .show-status {
+            opacity: 1 !important;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-icon">📊</div>
-            <h1>מבחן חזרה - ויזואליזציה של מידע</h1>
-            <p class="subtitle">הכנה למועד ב' - 80 שאלות עם הסברים מפורטים</p>
+
+<div class="container">
+    <h2>הוספת תנועה</h2>
+    <form id="trackerForm">
+        <div class="form-group">
+            <label for="date">תאריך</label>
+            <input type="date" id="date" required>
         </div>
+
+        <div class="form-group">
+            <label for="type">סוג</label>
+            <select id="type" required>
+                <option value="הוצאה">הוצאה</option>
+                <option value="הכנסה">הכנסה</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="category">קטגוריה</label>
+            <input type="text" id="category" placeholder="לדוגמה: אוכל, דלק, משכורת" required>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">סכום (₪)</label>
+            <input type="number" id="amount" placeholder="0.00" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">הערות (אופציונלי)</label>
+            <input type="text" id="description" placeholder="פירוט נוסף...">
+        </div>
+
+        <button type="submit" id="submitBtn">שמירה</button>
+        <div id="statusMessage"></div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('date').valueAsDate = new Date();
+
+    document.getElementById('trackerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        <div id="quiz-container">
-            <div class="progress-bar-container">
-                <div class="progress-bar-wrapper">
-                    <span class="progress-text" id="progress-text">שאלה 1 מתוך 80</span>
-                    <span class="score-badge" id="score-badge">✓ 0 נכונות</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="progress-fill"></div>
-                </div>
-            </div>
-            
-            <div class="quiz-controls">
-                <button class="btn-nav" id="btn-prev" onclick="prevQuestion()" disabled>→ הקודמת</button>
-                <button class="btn-nav btn-finish" id="btn-finish" onclick="finishQuiz()">🏁 סיום מבחן</button>
-                <button class="btn-nav" id="btn-next" onclick="nextQuestion()">הבאה ←</button>
-            </div>
-            
-            <div id="questions-wrapper"></div>
-        </div>
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMessage');
         
-        <div id="results-container">
-            <div class="emoji-result" id="result-emoji">🎉</div>
-            <h2>כל הכבוד! סיימת את המבחן</h2>
-            <div class="result-score" id="result-score">0%</div>
-            <div class="result-details" id="result-details"></div>
-            <div class="result-bar">
-                <div class="result-bar-fill" id="result-bar-fill"></div>
-            </div>
-            <button class="btn-restart" onclick="location.reload()">🔄 התחל מחדש</button>
-        </div>
-    </div>
-
-    <script>
-        const questionsData = [
-            {
-                id: 1,
-                statements: [
-                    '<b>טענה 1:</b> חיבור של קבצי .csv ל-Tableau מבוצע דרך הענן של Tableau',
-                    '<b>טענה 2:</b> קבצי CSV הם קבצי טקסט. לפיכך, אי אפשר לפתוח אותם דרך תוכנת Excel אלא דרך תוכנת Tableau בלבד',
-                    '<b>טענה 3:</b> קבצי CSV הם קבצי טקסט. לפיכך, חיבורם ל-Tableau מתאפשר דרך לחיצה על Connect ובחירה ב-Text'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות נכונות'},
-                    {val: 'ב', text: 'ב. טענה 3 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 1 בלבד'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 2 ו-3'}
-                ],
-                correct: 'ב',
-                explanation: 'חיבור CSV ל-Tableau מבוצע מקומית דרך Connect → Text File (לא דרך הענן). קבצי CSV הם קבצי טקסט רגילים שניתן לפתוח גם ב-Excel וגם ב-Tableau. לכן רק טענה 3 נכונה.'
-            },
-            {
-                id: 2,
-                statements: [
-                    '<b>טענה 1:</b> תוכנת Tableau מתמחה בייצור נתונים גולמיים',
-                    '<b>טענה 2:</b> תוכנת Tableau Public מאפשרת שיתוף התוצרים לענן, בעוד שתוכנת Tableau Desktop עובדת מקומית בלבד',
-                    '<b>טענה 3:</b> בתוך אזור הגדרת השדות ב-Sheets קיימת תצוגה מקדימה אוטומטית של המידע בטבלאות השונות'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-3'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ה', text: 'ה. טענה 3 בלבד'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 שגויה - Tableau מתמחה בהצגה וויזואליזציה של מידע, לא בייצור נתונים. טענה 2 שגויה - גם Tableau Desktop מאפשר פרסום לענן (דרך Tableau Public/Server). טענה 3 שגויה - אין תצוגה מקדימה אוטומטית ב-Sheets, יש להתחיל לשרטט.'
-            },
-            {
-                id: 3,
-                statements: [
-                    '<b>טענה 1:</b> לתוכנת Tableau ניתן לחבר קבצים בסיומת .xlsx בלבד',
-                    '<b>טענה 2:</b> גרירת משתנים ל-Rows גורמת להגדרת הציר האופקי (X) על בסיס משתנה זה',
-                    '<b>טענה 3:</b> גרירת משתנים ל-Rows גורמת להגדרת הציר האנכי (Y) על בסיס משתנה זה'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות נכונות'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 2 בלבד'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 שגויה - Tableau תומך במגוון פורמטים: Excel, CSV, Text File, JSON ועוד. טענה 2 שגויה - Columns מגדיר את הציר האופקי (X). טענה 3 נכונה - Rows מגדיר את הציר האנכי (Y).'
-            },
-            {
-                id: 4,
-                statements: [
-                    '<b>טענה 1:</b> קטגוריות או שנים קלנדריות הם ערכי Dimensions (ממדים)',
-                    '<b>טענה 2:</b> ערכי מכירות הם ערכי Measures (מדדים)',
-                    '<b>טענה 3:</b> קיים הגיון רב בביצוע חישובים כגון סיכומים על Dimensions אך לא על Measures'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-2'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. כל הטענות נכונות'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 נכונה - קטגוריות ושנים הם ממדים (Dimensions) - ערכים איכותניים. טענה 2 נכונה - מכירות הן מדד (Measure) - ערך כמותי. טענה 3 שגויה - ההפך הוא הנכון: מבצעים חישובים (כמו Sum) על Measures ולא על Dimensions.'
-            },
-            {
-                id: 5,
-                statements: [
-                    '<b>טענה 1:</b> שימוש ב-Pages מאפשר להגדיר סינון כך שהתרשים יתייחס רק לערכים שנותרו',
-                    '<b>טענה 2:</b> שימוש ב-Pages מאפשר דפדוף עם חיצים לשינוי התרשים בהתאם לערך המשתנה',
-                    '<b>טענה 3:</b> Dashboards כולל תרשימי Sheets בלבד אלא אם מתקינים תוספים חיצוניים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות נכונות'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-2'},
-                    {val: 'ג', text: 'ג. טענות 2 ו-3'},
-                    {val: 'ד', text: 'ד. טענה 3 בלבד'},
-                    {val: 'ה', text: 'ה. טענה 2 בלבד'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 שגויה - Pages לא מסנן נתונים, הוא יוצר דפדוף (קטגוריה נפרדת לכל ערך). סינון נעשה דרך Filters. טענה 2 נכונה - Pages מאפשר דפדוף עם חיצים בין ערכים. טענה 3 שגויה - Dashboard יכול לכלול גם תמונות, טקסט, קישורים ואובייקטים נוספים ללא תוספים.'
-            },
-            {
-                id: 6,
-                statements: [
-                    '<b>טענה 1:</b> שדות שלצדם מופיע סימון Abc הם שדות הכוללים ערכים מספריים',
-                    '<b>טענה 2:</b> שדות שלצדם מופיע סימון Abc הם שדות טקסטואליים',
-                    '<b>טענה 3:</b> אם אשנה נתונים ב-Tableau, זה משנה כמובן גם את המידע בקובץ המקור'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. טענה 2 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-3'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 שגויה - Abc מסמל שדה טקסטואלי (לא מספרי). טענה 2 נכונה - Abc = טקסט. טענה 3 שגויה - Tableau לא משנה את קובץ המקור; השינויים נשמרים רק בפרויקט של Tableau.'
-            },
-            {
-                id: 7,
-                statements: [
-                    '<b>טענה 1:</b> כאשר גוררים שדות מספריים, Tableau לרוב מבצע סיכום שלהם (Sum)',
-                    '<b>טענה 2:</b> בתיבת ה-Marks ניתן להגדיר את סוג התרשים בלבד',
-                    '<b>טענה 3:</b> בתיבת ה-Marks ניתן להגדיר פילוח תרשים לפי צבעים בהתייחס למשתנה'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-3'},
-                    {val: 'ב', text: 'ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-2'},
-                    {val: 'ד', text: 'ד. טענה 1 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 2 ו-3'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 נכונה - Tableau מבצע ברירת מחדל Sum על שדות מספריים. טענה 2 שגויה - Marks מאפשר הרבה יותר מסוג תרשים: צבע, גודל, תוויות, שקיפות, צורה ועוד. טענה 3 נכונה - ניתן לגרור משתנה ל-Color ב-Marks לפילוח צבעים.'
-            },
-            {
-                id: 8,
-                statements: [
-                    '<b>טענה 1:</b> יצירת הגרפים חייבת להיות לפני חיבור הנתונים',
-                    '<b>טענה 2:</b> שמירת Dashboard ל-Tableau Public צריכה להתבצע לפני תחילת העבודה',
-                    '<b>טענה 3:</b> הפעולה של שמירת שינויים ב-Repo של Github נקראת Commit'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות נכונות'},
-                    {val: 'ב', text: 'ב. טענה 2 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. טענה 1 בלבד'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 שגויה - קודם מחברים נתונים ואז יוצרים גרפים. טענה 2 שגויה - Publish ל-Tableau Public מתבצע בסוף העבודה לאחר יצירת הדשבורד. טענה 3 נכונה - Commit הוא הפעולה ששומרת שינויים ב-Github Repository.'
-            },
-            {
-                id: 9,
-                statements: [
-                    '<b>טענה 1:</b> באמצעות GAS בונים שרת אמיתי',
-                    '<b>טענה 2:</b> באמצעות GAS בונים גם Frontend גם Backend',
-                    '<b>טענה 3:</b> באמצעות GAS אנו מדמים Backend'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-2'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. טענה 2 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 3 בלבד'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 שגויה - GAS לא בונה שרת אמיתי, הוא רץ על תשתית Google. טענה 2 שגויה - GAS מדמה רק את ה-Backend. טענה 3 נכונה - GAS מדמה Backend ומאפשר קריאות doGet/doPost מול Google Sheets.'
-            },
-            {
-                id: 10,
-                statements: [
-                    '<b>טענה 1:</b> בניית Frontend בוצעה בקורס ב-HTML',
-                    '<b>טענה 2:</b> ה-Backend הוא שרת שמקבל בקשות ומחזיר תשובות',
-                    '<b>טענה 3:</b> הגדרה של API היא Application Processing Investment'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 2 בלבד'},
-                    {val: 'ב', text: 'ב. טענות 2 ו-3'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-2'},
-                    {val: 'ד', text: 'ד. טענה 3 בלבד'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 נכונה - Frontend נבנה ב-HTML/CSS/JS. טענה 2 נכונה - Backend הוא שרת שמקבל בקשות ומחזיר תשובות. טענה 3 שגויה - API = Application Programming Interface (לא Investment).'
-            },
-            {
-                id: 11,
-                statements: [
-                    '<b>טענה 1:</b> GAS דורש הגדרת שרת',
-                    '<b>טענה 2:</b> GAS ניתן ליישום בלחיצה אחת כ-Web App',
-                    '<b>טענה 3:</b> GAS עומד בעומסים כבדים ומתאים למערכות יצרניות גבוהות'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 2 בלבד'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 שגויה - GAS לא דורש הגדרת שרת, הוא רץ על תשתית Google. טענה 2 נכונה - Deploy as Web App בלחיצה אחת. טענה 3 שגויה - GAS מתאים לפרויקטים קטנים/בינוניים, לא לעומסים כבדים של מערכות ייצור.'
-            },
-            {
-                id: 12,
-                statements: [
-                    '<b>טענה 1:</b> הולידציה מבוצעת לאחר הזנת הקלט',
-                    '<b>טענה 2:</b> התצוגה המקדימה מבוצעת לאחר התקשורת מול GAS',
-                    '<b>טענה 3:</b> אם מקור השליפה מדויק אין צורך במנגנון גיבוי Fallback'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-3'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-2'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 נכונה - Validation מתבצע אחרי הזנת הקלט ולפני השליחה לשרת. טענה 2 נכונה - התצוגה מבוצעת לאחר קבלת הנתונים מהשרת. טענה 3 שגויה - Fallback נדרש תמיד כמנגנון גיבוי, גם אם המקור מדויק (לתקלות רשת, שרת לא זמין וכו\').'
-            },
-            {
-                id: 13,
-                statements: [
-                    '<b>טענה 1:</b> תובנות מניעות פעולה מתייחסות להגדרה כללית ורחבה של הבעיה',
-                    '<b>טענה 2:</b> תובנות מניעות פעולה מוגדרות גם כשלא ניתן לפעול לפיהן',
-                    '<b>טענה 3:</b> תובנות מניעות פעולה נשענות בדרך כלל על תחושות בטן'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 2 בלבד'},
-                    {val: 'ב', text: 'ב. טענה 3 בלבד'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-2'},
-                    {val: 'ד', text: 'ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ד',
-                explanation: 'כל הטענות שגויות. Actionable Insights חייבות להיות: (1) ספציפיות וקונקרטיות, לא כלליות; (2) ברות ביצוע - ניתן לפעול לפיהן; (3) מבוססות על נתונים ועובדות, לא על תחושות בטן.'
-            },
-            {
-                id: 14,
-                statements: [
-                    '<b>טענה 1:</b> בפירמידת DIKW האות D מייצגת תבונה',
-                    '<b>טענה 2:</b> בפירמידת DIKW האות W מייצגת Wrong',
-                    '<b>טענה 3:</b> שלב הנתונים קודם לקבלת ההקשר והמשמעות שיוצר מידע'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ג', text: 'ג. טענה 1 בלבד'},
-                    {val: 'ד', text: 'ד. כל הטענות נכונות'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-3'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 שגויה - D = Data (נתונים), לא תבונה. טענה 2 שגויה - W = Wisdom (תבונה/חוכמה). טענה 3 נכונה - בפירמידת DIKW, Data קודם ל-Information (שנוצר כאשר מוסיפים הקשר ומשמעות לנתונים).'
-            },
-            {
-                id: 15,
-                statements: [
-                    '<b>טענה 1:</b> מערכות ERP מטפלות בעסקאות ולכן הן OLAP',
-                    '<b>טענה 2:</b> מערכות BI מנתחות אנליטית ולכן הן OLTP',
-                    '<b>טענה 3:</b> התשתית למערכת בינה עסקית היא OLAP ולא OLTP'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. טענות 2 ו-3'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-2'},
-                    {val: 'ה', text: 'ה. טענה 2 בלבד'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 שגויה - ERP = OLTP (עיבוד עסקאות), לא OLAP. טענה 2 שגויה - BI = OLAP (אנליטיקה), לא OLTP. טענה 3 נכונה - BI מבוסס על OLAP (Online Analytical Processing) ולא על OLTP.'
-            },
-            {
-                id: 16,
-                statements: [
-                    '<b>טענה 1:</b> המושג שכבה סמנטית מתייחס לתרגום רכיבים טכניים לשפה עסקית',
-                    '<b>טענה 2:</b> המושגים ELT ו-ETL זהים לחלוטין',
-                    '<b>טענה 3:</b> מקורות הנתונים למערכות BI הם מגוונים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ב', text: 'ב. טענה 2 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. כל הטענות נכונות'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-3'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 נכונה - Semantic Layer מתרגמת מונחים טכניים לשפה עסקית מובנת. טענה 2 שגויה - ETL (Extract-Transform-Load) מתמיר לפני הטעינה, ELT (Extract-Load-Transform) מתמיר אחרי הטעינה למחסן. טענה 3 נכונה - BI מקבל נתונים ממקורות מגוונים (ERP, CRM, Excel, DB ועוד).'
-            },
-            {
-                id: 17,
-                statements: [
-                    '<b>טענה 1:</b> מדד להגדלת פדיון הוא Churn Rate',
-                    '<b>טענה 2:</b> מדד לשיעור נטישה הוא AOV',
-                    '<b>טענה 3:</b> כל סוגי התעשיות משתמשות תמיד באותם סוגי KPI'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-2'},
-                    {val: 'ב', text: 'ב. טענות 2 ו-3'},
-                    {val: 'ג', text: 'ג. טענה 1 בלבד'},
-                    {val: 'ד', text: 'ד. כל הטענות נכונות'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'ה',
-                explanation: 'כל הטענות שגויות. Churn Rate = שיעור נטישה (לא פדיון). AOV = Average Order Value = שווי הזמנה ממוצע (לא נטישה). KPIs משתנים בין תעשיות - קמעונאות תמדוד AOV, SaaS תמדוד Churn Rate.'
-            },
-            {
-                id: 18,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2, 3]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 3, 4]',
-                    'בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל יתר התשובות שגויות'},
-                    {val: 'ב', text: 'ב. Inner: 2, Left: 2, Right: 4, Full Outer: 5'},
-                    {val: 'ג', text: 'ג. Inner: 3, Left: 3, Right: 3, Full Outer: 4'},
-                    {val: 'ד', text: 'ד. Inner: 2, Left: 3, Right: 3, Full Outer: 4'},
-                    {val: 'ה', text: 'ה. Inner: 1, Left: 4, Right: 3, Full Outer: 3'}
-                ],
-                correct: 'ד',
-                explanation: 'Left=[1,2,3], Right=[2,3,4]. Inner: רק 2,3 משותפים = 2 שורות. Left: כל השמאלית (1,2,3) = 3. Right: כל הימנית (2,3,4) = 3. Full Outer: איחוד (1,2,3,4) = 4. Nulls לא משפיעים כאן.'
-            },
-            {
-                id: 19,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [10, 20]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [10, 10, 30]',
-                    'בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 1, Left: 4, Right: 3, Full Outer: 3'},
-                    {val: 'ב', text: 'ב. Inner: 2, Left: 2, Right: 4, Full Outer: 5'},
-                    {val: 'ג', text: 'ג. Inner: 3, Left: 3, Right: 3, Full Outer: 4'},
-                    {val: 'ד', text: 'ד. Inner: 2, Left: 3, Right: 3, Full Outer: 4'},
-                    {val: 'ה', text: 'ה. כל יתר התשובות שגויות'}
-                ],
-                correct: 'ד',
-                explanation: 'Left=[10,20], Right=[10,10,30]. Inner: 10 בשמאל תואם ל-2 פעמים בימין → 2 שורות. Left: 10→2 שורות, 20→1 שורה (עם Null) = 3. Right: 10→1, 10→1, 30→1 (עם Null) = 3. Full Outer: 10→2, 20→1, 30→1 = 4.'
-            },
-            {
-                id: 20,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 3, Null]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 7, 1, Null]',
-                    'בנתונים אלו, אם נבצע את סוגי ה-Join השונים, מה יהיה מספר השורות שיתקבל?'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 5, Left: 6, Right: 6, Full Outer: 8'},
-                    {val: 'ב', text: 'ב. Inner: 4, Left: 5, Right: 7, Full Outer: 9'},
-                    {val: 'ג', text: 'ג. כל יתר התשובות שגויות'},
-                    {val: 'ד', text: 'ד. Inner: 3, Left: 7, Right: 6, Full Outer: 7'},
-                    {val: 'ה', text: 'ה. Inner: 4, Left: 6, Right: 6, Full Outer: 8'}
-                ],
-                correct: 'ה',
-                explanation: 'Left=[1,1,3,Null], Right=[1,7,1,Null]. Null לא תואם Null. Inner: כל 1 בשמאל × 2 בימין = 2+2=4. Left: 1→2, 1→2, 3→1, Null→1 = 6. Right: 1→2, 7→1, 1→2, Null→1 = 6. Full Outer: 1→4, 3→1, 7→1, Null→1+1=2 = 8.'
-            },
-            {
-                id: 21,
-                statements: [
-                    '<b>טענה 1:</b> משתנים בעלי ערכים כמותיים נחשבים ב-Tableau ל-Measures',
-                    '<b>טענה 2:</b> משתנים כגון תאריכים או קטגוריות נחשבים ל-Dimensions',
-                    '<b>טענה 3:</b> שינוי משתנה מ-Discrete ל-Continuous ישפיע על סוג התרשים האוטומטי'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. כל הטענות נכונות'},
-                    {val: 'ג', text: 'ג. טענה 1 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-3'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'ב',
-                explanation: 'כל הטענות נכונות. Measures = ערכים כמותיים (מכירות, רווח). Dimensions = קטגוריות, תאריכים. שינוי מ-Discrete (בדיד) ל-Continuous (רציף) משנה את סוג התרשים - למשל מעמודות לקו רציף.'
-            },
-            {
-                id: 22,
-                statements: [
-                    '<b>טענה 1:</b> גרירת שדה לציר ה-Columns מגדירה את הציר האנכי (Y)',
-                    '<b>טענה 2:</b> Tableau Public מחייב רכישת רישיון בתשלום שנתי',
-                    '<b>טענה 3:</b> שמירה ל-Tableau Public מאפשרת יצירת קישור ציבורי לדשבורד'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-2'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 שגויה - Columns = ציר אופקי (X), לא אנכי. טענה 2 שגויה - Tableau Public חינמי (Desktop בתשלום). טענה 3 נכונה - Publish ל-Tableau Public יוצר קישור ציבורי לשיתוף הדשבורד.'
-            },
-            {
-                id: 23,
-                statements: [
-                    '<b>טענה 1:</b> סמל # בשדה מעיד על נתון טקסטואלי',
-                    '<b>טענה 2:</b> הגדרת Marks מאפשרת צביעה או הוספת תוויות, אך לא משנה את הנתונים במקור',
-                    '<b>טענה 3:</b> סינון דרך Filters מסתיר נתונים מהתרשים המוצג'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-3'},
-                    {val: 'ב', text: 'ב. טענה 3 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 2 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ד',
-                explanation: 'טענה 1 שגויה - # מסמל נתון מספרי (לא טקסטואלי - לזה יש Abc). טענה 2 נכונה - Marks משפיע על ההצגה בלבד, לא על הנתונים במקור. טענה 3 נכונה - Filters מסתיר נתונים מהתרשים (לא מוחק אותם).'
-            },
-            {
-                id: 24,
-                statements: [
-                    '<b>טענה 1:</b> פילטר מסוג Pages יוצר תפריט דפדוף בין חיתוכים שונים של הנתונים',
-                    '<b>טענה 2:</b> דשבורד ב-Tableau יכול לכלול רק תרשימים ולא תמונות או טקסט חופשי',
-                    '<b>טענה 3:</b> שינוי נתון ב-Tableau משנה אוטומטית את קובץ ה-Excel המקורי'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-3'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 3 בלבד'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 נכונה - Pages יוצר דפדוף (קטגוריה נפרדת לכל ערך). טענה 2 שגויה - Dashboard יכול לכלול תמונות, טקסט, קישורים ואובייקטים. טענה 3 שגויה - Tableau לא משנה את קובץ המקור.'
-            },
-            {
-                id: 25,
-                statements: [
-                    '<b>טענה 1:</b> שמירת פרויקט ב-Github דורשת פעולת Commit',
-                    '<b>טענה 2:</b> אירוח אתר סטטי מבוצע דרך Github Pages ומוגדר לרוב על Branch (כגון Main)',
-                    '<b>טענה 3:</b> כלי AI יכולים לסייע בכתיבת קוד HTML להטמעת הקישור של Tableau'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. כל הטענות נכונות'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-3'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 2 ו-3'}
-                ],
-                correct: 'ב',
-                explanation: 'כל הטענות נכונות. Commit שומר שינויים ב-Github. Github Pages מארח אתרים סטטיים על Branch (כמו Main). AI יכול לסייע בכתיבת HTML להטמעת Tableau דרך iframe.'
-            },
-            {
-                id: 26,
-                statements: [
-                    '<b>טענה 1:</b> Frontend מורכב משפות צד לקוח כגון HTML',
-                    '<b>טענה 2:</b> Backend מתייחס לשרת המעבד בקשות ושולף נתונים',
-                    '<b>טענה 3:</b> API הוא הממשק המחבר ביניהם ומגדיר את פורמט התקשורת'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ב', text: 'ב. טענה 3 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-2'},
-                    {val: 'ה', text: 'ה. טענות 2 ו-3'}
-                ],
-                correct: 'ג',
-                explanation: 'כל הטענות נכונות. Frontend = צד לקוח (HTML/CSS/JS). Backend = שרת שמעבד בקשות. API = הממשק שמחבר ביניהם ומגדיר פורמט (כמו JSON).'
-            },
-            {
-                id: 27,
-                statements: [
-                    '<b>טענה 1:</b> GAS מדמה Backend וניתן לפריסה בלחיצה אחת (Deploy as Web App)',
-                    '<b>טענה 2:</b> GAS מתאים במיוחד לאפליקציות עם מיליוני כניסות בשנייה',
-                    '<b>טענה 3:</b> GAS חינמי אך מוגבל לסביבת האקולוגית של Google'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. כל הטענות נכונות'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-3'},
-                    {val: 'ד', text: 'ד. טענה 3 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-2'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 נכונה - GAS מדמה Backend וניתן ל-Deploy כ-Web App. טענה 2 שגויה - GAS לא מתאים לעומסים כבדים (מוגבל ל-שימושים קטנים/בינוניים). טענה 3 נכונה - GAS חינמי ופועל בסביבת Google.'
-            },
-            {
-                id: 28,
-                statements: [
-                    '<b>טענה 1:</b> ארכיטקטורת מערכת טיפוסית כוללת הזנת קלט, ולידציה, שרת (כגון GAS) והצגה',
-                    '<b>טענה 2:</b> מנגנון Fallback נדרש רק במערכות שאינן מחוברות לאינטרנט',
-                    '<b>טענה 3:</b> ולידציה של נתונים נועדה להבטיח את תקינות הקלט מהמשתמש'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענה 3 בלבד'},
-                    {val: 'ה', text: 'ה. טענה 2 בלבד'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 נכונה - ארכיטקטורה טיפוסית: קלט → Validation → שרת → הצגה. טענה 2 שגויה - Fallback נדרש דווקא במערכות מחוברות (לתקלות שרת/רשת). טענה 3 נכונה - Validation מוודא תקינות קלט.'
-            },
-            {
-                id: 29,
-                statements: [
-                    '<b>טענה 1:</b> מערכת ERP מיועדת בעיקר לביצוע עסקאות בזמן אמת (OLTP)',
-                    '<b>טענה 2:</b> מערכת BI מיועדת לניתוח נתונים וקבלת החלטות (OLAP)',
-                    '<b>טענה 3:</b> התשתית המרכזית עליה נשענת מערכת בינה עסקית היא OLTP'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-2'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 2 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 נכונה - ERP = OLTP (Online Transaction Processing). טענה 2 נכונה - BI = OLAP (Online Analytical Processing). טענה 3 שגויה - BI מבוסס על OLAP, לא OLTP.'
-            },
-            {
-                id: 30,
-                statements: [
-                    '<b>טענה 1:</b> תובנה מניעת פעולה (Actionable Insight) חייבת להיות ספציפית וקונקרטית',
-                    '<b>טענה 2:</b> בפירמידת DIKW, השלב העליון הוא Information (מידע)',
-                    '<b>טענה 3:</b> בפירמידת DIKW, נתונים הופכים למידע ברגע שניתן להם הקשר ומשמעות'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-3'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-2'},
-                    {val: 'ג', text: 'ג. טענות 2 ו-3'},
-                    {val: 'ד', text: 'ד. כל הטענות נכונות'},
-                    {val: 'ה', text: 'ה. טענה 2 בלבד'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 נכונה - Actionable Insight חייבת להיות ספציפית וקונקרטית. טענה 2 שגויה - השלב העליון הוא Wisdom (תבונה), לא Information. טענה 3 נכונה - Data → Information כאשר מוסיפים הקשר ומשמעות.'
-            },
-            {
-                id: 31,
-                statements: [
-                    '<b>טענה 1:</b> תהליך ETL מייצג חילוץ, התמרה וטעינה',
-                    '<b>טענה 2:</b> בארכיטקטורת ELT, ההתמרה (Transform) מבוצעת לפני כניסת הנתונים למחסן',
-                    '<b>טענה 3:</b> מחסני נתונים מודרניים כגון Snowflake מאפשרים גישת ELT בשל כוח העיבוד שלהם'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. טענה 2 בלבד'},
-                    {val: 'ד', text: 'ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 נכונה - ETL = Extract, Transform, Load. טענה 2 שגויה - ב-ELT ההתמרה מבוצעת אחרי הטעינה למחסן (לא לפני). טענה 3 נכונה - Snowflake ומחסנים מודרניים תומכים ב-ELT בזכות כוח עיבוד גבוה.'
-            },
-            {
-                id: 32,
-                statements: [
-                    '<b>טענה 1:</b> Data Warehouse מתאפיין בנתונים לא מובנים כגון תמונות וסרטונים',
-                    '<b>טענה 2:</b> Data Lake משמש לאחסון נתונים גמישים ולא מובנים',
-                    '<b>טענה 3:</b> Lakehouse משלב בין הסדר של המחסן לגמישות של האגם'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. טענה 2 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ד', text: 'ד. כל הטענות נכונות'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-3'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 שגויה - Data Warehouse = נתונים מובנים ומעובדים (לא תמונות/סרטונים). טענה 2 נכונה - Data Lake = נתונים גולמיים/לא מובנים. טענה 3 נכונה - Lakehouse = שילוב של Data Warehouse + Data Lake.'
-            },
-            {
-                id: 33,
-                statements: [
-                    '<b>טענה 1:</b> השכבה הסמנטית מתרגמת מונחים טכניים ממסד הנתונים לשפה עסקית מובנת',
-                    '<b>טענה 2:</b> Tableau עובד באופן בלעדי על סביבת Windows',
-                    '<b>טענה 3:</b> Power BI מתממשק בצורה טבעית וחלקה עם מוצרי מיקרוסופט (Ecosystem)'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. טענה 2 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-3'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'ד',
-                explanation: 'טענה 1 נכונה - Semantic Layer = תרגום טכני לעסקי. טענה 2 שגויה - Tableau עובד גם על Mac וגם על Windows. טענה 3 נכונה - Power BI חלק מ-Ecosystem של Microsoft (Office, Azure וכו\').'
-            },
-            {
-                id: 34,
-                statements: [
-                    '<b>טענה 1:</b> מסמך ה-BRD מתרגם את השפה הטכנית של המפתחים ליעדים של המנכ"ל',
-                    '<b>טענה 2:</b> מתודולוגיית Top-Down מתחילה באפיון מסדי הנתונים ורק אז בהגדרת יעדים',
-                    '<b>טענה 3:</b> החלק הראשון במסמך BRD הוא לרוב תקציר המנהלים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. טענות 2 ו-3'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 3 בלבד'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 שגויה - BRD מתרגם יעדי המנכ"ל לשפה טכנית (לא להפך). טענה 2 שגויה - Top-Down מתחיל מהיעדים העסקיים ואז יורד לטכני (לא להפך). טענה 3 נכונה - Executive Summary הוא לרוב החלק הראשון ב-BRD.'
-            },
-            {
-                id: 35,
-                statements: [
-                    '<b>טענה 1:</b> מדד AOV (Average Order Value) מודד את אחוז הלקוחות שעזבו את החברה',
-                    '<b>טענה 2:</b> מדד Churn Rate משקף את שיעור הנטישה של הלקוחות (נפוץ ב-SaaS)',
-                    '<b>טענה 3:</b> מדדי KPI אמורים להשתנות לחלוטין בין מחלקה למחלקה ללא תלות ביעד המרכזי'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ב', text: 'ב. טענה 2 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-2'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 שגויה - AOV = שווי הזמנה ממוצע (לא נטישה). טענה 2 נכונה - Churn Rate = שיעור נטישה, נפוץ ב-SaaS. טענה 3 שגויה - KPIs נגזרים מהיעד המרכזי של הארגון ומשתפים פעולה בין מחלקות.'
-            },
-            {
-                id: 36,
-                statements: [
-                    '<b>טענה 1:</b> בפירמידת DIKW האות K מייצגת Knowledge (ידע)',
-                    '<b>טענה 2:</b> קבלת תובנה (Wisdom) מגיעה ישירות מנתונים גולמיים ללא שלבי ביניים',
-                    '<b>טענה 3:</b> איתור תבניות בנתונים הוא השלב שהופך מידע לידע'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 1 בלבד'},
-                    {val: 'ב', text: 'ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ג', text: 'ג. טענה 2 בלבד'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-3'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 נכונה - K = Knowledge (ידע). טענה 2 שגויה - Wisdom מגיע אחרי Data → Information → Knowledge, לא ישירות מנתונים. טענה 3 נכונה - איתור תבניות הוא המעבר מ-Information ל-Knowledge.'
-            },
-            {
-                id: 37,
-                statements: [
-                    '<b>טענה 1:</b> חיבור קובץ Excel ב-Tableau מבוצע על ידי Connect ל-Text File',
-                    '<b>טענה 2:</b> שדה מספרי יקבל סימון # בחלונית השדות',
-                    '<b>טענה 3:</b> Tableau מחשב אוטומטית פונקציית SUM כאשר גוררים מדד (Measure) לתרשים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-2'},
-                    {val: 'ג', text: 'ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 שגויה - Excel מחובר דרך Connect → Excel, לא Text File. טענה 2 נכונה - # = מספרי. טענה 3 נכונה - Tableau מבצע SUM כברירת מחדל על Measures.'
-            },
-            {
-                id: 38,
-                statements: [
-                    '<b>טענה 1:</b> אפליקציות Web מבוססות GAS נגישות דרך דפדפן סטנדרטי',
-                    '<b>טענה 2:</b> אין צורך לדעת HTML כדי לבנות Frontend ויזואלי למשתמש',
-                    '<b>טענה 3:</b> תקשורת API מאפשרת להחזיר תשובות בפורמט מובנה כגון JSON'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-2'},
-                    {val: 'ד', text: 'ד. טענה 1 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 2 ו-3'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 נכונה - GAS Web App נגיש דרך דפדפן. טענה 2 שגויה - חייבים HTML לבניית Frontend. טענה 3 נכונה - API מחזיר נתונים בפורמט JSON.'
-            },
-            {
-                id: 39,
-                statements: [
-                    '<b>טענה 1:</b> קיימים מקרים בהם נציג ב-Dashboard תובנות שאינן ניתנות ליישום כרגע (מידע כללי)',
-                    '<b>טענה 2:</b> תובנה מניעת פעולה יכולה להיות מבוססת על תחושות בטן ללא גיבוי נתונים',
-                    '<b>טענה 3:</b> פירמידת DIKW מתארת מעבר מצמצום עובדות גולמיות להחלטות עסקיות חכמות'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-3'},
-                    {val: 'ד', text: 'ד. כל הטענות נכונות'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 נכונה - לפעמים מציגים מידע כללי/רקע בדשבורד. טענה 2 שגויה - Actionable Insight חייבת להיות מבוססת על נתונים, לא על תחושות בטן. טענה 3 נכונה - DIKW מתאר מעבר מ-Data → Wisdom.'
-            },
-            {
-                id: 40,
-                statements: [
-                    '<b>טענה 1:</b> סוגי חיבור ה-Join ב-Tableau זהים בלוגיקה שלהם ל-SQL',
-                    '<b>טענה 2:</b> ב-Inner Join יחזרו כל הרשומות משתי הטבלאות, כולל ערכי Null',
-                    '<b>טענה 3:</b> ב-Left Join מובטח שכל רשומות הטבלה השמאלית יופיעו בתוצאה'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-3'},
-                    {val: 'ב', text: 'ב. טענה 2 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 נכונה - Inner/Left/Right/Full Outer זהים ל-SQL. טענה 2 שגויה - Inner Join מחזיר רק רשומות עם התאמה (לא Null). טענה 3 נכונה - Left Join שומר את כל השמאלית, עם Null בצד הימני אם אין התאמה.'
-            },
-            {
-                id: 41,
-                statements: [
-                    '<b>טענה 1:</b> Full Outer Join עשוי להציג תאי Null אם אין התאמה בשדה המזהה',
-                    '<b>טענה 2:</b> Right Join שומר את כל הרשומות מהטבלה הימנית',
-                    '<b>טענה 3:</b> חיבור בין טבלאות מצריך שדה מזהה משותף (כגון ID)'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. כל הטענות נכונות'}
-                ],
-                correct: 'ה',
-                explanation: 'כל הטענות נכונות. Full Outer מציג Null במקומות חסרים. Right Join שומר את הימנית. Join דורש שדה מזהה משותף.'
-            },
-            {
-                id: 42,
-                statements: [
-                    '<b>טענה 1:</b> מערכת תפעולית לניהול מלאי בארגון היא דוגמה קלאסית למערכת BI',
-                    '<b>טענה 2:</b> OLAP נועד לשאילתות אנליטיות מורכבות על נתונים היסטוריים',
-                    '<b>טענה 3:</b> מטרת פרויקט BI היא לחבר נתונים ממקורות שונים לטובת קבלת החלטות'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-3'},
-                    {val: 'ב', text: 'ב. כל הטענות נכונות'},
-                    {val: 'ג', text: 'ג. טענות 2 ו-3'},
-                    {val: 'ד', text: 'ד. טענה 1 בלבד'},
-                    {val: 'ה', text: 'ה. טענה 2 בלבד'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 שגויה - ניהול מלאי תפעולי = ERP (OLTP), לא BI. טענה 2 נכונה - OLAP = אנליטיקה על נתונים היסטוריים. טענה 3 נכונה - BI מחבר נתונים ממקורות שונים לקבלת החלטות.'
-            },
-            {
-                id: 43,
-                statements: [
-                    '<b>טענה 1:</b> השכבה הסמנטית מאפשרת למשתמשי הקצה להבין את הנתונים ללא ידע ב-SQL',
-                    '<b>טענה 2:</b> ETL הוא התהליך המסורתי בו הנתונים מנוקים לפני שהם נכנסים למחסן הנתונים',
-                    '<b>טענה 3:</b> מודל Data Lakehouse דורש בהכרח שימוש ב-Excel'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-2'},
-                    {val: 'ג', text: 'ג. טענות 2 ו-3'},
-                    {val: 'ד', text: 'ד. כל הטענות נכונות'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 נכונה - Semantic Layer מסיר תלות ב-SQL. טענה 2 נכונה - ETL = ניקוי והתמרה לפני הטעינה. טענה 3 שגויה - Lakehouse לא דורש Excel (משתמש ב-Snowflake, Databricks וכו\').'
-            },
-            {
-                id: 44,
-                statements: [
-                    '<b>טענה 1:</b> ב-Tableau, גרירת משתנה קטגוריאלי לעמודות (Columns) תיצור ציר אופקי (X)',
-                    '<b>טענה 2:</b> Dashboards מוגדרים תמיד לגודל קבוע ולא ניתן להתאימם למסך (Automatic)',
-                    '<b>טענה 3:</b> ניתן לשלב מספר גליונות (Sheets) ב-Dashboard אחד'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. כל הטענות נכונות'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-3'},
-                    {val: 'ד', text: 'ד. טענה 1 בלבד'},
-                    {val: 'ה', text: 'ה. טענה 3 בלבד'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 נכונה - Columns = ציר X. טענה 2 שגויה - Dashboard יכול להיות Automatic (גודל דינמי). טענה 3 נכונה - Dashboard יכול לכלול מספר Sheets.'
-            },
-            {
-                id: 45,
-                statements: [
-                    '<b>טענה 1:</b> ל-Tableau Public יש הגבלות על שמירת נתונים מקומית בהשוואה ל-Desktop',
-                    '<b>טענה 2:</b> פרסום (Publish) דשבורד מניב קישור אותו ניתן להטמיע באתר',
-                    '<b>טענה 3:</b> קובץ CSV מכיל פורמט בינארי מורכב ולא מוגדר כטקסט'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. טענה 3 בלבד'},
-                    {val: 'ג', text: 'ג. טענה 2 בלבד'},
-                    {val: 'ד', text: 'ד. טענה 1 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-2'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 נכונה - Tableau Public מוגבל (חובה לשמור לענן). טענה 2 נכונה - Publish יוצר קישור להטמעה. טענה 3 שגויה - CSV הוא קובץ טקסט פשוט (לא בינארי).'
-            },
-            {
-                id: 46,
-                statements: [
-                    '<b>טענה 1:</b> כאשר מקימים אתר ב-Github, קובץ הכניסה הראשי נקרא לרוב index.html',
-                    '<b>טענה 2:</b> הפקודה Commit משמעותה אישור ושמירת השינויים בקוד',
-                    '<b>טענה 3:</b> Github Pages מספק שרת Backend מלא התומך במסדי נתונים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 2 בלבד'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענה 3 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-2'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 נכונה - index.html הוא קובץ ברירת המחדל. טענה 2 נכונה - Commit = שמירת שינויים. טענה 3 שגויה - Github Pages מארח רק אתרים סטטיים (Frontend), לא Backend.'
-            },
-            {
-                id: 47,
-                statements: [
-                    '<b>טענה 1:</b> שימוש ב-Google Apps Script חוסך את הצורך בתחזוקת שרת פיזי או בענן',
-                    '<b>טענה 2:</b> מנגנון Validation מוודא שמשתמש הזין כתובת מייל תקינה לפני שליחת הבקשה',
-                    '<b>טענה 3:</b> המונח Fallback מתייחס לסיטואציה בה השרת הראשי עובד באופן מושלם'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות נכונות'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-2'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 נכונה - GAS רץ על תשתית Google, אין צורך בשרת. טענה 2 נכונה - Validation בודק תקינות קלט (כמו מייל). טענה 3 שגויה - Fallback = מנגנון גיבוי כשהשרת הראשי נכשל (לא כשהוא עובד).'
-            },
-            {
-                id: 48,
-                statements: [
-                    '<b>טענה 1:</b> בעסקי הקמעונאות (Retail), יעד נפוץ הוא הגדלת פדיון ולכן נמדוד AOV',
-                    '<b>טענה 2:</b> חברות תוכנה (SaaS) מתמקדות בשימור לקוחות ולכן מודדות Churn Rate',
-                    '<b>טענה 3:</b> אין קשר בין סוג התעשייה לבין בחירת ה-KPIs'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-2'},
-                    {val: 'ב', text: 'ב. טענות 2 ו-3'},
-                    {val: 'ג', text: 'ג. טענה 3 בלבד'},
-                    {val: 'ד', text: 'ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-3'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 נכונה - Retail → AOV (שווי הזמנה ממוצע). טענה 2 נכונה - SaaS → Churn Rate (שימור לקוחות). טענה 3 שגויה - יש קשר הדוק בין תעשייה ל-KPIs.'
-            },
-            {
-                id: 49,
-                statements: [
-                    '<b>טענה 1:</b> מסמך BRD כולל פירוט טכני ברמת שורות הקוד שמפתח צריך לכתוב',
-                    '<b>טענה 2:</b> גישת Top-Down באפיון מערכות מבטיחה שהפיתוח משרת את היעדים העסקיים',
-                    '<b>טענה 3:</b> מקורות נתונים אינם חלק ממסמך ה-BRD'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 2 בלבד'},
-                    {val: 'ב', text: 'ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-3'},
-                    {val: 'ה', text: 'ה. טענות 2 ו-3'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 שגויה - BRD הוא מסמך עסקי, לא טכני (לא כולל שורות קוד). טענה 2 נכונה - Top-Down מתחיל מהיעדים העסקיים. טענה 3 שגויה - מקורות נתונים כן חלק מה-BRD.'
-            },
-            {
-                id: 50,
-                statements: [
-                    '<b>טענה 1:</b> ב-Tableau, מדדים (Measures) צבועים לרוב בירוק וממדים (Dimensions) בכחול (או תלוי ברציפות)',
-                    '<b>טענה 2:</b> משתנה רציף (Continuous) מצייר צירים רציפים כמו קו זמן מגמתי',
-                    '<b>טענה 3:</b> אזור Marks מאפשר שליטה על צבע (Color) וגודל (Size) בתרשים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-2'},
-                    {val: 'ב', text: 'ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ג',
-                explanation: 'כל הטענות נכונות. Measures = ירוק, Dimensions = כחול. Continuous = ציר רציף (קו). Marks = Color, Size, Label, Shape, Detail.'
-            },
-            {
-                id: 51,
-                statements: [
-                    '<b>טענה 1:</b> השילוב של Backend ו-Frontend באפליקציה מאפשר הפרדה בין התצוגה לוגיקת הנתונים',
-                    '<b>טענה 2:</b> API מאפשר למערכות שונות לדבר זו עם זו למרות שהן כתובות בשפות שונות',
-                    '<b>טענה 3:</b> דפדפן האינטרנט של המשתמש מריץ את קוד ה-Backend'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-2'},
-                    {val: 'ב', text: 'ב. כל הטענות נכונות'},
-                    {val: 'ג', text: 'ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ד', text: 'ד. טענה 3 בלבד'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 נכונה - הפרדה בין תצוגה (Frontend) ללוגיקה (Backend). טענה 2 נכונה - API = ממשק אוניברסלי. טענה 3 שגויה - Backend רץ על השרת, לא בדפדפן.'
-            },
-            {
-                id: 52,
-                statements: [
-                    '<b>טענה 1:</b> בפירמידת DIKW, מעבר ממידע (Information) לידע (Knowledge) דורש חשיפת תבניות והקשרים',
-                    '<b>טענה 2:</b> חוכמה (Wisdom) באה לידי ביטוי בקבלת החלטה או פעולה',
-                    '<b>טענה 3:</b> הפירמידה מתארת תהליך של הגדלת נפח הנתונים ככל שעולים למעלה'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 1 בלבד'},
-                    {val: 'ב', text: 'ב. טענות 2 ו-3'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-2'},
-                    {val: 'ד', text: 'ד. כל הטענות נכונות'},
-                    {val: 'ה', text: 'ה. טענה 3 בלבד'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 נכונה - Information → Knowledge דורש זיהוי תבניות. טענה 2 נכונה - Wisdom = קבלת החלטה/פעולה. טענה 3 שגויה - נפח הנתונים קטן ככל שעולים (Data רחב, Wisdom מצומצם).'
-            },
-            {
-                id: 53,
-                statements: [
-                    '<b>טענה 1:</b> ארכיטקטורת מערכת BI מתחילה לרוב בשאיבת נתונים ממערכות תפעוליות (ERP, CRM)',
-                    '<b>טענה 2:</b> מחסן נתונים (DWH) משמש כמאגר מרכזי, נקי ומובנה עבור אנליסטים',
-                    '<b>טענה 3:</b> כלי הויזואליזציה (כמו Tableau) מחליף את מערכת ה-ERP לחלוטין'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-2'},
-                    {val: 'ג', text: 'ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-3'},
-                    {val: 'ה', text: 'ה. כל הטענות נכונות'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 נכונה - BI שואב מ-ERP/CRM. טענה 2 נכונה - DWH = מאגר מרכזי מובנה. טענה 3 שגויה - Tableau לא מחליף ERP, הוא משלים אותו (מציג אנליטיקה).'
-            },
-            {
-                id: 54,
-                statements: [
-                    '<b>טענה 1:</b> תובנה מניעת פעולה (Actionable Insight) היא כזו שניתן ליישם בארגון (ברת ביצוע)',
-                    '<b>טענה 2:</b> הגדרה כללית כמו \'המכירות ירדו\' איננה תובנה ספציפית מספיק',
-                    '<b>טענה 3:</b> תובנות מבוססות תמיד על היכרות אישית של המנכ"ל ולא על נתונים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות נכונות'},
-                    {val: 'ב', text: 'ב. טענה 2 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ד', text: 'ד. טענות 1 ו-2'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ד',
-                explanation: 'טענה 1 נכונה - Actionable = ברת ביצוע. טענה 2 נכונה - "המכירות ירדו" כללי מדי, צריך ספציפיות. טענה 3 שגויה - תובנות מבוססות על נתונים ועובדות, לא על היכרות אישית.'
-            },
-            {
-                id: 55,
-                statements: [
-                    '<b>טענה 1:</b> ETL מיושם בעיקר כאשר נדרש לנקות את הנתונים לפני כניסתם לאחסון',
-                    '<b>טענה 2:</b> ב-Data Lake הנתונים נשמרים בפורמט הגולמי שלהם (Raw)',
-                    '<b>טענה 3:</b> Tableau אינו מאפשר סינון נתונים לפי טווח תאריכים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-2'},
-                    {val: 'ב', text: 'ב. כל הטענות נכונות'},
-                    {val: 'ג', text: 'ג. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ד', text: 'ד. טענה 1 בלבד'},
-                    {val: 'ה', text: 'ה. טענה 2 בלבד'}
-                ],
-                correct: 'א',
-                explanation: 'טענה 1 נכונה - ETL מנקה לפני הטעינה. טענה 2 נכונה - Data Lake שומר Raw data. טענה 3 שגויה - Tableau כן תומך בסינון לפי טווח תאריכים.'
-            },
-            {
-                id: 56,
-                statements: [
-                    '<b>טענה 1:</b> סוג חיבור Full Outer מחזיר שורות שאין להן התאמה בטבלה הנגדית (ויציג Null במקומות החסרים)',
-                    '<b>טענה 2:</b> Inner Join מסנן החוצה שורות ללא התאמה מוחלטת',
-                    '<b>טענה 3:</b> Left Join מתעלם לחלוטין מהטבלה השמאלית'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. טענות 2 ו-3'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-2'},
-                    {val: 'ד', text: 'ד. טענה 1 בלבד'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 נכונה - Full Outer מחזיר הכל + Null. טענה 2 נכונה - Inner מסנן החוצה לא-מותאמים. טענה 3 שגויה - Left Join דווקא שומר את השמאלית (לא מתעלם).'
-            },
-            {
-                id: 57,
-                statements: [
-                    '<b>טענה 1:</b> פיתוח אפליקציה מבוססת GAS ו-HTML מאפשר יצירת מסכי משתמש אינטראקטיביים',
-                    '<b>טענה 2:</b> אחסון קוד ה-HTML ב-Github Pages הופך אותו לנגיש ברשת',
-                    '<b>טענה 3:</b> השרת שכתוב ב-GAS מחזיר את הנתונים ממסד הנתונים או מ-Google Sheets'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 2 בלבד'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 1 בלבד'}
-                ],
-                correct: 'ג',
-                explanation: 'כל הטענות נכונות. GAS + HTML = אפליקציה אינטראקטיבית. Github Pages מארח את ה-HTML. GAS מחזיר נתונים מ-Google Sheets.'
-            },
-            {
-                id: 58,
-                statements: [
-                    '<b>טענה 1:</b> משתנה בדיד (Discrete) יוצר כותרות קטגוריאליות בתרשים (כמו עמודות נפרדות)',
-                    '<b>טענה 2:</b> משתנה רציף (Continuous) מתאים להצגת רצף זמנים בתרשים קו',
-                    '<b>טענה 3:</b> Tableau מאפשר לשנות משתנה מספרי מ-Continuous ל-Discrete'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. כל הטענות נכונות'},
-                    {val: 'ג', text: 'ג. טענות 2 ו-3'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'}
-                ],
-                correct: 'ב',
-                explanation: 'כל הטענות נכונות. Discrete = קטגוריות נפרדות. Continuous = רצף (קו זמן). Tableau מאפשר שינוי בין Continuous ל-Discrete דרך קליק ימני.'
-            },
-            {
-                id: 59,
-                statements: [
-                    '<b>טענה 1:</b> במערכת מבוססת נתונים, כלי ה-Frontend מעבד נתונים כבדים במקום השרת',
-                    '<b>טענה 2:</b> קריאת HTTP משמשת לתקשורת בין הלקוח (Client) לשרת (Server)',
-                    '<b>טענה 3:</b> פורמט JSON הוא פורמט פופולרי להעברת נתונים דרך API'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל הטענות נכונות'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. טענה 1 בלבד'},
-                    {val: 'ד', text: 'ד. טענה 2 בלבד'},
-                    {val: 'ה', text: 'ה. טענות 2 ו-3'}
-                ],
-                correct: 'ה',
-                explanation: 'טענה 1 שגויה - Frontend לא מעבד נתונים כבדים (השרת עושה זאת). טענה 2 נכונה - HTTP = תקשורת Client-Server. טענה 3 נכונה - JSON פורמט פופולרי ל-API.'
-            },
-            {
-                id: 60,
-                statements: [
-                    '<b>טענה 1:</b> מסמך BRD נכתב בדרך כלל לאחר סיום הפיתוח כדי לתעד את מה שנעשה',
-                    '<b>טענה 2:</b> בגישת Top-Down, ה-KPIs מוגדרים לאחר הבנת היעדים העסקיים המרכזיים',
-                    '<b>טענה 3:</b> שכבה סמנטית מקלה על אנשי עסקים לשלוף נתונים ללא תלות באנשי IT'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 3 בלבד'},
-                    {val: 'ב', text: 'ב. טענה 1 בלבד'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענות 1 ו-3'}
-                ],
-                correct: 'ד',
-                explanation: 'טענה 1 שגויה - BRD נכתב לפני הפיתוח (לאחריו). טענה 2 נכונה - Top-Down: יעדים → KPIs. טענה 3 נכונה - Semantic Layer מסיר תלות ב-IT.'
-            },
-            {
-                id: 61,
-                statements: [
-                    '<b>טענה 1:</b> במערכת מבוססת נתונים, כלי ה-Frontend מעבד נתונים כבדים במקום השרת',
-                    '<b>טענה 2:</b> קריאת HTTP משמשת לתקשורת בין הלקוח (Client) לשרת (Server)',
-                    '<b>טענה 3:</b> פורמט JSON הוא פורמט פופולרי להעברת נתונים דרך API'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 1 ו-3'},
-                    {val: 'ב', text: 'ב. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ג', text: 'ג. כל הטענות נכונות'},
-                    {val: 'ד', text: 'ד. טענות 2 ו-3'},
-                    {val: 'ה', text: 'ה. טענה 3 בלבד'}
-                ],
-                correct: 'ד',
-                explanation: 'טענה 1 שגויה - Backend מעבד נתונים כבדים, לא Frontend. טענה 2 נכונה - HTTP = Client-Server. טענה 3 נכונה - JSON פופולרי ל-API.'
-            },
-            {
-                id: 62,
-                statements: [
-                    '<b>טענה 1:</b> בעסקי הקמעונאות (Retail), יעד נפוץ הוא הגדלת פדיון ולכן נמדוד AOV',
-                    '<b>טענה 2:</b> חברות תוכנה (SaaS) מתמקדות בשימור לקוחות ולכן מודדות Churn Rate',
-                    '<b>טענה 3:</b> אין קשר בין סוג התעשייה לבין בחירת ה-KPIs'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענות 2 ו-3'},
-                    {val: 'ב', text: 'ב. טענות 1 ו-3'},
-                    {val: 'ג', text: 'ג. טענות 1 ו-2'},
-                    {val: 'ד', text: 'ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ה', text: 'ה. טענה 3 בלבד'}
-                ],
-                correct: 'ג',
-                explanation: 'טענה 1 נכונה - Retail → AOV. טענה 2 נכונה - SaaS → Churn Rate. טענה 3 שגויה - יש קשר הדוק בין תעשייה ל-KPIs.'
-            },
-            {
-                id: 63,
-                statements: [
-                    '<b>טענה 1:</b> מסמך ה-BRD מתרגם את השפה הטכנית של המפתחים ליעדים של המנכ"ל',
-                    '<b>טענה 2:</b> מתודולוגיית Top-Down מתחילה באפיון מסדי הנתונים ורק אז בהגדרת יעדים',
-                    '<b>טענה 3:</b> החלק הראשון במסמך BRD הוא לרוב תקציר המנהלים'
-                ],
-                options: [
-                    {val: 'א', text: 'א. טענה 2 בלבד'},
-                    {val: 'ב', text: 'ב. טענה 3 בלבד'},
-                    {val: 'ג', text: 'ג. טענות 2 ו-3'},
-                    {val: 'ד', text: 'ד. כל הטענות שגויות (או כל יתר האפשרויות שגויות)'},
-                    {val: 'ה', text: 'ה. כל הטענות נכונות'}
-                ],
-                correct: 'ב',
-                explanation: 'טענה 1 שגויה - BRD מתרגם יעדי מנכ"ל לטכני (לא להפך). טענה 2 שגויה - Top-Down מתחיל ביעדים, לא ב-DB. טענה 3 נכונה - Executive Summary ראשון.'
-            },
-            {
-                id: 64,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2, 2]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 2, 3]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 4, Left: 4, Right: 6, Full Outer: 7'},
-                    {val: 'ב', text: 'ב. Inner: 4, Left: 5, Right: 5, Full Outer: 6'},
-                    {val: 'ג', text: 'ג. Inner: 5, Left: 5, Right: 5, Full Outer: 6'},
-                    {val: 'ד', text: 'ד. Inner: 3, Left: 6, Right: 5, Full Outer: 5'},
-                    {val: 'ה', text: 'ה. כל יתר התשובות שגויות'}
-                ],
-                correct: 'ב',
-                explanation: 'Left=[1,2,2], Right=[2,2,3]. Inner: 2×2=4. Left: 1→1, 2→2, 2→2 = 5. Right: 2→2, 2→2, 3→1 = 5. Full Outer: 1→1, 2→4, 3→1 = 6.'
-            },
-            {
-                id: 65,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [5, 5]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [5, 5, 5]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 6, Left: 5, Right: 7, Full Outer: 7'},
-                    {val: 'ב', text: 'ב. Inner: 6, Left: 6, Right: 6, Full Outer: 6'},
-                    {val: 'ג', text: 'ג. Inner: 7, Left: 6, Right: 6, Full Outer: 6'},
-                    {val: 'ד', text: 'ד. Inner: 5, Left: 7, Right: 6, Full Outer: 5'},
-                    {val: 'ה', text: 'ה. כל יתר התשובות שגויות'}
-                ],
-                correct: 'ב',
-                explanation: 'Left=[5,5], Right=[5,5,5]. Inner: 2×3=6. Left: 5→3, 5→3 = 6. Right: 5→2, 5→2, 5→2 = 6. Full Outer: 5→6 = 6.'
-            },
-            {
-                id: 66,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [3, 4]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 0, Left: 1, Right: 3, Full Outer: 5'},
-                    {val: 'ב', text: 'ב. Inner: 1, Left: 2, Right: 2, Full Outer: 4'},
-                    {val: 'ג', text: 'ג. Inner: 0, Left: 3, Right: 2, Full Outer: 3'},
-                    {val: 'ד', text: 'ד. Inner: 0, Left: 2, Right: 2, Full Outer: 4'},
-                    {val: 'ה', text: 'ה. כל יתר התשובות שגויות'}
-                ],
-                correct: 'ד',
-                explanation: 'Left=[1,2], Right=[3,4] - אין חפיפה. Inner: 0. Left: 2 (1,2 עם Null). Right: 2 (3,4 עם Null). Full Outer: 4 (1,2,3,4).'
-            },
-            {
-                id: 67,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [Null, Null]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [Null]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 0, Left: 1, Right: 2, Full Outer: 4'},
-                    {val: 'ב', text: 'ב. Inner: 0, Left: 2, Right: 1, Full Outer: 3'},
-                    {val: 'ג', text: 'ג. Inner: 1, Left: 2, Right: 1, Full Outer: 3'},
-                    {val: 'ד', text: 'ד. Inner: 0, Left: 3, Right: 1, Full Outer: 2'},
-                    {val: 'ה', text: 'ה. כל יתר התשובות שגויות'}
-                ],
-                correct: 'ב',
-                explanation: 'Null לא תואם Null. Inner: 0. Left: 2 (Null, Null). Right: 1 (Null). Full Outer: 3 (2 משמאל + 1 מימין).'
-            },
-            {
-                id: 68,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 1]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [1]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 3, Left: 2, Right: 4, Full Outer: 4'},
-                    {val: 'ב', text: 'ב. Inner: 4, Left: 3, Right: 3, Full Outer: 3'},
-                    {val: 'ג', text: 'ג. Inner: 2, Left: 4, Right: 3, Full Outer: 2'},
-                    {val: 'ד', text: 'ד. Inner: 3, Left: 3, Right: 3, Full Outer: 3'},
-                    {val: 'ה', text: 'ה. כל יתר התשובות שגויות'}
-                ],
-                correct: 'ד',
-                explanation: 'Left=[1,1,1], Right=[1]. Inner: 3×1=3. Left: 1→1, 1→1, 1→1 = 3. Right: 1→3 = 3. Full Outer: 3.'
-            },
-            {
-                id: 69,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [2, 4, 6]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [2, 4]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל יתר התשובות שגויות'},
-                    {val: 'ב', text: 'ב. Inner: 2, Left: 3, Right: 2, Full Outer: 3'},
-                    {val: 'ג', text: 'ג. Inner: 1, Left: 4, Right: 2, Full Outer: 2'},
-                    {val: 'ד', text: 'ד. Inner: 2, Left: 2, Right: 3, Full Outer: 4'},
-                    {val: 'ה', text: 'ה. Inner: 3, Left: 3, Right: 2, Full Outer: 3'}
-                ],
-                correct: 'ב',
-                explanation: 'Left=[2,4,6], Right=[2,4]. Inner: 2 (2,4). Left: 3 (2,4,6). Right: 2 (2,4). Full Outer: 3 (2,4,6).'
-            },
-            {
-                id: 70,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, Null, 2]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 3, Null]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 1, Left: 3, Right: 3, Full Outer: 5'},
-                    {val: 'ב', text: 'ב. Inner: 0, Left: 4, Right: 3, Full Outer: 4'},
-                    {val: 'ג', text: 'ג. כל יתר התשובות שגויות'},
-                    {val: 'ד', text: 'ד. Inner: 1, Left: 2, Right: 4, Full Outer: 6'},
-                    {val: 'ה', text: 'ה. Inner: 2, Left: 3, Right: 3, Full Outer: 5'}
-                ],
-                correct: 'א',
-                explanation: 'Left=[1,Null,2], Right=[1,3,Null]. Null לא תואם Null. Inner: 1 (רק 1). Left: 1→1, Null→1, 2→1 = 3. Right: 1→1, 3→1, Null→1 = 3. Full Outer: 1→1, Null→1, 2→1, 3→1, Null→1 = 5.'
-            },
-            {
-                id: 71,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [10, 20, 30]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [20, 20]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל יתר התשובות שגויות'},
-                    {val: 'ב', text: 'ב. Inner: 2, Left: 3, Right: 3, Full Outer: 5'},
-                    {val: 'ג', text: 'ג. Inner: 2, Left: 4, Right: 2, Full Outer: 4'},
-                    {val: 'ד', text: 'ד. Inner: 3, Left: 4, Right: 2, Full Outer: 4'},
-                    {val: 'ה', text: 'ה. Inner: 1, Left: 5, Right: 2, Full Outer: 3'}
-                ],
-                correct: 'ג',
-                explanation: 'Left=[10,20,30], Right=[20,20]. Inner: 20×2=2. Left: 10→1, 20→2, 30→1 = 4. Right: 20→1, 20→1 = 2. Full Outer: 10→1, 20→2, 30→1 = 4.'
-            },
-            {
-                id: 72,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 2]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2, 1, 2]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 4, Left: 3, Right: 5, Full Outer: 5'},
-                    {val: 'ב', text: 'ב. Inner: 5, Left: 4, Right: 4, Full Outer: 4'},
-                    {val: 'ג', text: 'ג. כל יתר התשובות שגויות'},
-                    {val: 'ד', text: 'ד. Inner: 3, Left: 5, Right: 4, Full Outer: 3'},
-                    {val: 'ה', text: 'ה. Inner: 4, Left: 4, Right: 4, Full Outer: 4'}
-                ],
-                correct: 'ה',
-                explanation: 'Left=[1,2], Right=[1,2,1,2]. Inner: 1→2, 2→2 = 4. Left: 1→2, 2→2 = 4. Right: 1→1, 2→1, 1→1, 2→1 = 4. Full Outer: 4.'
-            },
-            {
-                id: 73,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [7, 8, 9]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [7]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 2, Left: 3, Right: 1, Full Outer: 3'},
-                    {val: 'ב', text: 'ב. כל יתר התשובות שגויות'},
-                    {val: 'ג', text: 'ג. Inner: 0, Left: 4, Right: 1, Full Outer: 2'},
-                    {val: 'ד', text: 'ד. Inner: 1, Left: 2, Right: 2, Full Outer: 4'},
-                    {val: 'ה', text: 'ה. Inner: 1, Left: 3, Right: 1, Full Outer: 3'}
-                ],
-                correct: 'ה',
-                explanation: 'Left=[7,8,9], Right=[7]. Inner: 1 (7). Left: 3 (7,8,9). Right: 1 (7). Full Outer: 3 (7,8,9).'
-            },
-            {
-                id: 74,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [Null]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2, Null]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 0, Left: 0, Right: 4, Full Outer: 5'},
-                    {val: 'ב', text: 'ב. Inner: 0, Left: 1, Right: 3, Full Outer: 4'},
-                    {val: 'ג', text: 'ג. Inner: 1, Left: 1, Right: 3, Full Outer: 4'},
-                    {val: 'ד', text: 'ד. Inner: 0, Left: 2, Right: 3, Full Outer: 3'},
-                    {val: 'ה', text: 'ה. כל יתר התשובות שגויות'}
-                ],
-                correct: 'ב',
-                explanation: 'Left=[Null], Right=[1,2,Null]. Null לא תואם Null. Inner: 0. Left: 1 (Null). Right: 3 (1,2,Null). Full Outer: 4 (Null,1,2,Null).'
-            },
-            {
-                id: 75,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [5]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: []'
-                ],
-                options: [
-                    {val: 'א', text: 'א. כל יתר התשובות שגויות'},
-                    {val: 'ב', text: 'ב. Inner: 0, Left: 2, Right: 0, Full Outer: 0'},
-                    {val: 'ג', text: 'ג. Inner: 1, Left: 1, Right: 0, Full Outer: 1'},
-                    {val: 'ד', text: 'ד. Inner: 0, Left: 1, Right: 0, Full Outer: 1'},
-                    {val: 'ה', text: 'ה. Inner: 0, Left: 0, Right: 1, Full Outer: 2'}
-                ],
-                correct: 'ד',
-                explanation: 'Left=[5], Right=[]. Inner: 0. Left: 1 (5). Right: 0. Full Outer: 1 (5).'
-            },
-            {
-                id: 76,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: []',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 1, Left: 0, Right: 2, Full Outer: 2'},
-                    {val: 'ב', text: 'ב. Inner: 0, Left: -1, Right: 3, Full Outer: 3'},
-                    {val: 'ג', text: 'ג. כל יתר התשובות שגויות'},
-                    {val: 'ד', text: 'ד. Inner: 0, Left: 0, Right: 2, Full Outer: 2'},
-                    {val: 'ה', text: 'ה. Inner: 0, Left: 1, Right: 2, Full Outer: 1'}
-                ],
-                correct: 'ד',
-                explanation: 'Left=[], Right=[1,2]. Inner: 0. Left: 0. Right: 2 (1,2). Full Outer: 2 (1,2).'
-            },
-            {
-                id: 77,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [1, 1, 2, 2]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [1, 2]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 4, Left: 4, Right: 4, Full Outer: 4'},
-                    {val: 'ב', text: 'ב. Inner: 5, Left: 4, Right: 4, Full Outer: 4'},
-                    {val: 'ג', text: 'ג. Inner: 4, Left: 3, Right: 5, Full Outer: 5'},
-                    {val: 'ד', text: 'ד. כל יתר התשובות שגויות'},
-                    {val: 'ה', text: 'ה. Inner: 3, Left: 5, Right: 4, Full Outer: 3'}
-                ],
-                correct: 'א',
-                explanation: 'Left=[1,1,2,2], Right=[1,2]. Inner: 1→1, 1→1, 2→1, 2→1 = 4. Left: 1→1, 1→1, 2→1, 2→1 = 4. Right: 1→2, 2→2 = 4. Full Outer: 4.'
-            },
-            {
-                id: 78,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [3, 4, 5, 6]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [5, 6, 7, 8]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 1, Left: 5, Right: 4, Full Outer: 5'},
-                    {val: 'ב', text: 'ב. Inner: 3, Left: 4, Right: 4, Full Outer: 6'},
-                    {val: 'ג', text: 'ג. כל יתר התשובות שגויות'},
-                    {val: 'ד', text: 'ד. Inner: 2, Left: 4, Right: 4, Full Outer: 6'},
-                    {val: 'ה', text: 'ה. Inner: 2, Left: 3, Right: 5, Full Outer: 7'}
-                ],
-                correct: 'ד',
-                explanation: 'Left=[3,4,5,6], Right=[5,6,7,8]. Inner: 2 (5,6). Left: 4 (3,4,5,6). Right: 4 (5,6,7,8). Full Outer: 6 (3,4,5,6,7,8).'
-            },
-            {
-                id: 79,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [100, 200]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [100, 200, 300]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 2, Left: 1, Right: 4, Full Outer: 4'},
-                    {val: 'ב', text: 'ב. Inner: 3, Left: 2, Right: 3, Full Outer: 3'},
-                    {val: 'ג', text: 'ג. Inner: 1, Left: 3, Right: 3, Full Outer: 2'},
-                    {val: 'ד', text: 'ד. כל יתר התשובות שגויות'},
-                    {val: 'ה', text: 'ה. Inner: 2, Left: 2, Right: 3, Full Outer: 3'}
-                ],
-                correct: 'ה',
-                explanation: 'Left=[100,200], Right=[100,200,300]. Inner: 2 (100,200). Left: 2 (100,200). Right: 3 (100,200,300). Full Outer: 3 (100,200,300).'
-            },
-            {
-                id: 80,
-                statements: [
-                    'הניחו שישנן שתי טבלאות: טבלה א (שמאלית) וטבלה ב (ימנית).',
-                    'ערכי השדה המזהה (ID) בטבלה השמאלית הם: [0, 0, 1]',
-                    'ערכי השדה המזהה (ID) בטבלה הימנית הם: [0, 1, 1]'
-                ],
-                options: [
-                    {val: 'א', text: 'א. Inner: 3, Left: 5, Right: 4, Full Outer: 3'},
-                    {val: 'ב', text: 'ב. Inner: 4, Left: 3, Right: 5, Full Outer: 5'},
-                    {val: 'ג', text: 'ג. Inner: 5, Left: 4, Right: 4, Full Outer: 4'},
-                    {val: 'ד', text: 'ד. כל יתר התשובות שגויות'},
-                    {val: 'ה', text: 'ה. Inner: 4, Left: 4, Right: 4, Full Outer: 4'}
-                ],
-                correct: 'ה',
-                explanation: 'Left=[0,0,1], Right=[0,1,1]. Inner: 0→2, 0→2, 1→1 = 4. Left: 0→1, 0→1, 1→2 = 4. Right: 0→2, 1→1, 1→1 = 4. Full Outer: 0→2, 1→2 = 4.'
-            }
-        ];
-
-        let currentQuestion = 1;
-        const totalQuestions = 80;
-        let score = 0;
-        let answeredQuestions = {};
-
-        function renderQuestions() {
-            const wrapper = document.getElementById('questions-wrapper');
-            questionsData.forEach((q, idx) => {
-                const card = document.createElement('div');
-                card.className = 'question-card' + (idx === 0 ? ' active' : '');
-                card.id = 'q-' + q.id;
-                
-                let statementsHTML = '<div class="statements">';
-                q.statements.forEach(s => {
-                    statementsHTML += `<div class="statement">${s}</div>`;
-                });
-                statementsHTML += '</div>';
-                
-                let optionsHTML = '<ul class="options">';
-                q.options.forEach(opt => {
-                    optionsHTML += `<li class="option" data-val="${opt.val}" onclick="selectOption(${q.id}, '${opt.val}')">${opt.text}</li>`;
-                });
-                optionsHTML += '</ul>';
-                
-                card.innerHTML = `
-                    <div class="q-num">שאלה ${q.id}</div>
-                    ${statementsHTML}
-                    <div class="q-title">הטענה / הטענות הנכונה / הנכונות:</div>
-                    ${optionsHTML}
-                    <div class="explanation" id="exp-${q.id}">
-                        <div class="explanation-title">💡 הסבר:</div>
-                        <div class="explanation-content">${q.explanation}</div>
-                    </div>
-                `;
-                wrapper.appendChild(card);
-            });
-        }
-
-        function showQuestion(qNum) {
-            document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-            const targetQ = document.getElementById('q-' + qNum);
-            if (targetQ) targetQ.classList.add('active');
-            
-            document.getElementById('progress-text').innerText = `שאלה ${qNum} מתוך ${totalQuestions}`;
-            document.getElementById('progress-fill').style.width = ((qNum / totalQuestions) * 100) + '%';
-            document.getElementById('btn-prev').disabled = (qNum === 1);
-            
-            if (qNum === totalQuestions) {
-                document.getElementById('btn-next').style.display = 'none';
-                document.getElementById('btn-finish').style.display = 'flex';
-            } else {
-                document.getElementById('btn-next').style.display = 'flex';
-                document.getElementById('btn-finish').style.display = 'none';
-            }
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function nextQuestion() {
-            if (currentQuestion < totalQuestions) {
-                currentQuestion++;
-                showQuestion(currentQuestion);
-            }
-        }
-
-        function prevQuestion() {
-            if (currentQuestion > 1) {
-                currentQuestion--;
-                showQuestion(currentQuestion);
-            }
-        }
-
-        function selectOption(qNum, selectedValue) {
-            const card = document.getElementById('q-' + qNum);
-            if (card.classList.contains('answered')) return;
-            
-            card.classList.add('answered');
-            const qData = questionsData.find(q => q.id === qNum);
-            const correctVal = qData.correct;
-            
-            const allOptions = card.querySelectorAll('.option');
-            allOptions.forEach(li => {
-                const val = li.getAttribute('data-val');
-                if (val === correctVal) li.classList.add('correct');
-                if (val === selectedValue && selectedValue !== correctVal) li.classList.add('incorrect');
-            });
-            
-            if (selectedValue === correctVal) {
-                score++;
-            }
-            
-            answeredQuestions[qNum] = selectedValue;
-            document.getElementById('score-badge').innerText = `✓ ${score} נכונות`;
-            
-            const exp = document.getElementById('exp-' + qNum);
-            if (exp) {
-                setTimeout(() => exp.classList.add('show'), 300);
-            }
-        }
-
-        function finishQuiz() {
-            document.getElementById('quiz-container').style.display = 'none';
-            const resDiv = document.getElementById('results-container');
-            resDiv.style.display = 'block';
-            
-            const pct = Math.round((score / totalQuestions) * 100);
-            document.getElementById('result-score').innerText = pct + '%';
-            document.getElementById('result-details').innerText = `ענית נכונה על ${score} מתוך ${totalQuestions} שאלות`;
-            
-            let emoji = '🎉';
-            if (pct >= 90) emoji = '🏆';
-            else if (pct >= 75) emoji = '🌟';
-            else if (pct >= 60) emoji = '👍';
-            else if (pct >= 40) emoji = '💪';
-            else emoji = '📚';
-            document.getElementById('result-emoji').innerText = emoji;
-            
-            setTimeout(() => {
-                document.getElementById('result-bar-fill').style.width = pct + '%';
-            }, 200);
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        window.onload = function() {
-            renderQuestions();
-            showQuestion(1);
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'שומר נתונים...';
+        statusMsg.classList.remove('show-status');
+        
+        const data = {
+            date: document.getElementById('date').value,
+            type: document.getElementById('type').value,
+            category: document.getElementById('category').value,
+            amount: document.getElementById('amount').value,
+            description: document.getElementById('description').value
         };
-    </script>
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyGmtZ8az5PFSI1bNYdCciurqLQe36cSx8ZdV74YJoD5oqJFR9Gn6q97gvdw-rmRKBo/exec';
+
+        fetch(scriptURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if(result.status === 'success') {
+                statusMsg.innerText = 'התנועה נשמרה בהצלחה!';
+                statusMsg.style.color = 'var(--success)';
+                statusMsg.classList.add('show-status');
+                
+                document.getElementById('trackerForm').reset();
+                document.getElementById('date').valueAsDate = new Date();
+                
+                setTimeout(() => {
+                    statusMsg.classList.remove('show-status');
+                }, 3000);
+            } else {
+                throw new Error(result.message);
+            }
+        })
+        .catch(error => {
+            statusMsg.innerText = 'אירעה שגיאה. נסה שוב.';
+            statusMsg.style.color = 'var(--error)';
+            statusMsg.classList.add('show-status');
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'שמירה';
+        });
+    });
+</script>
 </body>
 </html>
