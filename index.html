@@ -46,17 +46,17 @@
             position: relative;
         }
 
-        /* Grid Background */
+        /* Grid Background - fixed with pointer-events: none */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background-image:
-                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(99, 102, 241, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
             background-size: 50px 50px;
             z-index: 0;
-            animation: gridMove 20s linear infinite;
+            pointer-events: none;
         }
 
         body::after {
@@ -68,11 +68,7 @@
                 radial-gradient(ellipse at 80% 20%, var(--bg-gradient-2) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 90%, var(--bg-gradient-3) 0%, transparent 50%);
             z-index: 0;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
+            pointer-events: none;
         }
 
         .app {
@@ -149,6 +145,8 @@
             margin-bottom: 24px;
             box-shadow: 0 8px 32px var(--glass-shadow);
             animation: slideUp 0.5s ease-out 0.1s backwards;
+            position: relative;
+            z-index: 2;
         }
 
         @keyframes slideUp {
@@ -174,6 +172,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
 
         .tab-btn::before {
@@ -183,6 +182,7 @@
             background: linear-gradient(135deg, var(--accent), var(--accent-light));
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: -1;
         }
 
         .tab-btn:hover {
@@ -221,6 +221,8 @@
         .tab-content {
             display: none;
             animation: fadeUp 0.4s ease forwards;
+            position: relative;
+            z-index: 1;
         }
 
         .tab-content.active {
@@ -244,6 +246,8 @@
             box-shadow: 0 8px 32px var(--glass-shadow);
             transition: all 0.3s ease;
             animation: scaleIn 0.4s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes scaleIn {
@@ -293,6 +297,8 @@
             outline: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
 
         input:focus, select:focus {
@@ -329,6 +335,7 @@
             fill: var(--text-muted);
             pointer-events: none;
             transition: fill 0.3s ease;
+            z-index: 2;
         }
 
         .date-input-wrapper input:focus + svg {
@@ -359,6 +366,8 @@
             justify-content: center;
             gap: 10px;
             backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
         }
 
         .type-option svg {
@@ -408,6 +417,7 @@
             position: relative;
             overflow: hidden;
             animation: pulse 2s ease-in-out infinite;
+            z-index: 1;
         }
 
         @keyframes pulse {
@@ -488,6 +498,7 @@
             height: 200%;
             background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
             animation: rotate 20s linear infinite;
+            pointer-events: none;
         }
 
         @keyframes rotate {
@@ -547,6 +558,7 @@
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         .stat-card:hover::before {
@@ -658,6 +670,7 @@
             inset: 0;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             animation: shimmer 2s infinite;
+            pointer-events: none;
         }
 
         @keyframes shimmer {
@@ -705,6 +718,8 @@
             transition: all 0.3s ease;
             white-space: nowrap;
             box-shadow: 0 4px 15px var(--accent-glow);
+            position: relative;
+            z-index: 1;
         }
 
         .budget-save-btn:hover {
@@ -898,6 +913,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            position: relative;
+            z-index: 1;
         }
 
         .refresh-btn svg {
@@ -947,6 +964,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            z-index: 1;
         }
 
         .export-btn svg {
@@ -1080,6 +1099,8 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             flex-shrink: 0;
+            position: relative;
+            z-index: 1;
         }
 
         .tx-del svg {
@@ -1267,6 +1288,8 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .modal-btn.cancel {
@@ -1504,14 +1527,14 @@
             <div id="historyFooter" class="history-footer" style="display:none">
                 <div class="hf-item">
                     <span class="hf-label">הכנסות: </span>
-                    <span id="hfIncome" class="hf-val" style="color:var(--success)">0</span>
+                    <span id="hfIncome" class="hf-val" style="color:var(--success)">₪0</span>
                     <span style="margin:0 6px;color:var(--text-muted)">│</span>
                     <span class="hf-label">הוצאות: </span>
                     <span id="hfExpense" class="hf-val" style="color:var(--danger)">₪0</span>
                 </div>
                 <div class="hf-item">
                     <span class="hf-label">נטו: </span>
-                    <span id="hfNet" class="hf-val">₪0</span>
+                    <span id="hfNet" class="hf-val">0</span>
                 </div>
             </div>
         </div>
@@ -1522,7 +1545,7 @@
 
 <div id="confirmModal" class="modal-overlay">
     <div class="modal-box">
-        <div class="modal-title">🗑️ מחיקת תנועה</div>
+        <div class="modal-title">️ מחיקת תנועה</div>
         <div class="modal-text">האם אתה בטוח שברצונך למחוק תנועה זו?<br>פעולה זו אינה הפיכה.</div>
         <div class="modal-btns">
             <button class="modal-btn cancel" onclick="closeModal()">ביטול</button>
@@ -1681,19 +1704,13 @@ function loadInsights() {
 
     var prevMonth = getPreviousMonth(month);
 
-    // Current month summary
     apiGet('summary', {month: month}).then(function(currentData) {
         if (currentData.status !== 'success') return;
 
-        // Previous month summary
         apiGet('summary', {month: prevMonth}).then(function(prevData) {
-            var prevIncome = prevData.status === 'success' ? prevData.income : 0;
-            var prevExpense = prevData.status === 'success' ? prevData.expense : 0;
-            var prevBalance = prevData.status === 'success' ? prevData.balance : 0;
-
             var bal = currentData.balance;
             var balEl = document.getElementById('balanceAmount');
-            balEl.textContent = '₪' + bal.toLocaleString();
+            balEl.textContent = '' + bal.toLocaleString();
             balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
             document.getElementById('incomeAmount').textContent = '₪' + currentData.income.toLocaleString();
             document.getElementById('expenseAmount').textContent = '₪' + currentData.expense.toLocaleString();
@@ -1713,7 +1730,6 @@ function loadInsights() {
         });
     });
 
-    // Category breakdown
     apiGet('categorySummary', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         var cats = data.categories;
@@ -1745,21 +1761,16 @@ function loadInsights() {
         var now = new Date();
         var daysPassed = (now.getMonth() + 1 === mNum && now.getFullYear() === yNum) ? now.getDate() : daysInMonth;
         var totalExp = cats.reduce(function(s, c) { return s + c.amount; }, 0);
-        document.getElementById('avgDaily').textContent = '' + (daysPassed > 0 ? (totalExp / daysPassed).toFixed(0) : '0');
+        document.getElementById('avgDaily').textContent = '₪' + (daysPassed > 0 ? (totalExp / daysPassed).toFixed(0) : '0');
 
-        // Render custom legend
         legendEl.innerHTML = '';
         cats.forEach(function(cat, idx) {
             var pct = ((cat.amount / totalExp) * 100).toFixed(1);
             var item = document.createElement('div');
             item.className = 'legend-item';
-            item.innerHTML = `
-                <div class="legend-color" style="background: ${CHART_COLORS[idx % CHART_COLORS.length]}"></div>
-                <div>
-                    <div class="legend-label">${cat.category}</div>
-                    <div class="legend-amount">₪${cat.amount.toLocaleString()} (${pct}%)</div>
-                </div>
-            `;
+            item.innerHTML = '<div class="legend-color" style="background: ' + CHART_COLORS[idx % CHART_COLORS.length] + '"></div>' +
+                '<div><div class="legend-label">' + cat.category + '</div>' +
+                '<div class="legend-amount">₪' + cat.amount.toLocaleString() + ' (' + pct + '%)</div></div>';
             legendEl.appendChild(item);
         });
 
@@ -1820,7 +1831,6 @@ function renderComparison(current, prev) {
 
     var html = '';
 
-    // Income comparison
     html += '<div class="comparison-card">';
     html += '<div class="comparison-header">';
     html += '<span class="comparison-label">הכנסות</span>';
@@ -1832,7 +1842,6 @@ function renderComparison(current, prev) {
     html += '</div>';
     html += '</div>';
 
-    // Expense comparison
     html += '<div class="comparison-card">';
     html += '<div class="comparison-header">';
     html += '<span class="comparison-label">הוצאות</span>';
@@ -1844,7 +1853,6 @@ function renderComparison(current, prev) {
     html += '</div>';
     html += '</div>';
 
-    // Balance comparison
     html += '<div class="comparison-card">';
     html += '<div class="comparison-header">';
     html += '<span class="comparison-label">מאזן נטו</span>';
@@ -1863,7 +1871,6 @@ function generateInsights(current, prev) {
     var container = document.getElementById('insightsContainer');
     var insights = [];
 
-    // Savings rate insight
     if (current.income > 0) {
         var savingsRate = (current.balance / current.income) * 100;
         if (savingsRate > 20) {
@@ -1882,7 +1889,7 @@ function generateInsights(current, prev) {
             });
         } else {
             insights.push({
-                icon: '️',
+                icon: '⚠️',
                 type: 'negative',
                 title: 'ההוצאות עולות על ההכנסות',
                 text: 'אתה מוציא יותר ממה שאתה מרוויח. כדאי לבדוק איפה אפשר לקצץ.'
@@ -1890,7 +1897,6 @@ function generateInsights(current, prev) {
         }
     }
 
-    // Month over month comparison
     if (prev.status === 'success' && prev.transactions > 0) {
         var expenseChange = ((current.expense - prev.expense) / prev.expense * 100);
         if (expenseChange < -10) {
@@ -1910,7 +1916,6 @@ function generateInsights(current, prev) {
         }
     }
 
-    // Budget warning
     var budget = parseFloat(document.getElementById('budgetInput').value);
     if (budget && budget > 0) {
         var budgetPct = (current.expense / budget) * 100;
@@ -1919,19 +1924,18 @@ function generateInsights(current, prev) {
                 icon: '🚨',
                 type: 'negative',
                 title: 'קרוב לתקציב!',
-                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ' + (budget - current.expense).toLocaleString()
+                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ₪' + (budget - current.expense).toLocaleString()
             });
         } else if (budgetPct > 70) {
             insights.push({
-                icon: '⚡',
+                icon: '',
                 type: 'neutral',
                 title: 'שליטה בתקציב',
-                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + (budget - current.expense).toLocaleString() נותרו.'
+                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + (budget - current.expense).toLocaleString() + ' נותרו.'
             });
         }
     }
 
-    // Transaction count insight
     if (current.transactions > 30) {
         insights.push({
             icon: '📊',
@@ -1941,7 +1945,6 @@ function generateInsights(current, prev) {
         });
     }
 
-    // Render insights
     if (insights.length === 0) {
         container.innerHTML = '<div class="empty" style="padding:20px"><div class="empty-text">הוסף תנועות כדי לקבל תובנות חכמות</div></div>';
         return;
@@ -1981,7 +1984,7 @@ function updateBudgetBar(expense) {
 function saveBudget() {
     var val = document.getElementById('budgetInput').value;
     if (!val || isNaN(val) || parseFloat(val) <= 0) {
-        showToast('❌ הזן סכום תקין', 'error');
+        showToast(' הזן סכום תקין', 'error');
         return;
     }
     var p = new URLSearchParams();
