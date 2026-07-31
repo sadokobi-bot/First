@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מעקב פיננסי | תובנות</title>
+    <title>מעקב פיננסי אישי</title>
     <style>
         :root {
             --glass-bg: rgba(30, 41, 59, 0.6);
@@ -47,7 +47,6 @@
             flex-direction: column;
         }
 
-        /* Tabs Navigation */
         .tabs {
             display: flex;
             border-bottom: 1px solid var(--glass-border);
@@ -67,10 +66,7 @@
             position: relative;
         }
 
-        .tab-btn.active {
-            color: var(--text-main);
-        }
-
+        .tab-btn.active { color: var(--text-main); }
         .tab-btn.active::after {
             content: '';
             position: absolute;
@@ -83,26 +79,20 @@
             box-shadow: 0 -2px 10px rgba(59, 130, 246, 0.5);
         }
 
-        /* Tab Content */
         .tab-content {
             display: none;
             padding: 35px 30px;
             animation: fadeIn 0.4s ease forwards;
         }
 
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .form-group {
-            margin-bottom: 22px;
-        }
-
+        .form-group { margin-bottom: 22px; }
         label {
             display: block;
             margin-bottom: 8px;
@@ -130,10 +120,7 @@
             box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
         }
 
-        select option {
-            background: #1e293b;
-            color: var(--text-main);
-        }
+        select option { background: #1e293b; color: var(--text-main); }
 
         button.primary-btn {
             width: 100%;
@@ -149,19 +136,9 @@
             margin-top: 10px;
         }
 
-        button.primary-btn:hover {
-            background: #e2e8f0;
-        }
-
-        button.primary-btn:active {
-            transform: scale(0.98);
-        }
-
-        button.primary-btn:disabled {
-            background: var(--text-muted);
-            cursor: not-allowed;
-            transform: none;
-        }
+        button.primary-btn:hover { background: #e2e8f0; }
+        button.primary-btn:active { transform: scale(0.98); }
+        button.primary-btn:disabled { background: var(--text-muted); cursor: not-allowed; }
 
         #statusMessage {
             margin-top: 20px;
@@ -175,7 +152,6 @@
 
         .show-status { opacity: 1 !important; }
 
-        /* Insights Dashboard Styles */
         .insight-card {
             background: var(--input-bg);
             border: 1px solid var(--glass-border);
@@ -185,29 +161,12 @@
             text-align: center;
         }
 
-        .insight-card h3 {
-            margin: 0 0 10px 0;
-            font-size: 1rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .insight-card .amount {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: -0.5px;
-        }
-
+        .insight-card h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--text-muted); font-weight: 500; }
+        .insight-card .amount { font-size: 2.2rem; font-weight: 700; margin: 0; letter-spacing: -0.5px; }
         .amount.positive { color: var(--success); text-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
         .amount.negative { color: var(--error); text-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
 
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .mini-card {
             background: var(--input-bg);
             border: 1px solid var(--glass-border);
@@ -216,19 +175,8 @@
             text-align: center;
         }
 
-        .mini-card h4 {
-            margin: 0 0 8px 0;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .mini-card p {
-            margin: 0;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-main);
-        }
+        .mini-card h4 { margin: 0 0 8px 0; font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+        .mini-card p { margin: 0; font-size: 1.3rem; font-weight: 600; color: var(--text-main); }
 
         .refresh-btn {
             background: transparent;
@@ -242,9 +190,7 @@
             font-family: inherit;
             transition: background 0.3s ease;
         }
-        
         .refresh-btn:hover { background: rgba(255,255,255,0.05); }
-
     </style>
 </head>
 <body>
@@ -274,7 +220,7 @@
             <div class="form-group">
                 <label for="category">קטגוריה</label>
                 <select id="category" required>
-                    <!-- Options populated by JS -->
+                    <!-- יאוכלס דרך JS -->
                 </select>
             </div>
 
@@ -296,17 +242,17 @@
     <!-- Tab 2: Insights -->
     <div id="insightsTab" class="tab-content">
         <div class="insight-card">
-            <h3>מאזן נוכחי (חודש נוכחי)</h3>
+            <h3>מאזן נוכחי</h3>
             <p id="balanceAmount" class="amount">₪0</p>
         </div>
         
         <div class="summary-grid">
             <div class="mini-card">
-                <h4>סך הכנסות</h4>
+                <h4>הכנסות</h4>
                 <p id="incomeAmount" style="color: var(--success);">₪0</p>
             </div>
             <div class="mini-card">
-                <h4>סך הוצאות</h4>
+                <h4>הוצאות</h4>
                 <p id="expenseAmount" style="color: var(--error);">₪0</p>
             </div>
         </div>
@@ -316,32 +262,27 @@
 </div>
 
 <script>
-    // הלינק החדש שהעברת לי
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqRNK4fu_sNRoP1v8NyzTbwwYSuTllJPdMzlJL5XlNLp-p9uJoBbl7xJIZHw0bkhYg/exec'; 
+    // הלינק החדש מגוגל סקריפט
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRAxijPLxVzGSSbtotHHI6WonIYIXFzqWiOKeTO2O3txz0ceUg9qzRyfSQz_07qIPz/exec';
 
-    // רשימת קטגוריות מותאמת אישית
     const categories = {
         'הוצאה': [
             'מזון וסופר', 
-            'רכב ותחבורה', 
-            'מסעדות ובילויים', 
-            'חשבונות ותקשורת', 
+            'חומרה וגיימינג', 
             'ביגוד והנעלה', 
-            'כושר ותזונה', 
             'הוצאות על טופי 🐶', 
-            'מחשבים, חומרה וגיימינג', 
             'הוצאות לימודים',
-            'חופשות וטיולים',
+            'רכב ותחבורה', 
+            'בילויים ומסעדות',
+            'חשבונות', 
             'אחר'
         ],
-        'הכנסה': ['משכורת', 'העברות בנקאיות', 'החזרים', 'מתנות', 'אחר']
+        'הכנסה': ['משכורת', 'העברות בנקאיות', 'אחר']
     };
 
-    // אתחול
     document.getElementById('date').valueAsDate = new Date();
     updateCategories();
 
-    // פונקציות ניווט ועדכון
     function switchTab(tab) {
         document.getElementById('formTab').classList.remove('active');
         document.getElementById('insightsTab').classList.remove('active');
@@ -370,7 +311,6 @@
         });
     }
 
-    // שליחת טופס
     document.getElementById('trackerForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -378,7 +318,7 @@
         const statusMsg = document.getElementById('statusMessage');
         
         submitBtn.disabled = true;
-        submitBtn.innerText = 'מעבד נתונים...';
+        submitBtn.innerText = 'מעבד...';
         statusMsg.classList.remove('show-status');
         
         const data = {
@@ -391,10 +331,19 @@
 
         fetch(SCRIPT_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(data)
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(data),
+            redirect: 'follow'
         })
-        .then(response => response.json())
+        .then(async response => {
+            const text = await response.text();
+            try {
+                return JSON.parse(text); 
+            } catch (err) {
+                console.error("HTML Error Response:", text);
+                throw new Error("CORS_OR_AUTH");
+            }
+        })
         .then(result => {
             if(result.status === 'success') {
                 statusMsg.innerText = 'התנועה תועדה בהצלחה!';
@@ -410,7 +359,11 @@
             }
         })
         .catch(error => {
-            statusMsg.innerText = 'אירעה שגיאה. בדוק הרשאות ונסה שוב.';
+            if (error.message === "CORS_OR_AUTH") {
+                statusMsg.innerText = 'שגיאת הרשאות: ודא שהסקריפט מוגדר ל-Anyone.';
+            } else {
+                statusMsg.innerText = 'אירעה שגיאה, אנא נסה שוב.';
+            }
             statusMsg.style.color = 'var(--error)';
             statusMsg.classList.add('show-status');
         })
@@ -420,7 +373,6 @@
         });
     });
 
-    // משיכת נתונים
     function fetchInsights() {
         const balanceEl = document.getElementById('balanceAmount');
         const incomeEl = document.getElementById('incomeAmount');
@@ -441,7 +393,7 @@
             }
         })
         .catch(error => {
-            balanceEl.innerText = 'שגיאה בטעינה';
+            balanceEl.innerText = 'שגיאה';
             balanceEl.className = 'amount negative';
         });
     }
