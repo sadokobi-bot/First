@@ -46,7 +46,6 @@
             position: relative;
         }
 
-        /* Grid Background - fixed with pointer-events: none */
         body::before {
             content: '';
             position: fixed;
@@ -84,7 +83,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Header */
         .header {
             text-align: center;
             padding: 30px 0 35px;
@@ -132,7 +130,6 @@
             margin-top: 10px;
         }
 
-        /* Tabs */
         .tabs {
             display: flex;
             gap: 6px;
@@ -217,7 +214,6 @@
             z-index: 1;
         }
 
-        /* Tab Content */
         .tab-content {
             display: none;
             animation: fadeUp 0.4s ease forwards;
@@ -234,7 +230,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Card */
         .card {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -260,7 +255,6 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
-        /* Form */
         .form-group {
             margin-bottom: 22px;
             animation: slideIn 0.4s ease-out backwards;
@@ -316,7 +310,6 @@
             color: var(--text-muted);
         }
 
-        /* Custom Date Input */
         .date-input-wrapper {
             position: relative;
         }
@@ -342,7 +335,6 @@
             fill: var(--accent);
         }
 
-        /* Type Toggle */
         .type-toggle {
             display: flex;
             gap: 12px;
@@ -400,7 +392,6 @@
             box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
         }
 
-        /* Submit */
         .submit-btn {
             width: 100%;
             padding: 18px;
@@ -459,7 +450,6 @@
             animation: none;
         }
 
-        /* Month Selector */
         .month-row {
             display: flex;
             align-items: center;
@@ -479,7 +469,6 @@
             flex: 1;
         }
 
-        /* Balance */
         .balance-card {
             text-align: center;
             padding: 40px 24px;
@@ -533,7 +522,6 @@
             text-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
         }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -591,7 +579,6 @@
             text-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
         }
 
-        /* Comparison */
         .comparison-card {
             padding: 20px;
             background: rgba(15, 23, 42, 0.6);
@@ -648,7 +635,6 @@
             background: linear-gradient(90deg, var(--danger), #f87171);
         }
 
-        /* Budget */
         .budget-header {
             display: flex;
             justify-content: space-between;
@@ -727,7 +713,6 @@
             box-shadow: 0 6px 20px var(--accent-glow);
         }
 
-        /* Chart */
         .chart-title {
             font-size: 1rem;
             color: var(--text-sec);
@@ -741,7 +726,6 @@
             margin-bottom: 20px;
         }
 
-        /* Custom Legend */
         .custom-legend {
             display: flex;
             flex-wrap: wrap;
@@ -786,7 +770,6 @@
             color: var(--text-muted);
         }
 
-        /* Quick Stats */
         .quick-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -839,7 +822,6 @@
             margin-top: 4px;
         }
 
-        /* Insights */
         .insight-item {
             padding: 18px;
             background: rgba(15, 23, 42, 0.6);
@@ -897,7 +879,6 @@
             line-height: 1.5;
         }
 
-        /* Refresh */
         .refresh-btn {
             width: 100%;
             padding: 14px;
@@ -934,7 +915,6 @@
             transform: rotate(180deg);
         }
 
-        /* History */
         .history-top {
             display: flex;
             justify-content: space-between;
@@ -1141,7 +1121,6 @@
             font-weight: 600;
         }
 
-        /* Empty */
         .empty {
             text-align: center;
             padding: 50px 20px;
@@ -1164,7 +1143,6 @@
             font-size: 1rem;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -1196,7 +1174,6 @@
             color: #fff;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -1214,7 +1191,6 @@
             background: var(--glass-highlight);
         }
 
-        /* Section title */
         .section-title {
             font-size: 1rem;
             color: var(--text-sec);
@@ -1222,7 +1198,6 @@
             margin-bottom: 18px;
         }
 
-        /* Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1314,7 +1289,6 @@
             box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
         }
 
-        /* Loading animation */
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -1327,6 +1301,38 @@
             border-radius: 50%;
             border-top-color: var(--accent);
             animation: spin 0.8s linear infinite;
+        }
+
+        /* Daily chart specific */
+        .daily-chart-wrap {
+            position: relative;
+            height: 220px;
+            margin-bottom: 16px;
+        }
+
+        .daily-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .daily-stat {
+            text-align: center;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: var(--radius-xs);
+        }
+
+        .daily-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .daily-stat-val {
+            font-size: 1rem;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -1387,7 +1393,7 @@
                     <select id="category" required></select>
                 </div>
                 <div class="form-group">
-                    <label>סכום (₪)</label>
+                    <label>סכום ()</label>
                     <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
                 </div>
                 <div class="form-group">
@@ -1424,6 +1430,28 @@
             </div>
         </div>
 
+        <!-- Daily Chart -->
+        <div class="card">
+            <div class="chart-title">📈 הוצאות יומיות</div>
+            <div class="daily-chart-wrap">
+                <canvas id="dailyChart"></canvas>
+            </div>
+            <div class="daily-stats">
+                <div class="daily-stat">
+                    <div class="daily-stat-label">ממוצע יומי</div>
+                    <div id="dailyAvg" class="daily-stat-val">-</div>
+                </div>
+                <div class="daily-stat">
+                    <div class="daily-stat-label">יום הכי יקר</div>
+                    <div id="dailyMax" class="daily-stat-val">-</div>
+                </div>
+                <div class="daily-stat">
+                    <div class="daily-stat-label">יום הכי זול</div>
+                    <div id="dailyMin" class="daily-stat-val">-</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Comparison -->
         <div class="card">
             <div class="section-title">📊 השוואה לחודש קודם</div>
@@ -1432,7 +1460,7 @@
 
         <div class="card">
             <div class="budget-header">
-                <span class="section-title" style="margin:0">🎯 תקציב חודשי</span>
+                <span class="section-title" style="margin:0"> תקציב חודשי</span>
                 <span id="budgetText" style="font-size:0.85rem;color:var(--text-muted)">לא הוגדר</span>
             </div>
             <div class="budget-bar"><div id="budgetFill" class="budget-fill" style="width:0%"></div></div>
@@ -1558,7 +1586,7 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGsaDSstIVliW3eFYJKAmlxX5hRPeHs6Nd1QkQOK6dRQuk2r5-dWHBg9B4iqhfniPG/exec';
 
 const CATS = {
-    'הוצאה': ['מזון וסופר','חומרה וגיימינג','ביגוד והנעלה','הוצאות על טופי ','הוצאות לימודים','רכב ותחבורה','בילויים ומסעדות','חשבונות','בריאות','מתנות','אחר'],
+    'הוצאה': ['מזון וסופר','חומרה וגיימינג','ביגוד והנעלה','הוצאות על טופי 🐶','הוצאות לימודים','רכב ותחבורה','בילויים ומסעדות','חשבונות','בריאות','מתנות','אחר'],
     'הכנסה': ['משכורת','העברות בנקאיות','עבודה צדדית','החזרים','אחר']
 };
 
@@ -1567,6 +1595,7 @@ const MONTH_NAMES = ['ינואר','פברואר','מרץ','אפריל','מאי',
 
 let currentType = 'הוצאה';
 let categoryChart = null;
+let dailyChart = null;
 let pendingDeleteId = null;
 let pendingDeleteMonth = null;
 
@@ -1704,13 +1733,22 @@ function loadInsights() {
 
     var prevMonth = getPreviousMonth(month);
 
+    // Load transactions for daily chart
+    apiGet('transactions', {month: month}).then(function(txData) {
+        if (txData.status === 'success') {
+            renderDailyChart(txData.transactions, month);
+        }
+    });
+
+    // Current month summary
     apiGet('summary', {month: month}).then(function(currentData) {
         if (currentData.status !== 'success') return;
 
+        // Previous month summary
         apiGet('summary', {month: prevMonth}).then(function(prevData) {
             var bal = currentData.balance;
             var balEl = document.getElementById('balanceAmount');
-            balEl.textContent = '' + bal.toLocaleString();
+            balEl.textContent = '₪' + bal.toLocaleString();
             balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
             document.getElementById('incomeAmount').textContent = '₪' + currentData.income.toLocaleString();
             document.getElementById('expenseAmount').textContent = '₪' + currentData.expense.toLocaleString();
@@ -1730,6 +1768,7 @@ function loadInsights() {
         });
     });
 
+    // Category breakdown
     apiGet('categorySummary', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         var cats = data.categories;
@@ -1810,9 +1849,124 @@ function loadInsights() {
         });
     });
 
+    // Load budget
     apiGet('settings').then(function(data) {
         if (data.status === 'success' && data.settings.budget) {
             document.getElementById('budgetInput').value = data.settings.budget;
+        }
+    });
+}
+
+function renderDailyChart(transactions, month) {
+    var canvas = document.getElementById('dailyChart');
+    var parts = month.split('-');
+    var mNum = parseInt(parts[0]), yNum = parseInt(parts[1]);
+    var daysInMonth = new Date(yNum, mNum, 0).getDate();
+    var now = new Date();
+    var daysPassed = (now.getMonth() + 1 === mNum && now.getFullYear() === yNum) ? now.getDate() : daysInMonth;
+
+    // Aggregate expenses by day
+    var dailyExpenses = {};
+    for (var i = 1; i <= daysPassed; i++) {
+        dailyExpenses[i] = 0;
+    }
+
+    transactions.forEach(function(t) {
+        if (t.type === 'הוצאה') {
+            var d = new Date(t.date);
+            var day = d.getDate();
+            if (day >= 1 && day <= daysInMonth) {
+                dailyExpenses[day] = (dailyExpenses[day] || 0) + t.amount;
+            }
+        }
+    });
+
+    var labels = [];
+    var data = [];
+    for (var i = 1; i <= daysPassed; i++) {
+        labels.push(i);
+        data.push(dailyExpenses[i] || 0);
+    }
+
+    // Calculate stats
+    var totalExp = data.reduce(function(a, b) { return a + b; }, 0);
+    var avg = daysPassed > 0 ? (totalExp / daysPassed) : 0;
+    var max = Math.max.apply(null, data);
+    var min = Math.min.apply(null, data.filter(function(v) { return v > 0; }));
+    if (!isFinite(min)) min = 0;
+
+    document.getElementById('dailyAvg').textContent = '₪' + avg.toFixed(0);
+    document.getElementById('dailyMax').textContent = '₪' + max.toLocaleString();
+    document.getElementById('dailyMin').textContent = '₪' + min.toLocaleString();
+
+    if (dailyChart) dailyChart.destroy();
+    dailyChart = new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'הוצאות יומיות',
+                data: data,
+                borderColor: '#6366f1',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 3,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#6366f1',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15,23,42,0.95)',
+                    titleFont: { family: 'Heebo' },
+                    bodyFont: { family: 'Heebo' },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        title: function(items) {
+                            return 'יום ' + items[0].label;
+                        },
+                        label: function(ctx) {
+                            return '₪' + ctx.parsed.y.toLocaleString();
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255,255,255,0.05)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#64748b',
+                        font: { family: 'Heebo', size: 11 },
+                        maxTicksLimit: 10
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(255,255,255,0.05)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#64748b',
+                        font: { family: 'Heebo', size: 11 },
+                        callback: function(value) {
+                            return '' + value;
+                        }
+                    },
+                    beginAtZero: true
+                }
+            }
         }
     });
 }
@@ -1875,7 +2029,7 @@ function generateInsights(current, prev) {
         var savingsRate = (current.balance / current.income) * 100;
         if (savingsRate > 20) {
             insights.push({
-                icon: '',
+                icon: '🎉',
                 type: 'positive',
                 title: 'כל הכבוד! אתה חוסך יפה',
                 text: 'אתה חוסך ' + savingsRate.toFixed(0) + '% מההכנסה שלך. זה מעולה!'
@@ -1901,7 +2055,7 @@ function generateInsights(current, prev) {
         var expenseChange = ((current.expense - prev.expense) / prev.expense * 100);
         if (expenseChange < -10) {
             insights.push({
-                icon: '📉',
+                icon: '',
                 type: 'positive',
                 title: 'הוצאות ירדו!',
                 text: 'ההוצאות שלך ירדו ב-' + Math.abs(expenseChange).toFixed(0) + '% לעומת החודש הקודם. מעולה!'
@@ -1928,7 +2082,7 @@ function generateInsights(current, prev) {
             });
         } else if (budgetPct > 70) {
             insights.push({
-                icon: '',
+                icon: '⚡',
                 type: 'neutral',
                 title: 'שליטה בתקציב',
                 text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + (budget - current.expense).toLocaleString() + ' נותרו.'
@@ -1965,7 +2119,8 @@ function generateInsights(current, prev) {
 }
 
 function updateBudgetBar(expense) {
-    var budget = parseFloat(document.getElementById('budgetInput').value);
+    var budgetInput = document.getElementById('budgetInput');
+    var budget = parseFloat(budgetInput.value);
     var fill = document.getElementById('budgetFill');
     var text = document.getElementById('budgetText');
 
@@ -1982,23 +2137,38 @@ function updateBudgetBar(expense) {
 }
 
 function saveBudget() {
-    var val = document.getElementById('budgetInput').value;
+    var budgetInput = document.getElementById('budgetInput');
+    var val = budgetInput.value.trim();
+    
     if (!val || isNaN(val) || parseFloat(val) <= 0) {
         showToast(' הזן סכום תקין', 'error');
         return;
     }
+
+    var budgetNum = parseFloat(val);
     var p = new URLSearchParams();
     p.append('action', 'saveSettings');
     p.append('key', 'budget');
-    p.append('value', val);
+    p.append('value', budgetNum.toString());
+
+    var btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'שומר...';
 
     apiPost(p).then(function(data) {
         if (data.status === 'success') {
             showToast('✅ תקציב נשמר!', 'success');
-            updateBudgetBar(parseFloat(document.getElementById('expenseAmount').textContent.replace(/[₪,]/g, '')) || 0);
+            var expenseText = document.getElementById('expenseAmount').textContent;
+            var expense = parseFloat(expenseText.replace(/[₪,]/g, '')) || 0;
+            updateBudgetBar(expense);
+        } else {
+            throw new Error(data.message);
         }
-    }).catch(function() {
-        showToast('❌ שגיאה בשמירה', 'error');
+    }).catch(function(err) {
+        showToast('❌ שגיאה בשמירה: ' + err.message, 'error');
+    }).finally(function() {
+        btn.disabled = false;
+        btn.textContent = 'שמור';
     });
 }
 
