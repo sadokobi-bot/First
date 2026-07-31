@@ -37,22 +37,50 @@
         body {
             font-family: 'Heebo', sans-serif;
             background: var(--bg-primary);
-            background-image:
-                radial-gradient(ellipse at 20% 50%, var(--bg-gradient-1) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, var(--bg-gradient-2) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 90%, var(--bg-gradient-3) 0%, transparent 50%);
             color: var(--text);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             padding: 20px;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, var(--bg-gradient-1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, var(--bg-gradient-2) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 90%, var(--bg-gradient-3) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
 
         .app {
             width: 100%;
             max-width: 500px;
             animation: fadeInUp 0.6s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes fadeInUp {
@@ -280,6 +308,31 @@
 
         input::placeholder {
             color: var(--text-muted);
+        }
+
+        /* Custom Date Input */
+        .date-input-wrapper {
+            position: relative;
+        }
+
+        .date-input-wrapper input {
+            padding-right: 50px;
+        }
+
+        .date-input-wrapper svg {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            fill: var(--text-muted);
+            pointer-events: none;
+            transition: fill 0.3s ease;
+        }
+
+        .date-input-wrapper input:focus + svg {
+            fill: var(--accent);
         }
 
         /* Type Toggle */
@@ -526,6 +579,63 @@
             text-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
         }
 
+        /* Comparison */
+        .comparison-card {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .comparison-label {
+            font-size: 0.88rem;
+            color: var(--text-sec);
+            font-weight: 500;
+        }
+
+        .comparison-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .comparison-value.positive {
+            color: var(--success);
+        }
+
+        .comparison-value.negative {
+            color: var(--danger);
+        }
+
+        .comparison-bar {
+            height: 6px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .comparison-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+
+        .comparison-fill.positive {
+            background: linear-gradient(90deg, var(--success), #34d399);
+        }
+
+        .comparison-fill.negative {
+            background: linear-gradient(90deg, var(--danger), #f87171);
+        }
+
         /* Budget */
         .budget-header {
             display: flex;
@@ -613,6 +723,52 @@
         .chart-wrap {
             position: relative;
             height: 280px;
+            margin-bottom: 20px;
+        }
+
+        /* Custom Legend */
+        .custom-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: var(--radius-sm);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-xs);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .legend-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .legend-label {
+            font-size: 0.85rem;
+            color: var(--text-sec);
+            font-weight: 500;
+        }
+
+        .legend-amount {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
 
         /* Quick Stats */
@@ -666,6 +822,64 @@
             font-size: 0.78rem;
             color: var(--text-muted);
             margin-top: 4px;
+        }
+
+        /* Insights */
+        .insight-item {
+            padding: 18px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .insight-item:hover {
+            border-color: var(--glass-highlight);
+            transform: translateX(-5px);
+        }
+
+        .insight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.3rem;
+        }
+
+        .insight-icon.positive {
+            background: var(--success-bg);
+        }
+
+        .insight-icon.negative {
+            background: var(--danger-bg);
+        }
+
+        .insight-icon.neutral {
+            background: rgba(99, 102, 241, 0.12);
+        }
+
+        .insight-content {
+            flex: 1;
+        }
+
+        .insight-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .insight-text {
+            font-size: 0.85rem;
+            color: var(--text-sec);
+            line-height: 1.5;
         }
 
         /* Refresh */
@@ -1127,7 +1341,10 @@
             <form id="trackerForm">
                 <div class="form-group">
                     <label>תאריך</label>
-                    <input type="date" id="date" required>
+                    <div class="date-input-wrapper">
+                        <input type="date" id="date" required>
+                        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>סוג תנועה</label>
@@ -1184,6 +1401,12 @@
             </div>
         </div>
 
+        <!-- Comparison -->
+        <div class="card">
+            <div class="section-title">📊 השוואה לחודש קודם</div>
+            <div id="comparisonContainer"></div>
+        </div>
+
         <div class="card">
             <div class="budget-header">
                 <span class="section-title" style="margin:0">🎯 תקציב חודשי</span>
@@ -1201,12 +1424,19 @@
             <div class="chart-wrap">
                 <canvas id="categoryChart"></canvas>
             </div>
+            <div id="customLegend" class="custom-legend"></div>
             <div id="chartEmpty" class="empty" style="display:none;padding:20px">
                 <div class="empty-icon">
                     <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
                 </div>
                 <div class="empty-text">אין הוצאות בחודש זה</div>
             </div>
+        </div>
+
+        <!-- Insights -->
+        <div class="card">
+            <div class="section-title">💡 תובנות חכמות</div>
+            <div id="insightsContainer"></div>
         </div>
 
         <div class="quick-stats">
@@ -1274,7 +1504,7 @@
             <div id="historyFooter" class="history-footer" style="display:none">
                 <div class="hf-item">
                     <span class="hf-label">הכנסות: </span>
-                    <span id="hfIncome" class="hf-val" style="color:var(--success)">₪0</span>
+                    <span id="hfIncome" class="hf-val" style="color:var(--success)">0</span>
                     <span style="margin:0 6px;color:var(--text-muted)">│</span>
                     <span class="hf-label">הוצאות: </span>
                     <span id="hfExpense" class="hf-val" style="color:var(--danger)">₪0</span>
@@ -1360,6 +1590,14 @@ function getCurrentMonth() {
     return ("0" + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear();
 }
 
+function getPreviousMonth(month) {
+    var parts = month.split('-');
+    var m = parseInt(parts[0]) - 1;
+    var y = parseInt(parts[1]);
+    if (m === 0) { m = 12; y--; }
+    return ("0" + m).slice(-2) + "-" + y;
+}
+
 function formatMonth(m) {
     var p = m.split('-');
     return MONTH_NAMES[parseInt(p[0]) - 1] + ' ' + p[1];
@@ -1441,36 +1679,52 @@ function loadInsights() {
     var month = document.getElementById('insightsMonth').value;
     if (!month) return;
 
-    apiGet('summary', {month: month}).then(function(data) {
-        if (data.status !== 'success') return;
-        var bal = data.balance;
-        var balEl = document.getElementById('balanceAmount');
-        balEl.textContent = '₪' + bal.toLocaleString();
-        balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
-        document.getElementById('incomeAmount').textContent = '' + data.income.toLocaleString();
-        document.getElementById('expenseAmount').textContent = '₪' + data.expense.toLocaleString();
-        document.getElementById('txCount').textContent = data.transactions;
+    var prevMonth = getPreviousMonth(month);
 
-        if (data.income > 0) {
-            var rate = Math.round((bal / data.income) * 100);
-            document.getElementById('savingsRate').textContent = rate + '%';
-            document.getElementById('savingsRate').style.color = rate >= 0 ? 'var(--success)' : 'var(--danger)';
-        } else {
-            document.getElementById('savingsRate').textContent = '-';
-        }
+    // Current month summary
+    apiGet('summary', {month: month}).then(function(currentData) {
+        if (currentData.status !== 'success') return;
 
-        updateBudgetBar(data.expense);
+        // Previous month summary
+        apiGet('summary', {month: prevMonth}).then(function(prevData) {
+            var prevIncome = prevData.status === 'success' ? prevData.income : 0;
+            var prevExpense = prevData.status === 'success' ? prevData.expense : 0;
+            var prevBalance = prevData.status === 'success' ? prevData.balance : 0;
+
+            var bal = currentData.balance;
+            var balEl = document.getElementById('balanceAmount');
+            balEl.textContent = '₪' + bal.toLocaleString();
+            balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
+            document.getElementById('incomeAmount').textContent = '₪' + currentData.income.toLocaleString();
+            document.getElementById('expenseAmount').textContent = '₪' + currentData.expense.toLocaleString();
+            document.getElementById('txCount').textContent = currentData.transactions;
+
+            if (currentData.income > 0) {
+                var rate = Math.round((bal / currentData.income) * 100);
+                document.getElementById('savingsRate').textContent = rate + '%';
+                document.getElementById('savingsRate').style.color = rate >= 0 ? 'var(--success)' : 'var(--danger)';
+            } else {
+                document.getElementById('savingsRate').textContent = '-';
+            }
+
+            updateBudgetBar(currentData.expense);
+            renderComparison(currentData, prevData);
+            generateInsights(currentData, prevData);
+        });
     });
 
+    // Category breakdown
     apiGet('categorySummary', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         var cats = data.categories;
         var canvas = document.getElementById('categoryChart');
         var emptyEl = document.getElementById('chartEmpty');
+        var legendEl = document.getElementById('customLegend');
 
         if (cats.length === 0) {
             canvas.style.display = 'none';
             emptyEl.style.display = 'block';
+            legendEl.style.display = 'none';
             document.getElementById('topCat').textContent = '-';
             document.getElementById('topCatAmt').textContent = '-';
             document.getElementById('avgDaily').textContent = '-';
@@ -1480,6 +1734,7 @@ function loadInsights() {
 
         canvas.style.display = 'block';
         emptyEl.style.display = 'none';
+        legendEl.style.display = 'flex';
 
         document.getElementById('topCat').textContent = cats[0].category;
         document.getElementById('topCatAmt').textContent = '₪' + cats[0].amount.toLocaleString();
@@ -1490,7 +1745,23 @@ function loadInsights() {
         var now = new Date();
         var daysPassed = (now.getMonth() + 1 === mNum && now.getFullYear() === yNum) ? now.getDate() : daysInMonth;
         var totalExp = cats.reduce(function(s, c) { return s + c.amount; }, 0);
-        document.getElementById('avgDaily').textContent = '₪' + (daysPassed > 0 ? (totalExp / daysPassed).toFixed(0) : '0');
+        document.getElementById('avgDaily').textContent = '' + (daysPassed > 0 ? (totalExp / daysPassed).toFixed(0) : '0');
+
+        // Render custom legend
+        legendEl.innerHTML = '';
+        cats.forEach(function(cat, idx) {
+            var pct = ((cat.amount / totalExp) * 100).toFixed(1);
+            var item = document.createElement('div');
+            item.className = 'legend-item';
+            item.innerHTML = `
+                <div class="legend-color" style="background: ${CHART_COLORS[idx % CHART_COLORS.length]}"></div>
+                <div>
+                    <div class="legend-label">${cat.category}</div>
+                    <div class="legend-amount">₪${cat.amount.toLocaleString()} (${pct}%)</div>
+                </div>
+            `;
+            legendEl.appendChild(item);
+        });
 
         if (categoryChart) categoryChart.destroy();
         categoryChart = new Chart(canvas.getContext('2d'), {
@@ -1509,14 +1780,7 @@ function loadInsights() {
                 maintainAspectRatio: false,
                 cutout: '62%',
                 plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            color: '#94a3b8', padding: 14,
-                            font: { family: 'Heebo', size: 12 },
-                            usePointStyle: true, pointStyleWidth: 10
-                        }
-                    },
+                    legend: { display: false },
                     tooltip: {
                         backgroundColor: 'rgba(15,23,42,0.95)',
                         titleFont: { family: 'Heebo' },
@@ -1540,6 +1804,161 @@ function loadInsights() {
             document.getElementById('budgetInput').value = data.settings.budget;
         }
     });
+}
+
+function renderComparison(current, prev) {
+    var container = document.getElementById('comparisonContainer');
+    
+    if (prev.status !== 'success' || prev.transactions === 0) {
+        container.innerHTML = '<div class="empty" style="padding:20px"><div class="empty-text">אין נתונים מהחודש הקודם להשוואה</div></div>';
+        return;
+    }
+
+    var incomeChange = prev.income > 0 ? ((current.income - prev.income) / prev.income * 100) : 0;
+    var expenseChange = prev.expense > 0 ? ((current.expense - prev.expense) / prev.expense * 100) : 0;
+    var balanceChange = prev.balance !== 0 ? ((current.balance - prev.balance) / Math.abs(prev.balance) * 100) : 0;
+
+    var html = '';
+
+    // Income comparison
+    html += '<div class="comparison-card">';
+    html += '<div class="comparison-header">';
+    html += '<span class="comparison-label">הכנסות</span>';
+    html += '<span class="comparison-value ' + (incomeChange >= 0 ? 'positive' : 'negative') + '">';
+    html += (incomeChange >= 0 ? '+' : '') + incomeChange.toFixed(1) + '%</span>';
+    html += '</div>';
+    html += '<div class="comparison-bar">';
+    html += '<div class="comparison-fill ' + (incomeChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(incomeChange), 100) + '%"></div>';
+    html += '</div>';
+    html += '</div>';
+
+    // Expense comparison
+    html += '<div class="comparison-card">';
+    html += '<div class="comparison-header">';
+    html += '<span class="comparison-label">הוצאות</span>';
+    html += '<span class="comparison-value ' + (expenseChange <= 0 ? 'positive' : 'negative') + '">';
+    html += (expenseChange >= 0 ? '+' : '') + expenseChange.toFixed(1) + '%</span>';
+    html += '</div>';
+    html += '<div class="comparison-bar">';
+    html += '<div class="comparison-fill ' + (expenseChange <= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(expenseChange), 100) + '%"></div>';
+    html += '</div>';
+    html += '</div>';
+
+    // Balance comparison
+    html += '<div class="comparison-card">';
+    html += '<div class="comparison-header">';
+    html += '<span class="comparison-label">מאזן נטו</span>';
+    html += '<span class="comparison-value ' + (balanceChange >= 0 ? 'positive' : 'negative') + '">';
+    html += (balanceChange >= 0 ? '+' : '') + balanceChange.toFixed(1) + '%</span>';
+    html += '</div>';
+    html += '<div class="comparison-bar">';
+    html += '<div class="comparison-fill ' + (balanceChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(balanceChange), 100) + '%"></div>';
+    html += '</div>';
+    html += '</div>';
+
+    container.innerHTML = html;
+}
+
+function generateInsights(current, prev) {
+    var container = document.getElementById('insightsContainer');
+    var insights = [];
+
+    // Savings rate insight
+    if (current.income > 0) {
+        var savingsRate = (current.balance / current.income) * 100;
+        if (savingsRate > 20) {
+            insights.push({
+                icon: '',
+                type: 'positive',
+                title: 'כל הכבוד! אתה חוסך יפה',
+                text: 'אתה חוסך ' + savingsRate.toFixed(0) + '% מההכנסה שלך. זה מעולה!'
+            });
+        } else if (savingsRate > 0) {
+            insights.push({
+                icon: '💪',
+                type: 'neutral',
+                title: 'אתה בדרך הנכונה',
+                text: 'אתה חוסך ' + savingsRate.toFixed(0) + '% מההכנסה. נסה להגיע ל-20% לפחות.'
+            });
+        } else {
+            insights.push({
+                icon: '️',
+                type: 'negative',
+                title: 'ההוצאות עולות על ההכנסות',
+                text: 'אתה מוציא יותר ממה שאתה מרוויח. כדאי לבדוק איפה אפשר לקצץ.'
+            });
+        }
+    }
+
+    // Month over month comparison
+    if (prev.status === 'success' && prev.transactions > 0) {
+        var expenseChange = ((current.expense - prev.expense) / prev.expense * 100);
+        if (expenseChange < -10) {
+            insights.push({
+                icon: '📉',
+                type: 'positive',
+                title: 'הוצאות ירדו!',
+                text: 'ההוצאות שלך ירדו ב-' + Math.abs(expenseChange).toFixed(0) + '% לעומת החודש הקודם. מעולה!'
+            });
+        } else if (expenseChange > 10) {
+            insights.push({
+                icon: '📈',
+                type: 'negative',
+                title: 'הוצאות עלו',
+                text: 'ההוצאות שלך עלו ב-' + expenseChange.toFixed(0) + '% לעומת החודש הקודם. כדאי לשים לב.'
+            });
+        }
+    }
+
+    // Budget warning
+    var budget = parseFloat(document.getElementById('budgetInput').value);
+    if (budget && budget > 0) {
+        var budgetPct = (current.expense / budget) * 100;
+        if (budgetPct > 90) {
+            insights.push({
+                icon: '🚨',
+                type: 'negative',
+                title: 'קרוב לתקציב!',
+                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ' + (budget - current.expense).toLocaleString()
+            });
+        } else if (budgetPct > 70) {
+            insights.push({
+                icon: '⚡',
+                type: 'neutral',
+                title: 'שליטה בתקציב',
+                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + (budget - current.expense).toLocaleString() נותרו.'
+            });
+        }
+    }
+
+    // Transaction count insight
+    if (current.transactions > 30) {
+        insights.push({
+            icon: '📊',
+            type: 'neutral',
+            title: 'הרבה תנועות החודש',
+            text: 'ביצעת ' + current.transactions + ' תנועות החודש. אולי כדאי לבדוק אם יש הוצאות מיותרות.'
+        });
+    }
+
+    // Render insights
+    if (insights.length === 0) {
+        container.innerHTML = '<div class="empty" style="padding:20px"><div class="empty-text">הוסף תנועות כדי לקבל תובנות חכמות</div></div>';
+        return;
+    }
+
+    var html = '';
+    insights.forEach(function(insight) {
+        html += '<div class="insight-item">';
+        html += '<div class="insight-icon ' + insight.type + '">' + insight.icon + '</div>';
+        html += '<div class="insight-content">';
+        html += '<div class="insight-title">' + insight.title + '</div>';
+        html += '<div class="insight-text">' + insight.text + '</div>';
+        html += '</div>';
+        html += '</div>';
+    });
+
+    container.innerHTML = html;
 }
 
 function updateBudgetBar(expense) {
@@ -1576,7 +1995,7 @@ function saveBudget() {
             updateBudgetBar(parseFloat(document.getElementById('expenseAmount').textContent.replace(/[₪,]/g, '')) || 0);
         }
     }).catch(function() {
-        showToast(' שגיאה בשמירה', 'error');
+        showToast('❌ שגיאה בשמירה', 'error');
     });
 }
 
@@ -1637,7 +2056,7 @@ function renderTransactions(txs, month) {
 
     container.innerHTML = html;
     footer.style.display = 'flex';
-    document.getElementById('hfIncome').textContent = '+' + totalIn.toLocaleString();
+    document.getElementById('hfIncome').textContent = '+₪' + totalIn.toLocaleString();
     document.getElementById('hfExpense').textContent = '-₪' + totalOut.toLocaleString();
     var net = totalIn - totalOut;
     var netEl = document.getElementById('hfNet');
