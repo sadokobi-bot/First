@@ -1598,6 +1598,7 @@ let categoryChart = null;
 let dailyChart = null;
 let pendingDeleteId = null;
 let pendingDeleteMonth = null;
+let currentBudget = 0; // שמירת התקציב בזיכרון
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('date').valueAsDate = new Date();
@@ -1727,24 +1728,36 @@ document.getElementById('trackerForm').addEventListener('submit', function(e) {
     });
 });
 
+// ═══════════════════════════════════════
+//  טעינת תובנות - סדר מתוקן
+// ═══════════════════════════════════════
 function loadInsights() {
     var month = document.getElementById('insightsMonth').value;
     if (!month) return;
 
     var prevMonth = getPreviousMonth(month);
 
-    // Load transactions for daily chart
+    // שלב 1: טעינת תקציב קודם (חשוב!)
+    apiGet('settings').then(function(settingsData) {
+        if (settingsData.status === 'success' && settingsData.settings.budget) {
+            currentBudget = parseFloat(settingsData.settings.budget);
+            document.getElementById('budgetInput').value = currentBudget;
+        }
+    }).catch(function() {
+        console.error('Failed to load budget');
+    });
+
+    // שלב 2: טעינת תנועות לגרף יומי
     apiGet('transactions', {month: month}).then(function(txData) {
         if (txData.status === 'success') {
             renderDailyChart(txData.transactions, month);
         }
     });
 
-    // Current month summary
+    // שלב 3: טעינת סיכום חודשי + חודש קודם
     apiGet('summary', {month: month}).then(function(currentData) {
         if (currentData.status !== 'success') return;
 
-        // Previous month summary
         apiGet('summary', {month: prevMonth}).then(function(prevData) {
             var bal = currentData.balance;
             var balEl = document.getElementById('balanceAmount');
@@ -1762,13 +1775,17 @@ function loadInsights() {
                 document.getElementById('savingsRate').textContent = '-';
             }
 
-            updateBudgetBar(currentData.expense);
+            // עדכון בר התקציב - עכשיו ה-budget כבר נטען
+            setTimeout(function() {
+                updateBudgetBar(currentData.expense);
+            }, 100);
+
             renderComparison(currentData, prevData);
             generateInsights(currentData, prevData);
         });
     });
 
-    // Category breakdown
+    // שלב 4: טעינת קטגוריות
     apiGet('categorySummary', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         var cats = data.categories;
@@ -1848,13 +1865,6 @@ function loadInsights() {
             }
         });
     });
-
-    // Load budget
-    apiGet('settings').then(function(data) {
-        if (data.status === 'success' && data.settings.budget) {
-            document.getElementById('budgetInput').value = data.settings.budget;
-        }
-    });
 }
 
 function renderDailyChart(transactions, month) {
@@ -1865,7 +1875,6 @@ function renderDailyChart(transactions, month) {
     var now = new Date();
     var daysPassed = (now.getMonth() + 1 === mNum && now.getFullYear() === yNum) ? now.getDate() : daysInMonth;
 
-    // Aggregate expenses by day
     var dailyExpenses = {};
     for (var i = 1; i <= daysPassed; i++) {
         dailyExpenses[i] = 0;
@@ -1888,16 +1897,15 @@ function renderDailyChart(transactions, month) {
         data.push(dailyExpenses[i] || 0);
     }
 
-    // Calculate stats
     var totalExp = data.reduce(function(a, b) { return a + b; }, 0);
     var avg = daysPassed > 0 ? (totalExp / daysPassed) : 0;
     var max = Math.max.apply(null, data);
-    var min = Math.min.apply(null, data.filter(function(v) { return v > 0; }));
-    if (!isFinite(min)) min = 0;
+    var minData = data.filter(function(v) { return v > 0; });
+    var min = minData.length > 0 ? Math.min.apply(null, minData) : 0;
 
     document.getElementById('dailyAvg').textContent = '₪' + avg.toFixed(0);
     document.getElementById('dailyMax').textContent = '₪' + max.toLocaleString();
-    document.getElementById('dailyMin').textContent = '₪' + min.toLocaleString();
+    document.getElementById('dailyMin').textContent = '' + min.toLocaleString();
 
     if (dailyChart) dailyChart.destroy();
     dailyChart = new Chart(canvas.getContext('2d'), {
@@ -1961,7 +1969,7 @@ function renderDailyChart(transactions, month) {
                         color: '#64748b',
                         font: { family: 'Heebo', size: 11 },
                         callback: function(value) {
-                            return '' + value;
+                            return '₪' + value;
                         }
                     },
                     beginAtZero: true
@@ -2070,22 +2078,28 @@ function generateInsights(current, prev) {
         }
     }
 
-    var budget = parseFloat(document.getElementById('budgetInput').value);
-    if (budget && budget > 0) {
-        var budgetPct = (current.expense / budget) * 100;
+    if (currentBudget > 0) {
+        var budgetPct = (current.expense / currentBudget) * 100;
         if (budgetPct > 90) {
             insights.push({
                 icon: '🚨',
                 type: 'negative',
                 title: 'קרוב לתקציב!',
-                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ₪' + (budget - current.expense).toLocaleString()
+                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ₪' + Math.max(0, currentBudget - current.expense).toLocaleString()
             });
         } else if (budgetPct > 70) {
             insights.push({
                 icon: '⚡',
                 type: 'neutral',
                 title: 'שליטה בתקציב',
-                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + (budget - current.expense).toLocaleString() + ' נותרו.'
+                text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() + ' נותרו.'
+            });
+        } else if (budgetPct > 0) {
+            insights.push({
+                icon: '✅',
+                type: 'positive',
+                title: 'תקציב בשליטה',
+                text: 'השתמשת רק ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר לך ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() + ' להמשך החודש.'
             });
         }
     }
@@ -2119,29 +2133,30 @@ function generateInsights(current, prev) {
 }
 
 function updateBudgetBar(expense) {
-    var budgetInput = document.getElementById('budgetInput');
-    var budget = parseFloat(budgetInput.value);
     var fill = document.getElementById('budgetFill');
     var text = document.getElementById('budgetText');
 
-    if (!budget || budget <= 0) {
+    if (!currentBudget || currentBudget <= 0) {
         fill.style.width = '0%';
         text.textContent = 'לא הוגדר';
         return;
     }
 
-    var pct = Math.min((expense / budget) * 100, 100);
+    var pct = Math.min((expense / currentBudget) * 100, 100);
     fill.style.width = pct + '%';
     fill.className = 'budget-fill' + (pct > 90 ? ' over' : pct > 70 ? ' warn' : '');
-    text.textContent = '₪' + expense.toLocaleString() + ' / ₪' + budget.toLocaleString() + ' (' + Math.round(pct) + '%)';
+    text.textContent = '' + expense.toLocaleString() + ' / ₪' + currentBudget.toLocaleString() + ' (' + Math.round(pct) + '%)';
 }
 
+// ═══════════════════════════════════════
+//  שמירת תקציב - מתוקן
+// ═══════════════════════════════════════
 function saveBudget() {
     var budgetInput = document.getElementById('budgetInput');
     var val = budgetInput.value.trim();
     
     if (!val || isNaN(val) || parseFloat(val) <= 0) {
-        showToast(' הזן סכום תקין', 'error');
+        showToast('❌ הזן סכום תקין', 'error');
         return;
     }
 
@@ -2151,24 +2166,40 @@ function saveBudget() {
     p.append('key', 'budget');
     p.append('value', budgetNum.toString());
 
-    var btn = event.target;
+    var btn = document.querySelector('.budget-save-btn');
+    var originalText = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'שומר...';
 
     apiPost(p).then(function(data) {
         if (data.status === 'success') {
-            showToast('✅ תקציב נשמר!', 'success');
+            // עדכון התקציב בזיכרון
+            currentBudget = budgetNum;
+            
+            // עדכון הבר מיידית
             var expenseText = document.getElementById('expenseAmount').textContent;
-            var expense = parseFloat(expenseText.replace(/[₪,]/g, '')) || 0;
+            var expense = parseFloat(expenseText.replace(/[,]/g, '')) || 0;
             updateBudgetBar(expense);
+            
+            // רענון התובנות עם התקציב החדש
+            var month = document.getElementById('insightsMonth').value;
+            if (month) {
+                apiGet('summary', {month: month}).then(function(currentData) {
+                    if (currentData.status === 'success') {
+                        generateInsights(currentData, {status: 'success', transactions: 0});
+                    }
+                });
+            }
+            
+            showToast('✅ תקציב נשמר: ₪' + budgetNum.toLocaleString(), 'success');
         } else {
             throw new Error(data.message);
         }
     }).catch(function(err) {
-        showToast('❌ שגיאה בשמירה: ' + err.message, 'error');
+        showToast(' שגיאה בשמירה: ' + err.message, 'error');
     }).finally(function() {
         btn.disabled = false;
-        btn.textContent = 'שמור';
+        btn.textContent = originalText;
     });
 }
 
