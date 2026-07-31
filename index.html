@@ -220,7 +220,7 @@
             <div class="form-group">
                 <label for="category">קטגוריה</label>
                 <select id="category" required>
-                    <!-- יאוכלס דרך JS -->
+                    <!-- יאוכלס דינמית -->
                 </select>
             </div>
 
@@ -242,7 +242,7 @@
     <!-- Tab 2: Insights -->
     <div id="insightsTab" class="tab-content">
         <div class="insight-card">
-            <h3>מאזן נוכחי</h3>
+            <h3>מאזן נוכחי (לפי חודש)</h3>
             <p id="balanceAmount" class="amount">₪0</p>
         </div>
         
@@ -262,7 +262,8 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRAxijPLxVzGSSbtotHHI6WonIYIXFzqWiOKeTO2O3txz0ceUg9qzRyfSQz_07qIPz/exec';
+    // הלינק המעודכן שלך לגוגל סקריפט
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLTwEFvjnIH6MGrvrBfB7obqvlGA3JFQ8_R5F9_Tjc7kOweu5fm9QZtqD06e657wyW/exec';
 
     const categories = {
         'הוצאה': [
@@ -310,6 +311,7 @@
         });
     }
 
+    // פונקציית השליחה המעודכנת למניעת שגיאות CORS
     document.getElementById('trackerForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -320,37 +322,37 @@
         submitBtn.innerText = 'מעבד...';
         statusMsg.classList.remove('show-status');
         
-        const data = {
-            date: document.getElementById('date').value,
-            type: document.getElementById('type').value,
-            category: document.getElementById('category').value,
-            amount: document.getElementById('amount').value,
-            description: document.getElementById('description').value
-        };
+        const params = new URLSearchParams();
+        params.append('date', document.getElementById('date').value);
+        params.append('type', document.getElementById('type').value);
+        params.append('category', document.getElementById('category').value);
+        params.append('amount', document.getElementById('amount').value);
+        params.append('description', document.getElementById('description').value);
 
-        // כאן הוספנו את ה- no-cors שעוקף את חסימות הדפדפן
         fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors', 
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(data)
+            body: params
         })
-        .then(() => {
-            // ב-no-cors אנחנו לא יכולים לקרוא את תשובת השרת, אז מניחים הצלחה אם לא קרס
-            statusMsg.innerText = 'התנועה תועדה בהצלחה!';
-            statusMsg.style.color = 'var(--success)';
-            statusMsg.classList.add('show-status');
-            
-            document.getElementById('amount').value = '';
-            document.getElementById('description').value = '';
-            
-            setTimeout(() => statusMsg.classList.remove('show-status'), 3000);
+        .then(response => response.json())
+        .then(result => {
+            if(result.status === 'success') {
+                statusMsg.innerText = 'התנועה תועדה בהצלחה!';
+                statusMsg.style.color = 'var(--success)';
+                statusMsg.classList.add('show-status');
+                
+                document.getElementById('amount').value = '';
+                document.getElementById('description').value = '';
+                
+                setTimeout(() => statusMsg.classList.remove('show-status'), 3000);
+            } else {
+                throw new Error(result.message);
+            }
         })
         .catch(error => {
-            statusMsg.innerText = 'שגיאת רשת. בדוק את החיבור.';
+            statusMsg.innerText = 'שגיאה. ודא שהגדרת Anyone בגוגל סקריפט.';
             statusMsg.style.color = 'var(--error)';
             statusMsg.classList.add('show-status');
-            console.error(error);
+            console.error('Error:', error);
         })
         .finally(() => {
             submitBtn.disabled = false;
@@ -358,6 +360,7 @@
         });
     });
 
+    // פונקציית משיכת הנתונים לדאשבורד
     function fetchInsights() {
         const balanceEl = document.getElementById('balanceAmount');
         const incomeEl = document.getElementById('incomeAmount');
@@ -365,7 +368,6 @@
         
         balanceEl.innerText = 'טוען...';
         
-        // הבאת נתונים באמצעות קריאת GET רגילה
         fetch(SCRIPT_URL)
         .then(response => response.json())
         .then(data => {
