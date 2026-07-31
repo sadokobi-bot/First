@@ -1750,18 +1750,23 @@ function loadInsights() {
 
     var prevMonth = getPreviousMonth(month);
 
-    apiGet('settings').then(function(settingsData) {
+apiGet('settings').then(function(settingsData) {
         if (settingsData.status === 'success') {
-            if (settingsData.settings.budget !== undefined && settingsData.settings.budget !== '') {
-                currentBudget = parseFloat(settingsData.settings.budget);
+            // יצירת מפתח ייחודי לחודש הנוכחי (לדוגמה: budget_07-2026)
+            var monthKey = 'budget_' + month;
+            
+            // בודקים אם קיים תקציב ספציפי לחודש הזה
+            if (settingsData.settings[monthKey] !== undefined && settingsData.settings[monthKey] !== '') {
+                currentBudget = parseFloat(settingsData.settings[monthKey]);
                 document.getElementById('budgetInput').value = currentBudget;
             } else {
+                // אם אין תקציב לחודש הזה, מאפסים את השדה
                 currentBudget = 0;
                 document.getElementById('budgetInput').value = '';
             }
         }
     });
-
+    
     apiGet('transactions', {month: month}).then(function(txData) {
         if (txData.status === 'success') {
             renderDailyChart(txData.transactions, month);
@@ -2210,7 +2215,14 @@ function getDaysLeftInMonth() {
 function saveBudget() {
     var budgetInput = document.getElementById('budgetInput');
     var val = budgetInput.value.trim();
+    // לוקחים את החודש שנבחר כרגע במסך התובנות
+    var month = document.getElementById('insightsMonth').value; 
     
+    if (!month) {
+        showToast('❌ בחר חודש קודם', 'error');
+        return;
+    }
+
     if (!val || isNaN(val) || parseFloat(val) <= 0) {
         showToast('❌ הזן סכום תקין', 'error');
         return;
@@ -2219,7 +2231,8 @@ function saveBudget() {
     var budgetNum = parseFloat(val);
     var p = new URLSearchParams();
     p.append('action', 'saveSettings');
-    p.append('key', 'budget');
+    // שומרים את המפתח יחד עם ציון החודש
+    p.append('key', 'budget_' + month); 
     p.append('value', budgetNum.toString());
 
     var btn = document.querySelector('.budget-save-btn');
@@ -2233,7 +2246,6 @@ function saveBudget() {
             updateBudgetBar(currentExpense);
             updateBudgetRing(currentExpense);
             
-            var month = document.getElementById('insightsMonth').value;
             if (month) {
                 apiGet('summary', {month: month}).then(function(currentData) {
                     if (currentData.status === 'success') {
@@ -2243,9 +2255,9 @@ function saveBudget() {
                 });
             }
             
-            showToast('✅ תקציב נשמר: ₪' + budgetNum.toLocaleString(), 'success');
+            // הודעה מותאמת אישית עם שם החודש
+            showToast('✅ תקציב נשמר לחודש ' + formatMonth(month) + ': ₪' + budgetNum.toLocaleString(), 'success');
             
-            // Confetti effect for good budget setting
             if (currentExpense < budgetNum * 0.7) {
                 launchConfetti();
             }
@@ -2259,7 +2271,7 @@ function saveBudget() {
         btn.textContent = originalText;
     });
 }
-
+    
 function launchConfetti() {
     const colors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
     for (let i = 0; i < 30; i++) {
