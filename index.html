@@ -62,7 +62,7 @@ body {
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.35;
+    opacity: 0.4;
     animation: float 20s ease-in-out infinite;
 }
 
@@ -70,6 +70,7 @@ body {
     width: 400px; height: 400px;
     background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent 70%);
     top: -100px; right: -100px;
+    animation-delay: 0s;
 }
 
 .bg-orb-2 {
@@ -139,7 +140,7 @@ body {
 /* Header */
 .header {
     text-align: center;
-    padding: 24px 0 20px;
+    padding: 20px 0 24px;
     position: relative;
 }
 
@@ -159,12 +160,12 @@ body {
 }
 
 .header h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 14px;
     background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -174,9 +175,9 @@ body {
 }
 
 .header-icon {
-    width: 44px; height: 44px;
+    width: 46px; height: 46px;
     background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    border-radius: 13px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -189,62 +190,15 @@ body {
     50% { transform: translateY(-4px); }
 }
 
-.header-icon svg { width: 24px; height: 24px; fill: white; }
+.header-icon svg { width: 26px; height: 26px; fill: white; }
 
 .header p {
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     margin-top: 8px;
     position: relative;
     z-index: 1;
 }
-
-/* Month Selector Bar */
-.month-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-sm);
-    margin-bottom: 16px;
-}
-
-.month-bar label {
-    font-size: 0.85rem;
-    color: var(--text-sec);
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.month-bar select {
-    flex: 1;
-    padding: 10px 14px;
-    font-size: 0.9rem;
-}
-
-.month-nav-btn {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: rgba(15, 23, 42, 0.5);
-    border: 1px solid var(--glass-border);
-    color: var(--text-sec);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.month-nav-btn:hover {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-}
-
-.month-nav-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
 /* Tabs */
 .tabs {
@@ -253,6 +207,7 @@ body {
     padding: 5px;
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     margin-bottom: 20px;
@@ -267,14 +222,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
-    padding: 13px 8px;
+    gap: 8px;
+    padding: 13px 10px;
     background: transparent;
     border: none;
     border-radius: var(--radius-sm);
     color: var(--text-sec);
     font-family: inherit;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -293,7 +248,7 @@ body {
     z-index: -1;
 }
 
-.tab-btn:hover { color: var(--text); transform: translateY(-1px); }
+.tab-btn:hover { color: var(--text); transform: translateY(-2px); }
 
 .tab-btn.active {
     color: #fff;
@@ -303,14 +258,14 @@ body {
 .tab-btn.active::before { opacity: 1; }
 
 .tab-btn svg {
-    width: 17px; height: 17px;
+    width: 18px; height: 18px;
     fill: currentColor;
     position: relative;
     z-index: 1;
     transition: transform 0.3s ease;
 }
 
-.tab-btn:hover svg { transform: scale(1.1); }
+.tab-btn:hover svg { transform: scale(1.15) rotate(5deg); }
 .tab-btn span { position: relative; z-index: 1; }
 
 /* Tab Content */
@@ -347,25 +302,26 @@ body {
 
 .card:hover {
     border-color: var(--glass-border-hover);
-    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
 }
 
-/* Hero Balance Card */
-.hero-card {
+/* Balance */
+.balance-card {
     text-align: center;
     padding: 32px 24px;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.05));
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(16, 185, 129, 0.04));
     border-color: rgba(99, 102, 241, 0.2);
     position: relative;
     overflow: hidden;
 }
 
-.hero-card::before {
+.balance-card::before {
     content: '';
     position: absolute;
     top: -50%; left: -50%;
     width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
     animation: rotate 25s linear infinite;
 }
 
@@ -374,16 +330,16 @@ body {
     to { transform: rotate(360deg); }
 }
 
-.hero-label {
-    font-size: 0.85rem;
+.balance-label {
+    font-size: 0.9rem;
     color: var(--text-sec);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     position: relative;
     z-index: 1;
     font-weight: 500;
 }
 
-.hero-amount {
+.balance-amount {
     font-size: 3rem;
     font-weight: 800;
     letter-spacing: -1.5px;
@@ -393,155 +349,76 @@ body {
     font-variant-numeric: tabular-nums;
 }
 
-.hero-amount.positive {
+.balance-amount.positive {
     color: var(--success);
     text-shadow: 0 0 40px rgba(16, 185, 129, 0.4);
 }
 
-.hero-amount.negative {
+.balance-amount.negative {
     color: var(--danger);
     text-shadow: 0 0 40px rgba(239, 68, 68, 0.4);
 }
 
-.hero-sub {
-    font-size: 0.82rem;
+.balance-sub {
+    font-size: 0.85rem;
     color: var(--text-muted);
-    margin-top: 6px;
+    margin-top: 8px;
     position: relative;
     z-index: 1;
 }
 
-/* Quick Stats Row */
-.quick-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-}
+/* Stats Grid */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
 
-.qr-card {
-    padding: 18px 16px;
+.stat-card {
     text-align: center;
+    padding: 22px 16px;
     position: relative;
     overflow: hidden;
 }
 
-.qr-card::after {
+.stat-card::before {
     content: '';
     position: absolute;
-    bottom: 0; left: 0; right: 0;
+    top: 0; left: 0; right: 0;
     height: 3px;
-    border-radius: 0 0 3px 3px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.qr-card.income-card::after { background: linear-gradient(90deg, var(--success), #34d399); }
-.qr-card.expense-card::after { background: linear-gradient(90deg, var(--danger), #f87171); }
+.stat-card:hover::before { opacity: 1; }
 
-.qr-icon {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 10px;
-}
+.stat-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
 
-.qr-icon svg { width: 18px; height: 18px; fill: currentColor; }
-.qr-icon.income { background: rgba(16, 185, 129, 0.12); color: var(--success); }
-.qr-icon.expense { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
-
-.qr-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
-.qr-value { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
-.qr-value.income { color: var(--success); }
-.qr-value.expense { color: var(--danger); }
-
-/* Budget Progress Section */
-.budget-hero {
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(99, 102, 241, 0.05));
-    border-color: rgba(168, 85, 247, 0.2);
-}
-
-.budget-hero-inner {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.budget-ring-wrap {
-    position: relative;
-    width: 110px; height: 110px;
-    flex-shrink: 0;
-}
-
-.budget-ring-wrap svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-.budget-ring-wrap circle { fill: none; stroke-width: 8; stroke-linecap: round; }
-.budget-ring-wrap .ring-bg { stroke: rgba(15, 23, 42, 0.6); }
-
-.budget-ring-wrap .ring-progress {
-    transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: drop-shadow(0 0 6px var(--accent-glow));
-}
-
-.budget-ring-value {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--text);
+.stat-value {
+    font-size: 1.7rem;
+    font-weight: 700;
+    transition: transform 0.3s ease;
     font-variant-numeric: tabular-nums;
 }
 
-.budget-info { flex: 1; }
-.budget-info .bi-title { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px; }
-.budget-info .bi-amount { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
-.budget-info .bi-remaining { font-size: 0.78rem; color: var(--text-sec); margin-bottom: 4px; }
-.budget-info .bi-daily { font-size: 0.75rem; color: var(--text-muted); }
+.stat-value:hover { transform: scale(1.05); }
+.stat-value.income { color: var(--success); text-shadow: 0 0 20px var(--success-glow); }
+.stat-value.expense { color: var(--danger); text-shadow: 0 0 20px var(--danger-glow); }
 
-.budget-set-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--glass-border);
-}
-
-.budget-set-row input { flex: 1; padding: 12px 14px; font-size: 0.9rem; }
-
-.budget-set-btn {
-    padding: 12px 18px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    border: none;
-    border-radius: var(--radius-sm);
-    color: #fff;
-    font-family: inherit;
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    box-shadow: 0 4px 15px var(--accent-glow);
-}
-
-.budget-set-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow); }
-
-/* Health Score */
+/* Financial Health Score */
 .health-card {
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.06), rgba(99, 102, 241, 0.04));
-    border-color: rgba(168, 85, 247, 0.15);
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(99, 102, 241, 0.05));
+    border-color: rgba(168, 85, 247, 0.2);
 }
 
 .health-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: 20px;
 }
 
-.health-title { font-size: 0.95rem; font-weight: 600; }
+.health-title { font-size: 1rem; font-weight: 600; color: var(--text); }
 
 .health-score {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 800;
     background: linear-gradient(135deg, var(--purple), var(--accent-light));
     -webkit-background-clip: text;
@@ -549,7 +426,7 @@ body {
     background-clip: text;
 }
 
-.health-bar-bg {
+.health-bar-container {
     height: 8px;
     background: rgba(15, 23, 42, 0.6);
     border-radius: 4px;
@@ -557,7 +434,7 @@ body {
     margin-bottom: 12px;
 }
 
-.health-bar-fill {
+.health-bar {
     height: 100%;
     border-radius: 4px;
     transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
@@ -565,7 +442,7 @@ body {
     position: relative;
 }
 
-.health-bar-fill::after {
+.health-bar::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -581,14 +458,15 @@ body {
 .health-factors {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    gap: 8px;
+    margin-top: 14px;
 }
 
 .health-factor {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: var(--text-sec);
     padding: 6px 10px;
     background: rgba(15, 23, 42, 0.4);
@@ -605,61 +483,79 @@ body {
 .health-factor .dot.warn { background: var(--warning); box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); }
 .health-factor .dot.bad { background: var(--danger); box-shadow: 0 0 8px var(--danger-glow); }
 
-/* Forecast Card */
-.forecast-card {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.04));
-    border-color: rgba(99, 102, 241, 0.15);
-}
-
-.forecast-inner {
+/* Progress Ring */
+.progress-ring-container {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: var(--radius-sm);
+    margin-bottom: 14px;
 }
 
-.forecast-icon-wrap {
-    width: 50px; height: 50px;
-    border-radius: 14px;
-    background: rgba(99, 102, 241, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
+.progress-ring {
+    position: relative;
+    width: 90px; height: 90px;
     flex-shrink: 0;
 }
 
-.forecast-info { flex: 1; }
-.forecast-label { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 2px; }
-.forecast-value {
-    font-size: 1.8rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent-light), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.progress-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+.progress-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+.progress-ring .bg { stroke: rgba(15, 23, 42, 0.6); }
+
+.progress-ring .progress {
+    stroke: url(#gradient);
+    transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 4px var(--accent-glow));
+}
+
+.progress-ring .value {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
     font-variant-numeric: tabular-nums;
 }
-.forecast-status { font-size: 0.78rem; margin-top: 4px; }
 
-/* Charts */
-.chart-section-title {
-    font-size: 0.95rem;
-    color: var(--text-sec);
+.progress-info { flex: 1; }
+.progress-info .label { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 4px; }
+.progress-info .amount { font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+.progress-info .sub { font-size: 0.78rem; color: var(--text-muted); }
+
+/* Budget */
+.budget-input-row { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+.budget-input-row input { flex: 1; }
+
+.budget-save-btn {
+    padding: 15px 22px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.92rem;
     font-weight: 600;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px var(--accent-glow);
 }
 
-.chart-wrap { position: relative; height: 240px; margin-bottom: 16px; }
+.budget-save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow); }
+
+/* Chart */
+.chart-title { font-size: 1rem; color: var(--text-sec); margin-bottom: 16px; font-weight: 600; }
+.chart-wrap { position: relative; height: 260px; margin-bottom: 20px; }
 
 .custom-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
     justify-content: center;
-    padding: 12px;
+    padding: 14px;
     background: rgba(15, 23, 42, 0.4);
     border-radius: var(--radius-sm);
 }
@@ -667,8 +563,8 @@ body {
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
+    gap: 8px;
+    padding: 8px 12px;
     background: rgba(255, 255, 255, 0.04);
     border-radius: var(--radius-xs);
     transition: all 0.3s ease;
@@ -678,60 +574,84 @@ body {
 
 .legend-item:hover {
     background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     border-color: var(--glass-border-hover);
 }
 
-.legend-color { width: 8px; height: 8px; border-radius: 50%; }
-.legend-label { font-size: 0.78rem; color: var(--text-sec); font-weight: 500; }
-.legend-amount { font-size: 0.7rem; color: var(--text-muted); }
+.legend-color { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
+.legend-label { font-size: 0.82rem; color: var(--text-sec); font-weight: 500; }
+.legend-amount { font-size: 0.72rem; color: var(--text-muted); }
 
-/* Daily Stats */
-.daily-stats-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-top: 14px;
-}
+/* Quick Stats */
+.quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
 
-.ds-item {
-    text-align: center;
-    padding: 12px 8px;
-    background: rgba(15, 23, 42, 0.5);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xs);
-}
-
-.ds-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
-.ds-val { font-size: 0.95rem; font-weight: 700; font-variant-numeric: tabular-nums; }
-
-/* Insights */
-.insight-item {
-    padding: 14px;
+.q-stat {
+    padding: 18px;
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
-    margin-bottom: 8px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.q-stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.q-stat:hover { border-color: var(--glass-border-hover); transform: translateY(-2px); }
+.q-stat:hover::before { opacity: 1; }
+
+.q-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.q-stat-label svg { width: 14px; height: 14px; fill: currentColor; }
+.q-stat-val { font-size: 1.2rem; font-weight: 700; transition: all 0.3s ease; font-variant-numeric: tabular-nums; }
+.q-stat:hover .q-stat-val { color: var(--accent-light); }
+.q-stat-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+
+/* Insight Item */
+.insight-item {
+    padding: 16px;
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
     transition: all 0.3s ease;
     border-right: 3px solid transparent;
 }
 
-.insight-item:hover { border-color: var(--glass-border-hover); transform: translateX(-3px); }
+.insight-item:hover { border-color: var(--glass-border-hover); transform: translateX(-4px); }
 .insight-item.positive { border-right-color: var(--success); }
 .insight-item.negative { border-right-color: var(--danger); }
 .insight-item.neutral { border-right-color: var(--accent); }
 
 .insight-icon {
-    width: 34px; height: 34px;
-    border-radius: 9px;
+    width: 38px; height: 38px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .insight-icon.positive { background: rgba(16, 185, 129, 0.12); }
@@ -739,43 +659,40 @@ body {
 .insight-icon.neutral { background: rgba(99, 102, 241, 0.12); }
 
 .insight-content { flex: 1; }
-.insight-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
-.insight-text { font-size: 0.78rem; color: var(--text-sec); line-height: 1.5; }
+.insight-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 3px; }
+.insight-text { font-size: 0.82rem; color: var(--text-sec); line-height: 1.5; }
 
-/* Comparison */
-.comparison-card {
+/* Refresh */
+.refresh-btn {
+    width: 100%;
     padding: 14px;
-    background: rgba(15, 23, 42, 0.5);
+    background: transparent;
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
-    margin-bottom: 8px;
+    color: var(--text-sec);
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
-.comparison-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.comparison-label { font-size: 0.82rem; color: var(--text-sec); font-weight: 500; }
-.comparison-value { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; }
-.comparison-value.positive { color: var(--success); }
-.comparison-value.negative { color: var(--danger); }
+.refresh-btn svg { width: 18px; height: 18px; fill: currentColor; transition: transform 0.5s ease; }
+.refresh-btn:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); border-color: var(--glass-border-hover); }
+.refresh-btn:hover svg { transform: rotate(180deg); }
 
-.comparison-bar {
-    height: 5px;
-    background: rgba(15, 23, 42, 0.6);
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.comparison-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.comparison-fill.positive { background: linear-gradient(90deg, var(--success), #34d399); }
-.comparison-fill.negative { background: linear-gradient(90deg, var(--danger), #f87171); }
+/* Month Selector */
+.month-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.month-row label { margin: 0; white-space: nowrap; font-size: 0.85rem; color: var(--text-sec); font-weight: 500; }
+.month-row select { flex: 1; }
 
 /* Form */
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     animation: slideIn 0.5s ease-out backwards;
 }
 
@@ -786,29 +703,30 @@ body {
 .form-group:nth-child(5) { animation-delay: 0.25s; }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-15px); }
+    from { opacity: 0; transform: translateX(-20px); }
     to { opacity: 1; transform: translateX(0); }
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 7px;
-    font-size: 0.82rem;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
     color: var(--text-sec);
     font-weight: 500;
 }
 
 input, select {
     width: 100%;
-    padding: 14px 16px;
+    padding: 15px 18px;
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
     color: var(--text);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-family: inherit;
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
 }
 
 input:focus, select:focus {
@@ -821,12 +739,12 @@ select option { background: #1e293b; color: var(--text); }
 input::placeholder { color: var(--text-muted); }
 
 .date-input-wrapper { position: relative; }
-.date-input-wrapper input { padding-right: 46px; }
+.date-input-wrapper input { padding-right: 50px; }
 .date-input-wrapper svg {
     position: absolute;
-    right: 14px; top: 50%;
+    right: 16px; top: 50%;
     transform: translateY(-50%);
-    width: 20px; height: 20px;
+    width: 22px; height: 22px;
     fill: var(--text-muted);
     pointer-events: none;
     transition: fill 0.3s ease;
@@ -834,35 +752,49 @@ input::placeholder { color: var(--text-muted); }
 .date-input-wrapper input:focus + svg { fill: var(--accent); }
 
 /* Type Toggle */
-.type-toggle { display: flex; gap: 8px; }
+.type-toggle { display: flex; gap: 10px; }
 
 .type-option {
     flex: 1;
-    padding: 14px;
+    padding: 16px;
     text-align: center;
     background: rgba(15, 23, 42, 0.5);
     border: 2px solid var(--glass-border);
     border-radius: var(--radius-sm);
     color: var(--text-sec);
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
 }
 
+.type-option::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.05));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.type-option:hover::after { opacity: 1; }
+
 .type-option svg {
-    width: 18px; height: 18px;
+    width: 20px; height: 20px;
     fill: currentColor;
     transition: transform 0.3s ease;
 }
 
 .type-option:hover { border-color: var(--glass-border-hover); transform: translateY(-2px); }
-.type-option:hover svg { transform: scale(1.1); }
+.type-option:hover svg { transform: scale(1.15); }
 
 .type-option.active.expense {
     border-color: var(--danger);
@@ -881,19 +813,20 @@ input::placeholder { color: var(--text-muted); }
 /* Submit */
 .submit-btn {
     width: 100%;
-    padding: 16px;
+    padding: 17px;
     background: linear-gradient(135deg, var(--accent), var(--accent-light));
     color: #fff;
     border: none;
     border-radius: var(--radius-sm);
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 20px var(--accent-glow);
     position: relative;
     overflow: hidden;
+    letter-spacing: 0.3px;
 }
 
 .submit-btn::before {
@@ -907,32 +840,35 @@ input::placeholder { color: var(--text-muted); }
     transition: width 0.6s ease, height 0.6s ease;
 }
 
-.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+.submit-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px var(--accent-glow); }
 .submit-btn:hover::before { width: 400px; height: 400px; }
-.submit-btn:active { transform: translateY(0); }
+.submit-btn:active { transform: translateY(-1px); }
 .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 /* History */
-.search-box { position: relative; margin-bottom: 12px; }
-.search-box input { padding-right: 40px; }
+.history-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.history-top .month-row { margin: 0; flex: 1; min-width: 180px; }
+
+.search-box { position: relative; margin-bottom: 14px; }
+.search-box input { padding-right: 42px; }
 .search-box svg {
     position: absolute;
-    right: 12px; top: 50%;
+    right: 14px; top: 50%;
     transform: translateY(-50%);
     width: 18px; height: 18px;
     fill: var(--text-muted);
     pointer-events: none;
 }
 
-.filter-chips { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.filter-chips { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
 
 .chip {
-    padding: 7px 12px;
+    padding: 8px 14px;
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
     color: var(--text-sec);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -942,61 +878,56 @@ input::placeholder { color: var(--text-muted); }
 .chip:hover { border-color: var(--glass-border-hover); color: var(--text); }
 .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 2px 10px var(--accent-glow); }
 
-.history-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
 .export-btn {
-    padding: 8px 14px;
+    padding: 10px 18px;
     background: transparent;
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-xs);
+    border-radius: var(--radius-sm);
     color: var(--text-sec);
     font-family: inherit;
-    font-size: 0.82rem;
+    font-size: 0.88rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
 }
 
-.export-btn svg { width: 14px; height: 14px; fill: currentColor; }
-.export-btn:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); border-color: var(--glass-border-hover); }
+.export-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.export-btn:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); border-color: var(--glass-border-hover); transform: translateY(-2px); }
 
-.tx-list { max-height: 600px; overflow-y: auto; }
+.tx-list { max-height: 500px; overflow-y: auto; }
 
 .tx-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px;
+    gap: 12px;
+    padding: 14px;
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
     animation: slideInRight 0.4s ease-out backwards;
 }
 
 @keyframes slideInRight {
-    from { opacity: 0; transform: translateX(-15px); }
+    from { opacity: 0; transform: translateX(-20px); }
     to { opacity: 1; transform: translateX(0); }
 }
 
 .tx-item:hover {
     border-color: var(--glass-border-hover);
     background: rgba(15, 23, 42, 0.8);
-    transform: translateX(-3px);
+    transform: translateX(-4px);
 }
 
 .tx-icon {
-    width: 40px; height: 40px;
-    border-radius: 11px;
+    width: 42px; height: 42px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1004,20 +935,21 @@ input::placeholder { color: var(--text-muted); }
     transition: transform 0.3s ease;
 }
 
-.tx-icon svg { width: 18px; height: 18px; fill: currentColor; }
-.tx-item:hover .tx-icon { transform: scale(1.08); }
+.tx-icon svg { width: 20px; height: 20px; fill: currentColor; }
+.tx-item:hover .tx-icon { transform: scale(1.1); }
 .tx-icon.income { background: rgba(16, 185, 129, 0.12); color: var(--success); }
 .tx-icon.expense { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 
 .tx-info { flex: 1; min-width: 0; }
-.tx-cat { font-weight: 600; font-size: 0.88rem; margin-bottom: 2px; }
-.tx-desc { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-cat { font-weight: 600; font-size: 0.92rem; margin-bottom: 2px; }
+.tx-desc { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .tx-right { text-align: left; flex-shrink: 0; }
-.tx-amount { font-weight: 700; font-size: 1rem; font-variant-numeric: tabular-nums; }
+.tx-amount { font-weight: 700; font-size: 1.05rem; transition: transform 0.3s ease; font-variant-numeric: tabular-nums; }
+.tx-item:hover .tx-amount { transform: scale(1.05); }
 .tx-amount.income { color: var(--success); }
 .tx-amount.expense { color: var(--danger); }
-.tx-date { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+.tx-date { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
 
 .tx-del {
     background: none;
@@ -1030,42 +962,43 @@ input::placeholder { color: var(--text-muted); }
     flex-shrink: 0;
 }
 
-.tx-del svg { width: 15px; height: 15px; fill: currentColor; }
-.tx-del:hover { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
+.tx-del svg { width: 16px; height: 16px; fill: currentColor; }
+.tx-del:hover { background: rgba(239, 68, 68, 0.12); color: var(--danger); transform: scale(1.1); }
 
 .history-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 16px;
+    padding: 16px 20px;
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
-    margin-top: 12px;
+    margin-top: 16px;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
+    backdrop-filter: blur(10px);
 }
 
-.hf-item { font-size: 0.82rem; }
+.hf-item { font-size: 0.85rem; }
 .hf-label { color: var(--text-muted); }
 .hf-val { font-weight: 600; font-variant-numeric: tabular-nums; }
 
 /* Empty */
-.empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-.empty-icon { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5; }
-.empty-icon svg { width: 56px; height: 56px; fill: currentColor; }
-.empty-text { font-size: 0.95rem; }
+.empty { text-align: center; padding: 50px 20px; color: var(--text-muted); }
+.empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+.empty-icon svg { width: 64px; height: 64px; fill: currentColor; }
+.empty-text { font-size: 1rem; }
 
 /* Toast */
 .toast {
     position: fixed;
-    bottom: 100px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    padding: 12px 24px;
+    padding: 14px 28px;
     border-radius: var(--radius-sm);
     font-family: inherit;
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     font-weight: 500;
     z-index: 1000;
     transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -1080,10 +1013,12 @@ input::placeholder { color: var(--text-muted); }
 .toast.error { background: rgba(239, 68, 68, 0.95); color: #fff; }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--glass-border-hover); }
+
+.section-title { font-size: 1rem; color: var(--text-sec); font-weight: 600; margin-bottom: 16px; }
 
 /* Modal */
 .modal-overlay {
@@ -1107,8 +1042,8 @@ input::placeholder { color: var(--text-muted); }
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
-    padding: 28px;
-    max-width: 320px;
+    padding: 30px;
+    max-width: 340px;
     width: 90%;
     text-align: center;
     transform: scale(0.9);
@@ -1117,17 +1052,17 @@ input::placeholder { color: var(--text-muted); }
 }
 
 .modal-overlay.show .modal-box { transform: scale(1); }
-.modal-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
-.modal-text { font-size: 0.85rem; color: var(--text-sec); margin-bottom: 20px; line-height: 1.5; }
-.modal-btns { display: flex; gap: 8px; }
+.modal-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; }
+.modal-text { font-size: 0.9rem; color: var(--text-sec); margin-bottom: 24px; line-height: 1.5; }
+.modal-btns { display: flex; gap: 10px; }
 
 .modal-btn {
     flex: 1;
-    padding: 12px;
+    padding: 13px;
     border: none;
     border-radius: var(--radius-sm);
     font-family: inherit;
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1136,7 +1071,84 @@ input::placeholder { color: var(--text-muted); }
 .modal-btn.cancel { background: rgba(15, 23, 42, 0.6); color: var(--text-sec); border: 1px solid var(--glass-border); }
 .modal-btn.cancel:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
 .modal-btn.confirm { background: linear-gradient(135deg, var(--danger), #f87171); color: #fff; box-shadow: 0 4px 15px var(--danger-glow); }
-.modal-btn.confirm:hover { transform: translateY(-2px); }
+.modal-btn.confirm:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--danger-glow); }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+.daily-chart-wrap { position: relative; height: 220px; margin-bottom: 16px; }
+
+.daily-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 16px; }
+
+.daily-stat {
+    text-align: center;
+    padding: 12px;
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--glass-border);
+}
+
+.daily-stat-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 4px; }
+.daily-stat-val { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.forecast-card {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.forecast-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-light), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 10px 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.forecast-label { font-size: 0.88rem; color: var(--text-sec); font-weight: 500; }
+.forecast-status { font-size: 0.82rem; margin-top: 6px; }
+
+.comparison-card {
+    padding: 16px;
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.comparison-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.comparison-label { font-size: 0.85rem; color: var(--text-sec); font-weight: 500; }
+.comparison-value { font-size: 1.05rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.comparison-value.positive { color: var(--success); }
+.comparison-value.negative { color: var(--danger); }
+
+.comparison-bar {
+    height: 6px;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.comparison-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comparison-fill.positive { background: linear-gradient(90deg, var(--success), #34d399); }
+.comparison-fill.negative { background: linear-gradient(90deg, var(--danger), #f87171); }
 
 /* Confetti */
 .confetti {
@@ -1152,29 +1164,17 @@ input::placeholder { color: var(--text-muted); }
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading {
-    display: inline-block;
-    width: 16px; height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 0.8s linear infinite;
-    vertical-align: middle;
-    margin-left: 6px;
-}
-
-/* Quick add mini */
-.quick-add-fab {
+/* FAB */
+.fab {
     position: fixed;
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 50;
+    z-index: 200;
     display: none;
 }
 
-.quick-add-fab button {
+.fab-btn {
     padding: 14px 28px;
     background: linear-gradient(135deg, var(--accent), var(--accent-light));
     color: #fff;
@@ -1191,36 +1191,15 @@ input::placeholder { color: var(--text-muted); }
     transition: all 0.3s ease;
 }
 
-.quick-add-fab button:hover { transform: translateY(-3px); box-shadow: 0 12px 40px var(--accent-glow); }
-.quick-add-fab button svg { width: 20px; height: 20px; fill: currentColor; }
-
-/* Section divider */
-.section-divider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0 14px;
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-.section-divider::before,
-.section-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-}
+.fab-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px var(--accent-glow); }
+.fab-btn svg { width: 20px; height: 20px; fill: currentColor; }
 
 /* Responsive */
 @media (max-width: 480px) {
     .app { padding: 14px; }
-    .header h1 { font-size: 1.7rem; }
-    .hero-amount { font-size: 2.5rem; }
-    .card { padding: 20px; }
-    .budget-hero-inner { flex-direction: column; text-align: center; }
-    .budget-ring-wrap { margin: 0 auto; }
+    .header h1 { font-size: 2rem; }
+    .balance-amount { font-size: 2.6rem; }
+    .card { padding: 22px; }
 }
 </style>
 </head>
@@ -1245,20 +1224,9 @@ input::placeholder { color: var(--text-muted); }
         <p>ניהול חכם של ההוצאות וההכנסות</p>
     </div>
 
-    <!-- Month Selector -->
-    <div class="month-bar">
-        <button class="month-nav-btn" onclick="navigateMonth(-1)">
-            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-        </button>
-        <select id="globalMonth" onchange="onMonthChange()"></select>
-        <button class="month-nav-btn" onclick="navigateMonth(1)">
-            <svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/></svg>
-        </button>
-    </div>
-
     <nav class="tabs">
-        <button class="tab-btn active" data-tab="dashboard">
-            <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        <button class="tab-btn active" data-tab="insights">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
             <span>סיכום</span>
         </button>
         <button class="tab-btn" data-tab="add">
@@ -1271,35 +1239,82 @@ input::placeholder { color: var(--text-muted); }
         </button>
     </nav>
 
-    <!-- TAB: DASHBOARD -->
-    <div id="dashboardTab" class="tab-content active">
-        <!-- Hero Balance -->
-        <div class="card hero-card">
-            <div class="hero-label">מאזן חודשי</div>
-            <div id="balanceAmount" class="hero-amount">₪0</div>
-            <div id="balanceSub" class="hero-sub"></div>
-        </div>
-
-        <!-- Income / Expense -->
-        <div class="quick-row">
-            <div class="card qr-card income-card">
-                <div class="qr-icon income">
-                    <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>
-                </div>
-                <div class="qr-label">הכנסות</div>
-                <div id="incomeAmount" class="qr-value income">₪0</div>
-            </div>
-            <div class="card qr-card expense-card">
-                <div class="qr-icon expense">
-                    <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-                </div>
-                <div class="qr-label">הוצאות</div>
-                <div id="expenseAmount" class="qr-value expense">₪0</div>
+    <!-- TAB: INSIGHTS (Now the main dashboard) -->
+    <div id="insightsTab" class="tab-content active">
+        <div class="card">
+            <div class="month-row">
+                <label>חודש:</label>
+                <select id="insightsMonth" class="month-select" onchange="loadInsights()"></select>
             </div>
         </div>
 
-        <!-- Budget Progress -->
-        <div class="card budget-hero">
+        <div class="card balance-card">
+            <div class="balance-label">מאזן חודשי</div>
+            <div id="balanceAmount" class="balance-amount">₪0</div>
+            <div id="balanceSub" class="balance-sub"></div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="card stat-card">
+                <div class="stat-label">הכנסות</div>
+                <div id="incomeAmount" class="stat-value income">₪0</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-label">הוצאות</div>
+                <div id="expenseAmount" class="stat-value expense">₪0</div>
+            </div>
+        </div>
+
+        <!-- Financial Health Score -->
+        <div class="card health-card">
+            <div class="health-header">
+                <div class="health-title">🏥 מדד בריאות פיננסית</div>
+                <div class="health-score" id="healthScore">0</div>
+            </div>
+            <div class="health-bar-container">
+                <div class="health-bar" id="healthBar" style="width: 0%"></div>
+            </div>
+            <div class="health-factors" id="healthFactors"></div>
+        </div>
+
+        <!-- Forecast -->
+        <div class="card forecast-card">
+            <div class="forecast-label">🔮 תחזית הוצאות לסוף החודש</div>
+            <div id="forecastValue" class="forecast-value">₪0</div>
+            <div id="forecastStatus" class="forecast-status"></div>
+        </div>
+
+        <!-- Daily Chart -->
+        <div class="card">
+            <div class="chart-title"> הוצאות יומיות</div>
+            <div class="daily-chart-wrap">
+                <canvas id="dailyChart"></canvas>
+            </div>
+            <div class="daily-stats">
+                <div class="daily-stat">
+                    <div class="daily-stat-label">ממוצע יומי</div>
+                    <div id="dailyAvg" class="daily-stat-val">-</div>
+                </div>
+                <div class="daily-stat">
+                    <div class="daily-stat-label">יום הכי יקר</div>
+                    <div id="dailyMax" class="daily-stat-val">-</div>
+                </div>
+                <div class="daily-stat">
+                    <div class="daily-stat-label">יום הכי זול</div>
+                    <div id="dailyMin" class="daily-stat-val">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison -->
+        <div class="card">
+            <div class="section-title">📊 השוואה לחודש קודם</div>
+            <div id="comparisonContainer"></div>
+        </div>
+
+        <!-- Budget with Progress Ring -->
+        <div class="card">
+            <div class="section-title">🎯 תקציב חודשי</div>
             <svg width="0" height="0">
                 <defs>
                     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1308,76 +1323,29 @@ input::placeholder { color: var(--text-muted); }
                     </linearGradient>
                 </defs>
             </svg>
-            <div class="budget-hero-inner">
-                <div class="budget-ring-wrap">
-                    <svg viewBox="0 0 120 120">
-                        <circle class="ring-bg" cx="60" cy="60" r="50"/>
-                        <circle class="ring-progress" id="budgetRing" cx="60" cy="60" r="50" stroke="url(#gradient)" stroke-dasharray="314" stroke-dashoffset="314"/>
+            <div class="progress-ring-container">
+                <div class="progress-ring">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="bg" cx="50" cy="50" r="42"/>
+                        <circle class="progress" id="budgetRing" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"/>
                     </svg>
-                    <div class="budget-ring-value" id="budgetRingValue">0%</div>
+                    <div class="value" id="budgetRingValue">0%</div>
                 </div>
-                <div class="budget-info">
-                    <div class="bi-title">🎯 תקציב חודשי</div>
-                    <div class="bi-amount" id="budgetAmount">₪0 / לא הוגדר</div>
-                    <div class="bi-remaining" id="budgetRemaining">הגדר תקציב כדי להתחיל</div>
-                    <div class="bi-daily" id="budgetDaily"></div>
-                </div>
-            </div>
-            <div class="budget-set-row">
-                <input type="number" id="budgetInput" placeholder="סכום תקציב...">
-                <button class="budget-set-btn" onclick="saveBudget()">שמור</button>
-            </div>
-        </div>
-
-        <!-- Financial Health -->
-        <div class="card health-card">
-            <div class="health-header">
-                <div class="health-title">🏥 מדד בריאות פיננסית</div>
-                <div class="health-score" id="healthScore">0</div>
-            </div>
-            <div class="health-bar-bg">
-                <div class="health-bar-fill" id="healthBar" style="width: 0%"></div>
-            </div>
-            <div class="health-factors" id="healthFactors"></div>
-        </div>
-
-        <!-- Forecast -->
-        <div class="card forecast-card">
-            <div class="forecast-inner">
-                <div class="forecast-icon-wrap">🔮</div>
-                <div class="forecast-info">
-                    <div class="forecast-label">תחזית הוצאות לסוף החודש</div>
-                    <div id="forecastValue" class="forecast-value">₪0</div>
-                    <div id="forecastStatus" class="forecast-status"></div>
+                <div class="progress-info">
+                    <div class="label">הוצאות מתוך תקציב</div>
+                    <div class="amount" id="budgetAmount">₪0 / ₪0</div>
+                    <div class="sub" id="budgetRemaining">הגדר תקציב כדי להתחיל</div>
                 </div>
             </div>
-        </div>
-
-        <!-- Daily Chart -->
-        <div class="card">
-            <div class="chart-section-title">📈 הוצאות יומיות</div>
-            <div class="chart-wrap">
-                <canvas id="dailyChart"></canvas>
-            </div>
-            <div class="daily-stats-row">
-                <div class="ds-item">
-                    <div class="ds-label">ממוצע יומי</div>
-                    <div id="dailyAvg" class="ds-val">-</div>
-                </div>
-                <div class="ds-item">
-                    <div class="ds-label">יום יקר</div>
-                    <div id="dailyMax" class="ds-val">-</div>
-                </div>
-                <div class="ds-item">
-                    <div class="ds-label">יום זול</div>
-                    <div id="dailyMin" class="ds-val">-</div>
-                </div>
+            <div class="budget-input-row">
+                <input type="number" id="budgetInput" placeholder="הגדר תקציב חודשי...">
+                <button class="budget-save-btn" onclick="saveBudget()">שמור</button>
             </div>
         </div>
 
         <!-- Category Chart -->
         <div class="card">
-            <div class="chart-section-title">📊 פירוט לפי קטגוריה</div>
+            <div class="chart-title">📊 פירוט הוצאות לפי קטגוריה</div>
             <div class="chart-wrap">
                 <canvas id="categoryChart"></canvas>
             </div>
@@ -1390,31 +1358,51 @@ input::placeholder { color: var(--text-muted); }
             </div>
         </div>
 
-        <!-- Comparison -->
-        <div class="card">
-            <div class="chart-section-title">📊 השוואה לחודש קודם</div>
-            <div id="comparisonContainer"></div>
-        </div>
-
         <!-- Insights -->
         <div class="card">
-            <div class="chart-section-title">💡 תובנות חכמות</div>
+            <div class="section-title">💡 תובנות חכמות</div>
             <div id="insightsContainer"></div>
         </div>
 
-        <!-- Quick Stats -->
-        <div class="quick-row">
-            <div class="card" style="padding:16px;text-align:center">
-                <div class="qr-label">⭐ קטגוריה מובילה</div>
-                <div id="topCat" style="font-size:0.95rem;font-weight:700;margin:4px 0">-</div>
-                <div id="topCatAmt" style="font-size:0.75rem;color:var(--text-muted)">-</div>
+        <div class="quick-stats">
+            <div class="q-stat">
+                <div class="q-stat-label">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    קטגוריה מובילה
+                </div>
+                <div id="topCat" class="q-stat-val">-</div>
+                <div id="topCatAmt" class="q-stat-sub">-</div>
             </div>
-            <div class="card" style="padding:16px;text-align:center">
-                <div class="qr-label">💰 אחוז חיסכון</div>
-                <div id="savingsRate" style="font-size:1.3rem;font-weight:700;margin:4px 0">-</div>
-                <div style="font-size:0.75rem;color:var(--text-muted)">מההכנסה</div>
+            <div class="q-stat">
+                <div class="q-stat-label">
+                    <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                    ממוצע יומי
+                </div>
+                <div id="avgDaily" class="q-stat-val">-</div>
+                <div class="q-stat-sub">הוצאה ליום</div>
+            </div>
+            <div class="q-stat">
+                <div class="q-stat-label">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                    מס׳ תנועות
+                </div>
+                <div id="txCount" class="q-stat-val">0</div>
+                <div class="q-stat-sub">בחודש זה</div>
+            </div>
+            <div class="q-stat">
+                <div class="q-stat-label">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.94s4.18 1.36 4.18 3.85c0 1.89-1.44 2.98-3.12 3.19z"/></svg>
+                    אחסון
+                </div>
+                <div id="savingsRate" class="q-stat-val">-</div>
+                <div class="q-stat-sub">אחוז חיסכון</div>
             </div>
         </div>
+
+        <button class="refresh-btn" onclick="loadInsights()">
+            <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            רענן נתונים
+        </button>
     </div>
 
     <!-- TAB: ADD -->
@@ -1461,11 +1449,14 @@ input::placeholder { color: var(--text-muted); }
     <!-- TAB: HISTORY -->
     <div id="historyTab" class="tab-content">
         <div class="card">
-            <div class="history-actions">
-                <div style="font-size:0.9rem;font-weight:600;color:var(--text-sec)">תנועות</div>
+            <div class="history-top">
+                <div class="month-row">
+                    <label>חודש:</label>
+                    <select id="historyMonth" class="month-select" onchange="loadHistory()"></select>
+                </div>
                 <button class="export-btn" onclick="exportCSV()">
                     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                    ייצוא CSV
+                    ייצוא
                 </button>
             </div>
 
@@ -1492,7 +1483,7 @@ input::placeholder { color: var(--text-muted); }
                 <div class="hf-item">
                     <span class="hf-label">הכנסות: </span>
                     <span id="hfIncome" class="hf-val" style="color:var(--success)">₪0</span>
-                    <span style="margin:0 4px;color:var(--text-muted)">│</span>
+                    <span style="margin:0 6px;color:var(--text-muted)">│</span>
                     <span class="hf-label">הוצאות: </span>
                     <span id="hfExpense" class="hf-val" style="color:var(--danger)">₪0</span>
                 </div>
@@ -1505,9 +1496,9 @@ input::placeholder { color: var(--text-muted); }
     </div>
 </div>
 
-<!-- FAB for quick add -->
-<div class="quick-add-fab" id="quickAddFab">
-    <button onclick="switchTab('add')">
+<!-- FAB Button -->
+<div class="fab" id="fab">
+    <button class="fab-btn" onclick="switchTab('add')">
         <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
         הוסף תנועה
     </button>
@@ -1548,11 +1539,10 @@ let currentIncome = 0;
 let currentFilter = 'all';
 let currentSearch = '';
 let allTransactions = [];
-let availableMonths = [];
 
 // Create particles
-(function createParticles() {
-    for (let i = 0; i < 15; i++) {
+function createParticles() {
+    for (let i = 0; i < 20; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.style.left = Math.random() * 100 + '%';
@@ -1561,7 +1551,8 @@ let availableMonths = [];
         p.style.opacity = Math.random() * 0.5 + 0.2;
         document.body.appendChild(p);
     }
-})();
+}
+createParticles();
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('date').valueAsDate = new Date();
@@ -1581,7 +1572,7 @@ function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.tab === tab); });
     document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
     document.getElementById(tab + 'Tab').classList.add('active');
-    if (tab === 'dashboard') loadDashboard();
+    if (tab === 'insights') loadInsights();
     if (tab === 'history') loadHistory();
     updateFabVisibility();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1589,7 +1580,7 @@ function switchTab(tab) {
 
 function updateFabVisibility() {
     var activeTab = document.querySelector('.tab-btn.active');
-    var fab = document.getElementById('quickAddFab');
+    var fab = document.getElementById('fab');
     if (activeTab && activeTab.dataset.tab !== 'add') {
         fab.style.display = 'block';
     } else {
@@ -1627,38 +1618,9 @@ function getPreviousMonth(month) {
     return ("0" + m).slice(-2) + "-" + y;
 }
 
-function getNextMonth(month) {
-    var parts = month.split('-');
-    var m = parseInt(parts[0]) + 1;
-    var y = parseInt(parts[1]);
-    if (m === 13) { m = 1; y++; }
-    return ("0" + m).slice(-2) + "-" + y;
-}
-
 function formatMonth(m) {
     var p = m.split('-');
     return MONTH_NAMES[parseInt(p[0]) - 1] + ' ' + p[1];
-}
-
-function getSelectedMonth() {
-    return document.getElementById('globalMonth').value || getCurrentMonth();
-}
-
-function navigateMonth(dir) {
-    var sel = document.getElementById('globalMonth');
-    var idx = sel.selectedIndex;
-    var newIdx = idx + dir;
-    // In RTL, "next" visually means previous month
-    if (newIdx >= 0 && newIdx < sel.options.length) {
-        sel.selectedIndex = newIdx;
-        onMonthChange();
-    }
-}
-
-function onMonthChange() {
-    var activeTab = document.querySelector('.tab-btn.active');
-    if (activeTab.dataset.tab === 'dashboard') loadDashboard();
-    if (activeTab.dataset.tab === 'history') loadHistory();
 }
 
 function loadMonths() {
@@ -1666,20 +1628,19 @@ function loadMonths() {
     .then(function(r) { return r.json(); })
     .then(function(data) {
         if (data.status !== 'success') return;
-        availableMonths = data.sheets;
+        var months = data.sheets;
         var cur = getCurrentMonth();
-        if (availableMonths.indexOf(cur) === -1) availableMonths.unshift(cur);
-        
-        var sel = document.getElementById('globalMonth');
-        sel.innerHTML = '';
-        availableMonths.forEach(function(m) {
-            var o = document.createElement('option');
-            o.value = m; o.text = formatMonth(m);
-            if (m === cur) o.selected = true;
-            sel.appendChild(o);
+        if (months.indexOf(cur) === -1) months.unshift(cur);
+        document.querySelectorAll('.month-select').forEach(function(sel) {
+            var prev = sel.value;
+            sel.innerHTML = '';
+            months.forEach(function(m) {
+                var o = document.createElement('option');
+                o.value = m; o.text = formatMonth(m);
+                if (m === cur || m === prev) o.selected = true;
+                sel.appendChild(o);
+            });
         });
-        
-        loadDashboard();
     })
     .catch(function(e) { console.error('loadMonths:', e); });
 }
@@ -1699,7 +1660,6 @@ function apiGet(action, extra) {
     return fetch(url).then(function(r) { return r.json(); });
 }
 
-// Form submit
 document.getElementById('trackerForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var btn = document.getElementById('submitBtn');
@@ -1720,7 +1680,6 @@ document.getElementById('trackerForm').addEventListener('submit', function(e) {
             showToast('✅ התנועה נשמרה בהצלחה!', 'success');
             document.getElementById('amount').value = '';
             document.getElementById('description').value = '';
-            // Reload months in case new month was created
             loadMonths();
         } else {
             throw new Error(data.message);
@@ -1739,7 +1698,6 @@ function animateValue(el, start, end, duration, prefix, suffix) {
     prefix = prefix || '';
     suffix = suffix || '';
     var range = end - start;
-    if (range === 0) { el.textContent = prefix + end.toLocaleString() + suffix; return; }
     var startTime = null;
     function step(timestamp) {
         if (!startTime) startTime = timestamp;
@@ -1752,12 +1710,12 @@ function animateValue(el, start, end, duration, prefix, suffix) {
     requestAnimationFrame(step);
 }
 
-function loadDashboard() {
-    var month = getSelectedMonth();
+function loadInsights() {
+    var month = document.getElementById('insightsMonth').value;
     if (!month) return;
+
     var prevMonth = getPreviousMonth(month);
 
-    // Load budget
     apiGet('settings').then(function(settingsData) {
         if (settingsData.status === 'success') {
             var monthKey = 'budget_' + month;
@@ -1771,7 +1729,6 @@ function loadDashboard() {
         }
     });
 
-    // Load transactions for daily chart & forecast
     apiGet('transactions', {month: month}).then(function(txData) {
         if (txData.status === 'success') {
             renderDailyChart(txData.transactions, month);
@@ -1779,7 +1736,6 @@ function loadDashboard() {
         }
     });
 
-    // Load summary
     apiGet('summary', {month: month}).then(function(currentData) {
         if (currentData.status !== 'success') return;
 
@@ -1789,44 +1745,48 @@ function loadDashboard() {
         apiGet('summary', {month: prevMonth}).then(function(prevData) {
             var bal = currentData.balance;
             var balEl = document.getElementById('balanceAmount');
+
             var currentVal = parseInt(balEl.textContent.replace(/[^0-9-]/g, '')) || 0;
             animateValue(balEl, currentVal, bal, 800, '₪', '');
-            balEl.className = 'hero-amount ' + (bal >= 0 ? 'positive' : 'negative');
+            balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
 
             var balSub = document.getElementById('balanceSub');
-            if (bal > 0) balSub.textContent = '✨ עודפים לחיסכון';
-            else if (bal < 0) balSub.textContent = '⚠️ גירעון חודשי';
-            else balSub.textContent = 'מאוזן';
+            if (bal > 0) {
+                balSub.textContent = '✨ עודפים לחיסכון';
+            } else if (bal < 0) {
+                balSub.textContent = '⚠️ גירעון חודשי';
+            } else {
+                balSub.textContent = 'מאוזן';
+            }
 
             var incomeEl = document.getElementById('incomeAmount');
             var expenseEl = document.getElementById('expenseAmount');
-            var curInc = parseInt(incomeEl.textContent.replace(/[^0-9]/g, '')) || 0;
-            var curExp = parseInt(expenseEl.textContent.replace(/[^0-9]/g, '')) || 0;
-            animateValue(incomeEl, curInc, currentData.income, 800, '₪', '');
-            animateValue(expenseEl, curExp, currentData.expense, 800, '₪', '');
+            var currentIncomeVal = parseInt(incomeEl.textContent.replace(/[^0-9]/g, '')) || 0;
+            var currentExpenseVal = parseInt(expenseEl.textContent.replace(/[^0-9]/g, '')) || 0;
+            animateValue(incomeEl, currentIncomeVal, currentData.income, 800, '₪', '');
+            animateValue(expenseEl, currentExpenseVal, currentData.expense, 800, '₪', '');
+
+            document.getElementById('txCount').textContent = currentData.transactions;
+
+            if (currentData.income > 0) {
+                var rate = Math.round((bal / currentData.income) * 100);
+                document.getElementById('savingsRate').textContent = rate + '%';
+                document.getElementById('savingsRate').style.color = rate >= 0 ? 'var(--success)' : 'var(--danger)';
+            } else {
+                document.getElementById('savingsRate').textContent = '-';
+            }
 
             setTimeout(function() {
+                updateBudgetBar(currentData.expense);
                 updateBudgetRing(currentData.expense);
-                updateBudgetInfo(currentData.expense);
             }, 200);
 
             renderComparison(currentData, prevData);
             generateInsights(currentData, prevData);
             calculateHealthScore(currentData);
-
-            // Savings rate
-            if (currentData.income > 0) {
-                var rate = Math.round((bal / currentData.income) * 100);
-                var srEl = document.getElementById('savingsRate');
-                srEl.textContent = rate + '%';
-                srEl.style.color = rate >= 0 ? 'var(--success)' : 'var(--danger)';
-            } else {
-                document.getElementById('savingsRate').textContent = '-';
-            }
         });
     });
 
-    // Category chart
     apiGet('categorySummary', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         var cats = data.categories;
@@ -1840,6 +1800,7 @@ function loadDashboard() {
             legendEl.style.display = 'none';
             document.getElementById('topCat').textContent = '-';
             document.getElementById('topCatAmt').textContent = '-';
+            document.getElementById('avgDaily').textContent = '-';
             if (categoryChart) { categoryChart.destroy(); categoryChart = null; }
             return;
         }
@@ -1849,16 +1810,22 @@ function loadDashboard() {
         legendEl.style.display = 'flex';
 
         document.getElementById('topCat').textContent = cats[0].category;
-        document.getElementById('topCatAmt').textContent = '₪' + cats[0].amount.toLocaleString();
+        document.getElementById('topCatAmt').textContent = '' + cats[0].amount.toLocaleString();
 
+        var parts = month.split('-');
+        var mNum = parseInt(parts[0]), yNum = parseInt(parts[1]);
+        var daysInMonth = new Date(yNum, mNum, 0).getDate();
+        var now = new Date();
+        var daysPassed = (now.getMonth() + 1 === mNum && now.getFullYear() === yNum) ? now.getDate() : daysInMonth;
         var totalExp = cats.reduce(function(s, c) { return s + c.amount; }, 0);
+        document.getElementById('avgDaily').textContent = '₪' + (daysPassed > 0 ? (totalExp / daysPassed).toFixed(0) : '0');
 
         legendEl.innerHTML = '';
         cats.forEach(function(cat, idx) {
             var pct = ((cat.amount / totalExp) * 100).toFixed(1);
             var item = document.createElement('div');
             item.className = 'legend-item';
-            item.innerHTML = '<div class="legend-color" style="background:' + CHART_COLORS[idx % CHART_COLORS.length] + '"></div>' +
+            item.innerHTML = '<div class="legend-color" style="background: ' + CHART_COLORS[idx % CHART_COLORS.length] + '; color: ' + CHART_COLORS[idx % CHART_COLORS.length] + '"></div>' +
                 '<div><div class="legend-label">' + cat.category + '</div>' +
                 '<div class="legend-amount">₪' + cat.amount.toLocaleString() + ' (' + pct + '%)</div></div>';
             legendEl.appendChild(item);
@@ -2012,9 +1979,9 @@ function renderDailyChart(transactions, month) {
     var minData = data.filter(function(v) { return v > 0; });
     var min = minData.length > 0 ? Math.min.apply(null, minData) : 0;
 
-    document.getElementById('dailyAvg').textContent = '₪' + avg.toFixed(0);
+    document.getElementById('dailyAvg').textContent = '' + avg.toFixed(0);
     document.getElementById('dailyMax').textContent = '₪' + max.toLocaleString();
-    document.getElementById('dailyMin').textContent = min > 0 ? '₪' + min.toLocaleString() : '-';
+    document.getElementById('dailyMin').textContent = '₪' + min.toLocaleString();
 
     if (dailyChart) dailyChart.destroy();
     dailyChart = new Chart(canvas.getContext('2d'), {
@@ -2025,14 +1992,7 @@ function renderDailyChart(transactions, month) {
                 label: 'הוצאות יומיות',
                 data: data,
                 borderColor: '#6366f1',
-                backgroundColor: function(context) {
-                    var chart = context.chart;
-                    var ctx = chart.ctx;
-                    var gradient = ctx.createLinearGradient(0, 0, 0, chart.height);
-                    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
-                    gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
-                    return gradient;
-                },
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
                 borderWidth: 2.5,
                 fill: true,
                 tension: 0.4,
@@ -2069,7 +2029,7 @@ function renderDailyChart(transactions, month) {
                 },
                 y: {
                     grid: { color: 'rgba(255,255,255,0.04)', drawBorder: false },
-                    ticks: { color: '#64748b', font: { family: 'Heebo', size: 11 }, callback: function(value) { return '₪' + value; } },
+                    ticks: { color: '#64748b', font: { family: 'Heebo', size: 11 }, callback: function(value) { return '' + value; } },
                     beginAtZero: true
                 }
             }
@@ -2090,8 +2050,11 @@ function renderComparison(current, prev) {
     var balanceChange = prev.balance !== 0 ? ((current.balance - prev.balance) / Math.abs(prev.balance) * 100) : 0;
 
     var html = '';
+
     html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">הכנסות</span><span class="comparison-value ' + (incomeChange >= 0 ? 'positive' : 'negative') + '">' + (incomeChange >= 0 ? '+' : '') + incomeChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (incomeChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(incomeChange), 100) + '%"></div></div></div>';
+
     html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">הוצאות</span><span class="comparison-value ' + (expenseChange <= 0 ? 'positive' : 'negative') + '">' + (expenseChange >= 0 ? '+' : '') + expenseChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (expenseChange <= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(expenseChange), 100) + '%"></div></div></div>';
+
     html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">מאזן נטו</span><span class="comparison-value ' + (balanceChange >= 0 ? 'positive' : 'negative') + '">' + (balanceChange >= 0 ? '+' : '') + balanceChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (balanceChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(balanceChange), 100) + '%"></div></div></div>';
 
     container.innerHTML = html;
@@ -2115,25 +2078,25 @@ function generateInsights(current, prev) {
     if (prev.status === 'success' && prev.transactions > 0) {
         var expenseChange = ((current.expense - prev.expense) / prev.expense * 100);
         if (expenseChange < -10) {
-            insights.push({ icon: '📉', type: 'positive', title: 'הוצאות ירדו!', text: 'ההוצאות שלך ירדו ב-' + Math.abs(expenseChange).toFixed(0) + '% לעומת החודש הקודם.' });
+            insights.push({ icon: '📉', type: 'positive', title: 'הוצאות ירדו!', text: 'ההוצאות שלך ירדו ב-' + Math.abs(expenseChange).toFixed(0) + '% לעומת החודש הקודם. מעולה!' });
         } else if (expenseChange > 10) {
-            insights.push({ icon: '📈', type: 'negative', title: 'הוצאות עלו', text: 'ההוצאות שלך עלו ב-' + expenseChange.toFixed(0) + '% לעומת החודש הקודם.' });
+            insights.push({ icon: '📈', type: 'negative', title: 'הוצאות עלו', text: 'ההוצאות שלך עלו ב-' + expenseChange.toFixed(0) + '% לעומת החודש הקודם. כדאי לשים לב.' });
         }
     }
 
     if (currentBudget > 0) {
         var budgetPct = (current.expense / currentBudget) * 100;
         if (budgetPct > 90) {
-            insights.push({ icon: '🚨', type: 'negative', title: 'קרוב לתקציב!', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() });
+            insights.push({ icon: '🚨', type: 'negative', title: 'קרוב לתקציב!', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ' + Math.max(0, currentBudget - current.expense).toLocaleString() });
         } else if (budgetPct > 70) {
-            insights.push({ icon: '⚡', type: 'neutral', title: 'שליטה בתקציב', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. נותרו ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() });
+            insights.push({ icon: '⚡', type: 'neutral', title: 'שליטה בתקציב', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() + ' נותרו.' });
         } else if (budgetPct > 0) {
-            insights.push({ icon: '✅', type: 'positive', title: 'תקציב בשליטה', text: 'השתמשת רק ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() });
+            insights.push({ icon: '✅', type: 'positive', title: 'תקציב בשליטה', text: 'השתמשת רק ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר לך ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() + ' להמשך החודש.' });
         }
     }
 
     if (current.transactions > 30) {
-        insights.push({ icon: '📊', type: 'neutral', title: 'הרבה תנועות החודש', text: 'ביצעת ' + current.transactions + ' תנועות. אולי כדאי לבדוק הוצאות מיותרות.' });
+        insights.push({ icon: '📊', type: 'neutral', title: 'הרבה תנועות החודש', text: 'ביצעת ' + current.transactions + ' תנועות החודש. אולי כדאי לבדוק אם יש הוצאות מיותרות.' });
     }
 
     if (insights.length === 0) {
@@ -2145,28 +2108,48 @@ function generateInsights(current, prev) {
     insights.forEach(function(insight) {
         html += '<div class="insight-item ' + insight.type + '"><div class="insight-icon ' + insight.type + '">' + insight.icon + '</div><div class="insight-content"><div class="insight-title">' + insight.title + '</div><div class="insight-text">' + insight.text + '</div></div></div>';
     });
+
     container.innerHTML = html;
+}
+
+function updateBudgetBar(expense) {
+    var budgetInput = document.getElementById('budgetInput');
+    if (!currentBudget || currentBudget <= 0) {
+        var inputVal = parseFloat(budgetInput.value);
+        if (inputVal > 0) currentBudget = inputVal;
+    }
+
+    if (!currentBudget || currentBudget <= 0) {
+        document.getElementById('budgetRemaining').textContent = 'הגדר תקציב כדי להתחיל';
+        return;
+    }
+
+    var remaining = Math.max(0, currentBudget - expense);
+    var daysLeft = getDaysLeftInMonth();
+    var dailyBudget = daysLeft > 0 ? (remaining / daysLeft) : 0;
+
+    document.getElementById('budgetRemaining').textContent = 'נותר ₪' + remaining.toLocaleString() + ' (' + dailyBudget.toFixed(0) + ' ליום)';
 }
 
 function updateBudgetRing(expense) {
     var ring = document.getElementById('budgetRing');
     var ringValue = document.getElementById('budgetRingValue');
-    var budgetAmountEl = document.getElementById('budgetAmount');
+    var budgetAmount = document.getElementById('budgetAmount');
 
     if (!currentBudget || currentBudget <= 0) {
-        ring.style.strokeDashoffset = 314;
+        ring.style.strokeDashoffset = 264;
         ringValue.textContent = '0%';
-        budgetAmountEl.textContent = '₪' + expense.toLocaleString() + ' / לא הוגדר';
+        budgetAmount.textContent = '₪' + expense.toLocaleString() + ' / לא הוגדר';
         return;
     }
 
     var pct = Math.min((expense / currentBudget) * 100, 100);
-    var circumference = 2 * Math.PI * 50; // ~314
+    var circumference = 2 * Math.PI * 42;
     var offset = circumference - (pct / 100) * circumference;
 
     ring.style.strokeDashoffset = offset;
     ringValue.textContent = Math.round(pct) + '%';
-    budgetAmountEl.textContent = '₪' + expense.toLocaleString() + ' / ₪' + currentBudget.toLocaleString();
+    budgetAmount.textContent = '₪' + expense.toLocaleString() + ' / ₪' + currentBudget.toLocaleString();
 
     if (pct > 90) {
         ring.style.stroke = 'var(--danger)';
@@ -2175,21 +2158,6 @@ function updateBudgetRing(expense) {
     } else {
         ring.style.stroke = 'url(#gradient)';
     }
-}
-
-function updateBudgetInfo(expense) {
-    if (!currentBudget || currentBudget <= 0) {
-        document.getElementById('budgetRemaining').textContent = 'הגדר תקציב כדי להתחיל';
-        document.getElementById('budgetDaily').textContent = '';
-        return;
-    }
-
-    var remaining = Math.max(0, currentBudget - expense);
-    var daysLeft = getDaysLeftInMonth();
-    var dailyBudget = daysLeft > 0 ? (remaining / daysLeft) : 0;
-
-    document.getElementById('budgetRemaining').textContent = 'נותר ₪' + remaining.toLocaleString();
-    document.getElementById('budgetDaily').textContent = '📅 ₪' + dailyBudget.toFixed(0) + ' מותר ליום (' + daysLeft + ' ימים נותרו)';
 }
 
 function getDaysLeftInMonth() {
@@ -2201,10 +2169,17 @@ function getDaysLeftInMonth() {
 function saveBudget() {
     var budgetInput = document.getElementById('budgetInput');
     var val = budgetInput.value.trim();
-    var month = getSelectedMonth();
+    var month = document.getElementById('insightsMonth').value;
 
-    if (!month) { showToast('❌ בחר חודש קודם', 'error'); return; }
-    if (!val || isNaN(val) || parseFloat(val) <= 0) { showToast('❌ הזן סכום תקין', 'error'); return; }
+    if (!month) {
+        showToast('❌ בחר חודש קודם', 'error');
+        return;
+    }
+
+    if (!val || isNaN(val) || parseFloat(val) <= 0) {
+        showToast('❌ הזן סכום תקין', 'error');
+        return;
+    }
 
     var budgetNum = parseFloat(val);
     var p = new URLSearchParams();
@@ -2212,7 +2187,7 @@ function saveBudget() {
     p.append('key', 'budget_' + month);
     p.append('value', budgetNum.toString());
 
-    var btn = document.querySelector('.budget-set-btn');
+    var btn = document.querySelector('.budget-save-btn');
     var originalText = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'שומר...';
@@ -2220,23 +2195,28 @@ function saveBudget() {
     apiPost(p).then(function(data) {
         if (data.status === 'success') {
             currentBudget = budgetNum;
+            updateBudgetBar(currentExpense);
             updateBudgetRing(currentExpense);
-            updateBudgetInfo(currentExpense);
 
-            apiGet('summary', {month: month}).then(function(currentData) {
-                if (currentData.status === 'success') {
-                    generateInsights(currentData, {status: 'success', transactions: 0});
-                    calculateHealthScore(currentData);
-                }
-            });
+            if (month) {
+                apiGet('summary', {month: month}).then(function(currentData) {
+                    if (currentData.status === 'success') {
+                        generateInsights(currentData, {status: 'success', transactions: 0});
+                        calculateHealthScore(currentData);
+                    }
+                });
+            }
 
-            showToast('✅ תקציב נשמר ל' + formatMonth(month) + ': ₪' + budgetNum.toLocaleString(), 'success');
-            if (currentExpense < budgetNum * 0.7) launchConfetti();
+            showToast('✅ תקציב נשמר לחודש ' + formatMonth(month) + ': ₪' + budgetNum.toLocaleString(), 'success');
+
+            if (currentExpense < budgetNum * 0.7) {
+                launchConfetti();
+            }
         } else {
-            throw new Error(data.message || 'שגיאה');
+            throw new Error(data.message || 'שגיאה לא ידועה');
         }
     }).catch(function(err) {
-        showToast('❌ שגיאה: ' + err.message, 'error');
+        showToast('❌ שגיאה בשמירה: ' + err.message, 'error');
     }).finally(function() {
         btn.disabled = false;
         btn.textContent = originalText;
@@ -2244,23 +2224,22 @@ function saveBudget() {
 }
 
 function launchConfetti() {
-    var colors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
-    for (var i = 0; i < 30; i++) {
-        var confetti = document.createElement('div');
+    const colors = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
+    for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement('div');
         confetti.className = 'confetti';
         confetti.style.left = Math.random() * 100 + '%';
         confetti.style.top = '-10px';
         confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
         confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
         document.body.appendChild(confetti);
-        setTimeout(function(el) { el.remove(); }.bind(null, confetti), 4000);
+        setTimeout(() => confetti.remove(), 4000);
     }
 }
 
 function loadHistory() {
-    var month = getSelectedMonth();
+    var month = document.getElementById('historyMonth').value;
     if (!month) return;
 
     apiGet('transactions', {month: month}).then(function(data) {
@@ -2274,12 +2253,12 @@ function setFilter(filter) {
     currentFilter = filter;
     document.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('active'); });
     document.querySelector('.chip[data-filter="' + filter + '"]').classList.add('active');
-    renderTransactions(allTransactions, getSelectedMonth());
+    renderTransactions(allTransactions, document.getElementById('historyMonth').value);
 }
 
 function filterTransactions() {
     currentSearch = document.getElementById('searchInput').value.toLowerCase();
-    renderTransactions(allTransactions, getSelectedMonth());
+    renderTransactions(allTransactions, document.getElementById('historyMonth').value);
 }
 
 function renderTransactions(txs, month) {
@@ -2318,7 +2297,7 @@ function renderTransactions(txs, month) {
             dateStr = d.getDate() + '/' + (d.getMonth()+1);
         } catch(e) { dateStr = t.date; }
 
-        html += '<div class="tx-item" style="animation-delay:' + (idx * 0.03) + 's"><div class="tx-icon ' + cls + '">' + (isInc ? '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>') + '</div><div class="tx-info"><div class="tx-cat">' + escHtml(t.category) + '</div><div class="tx-desc">' + escHtml(t.description || dateStr) + '</div></div><div class="tx-right"><div class="tx-amount ' + cls + '">' + sign + '₪' + t.amount.toLocaleString() + '</div><div class="tx-date">' + dateStr + '</div></div><button class="tx-del" onclick="confirmDelete(\'' + t.id + '\',\'' + month + '\')" title="מחק"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div>';
+        html += '<div class="tx-item" style="animation-delay:' + (idx * 0.04) + 's"><div class="tx-icon ' + cls + '">' + (isInc ? '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>') + '</div><div class="tx-info"><div class="tx-cat">' + escHtml(t.category) + '</div><div class="tx-desc">' + escHtml(t.description || dateStr) + '</div></div><div class="tx-right"><div class="tx-amount ' + cls + '">' + sign + '₪' + t.amount.toLocaleString() + '</div><div class="tx-date">' + dateStr + '</div></div><button class="tx-del" onclick="confirmDelete(\'' + t.id + '\',\'' + month + '\')" title="מחק"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div>';
     });
 
     container.innerHTML = html;
@@ -2372,7 +2351,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 });
 
 function exportCSV() {
-    var month = getSelectedMonth();
+    var month = document.getElementById('historyMonth').value;
     if (!month) return;
 
     apiGet('transactions', {month: month}).then(function(data) {
