@@ -1303,7 +1303,6 @@
             animation: spin 0.8s linear infinite;
         }
 
-        /* Daily chart specific */
         .daily-chart-wrap {
             position: relative;
             height: 220px;
@@ -1333,6 +1332,23 @@
         .daily-stat-val {
             font-size: 1rem;
             font-weight: 600;
+        }
+
+        .forecast-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .forecast-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            margin: 10px 0;
+        }
+
+        .forecast-label {
+            font-size: 0.9rem;
+            color: var(--text-sec);
         }
     </style>
 </head>
@@ -1364,7 +1380,6 @@
         </button>
     </nav>
 
-    <!-- TAB: ADD -->
     <div id="addTab" class="tab-content active">
         <div class="card">
             <form id="trackerForm">
@@ -1393,7 +1408,7 @@
                     <select id="category" required></select>
                 </div>
                 <div class="form-group">
-                    <label>סכום ()</label>
+                    <label>סכום (₪)</label>
                     <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
                 </div>
                 <div class="form-group">
@@ -1405,7 +1420,6 @@
         </div>
     </div>
 
-    <!-- TAB: INSIGHTS -->
     <div id="insightsTab" class="tab-content">
         <div class="card">
             <div class="month-row">
@@ -1430,7 +1444,12 @@
             </div>
         </div>
 
-        <!-- Daily Chart -->
+        <div class="card forecast-card">
+            <div class="forecast-label">🔮 תחזית הוצאות לסוף החודש</div>
+            <div id="forecastValue" class="forecast-value">₪0</div>
+            <div id="forecastStatus" style="font-size: 0.85rem; color: var(--text-sec);"></div>
+        </div>
+
         <div class="card">
             <div class="chart-title">📈 הוצאות יומיות</div>
             <div class="daily-chart-wrap">
@@ -1452,7 +1471,6 @@
             </div>
         </div>
 
-        <!-- Comparison -->
         <div class="card">
             <div class="section-title">📊 השוואה לחודש קודם</div>
             <div id="comparisonContainer"></div>
@@ -1460,7 +1478,7 @@
 
         <div class="card">
             <div class="budget-header">
-                <span class="section-title" style="margin:0"> תקציב חודשי</span>
+                <span class="section-title" style="margin:0">🎯 תקציב חודשי</span>
                 <span id="budgetText" style="font-size:0.85rem;color:var(--text-muted)">לא הוגדר</span>
             </div>
             <div class="budget-bar"><div id="budgetFill" class="budget-fill" style="width:0%"></div></div>
@@ -1484,7 +1502,6 @@
             </div>
         </div>
 
-        <!-- Insights -->
         <div class="card">
             <div class="section-title">💡 תובנות חכמות</div>
             <div id="insightsContainer"></div>
@@ -1531,7 +1548,6 @@
         </button>
     </div>
 
-    <!-- TAB: HISTORY -->
     <div id="historyTab" class="tab-content">
         <div class="card">
             <div class="history-top">
@@ -1558,11 +1574,11 @@
                     <span id="hfIncome" class="hf-val" style="color:var(--success)">₪0</span>
                     <span style="margin:0 6px;color:var(--text-muted)">│</span>
                     <span class="hf-label">הוצאות: </span>
-                    <span id="hfExpense" class="hf-val" style="color:var(--danger)">₪0</span>
+                    <span id="hfExpense" class="hf-val" style="color:var(--danger)">0</span>
                 </div>
                 <div class="hf-item">
                     <span class="hf-label">נטו: </span>
-                    <span id="hfNet" class="hf-val">0</span>
+                    <span id="hfNet" class="hf-val">₪0</span>
                 </div>
             </div>
         </div>
@@ -1573,7 +1589,7 @@
 
 <div id="confirmModal" class="modal-overlay">
     <div class="modal-box">
-        <div class="modal-title">️ מחיקת תנועה</div>
+        <div class="modal-title">🗑️ מחיקת תנועה</div>
         <div class="modal-text">האם אתה בטוח שברצונך למחוק תנועה זו?<br>פעולה זו אינה הפיכה.</div>
         <div class="modal-btns">
             <button class="modal-btn cancel" onclick="closeModal()">ביטול</button>
@@ -1582,22 +1598,7 @@
     </div>
 </div>
 
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <style>
-                body {
-                  background-color: white; /* Ensure the iframe has a white background */
-                }
-
-                
-              </style>
-                        </head>
-                        <body>
-                            <script>
+<script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8QR8tUPmG3HR_3itWrQM0kKdLX8GZIXlPiJh-dDeW4SGJSszE75sLbZZFUeIfG_zl/exec';
 
 const CATS = {
@@ -1614,7 +1615,7 @@ let dailyChart = null;
 let pendingDeleteId = null;
 let pendingDeleteMonth = null;
 let currentBudget = 0;
-let currentExpense = 0; // שמירת ההוצאה הנוכחית
+let currentExpense = 0;
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('date').valueAsDate = new Date();
@@ -1744,47 +1745,35 @@ document.getElementById('trackerForm').addEventListener('submit', function(e) {
     });
 });
 
-// ═══════════════════════════════════════
-//  טעינת תובנות - סדר מתוקן לחלוטין
-// ═══════════════════════════════════════
 function loadInsights() {
     var month = document.getElementById('insightsMonth').value;
     if (!month) return;
 
     var prevMonth = getPreviousMonth(month);
 
-    console.log('Loading insights for month:', month);
-
-    // שלב 1: טעינת תקציב קודם - חובה!
     apiGet('settings').then(function(settingsData) {
-        console.log('Settings loaded:', settingsData);
         if (settingsData.status === 'success') {
             if (settingsData.settings.budget !== undefined && settingsData.settings.budget !== '') {
                 currentBudget = parseFloat(settingsData.settings.budget);
                 document.getElementById('budgetInput').value = currentBudget;
-                console.log('Budget loaded:', currentBudget);
             } else {
                 currentBudget = 0;
                 document.getElementById('budgetInput').value = '';
-                console.log('No budget set');
             }
         }
-    }).catch(function(err) {
-        console.error('Failed to load budget:', err);
     });
 
-    // שלב 2: טעינת תנועות לגרף יומי
     apiGet('transactions', {month: month}).then(function(txData) {
         if (txData.status === 'success') {
             renderDailyChart(txData.transactions, month);
+            calculateForecast(txData.transactions, month);
         }
     });
 
-    // שלב 3: טעינת סיכום חודשי + חודש קודם
     apiGet('summary', {month: month}).then(function(currentData) {
         if (currentData.status !== 'success') return;
 
-        currentExpense = currentData.expense; // שמירת ההוצאה
+        currentExpense = currentData.expense;
 
         apiGet('summary', {month: prevMonth}).then(function(prevData) {
             var bal = currentData.balance;
@@ -1792,7 +1781,7 @@ function loadInsights() {
             balEl.textContent = '₪' + bal.toLocaleString();
             balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
             document.getElementById('incomeAmount').textContent = '₪' + currentData.income.toLocaleString();
-            document.getElementById('expenseAmount').textContent = '₪' + currentData.expense.toLocaleString();
+            document.getElementById('expenseAmount').textContent = '' + currentData.expense.toLocaleString();
             document.getElementById('txCount').textContent = currentData.transactions;
 
             if (currentData.income > 0) {
@@ -1803,7 +1792,6 @@ function loadInsights() {
                 document.getElementById('savingsRate').textContent = '-';
             }
 
-            // עדכון בר התקציב - עם delay לוודא שה-budget נטען
             setTimeout(function() {
                 updateBudgetBar(currentData.expense);
             }, 200);
@@ -1813,7 +1801,6 @@ function loadInsights() {
         });
     });
 
-    // שלב 4: טעינת קטגוריות
     apiGet('categorySummary', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         var cats = data.categories;
@@ -1893,6 +1880,40 @@ function loadInsights() {
             }
         });
     });
+}
+
+function calculateForecast(transactions, month) {
+    var parts = month.split('-');
+    var mNum = parseInt(parts[0]), yNum = parseInt(parts[1]);
+    var daysInMonth = new Date(yNum, mNum, 0).getDate();
+    var now = new Date();
+    var daysPassed = (now.getMonth() + 1 === mNum && now.getFullYear() === yNum) ? now.getDate() : daysInMonth;
+    
+    var totalExpense = 0;
+    transactions.forEach(function(t) {
+        if (t.type === 'הוצאה') {
+            totalExpense += t.amount;
+        }
+    });
+    
+    var dailyAvg = daysPassed > 0 ? totalExpense / daysPassed : 0;
+    var forecast = dailyAvg * daysInMonth;
+    
+    document.getElementById('forecastValue').textContent = '₪' + Math.round(forecast).toLocaleString();
+    
+    var statusEl = document.getElementById('forecastStatus');
+    if (currentBudget > 0) {
+        if (forecast > currentBudget) {
+            statusEl.textContent = '⚠️ חריגה צפויה של ₪' + Math.round(forecast - currentBudget).toLocaleString();
+            statusEl.style.color = 'var(--danger)';
+        } else {
+            statusEl.textContent = '✅ within התקציב (נותר ' + Math.round(currentBudget - forecast).toLocaleString() + ')';
+            statusEl.style.color = 'var(--success)';
+        }
+    } else {
+        statusEl.textContent = 'הגדר תקציב לקבלת התראה';
+        statusEl.style.color = 'var(--text-muted)';
+    }
 }
 
 function renderDailyChart(transactions, month) {
@@ -2028,9 +2049,9 @@ function generateInsights(current, prev) {
     if (prev.status === 'success' && prev.transactions > 0) {
         var expenseChange = ((current.expense - prev.expense) / prev.expense * 100);
         if (expenseChange < -10) {
-            insights.push({ icon: '📉', type: 'positive', title: 'הוצאות ירדו!', text: 'ההוצאות שלך ירדו ב-' + Math.abs(expenseChange).toFixed(0) + '% לעומת החודש הקודם. מעולה!' });
+            insights.push({ icon: '', type: 'positive', title: 'הוצאות ירדו!', text: 'ההוצאות שלך ירדו ב-' + Math.abs(expenseChange).toFixed(0) + '% לעומת החודש הקודם. מעולה!' });
         } else if (expenseChange > 10) {
-            insights.push({ icon: '📈', type: 'negative', title: 'הוצאות עלו', text: 'ההוצאות שלך עלו ב-' + expenseChange.toFixed(0) + '% לעומת החודש הקודם. כדאי לשים לב.' });
+            insights.push({ icon: '', type: 'negative', title: 'הוצאות עלו', text: 'ההוצאות שלך עלו ב-' + expenseChange.toFixed(0) + '% לעומת החודש הקודם. כדאי לשים לב.' });
         }
     }
 
@@ -2046,7 +2067,7 @@ function generateInsights(current, prev) {
     }
 
     if (current.transactions > 30) {
-        insights.push({ icon: '', type: 'neutral', title: 'הרבה תנועות החודש', text: 'ביצעת ' + current.transactions + ' תנועות החודש. אולי כדאי לבדוק אם יש הוצאות מיותרות.' });
+        insights.push({ icon: '📊', type: 'neutral', title: 'הרבה תנועות החודש', text: 'ביצעת ' + current.transactions + ' תנועות החודש. אולי כדאי לבדוק אם יש הוצאות מיותרות.' });
     }
 
     if (insights.length === 0) {
@@ -2062,22 +2083,15 @@ function generateInsights(current, prev) {
     container.innerHTML = html;
 }
 
-// ═══════════════════════════════════════
-//  עדכון בר התקציב - מתוקן
-// ═══════════════════════════════════════
 function updateBudgetBar(expense) {
     var fill = document.getElementById('budgetFill');
     var text = document.getElementById('budgetText');
     var budgetInput = document.getElementById('budgetInput');
 
-    console.log('updateBudgetBar - budget:', currentBudget, 'expense:', expense);
-
-    // אם ה-input לא ריק וה-budget גלובאלי 0, ננסה לקרוא מה-input
     if (!currentBudget || currentBudget <= 0) {
         var inputVal = parseFloat(budgetInput.value);
         if (inputVal > 0) {
             currentBudget = inputVal;
-            console.log('Budget read from input:', currentBudget);
         }
     }
 
@@ -2091,18 +2105,11 @@ function updateBudgetBar(expense) {
     fill.style.width = pct + '%';
     fill.className = 'budget-fill' + (pct > 90 ? ' over' : pct > 70 ? ' warn' : '');
     text.textContent = '₪' + expense.toLocaleString() + ' / ₪' + currentBudget.toLocaleString() + ' (' + Math.round(pct) + '%)';
-    
-    console.log('Budget bar updated:', pct + '%');
 }
 
-// ═══════════════════════════════════════
-//  שמירת תקציב - מתוקן לחלוטין
-// ═══════════════════════════════════════
 function saveBudget() {
     var budgetInput = document.getElementById('budgetInput');
     var val = budgetInput.value.trim();
-    
-    console.log('saveBudget - value:', val);
     
     if (!val || isNaN(val) || parseFloat(val) <= 0) {
         showToast('❌ הזן סכום תקין', 'error');
@@ -2121,18 +2128,10 @@ function saveBudget() {
     btn.textContent = 'שומר...';
 
     apiPost(p).then(function(data) {
-        console.log('saveBudget response:', data);
-        
         if (data.status === 'success') {
-            // עדכון התקציב בזיכרון
             currentBudget = budgetNum;
-            
-            console.log('Budget saved and updated in memory:', currentBudget);
-            
-            // עדכון הבר מיידית
             updateBudgetBar(currentExpense);
             
-            // רענון התובנות עם התקציב החדש
             var month = document.getElementById('insightsMonth').value;
             if (month) {
                 apiGet('summary', {month: month}).then(function(currentData) {
@@ -2147,7 +2146,6 @@ function saveBudget() {
             throw new Error(data.message || 'שגיאה לא ידועה');
         }
     }).catch(function(err) {
-        console.error('saveBudget error:', err);
         showToast('❌ שגיאה בשמירה: ' + err.message, 'error');
     }).finally(function() {
         btn.disabled = false;
@@ -2280,323 +2278,5 @@ function showToast(msg, type) {
     t._timer = setTimeout(function() { t.classList.remove('show'); }, 3000);
 }
 </script>
-
-
-              <script>
-                              var SPREADSHEET_ID = '1n5ZNeVKYX1RJs_UQx1aL9N_g2rcFkiXpODCgIXUZrCE';
-
-function getSpreadsheet() {
-  if (SPREADSHEET_ID && SPREADSHEET_ID.trim() !== '') {
-    return SpreadsheetApp.openById(SPREADSHEET_ID);
-  }
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  if (ss) return ss;
-  throw new Error('לא הוגדר SPREADSHEET_ID');
-}
-
-function doPost(e) {
-  try {
-    var params = parseParams(e);
-    var action = params.action || 'save';
-    
-    Logger.log('doPost action: ' + action);
-    Logger.log('params: ' + JSON.stringify(params));
-    
-    if (action === 'save') return saveTransaction(params);
-    if (action === 'delete') return deleteTransaction(params);
-    if (action === 'saveSettings') return saveSettings(params);
-    
-    return jsonResponse({"status": "error", "message": "פעולה לא מוכרת: " + action});
-  } catch(error) {
-    Logger.log('Error: ' + error.toString());
-    return jsonResponse({"status": "error", "message": error.toString()});
-  }
-}
-
-function doGet(e) {
-  try {
-    var action = e.parameter.action || 'summary';
-    
-    Logger.log('doGet action: ' + action);
-    
-    if (action === 'summary') return getSummary(e.parameter);
-    if (action === 'transactions') return getTransactions(e.parameter);
-    if (action === 'categorySummary') return getCategorySummary(e.parameter);
-    if (action === 'allSheets') return getAllSheets();
-    if (action === 'settings') return getSettings();
-    
-    return jsonResponse({"status": "error", "message": "פעולה לא מוכרת: " + action});
-  } catch(error) {
-    Logger.log('Error: ' + error.toString());
-    return jsonResponse({"status": "error", "message": error.toString()});
-  }
-}
-
-function parseParams(e) {
-  var params = {};
-  if (e.parameter) {
-    for (var key in e.parameter) {
-      params[key] = e.parameter[key];
-    }
-  }
-  if (e.postData && e.postData.contents) {
-    var contentType = e.postData.type || '';
-    if (contentType.indexOf('application/json') !== -1) {
-      try {
-        var json = JSON.parse(e.postData.contents);
-        for (var k in json) params[k] = json[k];
-      } catch(err) {}
-    } else {
-      e.postData.contents.split('&').forEach(function(pair) {
-        var idx = pair.indexOf('=');
-        if (idx > 0) {
-          var key = decodeURIComponent(pair.substring(0, idx));
-          var val = decodeURIComponent(pair.substring(idx + 1));
-          params[key] = val;
-        }
-      });
-    }
-  }
-  return params;
-}
-
-function jsonResponse(data) {
-  return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
-}
-
-function getCurrentSheetName() {
-  var d = new Date();
-  return ("0" + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear();
-}
-
-function getSheetNameFromDate(dateStr) {
-  if (!dateStr) return getCurrentSheetName();
-  var d = new Date(dateStr);
-  if (isNaN(d.getTime())) return getCurrentSheetName();
-  return ("0" + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear();
-}
-
-function getOrCreateSheet(sheetName) {
-  var ss = getSpreadsheet();
-  var sheet = ss.getSheetByName(sheetName);
-  if (!sheet) {
-    sheet = ss.insertSheet(sheetName);
-    sheet.appendRow(['תאריך', 'סוג', 'קטגוריה', 'סכום', 'תיאור', 'מזהה']);
-    var headerRange = sheet.getRange("A1:F1");
-    headerRange.setFontWeight("bold");
-    headerRange.setBackground("#1a1a2e");
-    headerRange.setFontColor("#ffffff");
-    headerRange.setHorizontalAlignment("center");
-    sheet.setColumnWidth(1, 110);
-    sheet.setColumnWidth(2, 80);
-    sheet.setColumnWidth(3, 140);
-    sheet.setColumnWidth(4, 100);
-    sheet.setColumnWidth(5, 220);
-    sheet.setColumnWidth(6, 170);
-    sheet.setFrozenRows(1);
-  }
-  return sheet;
-}
-
-function saveTransaction(params) {
-  var sheetName = getSheetNameFromDate(params.date);
-  var sheet = getOrCreateSheet(sheetName);
-  var id = new Date().getTime() + '-' + Math.random().toString(36).substr(2, 9);
-  sheet.appendRow([params.date || '', params.type || '', params.category || '', Number(params.amount) || 0, params.description || '', id]);
-  var lastRow = sheet.getLastRow();
-  sheet.getRange(lastRow, 4).setNumberFormat('#,##0.00');
-  return jsonResponse({"status": "success", "id": id, "sheet": sheetName});
-}
-
-function deleteTransaction(params) {
-  var id = params.id;
-  var month = params.month;
-  if (!id || !month) return jsonResponse({"status": "error", "message": "חסרים פרמטרים"});
-  var ss = getSpreadsheet();
-  var sheet = ss.getSheetByName(month);
-  if (!sheet) return jsonResponse({"status": "error", "message": "גיליון לא נמצא"});
-  var data = sheet.getDataRange().getValues();
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][5]) === String(id)) {
-      sheet.deleteRow(i + 1);
-      return jsonResponse({"status": "success"});
-    }
-  }
-  return jsonResponse({"status": "error", "message": "תנועה לא נמצאה"});
-}
-
-function getSummary(params) {
-  var month = params.month || getCurrentSheetName();
-  var ss = getSpreadsheet();
-  var sheet = ss.getSheetByName(month);
-  var income = 0, expense = 0, count = 0;
-  if (sheet && sheet.getLastRow() > 1) {
-    var data = sheet.getDataRange().getValues();
-    for (var i = 1; i < data.length; i++) {
-      var amount = Number(data[i][3]) || 0;
-      var type = data[i][1];
-      count++;
-      if (type === 'הכנסה') income += amount;
-      if (type === 'הוצאה') expense += amount;
-    }
-  }
-  return jsonResponse({"status": "success", "income": income, "expense": expense, "balance": income - expense, "transactions": count, "month": month});
-}
-
-function getTransactions(params) {
-  var month = params.month || getCurrentSheetName();
-  var ss = getSpreadsheet();
-  var sheet = ss.getSheetByName(month);
-  var transactions = [];
-  if (sheet && sheet.getLastRow() > 1) {
-    var data = sheet.getDataRange().getValues();
-    for (var i = 1; i < data.length; i++) {
-      transactions.push({"id": String(data[i][5]), "date": data[i][0], "type": data[i][1], "category": data[i][2], "amount": Number(data[i][3]), "description": data[i][4]});
-    }
-  }
-  return jsonResponse({"status": "success", "transactions": transactions, "month": month});
-}
-
-function getCategorySummary(params) {
-  var month = params.month || getCurrentSheetName();
-  var ss = getSpreadsheet();
-  var sheet = ss.getSheetByName(month);
-  var categories = {};
-  if (sheet && sheet.getLastRow() > 1) {
-    var data = sheet.getDataRange().getValues();
-    for (var i = 1; i < data.length; i++) {
-      if (data[i][1] === 'הוצאה') {
-        var cat = data[i][2];
-        categories[cat] = (categories[cat] || 0) + (Number(data[i][3]) || 0);
-      }
-    }
-  }
-  var sorted = Object.keys(categories).map(function(k) { return {category: k, amount: categories[k]}; }).sort(function(a, b) { return b.amount - a.amount; });
-  return jsonResponse({"status": "success", "categories": sorted, "month": month});
-}
-
-function getAllSheets() {
-  var ss = getSpreadsheet();
-  var sheets = ss.getSheets();
-  var names = [];
-  for (var i = 0; i < sheets.length; i++) {
-    var name = sheets[i].getName();
-    if (/^\d{2}-\d{4}$/.test(name)) names.push(name);
-  }
-  names.sort().reverse();
-  var current = getCurrentSheetName();
-  if (names.indexOf(current) === -1) names.unshift(current);
-  return jsonResponse({"status": "success", "sheets": names});
-}
-
-// ═══════════════════════════════════════
-//  הגדרות - מתוקן עם לוגים
-// ═══════════════════════════════════════
-function getSettings() {
-  try {
-    var ss = getSpreadsheet();
-    var sheet = ss.getSheetByName('Settings');
-    var settings = {};
-    
-    Logger.log('getSettings - sheet found: ' + (sheet !== null));
-    
-    if (sheet && sheet.getLastRow() > 1) {
-      var data = sheet.getDataRange().getValues();
-      Logger.log('getSettings - data rows: ' + data.length);
-      for (var i = 1; i < data.length; i++) {
-        if (data[i][0]) {
-          settings[String(data[i][0])] = data[i][1];
-          Logger.log('Setting: ' + data[i][0] + ' = ' + data[i][1]);
-        }
-      }
-    } else if (sheet) {
-      Logger.log('getSettings - sheet exists but no data');
-    }
-    
-    Logger.log('getSettings - returning: ' + JSON.stringify(settings));
-    return jsonResponse({"status": "success", "settings": settings});
-  } catch(error) {
-    Logger.log('getSettings error: ' + error.toString());
-    return jsonResponse({"status": "error", "message": error.toString(), "settings": {}});
-  }
-}
-
-function saveSettings(params) {
-  try {
-    var key = params.key;
-    var value = params.value;
-    
-    Logger.log('saveSettings - key: ' + key + ', value: ' + value);
-    
-    if (!key) {
-      return jsonResponse({"status": "error", "message": "חסר מפתח (key)"});
-    }
-    
-    var ss = getSpreadsheet();
-    var sheet = ss.getSheetByName('Settings');
-    
-    if (!sheet) {
-      Logger.log('saveSettings - creating Settings sheet');
-      sheet = ss.insertSheet('Settings');
-      sheet.appendRow(['מפתח', 'ערך']);
-      var headerRange = sheet.getRange("A1:B1");
-      headerRange.setFontWeight("bold");
-      headerRange.setBackground("#1a1a2e");
-      headerRange.setFontColor("#ffffff");
-      sheet.setFrozenRows(1);
-      sheet.setColumnWidth(1, 150);
-      sheet.setColumnWidth(2, 200);
-    }
-    
-    var data = sheet.getLastRow() > 1 ? sheet.getDataRange().getValues() : [];
-    var found = false;
-    
-    Logger.log('saveSettings - existing rows: ' + data.length);
-    
-    for (var i = 1; i < data.length; i++) {
-      Logger.log('Checking row ' + i + ': ' + data[i][0] + ' === ' + key);
-      if (String(data[i][0]) === String(key)) {
-        sheet.getRange(i + 1, 2).setValue(value);
-        found = true;
-        Logger.log('Updated existing row ' + (i+1));
-        break;
-      }
-    }
-    
-    if (!found) {
-      sheet.appendRow([key, value]);
-      Logger.log('Appended new row with ' + key + ' = ' + value);
-    }
-    
-    // וידוא שהערך נשמר
-    var verifyData = sheet.getDataRange().getValues();
-    Logger.log('Verification - all rows:');
-    for (var j = 0; j < verifyData.length; j++) {
-      Logger.log('  Row ' + j + ': ' + verifyData[j][0] + ' = ' + verifyData[j][1]);
-    }
-    
-    return jsonResponse({"status": "success", "key": key, "value": value});
-  } catch(error) {
-    Logger.log('saveSettings error: ' + error.toString());
-    return jsonResponse({"status": "error", "message": error.toString()});
-  }
-}
-
-function testSetup() {
-  try {
-    var ss = getSpreadsheet();
-    Logger.log('Spreadsheet: ' + ss.getName());
-    Logger.log('URL: ' + ss.getUrl());
-    var sheets = ss.getSheets();
-    Logger.log('Sheets: ' + sheets.length);
-    sheets.forEach(function(s) { Logger.log('  - ' + s.getName()); });
-  } catch(err) {
-    Logger.log('Error: ' + err.toString());
-  }
-}
-
-
-              </script>
-                        </body>
-                        </html>
-                    
+</body>
+</html>
