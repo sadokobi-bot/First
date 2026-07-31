@@ -3,72 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מעקב פיננסי</title>
+    <title>מעקב פיננסי | תובנות</title>
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.05);
-            --glass-highlight: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(30, 41, 59, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent: #3b82f6;
             --accent-hover: #2563eb;
-            --input-bg: rgba(15, 23, 42, 0.4);
+            --input-bg: rgba(15, 23, 42, 0.7);
             --success: #10b981;
             --error: #ef4444;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1e2f 100%);
         }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .container {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px 32px;
+            border-radius: 28px;
             width: 100%;
-            max-width: 380px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            box-sizing: border-box;
+            max-width: 420px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        h2 {
-            margin: 0 0 32px 0;
-            font-weight: 500;
-            font-size: 1.5rem;
-            letter-spacing: -0.025em;
-            text-align: right;
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 -2px 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 35px 30px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .form-group {
-            margin-bottom: 24px;
-            text-align: right;
+            margin-bottom: 22px;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
-            font-size: 0.875rem;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
             color: var(--text-muted);
+            font-weight: 500;
         }
 
         input, select {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: var(--input-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            border-radius: 14px;
             color: var(--text-main);
             font-size: 1rem;
             box-sizing: border-box;
@@ -79,42 +127,37 @@
 
         input:focus, select:focus {
             border-color: var(--glass-highlight);
-            background: rgba(15, 23, 42, 0.6);
-            box-shadow: 0 0 0 1px var(--glass-highlight);
-        }
-
-        input::placeholder {
-            color: #475569;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
         }
 
         select option {
-            background: #0f172a;
+            background: #1e293b;
             color: var(--text-main);
         }
 
-        button {
+        button.primary-btn {
             width: 100%;
             padding: 16px;
             background: var(--text-main);
             color: #0f172a;
             border: none;
-            border-radius: 16px;
-            font-size: 1rem;
+            border-radius: 14px;
+            font-size: 1.05rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.1s ease, background 0.3s ease;
+            transition: transform 0.15s ease, background 0.3s ease;
             margin-top: 10px;
         }
 
-        button:hover {
+        button.primary-btn:hover {
             background: #e2e8f0;
         }
 
-        button:active {
+        button.primary-btn:active {
             transform: scale(0.98);
         }
 
-        button:disabled {
+        button.primary-btn:disabled {
             background: var(--text-muted);
             cursor: not-allowed;
             transform: none;
@@ -123,59 +166,211 @@
         #statusMessage {
             margin-top: 20px;
             text-align: center;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             min-height: 20px;
             font-weight: 500;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .show-status {
-            opacity: 1 !important;
+        .show-status { opacity: 1 !important; }
+
+        /* Insights Dashboard Styles */
+        .insight-card {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: center;
         }
+
+        .insight-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .insight-card .amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .amount.positive { color: var(--success); text-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+        .amount.negative { color: var(--error); text-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .mini-card {
+            background: var(--input-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 18px 15px;
+            text-align: center;
+        }
+
+        .mini-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .mini-card p {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .refresh-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.3s ease;
+        }
+        
+        .refresh-btn:hover { background: rgba(255,255,255,0.05); }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>הוספת תנועה</h2>
-    <form id="trackerForm">
-        <div class="form-group">
-            <label for="date">תאריך</label>
-            <input type="date" id="date" required>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('form')">הוספת תנועה</button>
+        <button class="tab-btn" onclick="switchTab('insights'); fetchInsights();">תובנות</button>
+    </div>
+
+    <!-- Tab 1: Form -->
+    <div id="formTab" class="tab-content active">
+        <form id="trackerForm">
+            <div class="form-group">
+                <label for="date">תאריך</label>
+                <input type="date" id="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="type">סוג</label>
+                <select id="type" onchange="updateCategories()" required>
+                    <option value="הוצאה">הוצאה</option>
+                    <option value="הכנסה">הכנסה</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category">קטגוריה</label>
+                <select id="category" required>
+                    <!-- Options populated by JS -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">סכום (₪)</label>
+                <input type="number" id="amount" placeholder="0.00" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">הערות (אופציונלי)</label>
+                <input type="text" id="description" placeholder="פירוט נוסף...">
+            </div>
+
+            <button type="submit" id="submitBtn" class="primary-btn">שמירת תנועה</button>
+            <div id="statusMessage"></div>
+        </form>
+    </div>
+
+    <!-- Tab 2: Insights -->
+    <div id="insightsTab" class="tab-content">
+        <div class="insight-card">
+            <h3>מאזן נוכחי (חודש נוכחי)</h3>
+            <p id="balanceAmount" class="amount">₪0</p>
+        </div>
+        
+        <div class="summary-grid">
+            <div class="mini-card">
+                <h4>סך הכנסות</h4>
+                <p id="incomeAmount" style="color: var(--success);">₪0</p>
+            </div>
+            <div class="mini-card">
+                <h4>סך הוצאות</h4>
+                <p id="expenseAmount" style="color: var(--error);">₪0</p>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="type">סוג</label>
-            <select id="type" required>
-                <option value="הוצאה">הוצאה</option>
-                <option value="הכנסה">הכנסה</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="category">קטגוריה</label>
-            <input type="text" id="category" placeholder="לדוגמה: אוכל, דלק, משכורת" required>
-        </div>
-
-        <div class="form-group">
-            <label for="amount">סכום (₪)</label>
-            <input type="number" id="amount" placeholder="0.00" step="0.01" required>
-        </div>
-
-        <div class="form-group">
-            <label for="description">הערות (אופציונלי)</label>
-            <input type="text" id="description" placeholder="פירוט נוסף...">
-        </div>
-
-        <button type="submit" id="submitBtn">שמירה</button>
-        <div id="statusMessage"></div>
-    </form>
+        <button class="refresh-btn" onclick="fetchInsights()">רענן נתונים ↻</button>
+    </div>
 </div>
 
 <script>
-    document.getElementById('date').valueAsDate = new Date();
+    // הלינק החדש שהעברת לי
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqRNK4fu_sNRoP1v8NyzTbwwYSuTllJPdMzlJL5XlNLp-p9uJoBbl7xJIZHw0bkhYg/exec'; 
 
+    // רשימת קטגוריות מותאמת אישית
+    const categories = {
+        'הוצאה': [
+            'מזון וסופר', 
+            'רכב ותחבורה', 
+            'מסעדות ובילויים', 
+            'חשבונות ותקשורת', 
+            'ביגוד והנעלה', 
+            'כושר ותזונה', 
+            'הוצאות על טופי 🐶', 
+            'מחשבים, חומרה וגיימינג', 
+            'הוצאות לימודים',
+            'חופשות וטיולים',
+            'אחר'
+        ],
+        'הכנסה': ['משכורת', 'העברות בנקאיות', 'החזרים', 'מתנות', 'אחר']
+    };
+
+    // אתחול
+    document.getElementById('date').valueAsDate = new Date();
+    updateCategories();
+
+    // פונקציות ניווט ועדכון
+    function switchTab(tab) {
+        document.getElementById('formTab').classList.remove('active');
+        document.getElementById('insightsTab').classList.remove('active');
+        document.querySelectorAll('.tab-btn')[0].classList.remove('active');
+        document.querySelectorAll('.tab-btn')[1].classList.remove('active');
+
+        if(tab === 'form') {
+            document.getElementById('formTab').classList.add('active');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        } else {
+            document.getElementById('insightsTab').classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        }
+    }
+
+    function updateCategories() {
+        const type = document.getElementById('type').value;
+        const categorySelect = document.getElementById('category');
+        categorySelect.innerHTML = '';
+        
+        categories[type].forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.text = cat;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    // שליחת טופס
     document.getElementById('trackerForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -183,7 +378,7 @@
         const statusMsg = document.getElementById('statusMessage');
         
         submitBtn.disabled = true;
-        submitBtn.innerText = 'שומר נתונים...';
+        submitBtn.innerText = 'מעבד נתונים...';
         statusMsg.classList.remove('show-status');
         
         const data = {
@@ -194,9 +389,7 @@
             description: document.getElementById('description').value
         };
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyGmtZ8az5PFSI1bNYdCciurqLQe36cSx8ZdV74YJoD5oqJFR9Gn6q97gvdw-rmRKBo/exec';
-
-        fetch(scriptURL, {
+        fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(data)
@@ -204,31 +397,54 @@
         .then(response => response.json())
         .then(result => {
             if(result.status === 'success') {
-                statusMsg.innerText = 'התנועה נשמרה בהצלחה!';
+                statusMsg.innerText = 'התנועה תועדה בהצלחה!';
                 statusMsg.style.color = 'var(--success)';
                 statusMsg.classList.add('show-status');
                 
-                document.getElementById('trackerForm').reset();
-                document.getElementById('date').valueAsDate = new Date();
+                document.getElementById('amount').value = '';
+                document.getElementById('description').value = '';
                 
-                setTimeout(() => {
-                    statusMsg.classList.remove('show-status');
-                }, 3000);
+                setTimeout(() => statusMsg.classList.remove('show-status'), 3000);
             } else {
                 throw new Error(result.message);
             }
         })
         .catch(error => {
-            statusMsg.innerText = 'אירעה שגיאה. נסה שוב.';
+            statusMsg.innerText = 'אירעה שגיאה. בדוק הרשאות ונסה שוב.';
             statusMsg.style.color = 'var(--error)';
             statusMsg.classList.add('show-status');
-            console.error('Error:', error);
         })
         .finally(() => {
             submitBtn.disabled = false;
-            submitBtn.innerText = 'שמירה';
+            submitBtn.innerText = 'שמירת תנועה';
         });
     });
+
+    // משיכת נתונים
+    function fetchInsights() {
+        const balanceEl = document.getElementById('balanceAmount');
+        const incomeEl = document.getElementById('incomeAmount');
+        const expenseEl = document.getElementById('expenseAmount');
+        
+        balanceEl.innerText = 'טוען...';
+        
+        fetch(SCRIPT_URL)
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === 'success') {
+                const balance = data.balance;
+                balanceEl.innerText = '₪' + balance.toLocaleString();
+                incomeEl.innerText = '₪' + data.income.toLocaleString();
+                expenseEl.innerText = '₪' + data.expense.toLocaleString();
+                
+                balanceEl.className = 'amount ' + (balance >= 0 ? 'positive' : 'negative');
+            }
+        })
+        .catch(error => {
+            balanceEl.innerText = 'שגיאה בטעינה';
+            balanceEl.className = 'amount negative';
+        });
+    }
 </script>
 </body>
 </html>
