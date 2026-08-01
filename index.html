@@ -34,6 +34,7 @@
     --radius-xs: 10px;
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+    --sidebar-width: 260px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,7 +47,6 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
-    padding-bottom: 100px;
 }
 
 /* Animated Background */
@@ -67,21 +67,21 @@ body {
 }
 
 .bg-orb-1 {
-    width: 400px; height: 400px;
+    width: 500px; height: 500px;
     background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent 70%);
-    top: -100px; right: -100px;
+    top: -150px; right: -150px;
     animation-delay: 0s;
 }
 
 .bg-orb-2 {
-    width: 350px; height: 350px;
+    width: 400px; height: 400px;
     background: radial-gradient(circle, rgba(16, 185, 129, 0.25), transparent 70%);
-    bottom: -100px; left: -100px;
+    bottom: -150px; left: -150px;
     animation-delay: -7s;
 }
 
 .bg-orb-3 {
-    width: 300px; height: 300px;
+    width: 350px; height: 350px;
     background: radial-gradient(circle, rgba(236, 72, 153, 0.2), transparent 70%);
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
@@ -122,6 +122,216 @@ body {
     100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
 }
 
+/* ============ DESKTOP LAYOUT ============ */
+.desktop-layout {
+    display: none;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: rgba(13, 17, 23, 0.95);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid var(--glass-border);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    text-align: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 24px;
+}
+
+.sidebar-logo {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    box-shadow: 0 8px 24px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.sidebar-logo svg { width: 28px; height: 28px; fill: white; }
+
+.sidebar-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sidebar-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebar-nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--text-sec);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: right;
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar-nav-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    border-radius: var(--radius-sm);
+}
+
+.sidebar-nav-btn:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+}
+
+.sidebar-nav-btn.active {
+    color: #fff;
+    box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.sidebar-nav-btn.active::before { opacity: 1; }
+
+.sidebar-nav-btn svg {
+    width: 20px; height: 20px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.sidebar-footer {
+    padding-top: 20px;
+    border-top: 1px solid var(--glass-border);
+    text-align: center;
+}
+
+.sidebar-footer-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.main-content {
+    margin-right: var(--sidebar-width);
+    padding: 30px 40px;
+    min-height: 100vh;
+}
+
+.desktop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.desktop-header-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.desktop-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.desktop-month-select {
+    padding: 10px 16px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 160px;
+}
+
+.desktop-add-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px var(--accent-glow);
+    transition: all 0.3s ease;
+}
+
+.desktop-add-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow); }
+.desktop-add-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+.col-5 { grid-column: span 5; }
+.col-6 { grid-column: span 6; }
+.col-7 { grid-column: span 7; }
+.col-8 { grid-column: span 8; }
+.col-12 { grid-column: span 12; }
+
+/* ============ MOBILE LAYOUT ============ */
+.mobile-layout {
+    display: block;
+}
+
 .app {
     width: 100%;
     max-width: 520px;
@@ -130,11 +340,7 @@ body {
     position: relative;
     z-index: 1;
     animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    padding-bottom: 100px;
 }
 
 /* Header */
@@ -491,7 +697,7 @@ body {
     padding: 20px;
     background: rgba(15, 23, 42, 0.4);
     border-radius: var(--radius-sm);
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 }
 
 .progress-ring {
@@ -1194,7 +1400,194 @@ input::placeholder { color: var(--text-muted); }
 .fab-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px var(--accent-glow); }
 .fab-btn svg { width: 20px; height: 20px; fill: currentColor; }
 
+/* Desktop-specific styles */
+.desktop-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.desktop-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+.desktop-card:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.desktop-balance-card {
+    text-align: center;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(16, 185, 129, 0.04));
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.desktop-balance-card .balance-amount {
+    font-size: 3.5rem;
+}
+
+.desktop-stat-card {
+    text-align: center;
+    padding: 28px 20px;
+}
+
+.desktop-stat-card .stat-value {
+    font-size: 2rem;
+}
+
+.desktop-chart-wrap {
+    position: relative;
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+.desktop-daily-chart-wrap {
+    position: relative;
+    height: 280px;
+    margin-bottom: 16px;
+}
+
+.desktop-health-card {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(99, 102, 241, 0.05));
+    border-color: rgba(168, 85, 247, 0.2);
+}
+
+.desktop-progress-ring-container {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+}
+
+.desktop-progress-ring {
+    position: relative;
+    width: 120px; height: 120px;
+    flex-shrink: 0;
+}
+
+.desktop-progress-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+.desktop-progress-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+.desktop-progress-ring .bg { stroke: rgba(15, 23, 42, 0.6); }
+.desktop-progress-ring .progress {
+    stroke: url(#gradient);
+    transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 4px var(--accent-glow));
+}
+.desktop-progress-ring .value {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
+.desktop-quick-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.desktop-q-stat {
+    padding: 22px;
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.desktop-q-stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.desktop-q-stat:hover { border-color: var(--glass-border-hover); transform: translateY(-2px); }
+.desktop-q-stat:hover::before { opacity: 1; }
+
+.desktop-q-stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.desktop-q-stat-label svg { width: 16px; height: 16px; fill: currentColor; }
+.desktop-q-stat-val { font-size: 1.4rem; font-weight: 700; transition: all 0.3s ease; font-variant-numeric: tabular-nums; }
+.desktop-q-stat:hover .desktop-q-stat-val { color: var(--accent-light); }
+.desktop-q-stat-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+
+.desktop-insights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.desktop-comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.desktop-tx-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.desktop-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.desktop-form-grid .full-width {
+    grid-column: span 2;
+}
+
 /* Responsive */
+@media (max-width: 1200px) {
+    .desktop-quick-stats { grid-template-columns: repeat(2, 1fr); }
+    .desktop-comparison-grid { grid-template-columns: 1fr; }
+    .desktop-insights-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 1024px) {
+    .desktop-layout { display: none !important; }
+    .mobile-layout { display: block !important; }
+}
+
+@media (min-width: 1025px) {
+    .desktop-layout { display: block !important; }
+    .mobile-layout { display: none !important; }
+}
+
 @media (max-width: 480px) {
     .app { padding: 14px; }
     .header h1 { font-size: 2rem; }
@@ -1212,277 +1605,589 @@ input::placeholder { color: var(--text-muted); }
 </div>
 <div class="grid-overlay"></div>
 
-<div class="app">
-    <div class="header">
-        <div class="header-glow"></div>
-        <h1>
-            <div class="header-icon">
+<!-- ============ DESKTOP LAYOUT ============ -->
+<div class="desktop-layout">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
                 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.94s4.18 1.36 4.18 3.85c0 1.89-1.44 2.98-3.12 3.19z"/></svg>
             </div>
-            מעקב פיננסי
-        </h1>
-        <p>ניהול חכם של ההוצאות וההכנסות</p>
-    </div>
+            <div class="sidebar-title">מעקב פיננסי</div>
+            <div class="sidebar-subtitle">ניהול חכם של ההוצאות וההכנסות</div>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="sidebar-nav-btn active" data-tab="insights" onclick="switchDesktopTab('insights')">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                דשבורד
+            </button>
+            <button class="sidebar-nav-btn" data-tab="add" onclick="switchDesktopTab('add')">
+                <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                הוספת תנועה
+            </button>
+            <button class="sidebar-nav-btn" data-tab="history" onclick="switchDesktopTab('history')">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                היסטוריית תנועות
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-text">מעקב פיננסי אישי v2.0</div>
+        </div>
+    </aside>
 
-    <nav class="tabs">
-        <button class="tab-btn active" data-tab="insights">
-            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-            <span>סיכום</span>
-        </button>
-        <button class="tab-btn" data-tab="add">
-            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-            <span>הוספה</span>
-        </button>
-        <button class="tab-btn" data-tab="history">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-            <span>היסטוריה</span>
-        </button>
-    </nav>
+    <main class="main-content">
+        <!-- Desktop Insights Tab -->
+        <div id="desktopInsightsTab" class="tab-content active">
+            <div class="desktop-header">
+                <h2 class="desktop-header-title">📊 דשבורד פיננסי</h2>
+                <div class="desktop-header-actions">
+                    <select id="desktopInsightsMonth" class="desktop-month-select" onchange="loadDesktopInsights()"></select>
+                    <button class="desktop-add-btn" onclick="switchDesktopTab('add')">
+                        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        הוסף תנועה
+                    </button>
+                </div>
+            </div>
 
-    <!-- TAB: INSIGHTS (Now the main dashboard) -->
-    <div id="insightsTab" class="tab-content active">
-        <div class="card">
-            <div class="month-row">
-                <label>חודש:</label>
-                <select id="insightsMonth" class="month-select" onchange="loadInsights()"></select>
+            <div class="dashboard-grid">
+                <!-- Balance Card -->
+                <div class="col-12">
+                    <div class="desktop-card desktop-balance-card balance-card">
+                        <div class="balance-label">מאזן חודשי</div>
+                        <div id="dBalanceAmount" class="balance-amount">₪0</div>
+                        <div id="dBalanceSub" class="balance-sub"></div>
+                    </div>
+                </div>
+
+                <!-- Income & Expense -->
+                <div class="col-6">
+                    <div class="desktop-card desktop-stat-card stat-card">
+                        <div class="stat-label">💰 הכנסות</div>
+                        <div id="dIncomeAmount" class="stat-value income">₪0</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="desktop-card desktop-stat-card stat-card">
+                        <div class="stat-label">💸 הוצאות</div>
+                        <div id="dExpenseAmount" class="stat-value expense">₪0</div>
+                    </div>
+                </div>
+
+                <!-- Financial Health -->
+                <div class="col-5">
+                    <div class="desktop-card desktop-health-card health-card">
+                        <div class="health-header">
+                            <div class="health-title">🏥 מדד בריאות פיננסית</div>
+                            <div class="health-score" id="dHealthScore">0</div>
+                        </div>
+                        <div class="health-bar-container">
+                            <div class="health-bar" id="dHealthBar" style="width: 0%"></div>
+                        </div>
+                        <div class="health-factors" id="dHealthFactors"></div>
+                    </div>
+                </div>
+
+                <!-- Budget Progress Ring -->
+                <div class="col-7">
+                    <div class="desktop-card">
+                        <div class="section-title">🎯 תקציב חודשי</div>
+                        <svg width="0" height="0">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#10b981"/>
+                                    <stop offset="100%" style="stop-color:#34d399"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="desktop-progress-ring-container">
+                            <div class="desktop-progress-ring">
+                                <svg viewBox="0 0 100 100">
+                                    <circle class="bg" cx="50" cy="50" r="42"/>
+                                    <circle class="progress" id="dBudgetRing" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"/>
+                                </svg>
+                                <div class="value" id="dBudgetRingValue">0%</div>
+                            </div>
+                            <div class="progress-info">
+                                <div class="label">הוצאות מתוך תקציב</div>
+                                <div class="amount" id="dBudgetAmount">₪0 / ₪0</div>
+                                <div class="sub" id="dBudgetRemaining">הגדר תקציב כדי להתחיל</div>
+                            </div>
+                        </div>
+                        <div class="budget-input-row">
+                            <input type="number" id="dBudgetInput" placeholder="הגדר תקציב חודשי...">
+                            <button class="budget-save-btn" onclick="saveDesktopBudget()">שמור</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Chart -->
+                <div class="col-8">
+                    <div class="desktop-card">
+                        <div class="chart-title">📈 הוצאות יומיות</div>
+                        <div class="desktop-daily-chart-wrap">
+                            <canvas id="dDailyChart"></canvas>
+                        </div>
+                        <div class="daily-stats">
+                            <div class="daily-stat">
+                                <div class="daily-stat-label">ממוצע יומי</div>
+                                <div id="dDailyAvg" class="daily-stat-val">-</div>
+                            </div>
+                            <div class="daily-stat">
+                                <div class="daily-stat-label">יום הכי יקר</div>
+                                <div id="dDailyMax" class="daily-stat-val">-</div>
+                            </div>
+                            <div class="daily-stat">
+                                <div class="daily-stat-label">יום הכי זול</div>
+                                <div id="dDailyMin" class="daily-stat-val">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Chart -->
+                <div class="col-4">
+                    <div class="desktop-card">
+                        <div class="chart-title">📊 פירוט לפי קטגוריה</div>
+                        <div class="desktop-chart-wrap">
+                            <canvas id="dCategoryChart"></canvas>
+                        </div>
+                        <div id="dCustomLegend" class="custom-legend"></div>
+                        <div id="dChartEmpty" class="empty" style="display:none;padding:20px">
+                            <div class="empty-icon">
+                                <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                            </div>
+                            <div class="empty-text">אין הוצאות בחודש זה</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparison -->
+                <div class="col-6">
+                    <div class="desktop-card">
+                        <div class="section-title">📊 השוואה לחודש קודם</div>
+                        <div id="dComparisonContainer"></div>
+                    </div>
+                </div>
+
+                <!-- Insights -->
+                <div class="col-6">
+                    <div class="desktop-card">
+                        <div class="section-title">💡 תובנות חכמות</div>
+                        <div id="dInsightsContainer"></div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="col-12">
+                    <div class="desktop-quick-stats">
+                        <div class="desktop-q-stat">
+                            <div class="desktop-q-stat-label">
+                                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                קטגוריה מובילה
+                            </div>
+                            <div id="dTopCat" class="desktop-q-stat-val">-</div>
+                            <div id="dTopCatAmt" class="desktop-q-stat-sub">-</div>
+                        </div>
+                        <div class="desktop-q-stat">
+                            <div class="desktop-q-stat-label">
+                                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                                ממוצע יומי
+                            </div>
+                            <div id="dAvgDaily" class="desktop-q-stat-val">-</div>
+                            <div class="desktop-q-stat-sub">הוצאה ליום</div>
+                        </div>
+                        <div class="desktop-q-stat">
+                            <div class="desktop-q-stat-label">
+                                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                                מס׳ תנועות
+                            </div>
+                            <div id="dTxCount" class="desktop-q-stat-val">0</div>
+                            <div class="desktop-q-stat-sub">בחודש זה</div>
+                        </div>
+                        <div class="desktop-q-stat">
+                            <div class="desktop-q-stat-label">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.94s4.18 1.36 4.18 3.85c0 1.89-1.44 2.98-3.12 3.19z"/></svg>
+                                אחסון
+                            </div>
+                            <div id="dSavingsRate" class="desktop-q-stat-val">-</div>
+                            <div class="desktop-q-stat-sub">אחוז חיסכון</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refresh -->
+                <div class="col-12">
+                    <button class="refresh-btn" onclick="loadDesktopInsights()">
+                        <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                        רענן נתונים
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="card balance-card">
-            <div class="balance-label">מאזן חודשי</div>
-            <div id="balanceAmount" class="balance-amount">₪0</div>
-            <div id="balanceSub" class="balance-sub"></div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="card stat-card">
-                <div class="stat-label">הכנסות</div>
-                <div id="incomeAmount" class="stat-value income">₪0</div>
+        <!-- Desktop Add Tab -->
+        <div id="desktopAddTab" class="tab-content">
+            <div class="desktop-header">
+                <h2 class="desktop-header-title">➕ הוספת תנועה חדשה</h2>
             </div>
-            <div class="card stat-card">
-                <div class="stat-label">הוצאות</div>
-                <div id="expenseAmount" class="stat-value expense">₪0</div>
-            </div>
-        </div>
-
-        <!-- Financial Health Score -->
-        <div class="card health-card">
-            <div class="health-header">
-                <div class="health-title">🏥 מדד בריאות פיננסית</div>
-                <div class="health-score" id="healthScore">0</div>
-            </div>
-            <div class="health-bar-container">
-                <div class="health-bar" id="healthBar" style="width: 0%"></div>
-            </div>
-            <div class="health-factors" id="healthFactors"></div>
-        </div>
-
-        <!-- Daily Chart -->
-        <div class="card">
-            <div class="chart-title"> הוצאות יומיות</div>
-            <div class="daily-chart-wrap">
-                <canvas id="dailyChart"></canvas>
-            </div>
-            <div class="daily-stats">
-                <div class="daily-stat">
-                    <div class="daily-stat-label">ממוצע יומי</div>
-                    <div id="dailyAvg" class="daily-stat-val">-</div>
-                </div>
-                <div class="daily-stat">
-                    <div class="daily-stat-label">יום הכי יקר</div>
-                    <div id="dailyMax" class="daily-stat-val">-</div>
-                </div>
-                <div class="daily-stat">
-                    <div class="daily-stat-label">יום הכי זול</div>
-                    <div id="dailyMin" class="daily-stat-val">-</div>
-                </div>
+            <div class="desktop-card" style="max-width: 700px;">
+                <form id="dTrackerForm">
+                    <div class="desktop-form-grid">
+                        <div class="form-group">
+                            <label>תאריך</label>
+                            <div class="date-input-wrapper">
+                                <input type="date" id="dDate" required>
+                                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>סכום (₪)</label>
+                            <input type="number" id="dAmount" placeholder="0.00" step="0.01" min="0.01" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>סוג תנועה</label>
+                            <div class="type-toggle">
+                                <button type="button" class="type-option expense active" onclick="setDesktopType('הוצאה')">
+                                    <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                                    הוצאה
+                                </button>
+                                <button type="button" class="type-option income" onclick="setDesktopType('הכנסה')">
+                                    <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>
+                                    הכנסה
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>קטגוריה</label>
+                            <select id="dCategory" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>הערות (אופציונלי)</label>
+                            <input type="text" id="dDescription" placeholder="פירוט נוסף...">
+                        </div>
+                        <div class="form-group full-width">
+                            <button type="submit" id="dSubmitBtn" class="submit-btn">שמירת תנועה</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <!-- Comparison -->
-        <div class="card">
-            <div class="section-title">📊 השוואה לחודש קודם</div>
-            <div id="comparisonContainer"></div>
-        </div>
-
-        <!-- Budget with Progress Ring -->
-        <div class="card">
-            <div class="section-title">🎯 תקציב חודשי</div>
-            <svg width="0" height="0">
-                <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" style="stop-color:#10b981"/>
-                        <stop offset="100%" style="stop-color:#34d399"/>
-                    </linearGradient>
-                </defs>
-            </svg>
-            <div class="progress-ring-container">
-                <div class="progress-ring">
-                    <svg viewBox="0 0 100 100">
-                        <circle class="bg" cx="50" cy="50" r="42"/>
-                        <circle class="progress" id="budgetRing" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"/>
-                    </svg>
-                    <div class="value" id="budgetRingValue">0%</div>
-                </div>
-                <div class="progress-info">
-                    <div class="label">הוצאות מתוך תקציב</div>
-                    <div class="amount" id="budgetAmount">₪0 / ₪0</div>
-                    <div class="sub" id="budgetRemaining">הגדר תקציב כדי להתחיל</div>
+        <!-- Desktop History Tab -->
+        <div id="desktopHistoryTab" class="tab-content">
+            <div class="desktop-header">
+                <h2 class="desktop-header-title">📋 היסטוריית תנועות</h2>
+                <div class="desktop-header-actions">
+                    <select id="dHistoryMonth" class="desktop-month-select" onchange="loadDesktopHistory()"></select>
+                    <button class="export-btn" onclick="exportDesktopCSV()">
+                        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        ייצוא CSV
+                    </button>
                 </div>
             </div>
-            <div class="budget-input-row">
-                <input type="number" id="budgetInput" placeholder="הגדר תקציב חודשי...">
-                <button class="budget-save-btn" onclick="saveBudget()">שמור</button>
-            </div>
-        </div>
-
-        <!-- Category Chart -->
-        <div class="card">
-            <div class="chart-title">📊 פירוט הוצאות לפי קטגוריה</div>
-            <div class="chart-wrap">
-                <canvas id="categoryChart"></canvas>
-            </div>
-            <div id="customLegend" class="custom-legend"></div>
-            <div id="chartEmpty" class="empty" style="display:none;padding:20px">
-                <div class="empty-icon">
-                    <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+            <div class="desktop-card">
+                <div class="search-box">
+                    <input type="text" id="dSearchInput" placeholder="חיפוש תנועות..." oninput="filterDesktopTransactions()">
+                    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                 </div>
-                <div class="empty-text">אין הוצאות בחודש זה</div>
+                <div class="filter-chips">
+                    <button class="chip active" data-filter="all" onclick="setDesktopFilter('all')">הכל</button>
+                    <button class="chip" data-filter="הוצאה" onclick="setDesktopFilter('הוצאה')">הוצאות</button>
+                    <button class="chip" data-filter="הכנסה" onclick="setDesktopFilter('הכנסה')">הכנסות</button>
+                </div>
+                <div id="dTxList" class="desktop-tx-list tx-list">
+                    <div class="empty">
+                        <div class="empty-icon">
+                            <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                        </div>
+                        <div class="empty-text">טוען תנועות...</div>
+                    </div>
+                </div>
+                <div id="dHistoryFooter" class="history-footer" style="display:none">
+                    <div class="hf-item">
+                        <span class="hf-label">הכנסות: </span>
+                        <span id="dHfIncome" class="hf-val" style="color:var(--success)">₪0</span>
+                        <span style="margin:0 6px;color:var(--text-muted)">│</span>
+                        <span class="hf-label">הוצאות: </span>
+                        <span id="dHfExpense" class="hf-val" style="color:var(--danger)">₪0</span>
+                    </div>
+                    <div class="hf-item">
+                        <span class="hf-label">נטו: </span>
+                        <span id="dHfNet" class="hf-val">₪0</span>
+                    </div>
+                </div>
             </div>
         </div>
+    </main>
+</div>
 
-        <!-- Insights -->
-        <div class="card">
-            <div class="section-title">💡 תובנות חכמות</div>
-            <div id="insightsContainer"></div>
-        </div>
-
-        <div class="quick-stats">
-            <div class="q-stat">
-                <div class="q-stat-label">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    קטגוריה מובילה
-                </div>
-                <div id="topCat" class="q-stat-val">-</div>
-                <div id="topCatAmt" class="q-stat-sub">-</div>
-            </div>
-            <div class="q-stat">
-                <div class="q-stat-label">
-                    <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
-                    ממוצע יומי
-                </div>
-                <div id="avgDaily" class="q-stat-val">-</div>
-                <div class="q-stat-sub">הוצאה ליום</div>
-            </div>
-            <div class="q-stat">
-                <div class="q-stat-label">
-                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                    מס׳ תנועות
-                </div>
-                <div id="txCount" class="q-stat-val">0</div>
-                <div class="q-stat-sub">בחודש זה</div>
-            </div>
-            <div class="q-stat">
-                <div class="q-stat-label">
+<!-- ============ MOBILE LAYOUT ============ -->
+<div class="mobile-layout">
+    <div class="app">
+        <div class="header">
+            <div class="header-glow"></div>
+            <h1>
+                <div class="header-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.94s4.18 1.36 4.18 3.85c0 1.89-1.44 2.98-3.12 3.19z"/></svg>
-                    אחסון
                 </div>
-                <div id="savingsRate" class="q-stat-val">-</div>
-                <div class="q-stat-sub">אחוז חיסכון</div>
-            </div>
+                מעקב פיננסי
+            </h1>
+            <p>ניהול חכם של ההוצאות וההכנסות</p>
         </div>
 
-        <button class="refresh-btn" onclick="loadInsights()">
-            <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-            רענן נתונים
-        </button>
-    </div>
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="insights">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                <span>סיכום</span>
+            </button>
+            <button class="tab-btn" data-tab="add">
+                <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                <span>הוספה</span>
+            </button>
+            <button class="tab-btn" data-tab="history">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <span>היסטוריה</span>
+            </button>
+        </nav>
 
-    <!-- TAB: ADD -->
-    <div id="addTab" class="tab-content">
-        <div class="card">
-            <form id="trackerForm">
-                <div class="form-group">
-                    <label>תאריך</label>
-                    <div class="date-input-wrapper">
-                        <input type="date" id="date" required>
-                        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>סוג תנועה</label>
-                    <div class="type-toggle">
-                        <button type="button" class="type-option expense active" onclick="setType('הוצאה')">
-                            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-                            הוצאה
-                        </button>
-                        <button type="button" class="type-option income" onclick="setType('הכנסה')">
-                            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>
-                            הכנסה
-                        </button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>קטגוריה</label>
-                    <select id="category" required></select>
-                </div>
-                <div class="form-group">
-                    <label>סכום (₪)</label>
-                    <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label>הערות (אופציונלי)</label>
-                    <input type="text" id="description" placeholder="פירוט נוסף...">
-                </div>
-                <button type="submit" id="submitBtn" class="submit-btn">שמירת תנועה</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- TAB: HISTORY -->
-    <div id="historyTab" class="tab-content">
-        <div class="card">
-            <div class="history-top">
+        <!-- TAB: INSIGHTS -->
+        <div id="insightsTab" class="tab-content active">
+            <div class="card">
                 <div class="month-row">
                     <label>חודש:</label>
-                    <select id="historyMonth" class="month-select" onchange="loadHistory()"></select>
+                    <select id="insightsMonth" class="month-select" onchange="loadInsights()"></select>
                 </div>
-                <button class="export-btn" onclick="exportCSV()">
-                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                    ייצוא
-                </button>
             </div>
 
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="חיפוש תנועות..." oninput="filterTransactions()">
-                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <div class="card balance-card">
+                <div class="balance-label">מאזן חודשי</div>
+                <div id="balanceAmount" class="balance-amount">₪0</div>
+                <div id="balanceSub" class="balance-sub"></div>
             </div>
 
-            <div class="filter-chips">
-                <button class="chip active" data-filter="all" onclick="setFilter('all')">הכל</button>
-                <button class="chip" data-filter="הוצאה" onclick="setFilter('הוצאה')">הוצאות</button>
-                <button class="chip" data-filter="הכנסה" onclick="setFilter('הכנסה')">הכנסות</button>
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-label">הכנסות</div>
+                    <div id="incomeAmount" class="stat-value income">₪0</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">הוצאות</div>
+                    <div id="expenseAmount" class="stat-value expense">₪0</div>
+                </div>
             </div>
 
-            <div id="txList" class="tx-list">
-                <div class="empty">
+            <div class="card health-card">
+                <div class="health-header">
+                    <div class="health-title">🏥 מדד בריאות פיננסית</div>
+                    <div class="health-score" id="healthScore">0</div>
+                </div>
+                <div class="health-bar-container">
+                    <div class="health-bar" id="healthBar" style="width: 0%"></div>
+                </div>
+                <div class="health-factors" id="healthFactors"></div>
+            </div>
+
+            <div class="card">
+                <div class="chart-title">📈 הוצאות יומיות</div>
+                <div class="daily-chart-wrap">
+                    <canvas id="dailyChart"></canvas>
+                </div>
+                <div class="daily-stats">
+                    <div class="daily-stat">
+                        <div class="daily-stat-label">ממוצע יומי</div>
+                        <div id="dailyAvg" class="daily-stat-val">-</div>
+                    </div>
+                    <div class="daily-stat">
+                        <div class="daily-stat-label">יום הכי יקר</div>
+                        <div id="dailyMax" class="daily-stat-val">-</div>
+                    </div>
+                    <div class="daily-stat">
+                        <div class="daily-stat-label">יום הכי זול</div>
+                        <div id="dailyMin" class="daily-stat-val">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">📊 השוואה לחודש קודם</div>
+                <div id="comparisonContainer"></div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">🎯 תקציב חודשי</div>
+                <svg width="0" height="0">
+                    <defs>
+                        <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#10b981"/>
+                            <stop offset="100%" style="stop-color:#34d399"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="progress-ring-container">
+                    <div class="progress-ring">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="bg" cx="50" cy="50" r="42"/>
+                            <circle class="progress" id="budgetRing" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264" style="stroke: url(#gradient2)"/>
+                        </svg>
+                        <div class="value" id="budgetRingValue">0%</div>
+                    </div>
+                    <div class="progress-info">
+                        <div class="label">הוצאות מתוך תקציב</div>
+                        <div class="amount" id="budgetAmount">₪0 / ₪0</div>
+                        <div class="sub" id="budgetRemaining">הגדר תקציב כדי להתחיל</div>
+                    </div>
+                </div>
+                <div class="budget-input-row">
+                    <input type="number" id="budgetInput" placeholder="הגדר תקציב חודשי...">
+                    <button class="budget-save-btn" onclick="saveBudget()">שמור</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="chart-title">📊 פירוט הוצאות לפי קטגוריה</div>
+                <div class="chart-wrap">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div id="customLegend" class="custom-legend"></div>
+                <div id="chartEmpty" class="empty" style="display:none;padding:20px">
                     <div class="empty-icon">
                         <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
                     </div>
-                    <div class="empty-text">טוען תנועות...</div>
+                    <div class="empty-text">אין הוצאות בחודש זה</div>
                 </div>
             </div>
-            <div id="historyFooter" class="history-footer" style="display:none">
-                <div class="hf-item">
-                    <span class="hf-label">הכנסות: </span>
-                    <span id="hfIncome" class="hf-val" style="color:var(--success)">₪0</span>
-                    <span style="margin:0 6px;color:var(--text-muted)">│</span>
-                    <span class="hf-label">הוצאות: </span>
-                    <span id="hfExpense" class="hf-val" style="color:var(--danger)">₪0</span>
+
+            <div class="card">
+                <div class="section-title">💡 תובנות חכמות</div>
+                <div id="insightsContainer"></div>
+            </div>
+
+            <div class="quick-stats">
+                <div class="q-stat">
+                    <div class="q-stat-label">
+                        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        קטגוריה מובילה
+                    </div>
+                    <div id="topCat" class="q-stat-val">-</div>
+                    <div id="topCatAmt" class="q-stat-sub">-</div>
                 </div>
-                <div class="hf-item">
-                    <span class="hf-label">נטו: </span>
-                    <span id="hfNet" class="hf-val">₪0</span>
+                <div class="q-stat">
+                    <div class="q-stat-label">
+                        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                        ממוצע יומי
+                    </div>
+                    <div id="avgDaily" class="q-stat-val">-</div>
+                    <div class="q-stat-sub">הוצאה ליום</div>
+                </div>
+                <div class="q-stat">
+                    <div class="q-stat-label">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                        מס׳ תנועות
+                    </div>
+                    <div id="txCount" class="q-stat-val">0</div>
+                    <div class="q-stat-sub">בחודש זה</div>
+                </div>
+                <div class="q-stat">
+                    <div class="q-stat-label">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.94s4.18 1.36 4.18 3.85c0 1.89-1.44 2.98-3.12 3.19z"/></svg>
+                        אחסון
+                    </div>
+                    <div id="savingsRate" class="q-stat-val">-</div>
+                    <div class="q-stat-sub">אחוז חיסכון</div>
+                </div>
+            </div>
+
+            <button class="refresh-btn" onclick="loadInsights()">
+                <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                רענן נתונים
+            </button>
+        </div>
+
+        <!-- TAB: ADD -->
+        <div id="addTab" class="tab-content">
+            <div class="card">
+                <form id="trackerForm">
+                    <div class="form-group">
+                        <label>תאריך</label>
+                        <div class="date-input-wrapper">
+                            <input type="date" id="date" required>
+                            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>סוג תנועה</label>
+                        <div class="type-toggle">
+                            <button type="button" class="type-option expense active" onclick="setType('הוצאה')">
+                                <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                                הוצאה
+                            </button>
+                            <button type="button" class="type-option income" onclick="setType('הכנסה')">
+                                <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>
+                                הכנסה
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>קטגוריה</label>
+                        <select id="category" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>סכום (₪)</label>
+                        <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>הערות (אופציונלי)</label>
+                        <input type="text" id="description" placeholder="פירוט נוסף...">
+                    </div>
+                    <button type="submit" id="submitBtn" class="submit-btn">שמירת תנועה</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- TAB: HISTORY -->
+        <div id="historyTab" class="tab-content">
+            <div class="card">
+                <div class="history-top">
+                    <div class="month-row">
+                        <label>חודש:</label>
+                        <select id="historyMonth" class="month-select" onchange="loadHistory()"></select>
+                    </div>
+                    <button class="export-btn" onclick="exportCSV()">
+                        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        ייצוא
+                    </button>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="חיפוש תנועות..." oninput="filterTransactions()">
+                    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                </div>
+
+                <div class="filter-chips">
+                    <button class="chip active" data-filter="all" onclick="setFilter('all')">הכל</button>
+                    <button class="chip" data-filter="הוצאה" onclick="setFilter('הוצאה')">הוצאות</button>
+                    <button class="chip" data-filter="הכנסה" onclick="setFilter('הכנסה')">הכנסות</button>
+                </div>
+
+                <div id="txList" class="tx-list">
+                    <div class="empty">
+                        <div class="empty-icon">
+                            <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                        </div>
+                        <div class="empty-text">טוען תנועות...</div>
+                    </div>
+                </div>
+                <div id="historyFooter" class="history-footer" style="display:none">
+                    <div class="hf-item">
+                        <span class="hf-label">הכנסות: </span>
+                        <span id="hfIncome" class="hf-val" style="color:var(--success)">₪0</span>
+                        <span style="margin:0 6px;color:var(--text-muted)">│</span>
+                        <span class="hf-label">הוצאות: </span>
+                        <span id="hfExpense" class="hf-val" style="color:var(--danger)">₪0</span>
+                    </div>
+                    <div class="hf-item">
+                        <span class="hf-label">נטו: </span>
+                        <span id="hfNet" class="hf-val">₪0</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1522,16 +2227,25 @@ const CHART_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f43f5e','#f59e0b','#10b981
 const MONTH_NAMES = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
 
 let currentType = 'הוצאה';
+let desktopCurrentType = 'הוצאה';
 let categoryChart = null;
 let dailyChart = null;
+let dCategoryChart = null;
+let dDailyChart = null;
 let pendingDeleteId = null;
 let pendingDeleteMonth = null;
 let currentBudget = 0;
+let desktopCurrentBudget = 0;
 let currentExpense = 0;
+let desktopCurrentExpense = 0;
 let currentIncome = 0;
+let desktopCurrentIncome = 0;
 let currentFilter = 'all';
+let desktopCurrentFilter = 'all';
 let currentSearch = '';
+let desktopCurrentSearch = '';
 let allTransactions = [];
+let desktopAllTransactions = [];
 
 // Create particles
 function createParticles() {
@@ -1549,21 +2263,23 @@ createParticles();
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('date').valueAsDate = new Date();
+    document.getElementById('dDate').valueAsDate = new Date();
     updateCategories();
+    updateDesktopCategories();
     initTabs();
     loadMonths();
     updateFabVisibility();
 });
 
 function initTabs() {
-    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    document.querySelectorAll('.tabs .tab-btn').forEach(function(btn) {
         btn.addEventListener('click', function() { switchTab(this.dataset.tab); });
     });
 }
 
 function switchTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.tab === tab); });
-    document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelectorAll('.tabs .tab-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.tab === tab); });
+    document.querySelectorAll('.mobile-layout .tab-content').forEach(function(c) { c.classList.remove('active'); });
     document.getElementById(tab + 'Tab').classList.add('active');
     if (tab === 'insights') loadInsights();
     if (tab === 'history') loadHistory();
@@ -1571,8 +2287,16 @@ function switchTab(tab) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function switchDesktopTab(tab) {
+    document.querySelectorAll('.sidebar-nav-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.tab === tab); });
+    document.querySelectorAll('.desktop-layout .tab-content').forEach(function(c) { c.classList.remove('active'); });
+    document.getElementById('desktop' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab').classList.add('active');
+    if (tab === 'insights') loadDesktopInsights();
+    if (tab === 'history') loadDesktopHistory();
+}
+
 function updateFabVisibility() {
-    var activeTab = document.querySelector('.tab-btn.active');
+    var activeTab = document.querySelector('.tabs .tab-btn.active');
     var fab = document.getElementById('fab');
     if (activeTab && activeTab.dataset.tab !== 'add') {
         fab.style.display = 'block';
@@ -1583,15 +2307,32 @@ function updateFabVisibility() {
 
 function setType(type) {
     currentType = type;
-    document.querySelectorAll('.type-option').forEach(function(b) { b.classList.remove('active'); });
-    document.querySelector('.type-option.' + (type === 'הוצאה' ? 'expense' : 'income')).classList.add('active');
+    document.querySelectorAll('#addTab .type-option').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelector('#addTab .type-option.' + (type === 'הוצאה' ? 'expense' : 'income')).classList.add('active');
     updateCategories();
+}
+
+function setDesktopType(type) {
+    desktopCurrentType = type;
+    document.querySelectorAll('#desktopAddTab .type-option').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelector('#desktopAddTab .type-option.' + (type === 'הוצאה' ? 'expense' : 'income')).classList.add('active');
+    updateDesktopCategories();
 }
 
 function updateCategories() {
     var sel = document.getElementById('category');
     sel.innerHTML = '';
     CATS[currentType].forEach(function(c) {
+        var o = document.createElement('option');
+        o.value = c; o.text = c;
+        sel.appendChild(o);
+    });
+}
+
+function updateDesktopCategories() {
+    var sel = document.getElementById('dCategory');
+    sel.innerHTML = '';
+    CATS[desktopCurrentType].forEach(function(c) {
         var o = document.createElement('option');
         o.value = c; o.text = c;
         sel.appendChild(o);
@@ -1624,7 +2365,7 @@ function loadMonths() {
         var months = data.sheets;
         var cur = getCurrentMonth();
         if (months.indexOf(cur) === -1) months.unshift(cur);
-        document.querySelectorAll('.month-select').forEach(function(sel) {
+        document.querySelectorAll('.month-select, .desktop-month-select').forEach(function(sel) {
             var prev = sel.value;
             sel.innerHTML = '';
             months.forEach(function(m) {
@@ -1653,6 +2394,7 @@ function apiGet(action, extra) {
     return fetch(url).then(function(r) { return r.json(); });
 }
 
+// Mobile form submit
 document.getElementById('trackerForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var btn = document.getElementById('submitBtn');
@@ -1687,6 +2429,41 @@ document.getElementById('trackerForm').addEventListener('submit', function(e) {
     });
 });
 
+// Desktop form submit
+document.getElementById('dTrackerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = document.getElementById('dSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading"></span> שומר...';
+
+    var p = new URLSearchParams();
+    p.append('action', 'save');
+    p.append('date', document.getElementById('dDate').value);
+    p.append('type', desktopCurrentType);
+    p.append('category', document.getElementById('dCategory').value);
+    p.append('amount', document.getElementById('dAmount').value);
+    p.append('description', document.getElementById('dDescription').value);
+
+    apiPost(p)
+    .then(function(data) {
+        if (data.status === 'success') {
+            showToast('✅ התנועה נשמרה בהצלחה!', 'success');
+            document.getElementById('dAmount').value = '';
+            document.getElementById('dDescription').value = '';
+            loadMonths();
+        } else {
+            throw new Error(data.message);
+        }
+    })
+    .catch(function(err) {
+        showToast('❌ שגיאה: ' + err.message, 'error');
+    })
+    .finally(function() {
+        btn.disabled = false;
+        btn.textContent = 'שמירת תנועה';
+    });
+});
+
 function animateValue(el, start, end, duration, prefix, suffix) {
     prefix = prefix || '';
     suffix = suffix || '';
@@ -1703,10 +2480,10 @@ function animateValue(el, start, end, duration, prefix, suffix) {
     requestAnimationFrame(step);
 }
 
+// ===== MOBILE FUNCTIONS =====
 function loadInsights() {
     var month = document.getElementById('insightsMonth').value;
     if (!month) return;
-
     var prevMonth = getPreviousMonth(month);
 
     apiGet('settings').then(function(settingsData) {
@@ -1724,33 +2501,26 @@ function loadInsights() {
 
     apiGet('transactions', {month: month}).then(function(txData) {
         if (txData.status === 'success') {
-            renderDailyChart(txData.transactions, month);
-            calculateForecast(txData.transactions, month);
+            renderDailyChart(txData.transactions, month, 'dailyChart');
         }
     });
 
     apiGet('summary', {month: month}).then(function(currentData) {
         if (currentData.status !== 'success') return;
-
         currentExpense = currentData.expense;
         currentIncome = currentData.income;
 
         apiGet('summary', {month: prevMonth}).then(function(prevData) {
             var bal = currentData.balance;
             var balEl = document.getElementById('balanceAmount');
-
             var currentVal = parseInt(balEl.textContent.replace(/[^0-9-]/g, '')) || 0;
             animateValue(balEl, currentVal, bal, 800, '₪', '');
             balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
 
             var balSub = document.getElementById('balanceSub');
-            if (bal > 0) {
-                balSub.textContent = '✨ עודפים לחיסכון';
-            } else if (bal < 0) {
-                balSub.textContent = '⚠️ גירעון חודשי';
-            } else {
-                balSub.textContent = 'מאוזן';
-            }
+            if (bal > 0) balSub.textContent = '✨ עודפים לחיסכון';
+            else if (bal < 0) balSub.textContent = '⚠️ גירעון חודשי';
+            else balSub.textContent = 'מאוזן';
 
             var incomeEl = document.getElementById('incomeAmount');
             var expenseEl = document.getElementById('expenseAmount');
@@ -1770,177 +2540,185 @@ function loadInsights() {
             }
 
             setTimeout(function() {
-                updateBudgetBar(currentData.expense);
-                updateBudgetRing(currentData.expense);
+                updateBudgetRing(currentData.expense, 'budgetRing', 'budgetRingValue', 'budgetAmount', 'budgetRemaining', 'budgetInput');
+                updateBudgetBar(currentData.expense, 'budgetRemaining', 'budgetInput');
             }, 200);
 
-            renderComparison(currentData, prevData);
-            generateInsights(currentData, prevData);
-            calculateHealthScore(currentData);
+            renderComparison(currentData, prevData, 'comparisonContainer');
+            generateInsights(currentData, prevData, 'insightsContainer');
+            calculateHealthScore(currentData, 'healthScore', 'healthBar', 'healthFactors');
         });
     });
 
     apiGet('categorySummary', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
-        var cats = data.categories;
-        var canvas = document.getElementById('categoryChart');
-        var emptyEl = document.getElementById('chartEmpty');
-        var legendEl = document.getElementById('customLegend');
+        renderCategoryChart(data.categories, month, 'categoryChart', 'customLegend', 'chartEmpty', 'topCat', 'topCatAmt', 'avgDaily');
+    });
+}
 
-        if (cats.length === 0) {
-            canvas.style.display = 'none';
-            emptyEl.style.display = 'block';
-            legendEl.style.display = 'none';
-            document.getElementById('topCat').textContent = '-';
-            document.getElementById('topCatAmt').textContent = '-';
-            document.getElementById('avgDaily').textContent = '-';
-            if (categoryChart) { categoryChart.destroy(); categoryChart = null; }
-            return;
-        }
+// ===== DESKTOP FUNCTIONS =====
+function loadDesktopInsights() {
+    var month = document.getElementById('desktopInsightsMonth').value;
+    if (!month) return;
+    var prevMonth = getPreviousMonth(month);
 
-        canvas.style.display = 'block';
-        emptyEl.style.display = 'none';
-        legendEl.style.display = 'flex';
-
-        document.getElementById('topCat').textContent = cats[0].category;
-        document.getElementById('topCatAmt').textContent = '' + cats[0].amount.toLocaleString();
-
-        var parts = month.split('-');
-        var mNum = parseInt(parts[0]), yNum = parseInt(parts[1]);
-        var daysInMonth = new Date(yNum, mNum, 0).getDate();
-        var now = new Date();
-        var daysPassed = (now.getMonth() + 1 === mNum && now.getFullYear() === yNum) ? now.getDate() : daysInMonth;
-        var totalExp = cats.reduce(function(s, c) { return s + c.amount; }, 0);
-        document.getElementById('avgDaily').textContent = '₪' + (daysPassed > 0 ? (totalExp / daysPassed).toFixed(0) : '0');
-
-        legendEl.innerHTML = '';
-        cats.forEach(function(cat, idx) {
-            var pct = ((cat.amount / totalExp) * 100).toFixed(1);
-            var item = document.createElement('div');
-            item.className = 'legend-item';
-            item.innerHTML = '<div class="legend-color" style="background: ' + CHART_COLORS[idx % CHART_COLORS.length] + '; color: ' + CHART_COLORS[idx % CHART_COLORS.length] + '"></div>' +
-                '<div><div class="legend-label">' + cat.category + '</div>' +
-                '<div class="legend-amount">₪' + cat.amount.toLocaleString() + ' (' + pct + '%)</div></div>';
-            legendEl.appendChild(item);
-        });
-
-        if (categoryChart) categoryChart.destroy();
-        categoryChart = new Chart(canvas.getContext('2d'), {
-            type: 'doughnut',
-            data: {
-                labels: cats.map(function(c) { return c.category; }),
-                datasets: [{
-                    data: cats.map(function(c) { return c.amount; }),
-                    backgroundColor: CHART_COLORS.slice(0, cats.length),
-                    borderWidth: 0,
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '65%',
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(15,23,42,0.95)',
-                        titleFont: { family: 'Heebo' },
-                        bodyFont: { family: 'Heebo' },
-                        padding: 12, cornerRadius: 8,
-                        callbacks: {
-                            label: function(ctx) {
-                                var total = ctx.dataset.data.reduce(function(a,b){return a+b;},0);
-                                var pct = ((ctx.parsed / total) * 100).toFixed(1);
-                                return ctx.label + ': ₪' + ctx.parsed.toLocaleString() + ' (' + pct + '%)';
-                            }
-                        }
-                    }
-                }
+    apiGet('settings').then(function(settingsData) {
+        if (settingsData.status === 'success') {
+            var monthKey = 'budget_' + month;
+            if (settingsData.settings[monthKey] !== undefined && settingsData.settings[monthKey] !== '') {
+                desktopCurrentBudget = parseFloat(settingsData.settings[monthKey]);
+                document.getElementById('dBudgetInput').value = desktopCurrentBudget;
+            } else {
+                desktopCurrentBudget = 0;
+                document.getElementById('dBudgetInput').value = '';
             }
+        }
+    });
+
+    apiGet('transactions', {month: month}).then(function(txData) {
+        if (txData.status === 'success') {
+            renderDailyChart(txData.transactions, month, 'dDailyChart');
+        }
+    });
+
+    apiGet('summary', {month: month}).then(function(currentData) {
+        if (currentData.status !== 'success') return;
+        desktopCurrentExpense = currentData.expense;
+        desktopCurrentIncome = currentData.income;
+
+        apiGet('summary', {month: prevMonth}).then(function(prevData) {
+            var bal = currentData.balance;
+            var balEl = document.getElementById('dBalanceAmount');
+            var currentVal = parseInt(balEl.textContent.replace(/[^0-9-]/g, '')) || 0;
+            animateValue(balEl, currentVal, bal, 800, '₪', '');
+            balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
+
+            var balSub = document.getElementById('dBalanceSub');
+            if (bal > 0) balSub.textContent = '✨ עודפים לחיסכון';
+            else if (bal < 0) balSub.textContent = '⚠️ גירעון חודשי';
+            else balSub.textContent = 'מאוזן';
+
+            var incomeEl = document.getElementById('dIncomeAmount');
+            var expenseEl = document.getElementById('dExpenseAmount');
+            var currentIncomeVal = parseInt(incomeEl.textContent.replace(/[^0-9]/g, '')) || 0;
+            var currentExpenseVal = parseInt(expenseEl.textContent.replace(/[^0-9]/g, '')) || 0;
+            animateValue(incomeEl, currentIncomeVal, currentData.income, 800, '₪', '');
+            animateValue(expenseEl, currentExpenseVal, currentData.expense, 800, '₪', '');
+
+            document.getElementById('dTxCount').textContent = currentData.transactions;
+
+            if (currentData.income > 0) {
+                var rate = Math.round((bal / currentData.income) * 100);
+                document.getElementById('dSavingsRate').textContent = rate + '%';
+                document.getElementById('dSavingsRate').style.color = rate >= 0 ? 'var(--success)' : 'var(--danger)';
+            } else {
+                document.getElementById('dSavingsRate').textContent = '-';
+            }
+
+            setTimeout(function() {
+                updateBudgetRing(currentData.expense, 'dBudgetRing', 'dBudgetRingValue', 'dBudgetAmount', 'dBudgetRemaining', 'dBudgetInput');
+                updateBudgetBar(currentData.expense, 'dBudgetRemaining', 'dBudgetInput');
+            }, 200);
+
+            renderComparison(currentData, prevData, 'dComparisonContainer');
+            generateInsights(currentData, prevData, 'dInsightsContainer');
+            calculateHealthScore(currentData, 'dHealthScore', 'dHealthBar', 'dHealthFactors');
         });
     });
-}
 
-function calculateHealthScore(current) {
-    var score = 50;
-    var factors = [];
-
-    if (current.income > 0) {
-        var savingsRate = (current.balance / current.income) * 100;
-        if (savingsRate >= 20) { score += 30; factors.push({text: 'חיסכון מצוין', status: 'good'}); }
-        else if (savingsRate >= 10) { score += 20; factors.push({text: 'חיסכון טוב', status: 'good'}); }
-        else if (savingsRate >= 0) { score += 10; factors.push({text: 'חיסכון נמוך', status: 'warn'}); }
-        else { factors.push({text: 'גירעון', status: 'bad'}); }
-    } else {
-        factors.push({text: 'אין הכנסות', status: 'bad'});
-    }
-
-    if (currentBudget > 0) {
-        var budgetPct = (current.expense / currentBudget) * 100;
-        if (budgetPct <= 70) { score += 20; factors.push({text: 'בתוך התקציב', status: 'good'}); }
-        else if (budgetPct <= 90) { score += 10; factors.push({text: 'קרוב לתקציב', status: 'warn'}); }
-        else { factors.push({text: 'חריגה מהתקציב', status: 'bad'}); }
-    } else {
-        factors.push({text: 'אין תקציב', status: 'warn'});
-    }
-
-    if (current.transactions > 0 && current.transactions <= 30) {
-        score += 10; factors.push({text: 'ניהול מסודר', status: 'good'});
-    } else if (current.transactions > 30) {
-        score += 5; factors.push({text: 'הרבה תנועות', status: 'warn'});
-    }
-
-    score = Math.min(100, Math.max(0, score));
-
-    var scoreEl = document.getElementById('healthScore');
-    var currentScore = parseInt(scoreEl.textContent) || 0;
-    animateValue(scoreEl, currentScore, score, 1000, '', '/100');
-
-    document.getElementById('healthBar').style.width = score + '%';
-
-    var factorsHtml = '';
-    factors.forEach(function(f) {
-        factorsHtml += '<div class="health-factor"><span class="dot ' + f.status + '"></span>' + f.text + '</div>';
+    apiGet('categorySummary', {month: month}).then(function(data) {
+        if (data.status !== 'success') return;
+        renderCategoryChart(data.categories, month, 'dCategoryChart', 'dCustomLegend', 'dChartEmpty', 'dTopCat', 'dTopCatAmt', 'dAvgDaily');
     });
-    document.getElementById('healthFactors').innerHTML = factorsHtml;
 }
 
-function calculateForecast(transactions, month) {
+// ===== SHARED FUNCTIONS =====
+function renderCategoryChart(cats, month, canvasId, legendId, emptyId, topCatId, topCatAmtId, avgDailyId) {
+    var canvas = document.getElementById(canvasId);
+    var emptyEl = document.getElementById(emptyId);
+    var legendEl = document.getElementById(legendId);
+
+    if (cats.length === 0) {
+        canvas.style.display = 'none';
+        emptyEl.style.display = 'block';
+        legendEl.style.display = 'none';
+        document.getElementById(topCatId).textContent = '-';
+        document.getElementById(topCatAmtId).textContent = '-';
+        document.getElementById(avgDailyId).textContent = '-';
+        if (canvasId === 'categoryChart' && categoryChart) { categoryChart.destroy(); categoryChart = null; }
+        if (canvasId === 'dCategoryChart' && dCategoryChart) { dCategoryChart.destroy(); dCategoryChart = null; }
+        return;
+    }
+
+    canvas.style.display = 'block';
+    emptyEl.style.display = 'none';
+    legendEl.style.display = 'flex';
+
+    document.getElementById(topCatId).textContent = cats[0].category;
+    document.getElementById(topCatAmtId).textContent = '' + cats[0].amount.toLocaleString();
+
     var parts = month.split('-');
     var mNum = parseInt(parts[0]), yNum = parseInt(parts[1]);
     var daysInMonth = new Date(yNum, mNum, 0).getDate();
     var now = new Date();
     var daysPassed = (now.getMonth() + 1 === mNum && now.getFullYear() === yNum) ? now.getDate() : daysInMonth;
+    var totalExp = cats.reduce(function(s, c) { return s + c.amount; }, 0);
+    document.getElementById(avgDailyId).textContent = '₪' + (daysPassed > 0 ? (totalExp / daysPassed).toFixed(0) : '0');
 
-    var totalExpense = 0;
-    transactions.forEach(function(t) {
-        if (t.type === 'הוצאה') totalExpense += t.amount;
+    legendEl.innerHTML = '';
+    cats.forEach(function(cat, idx) {
+        var pct = ((cat.amount / totalExp) * 100).toFixed(1);
+        var item = document.createElement('div');
+        item.className = 'legend-item';
+        item.innerHTML = '<div class="legend-color" style="background: ' + CHART_COLORS[idx % CHART_COLORS.length] + '; color: ' + CHART_COLORS[idx % CHART_COLORS.length] + '"></div>' +
+            '<div><div class="legend-label">' + cat.category + '</div>' +
+            '<div class="legend-amount">₪' + cat.amount.toLocaleString() + ' (' + pct + '%)</div></div>';
+        legendEl.appendChild(item);
     });
 
-    var dailyAvg = daysPassed > 0 ? totalExpense / daysPassed : 0;
-    var forecast = dailyAvg * daysInMonth;
+    var chartInstance = canvasId === 'categoryChart' ? categoryChart : dCategoryChart;
+    if (chartInstance) chartInstance.destroy();
 
-    var forecastEl = document.getElementById('forecastValue');
-    var currentForecast = parseInt(forecastEl.textContent.replace(/[^0-9]/g, '')) || 0;
-    animateValue(forecastEl, currentForecast, Math.round(forecast), 800, '₪', '');
-
-    var statusEl = document.getElementById('forecastStatus');
-    if (currentBudget > 0) {
-        if (forecast > currentBudget) {
-            statusEl.textContent = '⚠️ חריגה צפויה של ₪' + Math.round(forecast - currentBudget).toLocaleString();
-            statusEl.style.color = 'var(--danger)';
-        } else {
-            statusEl.textContent = '✅ בתוך התקציב (נותר ₪' + Math.round(currentBudget - forecast).toLocaleString() + ')';
-            statusEl.style.color = 'var(--success)';
+    var newChart = new Chart(canvas.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: cats.map(function(c) { return c.category; }),
+            datasets: [{
+                data: cats.map(function(c) { return c.amount; }),
+                backgroundColor: CHART_COLORS.slice(0, cats.length),
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15,23,42,0.95)',
+                    titleFont: { family: 'Heebo' },
+                    bodyFont: { family: 'Heebo' },
+                    padding: 12, cornerRadius: 8,
+                    callbacks: {
+                        label: function(ctx) {
+                            var total = ctx.dataset.data.reduce(function(a,b){return a+b;},0);
+                            var pct = ((ctx.parsed / total) * 100).toFixed(1);
+                            return ctx.label + ': ₪' + ctx.parsed.toLocaleString() + ' (' + pct + '%)';
+                        }
+                    }
+                }
+            }
         }
-    } else {
-        statusEl.textContent = 'הגדר תקציב לקבלת התראה';
-        statusEl.style.color = 'var(--text-muted)';
-    }
+    });
+
+    if (canvasId === 'categoryChart') categoryChart = newChart;
+    else dCategoryChart = newChart;
 }
 
-function renderDailyChart(transactions, month) {
-    var canvas = document.getElementById('dailyChart');
+function renderDailyChart(transactions, month, canvasId) {
+    var canvas = document.getElementById(canvasId);
     var parts = month.split('-');
     var mNum = parseInt(parts[0]), yNum = parseInt(parts[1]);
     var daysInMonth = new Date(yNum, mNum, 0).getDate();
@@ -1972,12 +2750,15 @@ function renderDailyChart(transactions, month) {
     var minData = data.filter(function(v) { return v > 0; });
     var min = minData.length > 0 ? Math.min.apply(null, minData) : 0;
 
-    document.getElementById('dailyAvg').textContent = '' + avg.toFixed(0);
-    document.getElementById('dailyMax').textContent = '₪' + max.toLocaleString();
-    document.getElementById('dailyMin').textContent = '₪' + min.toLocaleString();
+    var prefix = canvasId === 'dDailyChart' ? 'd' : '';
+    document.getElementById(prefix + 'DailyAvg').textContent = '' + avg.toFixed(0);
+    document.getElementById(prefix + 'DailyMax').textContent = '₪' + max.toLocaleString();
+    document.getElementById(prefix + 'DailyMin').textContent = '₪' + min.toLocaleString();
 
-    if (dailyChart) dailyChart.destroy();
-    dailyChart = new Chart(canvas.getContext('2d'), {
+    var chartInstance = canvasId === 'dailyChart' ? dailyChart : dDailyChart;
+    if (chartInstance) chartInstance.destroy();
+
+    var newChart = new Chart(canvas.getContext('2d'), {
         type: 'line',
         data: {
             labels: labels,
@@ -2028,10 +2809,13 @@ function renderDailyChart(transactions, month) {
             }
         }
     });
+
+    if (canvasId === 'dailyChart') dailyChart = newChart;
+    else dDailyChart = newChart;
 }
 
-function renderComparison(current, prev) {
-    var container = document.getElementById('comparisonContainer');
+function renderComparison(current, prev, containerId) {
+    var container = document.getElementById(containerId);
 
     if (prev.status !== 'success' || prev.transactions === 0) {
         container.innerHTML = '<div class="empty" style="padding:20px"><div class="empty-text">אין נתונים מהחודש הקודם להשוואה</div></div>';
@@ -2043,18 +2827,16 @@ function renderComparison(current, prev) {
     var balanceChange = prev.balance !== 0 ? ((current.balance - prev.balance) / Math.abs(prev.balance) * 100) : 0;
 
     var html = '';
-
     html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">הכנסות</span><span class="comparison-value ' + (incomeChange >= 0 ? 'positive' : 'negative') + '">' + (incomeChange >= 0 ? '+' : '') + incomeChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (incomeChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(incomeChange), 100) + '%"></div></div></div>';
-
     html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">הוצאות</span><span class="comparison-value ' + (expenseChange <= 0 ? 'positive' : 'negative') + '">' + (expenseChange >= 0 ? '+' : '') + expenseChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (expenseChange <= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(expenseChange), 100) + '%"></div></div></div>';
-
     html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">מאזן נטו</span><span class="comparison-value ' + (balanceChange >= 0 ? 'positive' : 'negative') + '">' + (balanceChange >= 0 ? '+' : '') + balanceChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (balanceChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(balanceChange), 100) + '%"></div></div></div>';
 
     container.innerHTML = html;
 }
 
-function generateInsights(current, prev) {
-    var container = document.getElementById('insightsContainer');
+function generateInsights(current, prev, containerId) {
+    var container = document.getElementById(containerId);
+    var budget = containerId === 'dInsightsContainer' ? desktopCurrentBudget : currentBudget;
     var insights = [];
 
     if (current.income > 0) {
@@ -2077,14 +2859,14 @@ function generateInsights(current, prev) {
         }
     }
 
-    if (currentBudget > 0) {
-        var budgetPct = (current.expense / currentBudget) * 100;
+    if (budget > 0) {
+        var budgetPct = (current.expense / budget) * 100;
         if (budgetPct > 90) {
-            insights.push({ icon: '🚨', type: 'negative', title: 'קרוב לתקציב!', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ' + Math.max(0, currentBudget - current.expense).toLocaleString() });
+            insights.push({ icon: '🚨', type: 'negative', title: 'קרוב לתקציב!', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ' + Math.max(0, budget - current.expense).toLocaleString() });
         } else if (budgetPct > 70) {
-            insights.push({ icon: '⚡', type: 'neutral', title: 'שליטה בתקציב', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() + ' נותרו.' });
+            insights.push({ icon: '⚡', type: 'neutral', title: 'שליטה בתקציב', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + Math.max(0, budget - current.expense).toLocaleString() + ' נותרו.' });
         } else if (budgetPct > 0) {
-            insights.push({ icon: '✅', type: 'positive', title: 'תקציב בשליטה', text: 'השתמשת רק ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר לך ₪' + Math.max(0, currentBudget - current.expense).toLocaleString() + ' להמשך החודש.' });
+            insights.push({ icon: '✅', type: 'positive', title: 'תקציב בשליטה', text: 'השתמשת רק ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר לך ₪' + Math.max(0, budget - current.expense).toLocaleString() + ' להמשך החודש.' });
         }
     }
 
@@ -2105,44 +2887,91 @@ function generateInsights(current, prev) {
     container.innerHTML = html;
 }
 
-function updateBudgetBar(expense) {
-    var budgetInput = document.getElementById('budgetInput');
-    if (!currentBudget || currentBudget <= 0) {
-        var inputVal = parseFloat(budgetInput.value);
-        if (inputVal > 0) currentBudget = inputVal;
+function calculateHealthScore(current, scoreId, barId, factorsId) {
+    var budget = scoreId === 'dHealthScore' ? desktopCurrentBudget : currentBudget;
+    var score = 50;
+    var factors = [];
+
+    if (current.income > 0) {
+        var savingsRate = (current.balance / current.income) * 100;
+        if (savingsRate >= 20) { score += 30; factors.push({text: 'חיסכון מצוין', status: 'good'}); }
+        else if (savingsRate >= 10) { score += 20; factors.push({text: 'חיסכון טוב', status: 'good'}); }
+        else if (savingsRate >= 0) { score += 10; factors.push({text: 'חיסכון נמוך', status: 'warn'}); }
+        else { factors.push({text: 'גירעון', status: 'bad'}); }
+    } else {
+        factors.push({text: 'אין הכנסות', status: 'bad'});
     }
 
-    if (!currentBudget || currentBudget <= 0) {
-        document.getElementById('budgetRemaining').textContent = 'הגדר תקציב כדי להתחיל';
+    if (budget > 0) {
+        var budgetPct = (current.expense / budget) * 100;
+        if (budgetPct <= 70) { score += 20; factors.push({text: 'בתוך התקציב', status: 'good'}); }
+        else if (budgetPct <= 90) { score += 10; factors.push({text: 'קרוב לתקציב', status: 'warn'}); }
+        else { factors.push({text: 'חריגה מהתקציב', status: 'bad'}); }
+    } else {
+        factors.push({text: 'אין תקציב', status: 'warn'});
+    }
+
+    if (current.transactions > 0 && current.transactions <= 30) {
+        score += 10; factors.push({text: 'ניהול מסודר', status: 'good'});
+    } else if (current.transactions > 30) {
+        score += 5; factors.push({text: 'הרבה תנועות', status: 'warn'});
+    }
+
+    score = Math.min(100, Math.max(0, score));
+
+    var scoreEl = document.getElementById(scoreId);
+    var currentScore = parseInt(scoreEl.textContent) || 0;
+    animateValue(scoreEl, currentScore, score, 1000, '', '/100');
+
+    document.getElementById(barId).style.width = score + '%';
+
+    var factorsHtml = '';
+    factors.forEach(function(f) {
+        factorsHtml += '<div class="health-factor"><span class="dot ' + f.status + '"></span>' + f.text + '</div>';
+    });
+    document.getElementById(factorsId).innerHTML = factorsHtml;
+}
+
+function updateBudgetBar(expense, remainingId, inputId) {
+    var budgetInput = document.getElementById(inputId);
+    var budget = inputId === 'dBudgetInput' ? desktopCurrentBudget : currentBudget;
+    if (!budget || budget <= 0) {
+        var inputVal = parseFloat(budgetInput.value);
+        if (inputVal > 0) budget = inputVal;
+    }
+
+    if (!budget || budget <= 0) {
+        document.getElementById(remainingId).textContent = 'הגדר תקציב כדי להתחיל';
         return;
     }
 
-    var remaining = Math.max(0, currentBudget - expense);
+    var remaining = Math.max(0, budget - expense);
     var daysLeft = getDaysLeftInMonth();
     var dailyBudget = daysLeft > 0 ? (remaining / daysLeft) : 0;
 
-    document.getElementById('budgetRemaining').textContent = 'נותר ₪' + remaining.toLocaleString() + ' (' + dailyBudget.toFixed(0) + ' ליום)';
+    document.getElementById(remainingId).textContent = 'נותר ₪' + remaining.toLocaleString() + ' (' + dailyBudget.toFixed(0) + ' ליום)';
 }
 
-function updateBudgetRing(expense) {
-    var ring = document.getElementById('budgetRing');
-    var ringValue = document.getElementById('budgetRingValue');
-    var budgetAmount = document.getElementById('budgetAmount');
+function updateBudgetRing(expense, ringId, ringValueId, budgetAmountId, remainingId, inputId) {
+    var ring = document.getElementById(ringId);
+    var ringValue = document.getElementById(ringValueId);
+    var budgetAmount = document.getElementById(budgetAmountId);
+    var budget = inputId === 'dBudgetInput' ? desktopCurrentBudget : currentBudget;
 
-    if (!currentBudget || currentBudget <= 0) {
+    if (!budget || budget <= 0) {
         ring.style.strokeDashoffset = 264;
         ringValue.textContent = '0%';
         budgetAmount.textContent = '₪' + expense.toLocaleString() + ' / לא הוגדר';
         return;
     }
 
-    var pct = Math.min((expense / currentBudget) * 100, 100);
+    var pct = Math.min((expense / budget) * 100, 100);
     var circumference = 2 * Math.PI * 42;
     var offset = circumference - (pct / 100) * circumference;
 
     ring.style.strokeDashoffset = offset;
     ringValue.textContent = Math.round(pct) + '%';
-    budgetAmount.textContent = '₪' + expense.toLocaleString() + ' / ₪' + currentBudget.toLocaleString();
+    budgetAmount.textContent = '₪' + expense.toLocaleString() + ' / ₪' + budget.toLocaleString();
 
     if (pct > 90) {
         ring.style.stroke = 'var(--danger)';
@@ -2164,15 +2993,8 @@ function saveBudget() {
     var val = budgetInput.value.trim();
     var month = document.getElementById('insightsMonth').value;
 
-    if (!month) {
-        showToast('❌ בחר חודש קודם', 'error');
-        return;
-    }
-
-    if (!val || isNaN(val) || parseFloat(val) <= 0) {
-        showToast('❌ הזן סכום תקין', 'error');
-        return;
-    }
+    if (!month) { showToast('❌ בחר חודש קודם', 'error'); return; }
+    if (!val || isNaN(val) || parseFloat(val) <= 0) { showToast('❌ הזן סכום תקין', 'error'); return; }
 
     var budgetNum = parseFloat(val);
     var p = new URLSearchParams();
@@ -2180,7 +3002,7 @@ function saveBudget() {
     p.append('key', 'budget_' + month);
     p.append('value', budgetNum.toString());
 
-    var btn = document.querySelector('.budget-save-btn');
+    var btn = document.querySelector('#insightsTab .budget-save-btn');
     var originalText = btn.textContent;
     btn.disabled = true;
     btn.textContent = 'שומר...';
@@ -2188,23 +3010,47 @@ function saveBudget() {
     apiPost(p).then(function(data) {
         if (data.status === 'success') {
             currentBudget = budgetNum;
-            updateBudgetBar(currentExpense);
-            updateBudgetRing(currentExpense);
-
-            if (month) {
-                apiGet('summary', {month: month}).then(function(currentData) {
-                    if (currentData.status === 'success') {
-                        generateInsights(currentData, {status: 'success', transactions: 0});
-                        calculateHealthScore(currentData);
-                    }
-                });
-            }
-
+            updateBudgetBar(currentExpense, 'budgetRemaining', 'budgetInput');
+            updateBudgetRing(currentExpense, 'budgetRing', 'budgetRingValue', 'budgetAmount', 'budgetRemaining', 'budgetInput');
             showToast('✅ תקציב נשמר לחודש ' + formatMonth(month) + ': ₪' + budgetNum.toLocaleString(), 'success');
+            if (currentExpense < budgetNum * 0.7) launchConfetti();
+        } else {
+            throw new Error(data.message || 'שגיאה לא ידועה');
+        }
+    }).catch(function(err) {
+        showToast('❌ שגיאה בשמירה: ' + err.message, 'error');
+    }).finally(function() {
+        btn.disabled = false;
+        btn.textContent = originalText;
+    });
+}
 
-            if (currentExpense < budgetNum * 0.7) {
-                launchConfetti();
-            }
+function saveDesktopBudget() {
+    var budgetInput = document.getElementById('dBudgetInput');
+    var val = budgetInput.value.trim();
+    var month = document.getElementById('desktopInsightsMonth').value;
+
+    if (!month) { showToast('❌ בחר חודש קודם', 'error'); return; }
+    if (!val || isNaN(val) || parseFloat(val) <= 0) { showToast('❌ הזן סכום תקין', 'error'); return; }
+
+    var budgetNum = parseFloat(val);
+    var p = new URLSearchParams();
+    p.append('action', 'saveSettings');
+    p.append('key', 'budget_' + month);
+    p.append('value', budgetNum.toString());
+
+    var btn = document.querySelector('#desktopInsightsTab .budget-save-btn');
+    var originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'שומר...';
+
+    apiPost(p).then(function(data) {
+        if (data.status === 'success') {
+            desktopCurrentBudget = budgetNum;
+            updateBudgetBar(desktopCurrentExpense, 'dBudgetRemaining', 'dBudgetInput');
+            updateBudgetRing(desktopCurrentExpense, 'dBudgetRing', 'dBudgetRingValue', 'dBudgetAmount', 'dBudgetRemaining', 'dBudgetInput');
+            showToast('✅ תקציב נשמר לחודש ' + formatMonth(month) + ': ₪' + budgetNum.toLocaleString(), 'success');
+            if (desktopCurrentExpense < budgetNum * 0.7) launchConfetti();
         } else {
             throw new Error(data.message || 'שגיאה לא ידועה');
         }
@@ -2231,38 +3077,62 @@ function launchConfetti() {
     }
 }
 
+// ===== HISTORY =====
 function loadHistory() {
     var month = document.getElementById('historyMonth').value;
     if (!month) return;
-
     apiGet('transactions', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         allTransactions = data.transactions;
-        renderTransactions(allTransactions, month);
+        renderTransactions(allTransactions, month, 'txList', 'historyFooter', 'hfIncome', 'hfExpense', 'hfNet');
+    });
+}
+
+function loadDesktopHistory() {
+    var month = document.getElementById('dHistoryMonth').value;
+    if (!month) return;
+    apiGet('transactions', {month: month}).then(function(data) {
+        if (data.status !== 'success') return;
+        desktopAllTransactions = data.transactions;
+        renderTransactions(desktopAllTransactions, month, 'dTxList', 'dHistoryFooter', 'dHfIncome', 'dHfExpense', 'dHfNet');
     });
 }
 
 function setFilter(filter) {
     currentFilter = filter;
-    document.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('active'); });
-    document.querySelector('.chip[data-filter="' + filter + '"]').classList.add('active');
-    renderTransactions(allTransactions, document.getElementById('historyMonth').value);
+    document.querySelectorAll('#historyTab .chip').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('#historyTab .chip[data-filter="' + filter + '"]').classList.add('active');
+    renderTransactions(allTransactions, document.getElementById('historyMonth').value, 'txList', 'historyFooter', 'hfIncome', 'hfExpense', 'hfNet');
+}
+
+function setDesktopFilter(filter) {
+    desktopCurrentFilter = filter;
+    document.querySelectorAll('#desktopHistoryTab .chip').forEach(function(c) { c.classList.remove('active'); });
+    document.querySelector('#desktopHistoryTab .chip[data-filter="' + filter + '"]').classList.add('active');
+    renderTransactions(desktopAllTransactions, document.getElementById('dHistoryMonth').value, 'dTxList', 'dHistoryFooter', 'dHfIncome', 'dHfExpense', 'dHfNet');
 }
 
 function filterTransactions() {
     currentSearch = document.getElementById('searchInput').value.toLowerCase();
-    renderTransactions(allTransactions, document.getElementById('historyMonth').value);
+    renderTransactions(allTransactions, document.getElementById('historyMonth').value, 'txList', 'historyFooter', 'hfIncome', 'hfExpense', 'hfNet');
 }
 
-function renderTransactions(txs, month) {
-    var container = document.getElementById('txList');
-    var footer = document.getElementById('historyFooter');
+function filterDesktopTransactions() {
+    desktopCurrentSearch = document.getElementById('dSearchInput').value.toLowerCase();
+    renderTransactions(desktopAllTransactions, document.getElementById('dHistoryMonth').value, 'dTxList', 'dHistoryFooter', 'dHfIncome', 'dHfExpense', 'dHfNet');
+}
+
+function renderTransactions(txs, month, listId, footerId, incomeId, expenseId, netId) {
+    var container = document.getElementById(listId);
+    var footer = document.getElementById(footerId);
+    var filter = listId === 'dTxList' ? desktopCurrentFilter : currentFilter;
+    var search = listId === 'dTxList' ? desktopCurrentSearch : currentSearch;
 
     var filtered = txs.filter(function(t) {
-        if (currentFilter !== 'all' && t.type !== currentFilter) return false;
-        if (currentSearch) {
+        if (filter !== 'all' && t.type !== filter) return false;
+        if (search) {
             var searchStr = (t.category + ' ' + t.description + ' ' + t.amount).toLowerCase();
-            if (searchStr.indexOf(currentSearch) === -1) return false;
+            if (searchStr.indexOf(search) === -1) return false;
         }
         return true;
     });
@@ -2295,10 +3165,10 @@ function renderTransactions(txs, month) {
 
     container.innerHTML = html;
     footer.style.display = 'flex';
-    document.getElementById('hfIncome').textContent = '+₪' + totalIn.toLocaleString();
-    document.getElementById('hfExpense').textContent = '-₪' + totalOut.toLocaleString();
+    document.getElementById(incomeId).textContent = '+₪' + totalIn.toLocaleString();
+    document.getElementById(expenseId).textContent = '-₪' + totalOut.toLocaleString();
     var net = totalIn - totalOut;
-    var netEl = document.getElementById('hfNet');
+    var netEl = document.getElementById(netId);
     netEl.textContent = (net >= 0 ? '+' : '') + '₪' + net.toLocaleString();
     netEl.style.color = net >= 0 ? 'var(--success)' : 'var(--danger)';
 }
@@ -2333,6 +3203,9 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
         if (data.status === 'success') {
             showToast('✅ התנועה נמחקה', 'success');
             loadHistory();
+            loadDesktopHistory();
+            loadInsights();
+            loadDesktopInsights();
         } else {
             throw new Error(data.message);
         }
@@ -2346,19 +3219,40 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 function exportCSV() {
     var month = document.getElementById('historyMonth').value;
     if (!month) return;
-
     apiGet('transactions', {month: month}).then(function(data) {
         if (data.status !== 'success' || !data.transactions || data.transactions.length === 0) {
             showToast('❌ אין נתונים לייצוא', 'error');
             return;
         }
-
         var csv = '\uFEFF';
         csv += 'תאריך,סוג,קטגוריה,סכום,תיאור\n';
         data.transactions.forEach(function(t) {
             csv += '"' + t.date + '","' + t.type + '","' + t.category + '",' + t.amount + ',"' + (t.description || '') + '"\n';
         });
+        var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'transactions-' + month + '.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('✅ הקובץ הורד!', 'success');
+    });
+}
 
+function exportDesktopCSV() {
+    var month = document.getElementById('dHistoryMonth').value;
+    if (!month) return;
+    apiGet('transactions', {month: month}).then(function(data) {
+        if (data.status !== 'success' || !data.transactions || data.transactions.length === 0) {
+            showToast('❌ אין נתונים לייצוא', 'error');
+            return;
+        }
+        var csv = '\uFEFF';
+        csv += 'תאריך,סוג,קטגוריה,סכום,תיאור\n';
+        data.transactions.forEach(function(t) {
+            csv += '"' + t.date + '","' + t.type + '","' + t.category + '",' + t.amount + ',"' + (t.description || '') + '"\n';
+        });
         var blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
         var link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
