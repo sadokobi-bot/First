@@ -70,7 +70,6 @@ body {
     width: 500px; height: 500px;
     background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent 70%);
     top: -150px; right: -150px;
-    animation-delay: 0s;
 }
 
 .bg-orb-2 {
@@ -120,6 +119,111 @@ body {
     10% { opacity: 1; }
     90% { opacity: 1; }
     100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+}
+
+/* ============ SKELETON LOADING ============ */
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    color: transparent !important;
+    pointer-events: none;
+    user-select: none;
+}
+
+.skeleton * {
+    color: transparent !important;
+    visibility: hidden;
+}
+
+.skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.skeleton-balance {
+    height: 56px;
+    width: 200px;
+    margin: 10px auto;
+    border-radius: 12px;
+}
+
+.skeleton-stat {
+    height: 36px;
+    width: 120px;
+    margin: 8px auto;
+    border-radius: 8px;
+}
+
+.skeleton-text {
+    height: 16px;
+    width: 100%;
+    margin-bottom: 8px;
+    border-radius: 6px;
+}
+
+.skeleton-text.short { width: 60%; }
+.skeleton-text.medium { width: 80%; }
+
+.skeleton-chart {
+    height: 200px;
+    width: 100%;
+    border-radius: 12px;
+}
+
+.skeleton-ring {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.skeleton-card {
+    height: 80px;
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+/* Loading overlay for sections */
+.section-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 12px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.loader-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(99, 102, 241, 0.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Content fade in after loading */
+.content-reveal {
+    animation: contentReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes contentReveal {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ============ DESKTOP LAYOUT ============ */
@@ -266,6 +370,14 @@ body {
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.desktop-header-title svg {
+    width: 28px;
+    height: 28px;
 }
 
 .desktop-header-actions {
@@ -284,7 +396,11 @@ body {
     font-size: 0.9rem;
     cursor: pointer;
     min-width: 160px;
+    transition: all 0.3s ease;
 }
+
+.desktop-month-select:hover { border-color: var(--glass-border-hover); }
+.desktop-month-select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
 
 .desktop-add-btn {
     padding: 10px 20px;
@@ -311,12 +427,6 @@ body {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 20px;
-    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .col-3 { grid-column: span 3; }
@@ -328,9 +438,7 @@ body {
 .col-12 { grid-column: span 12; }
 
 /* ============ MOBILE LAYOUT ============ */
-.mobile-layout {
-    display: block;
-}
+.mobile-layout { display: block; }
 
 .app {
     width: 100%;
@@ -341,6 +449,11 @@ body {
     z-index: 1;
     animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     padding-bottom: 100px;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Header */
@@ -471,12 +584,12 @@ body {
     transition: transform 0.3s ease;
 }
 
-.tab-btn:hover svg { transform: scale(1.15) rotate(5deg); }
+.tab-btn:hover svg { transform: scale(1.15); }
 .tab-btn span { position: relative; z-index: 1; }
 
 /* Tab Content */
-.tab-content { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-.tab-content.active { display: block; }
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
 
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -543,7 +656,13 @@ body {
     position: relative;
     z-index: 1;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
+
+.balance-label svg { width: 18px; height: 18px; fill: currentColor; }
 
 .balance-amount {
     font-size: 3rem;
@@ -571,7 +690,13 @@ body {
     margin-top: 8px;
     position: relative;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
+
+.balance-sub svg { width: 16px; height: 16px; fill: currentColor; }
 
 /* Stats Grid */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
@@ -594,6 +719,19 @@ body {
 }
 
 .stat-card:hover::before { opacity: 1; }
+
+.stat-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+}
+
+.stat-icon svg { width: 20px; height: 20px; fill: currentColor; }
+.stat-icon.income { background: rgba(16, 185, 129, 0.12); color: var(--success); }
+.stat-icon.expense { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 
 .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
 
@@ -621,7 +759,16 @@ body {
     margin-bottom: 20px;
 }
 
-.health-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+.health-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.health-title svg { width: 20px; height: 20px; }
 
 .health-score {
     font-size: 2rem;
@@ -711,7 +858,6 @@ body {
 .progress-ring .bg { stroke: rgba(15, 23, 42, 0.6); }
 
 .progress-ring .progress {
-    stroke: url(#gradient);
     transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
     filter: drop-shadow(0 0 4px var(--accent-glow));
 }
@@ -753,7 +899,17 @@ body {
 .budget-save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow); }
 
 /* Chart */
-.chart-title { font-size: 1rem; color: var(--text-sec); margin-bottom: 16px; font-weight: 600; }
+.chart-title {
+    font-size: 1rem;
+    color: var(--text-sec);
+    margin-bottom: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-title svg { width: 20px; height: 20px; fill: currentColor; }
 .chart-wrap { position: relative; height: 260px; margin-bottom: 20px; }
 
 .custom-legend {
@@ -857,12 +1013,12 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    font-size: 1.2rem;
 }
 
-.insight-icon.positive { background: rgba(16, 185, 129, 0.12); }
-.insight-icon.negative { background: rgba(239, 68, 68, 0.12); }
-.insight-icon.neutral { background: rgba(99, 102, 241, 0.12); }
+.insight-icon svg { width: 20px; height: 20px; fill: currentColor; }
+.insight-icon.positive { background: rgba(16, 185, 129, 0.12); color: var(--success); }
+.insight-icon.negative { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
+.insight-icon.neutral { background: rgba(99, 102, 241, 0.12); color: var(--accent); }
 
 .insight-content { flex: 1; }
 .insight-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 3px; }
@@ -893,7 +1049,8 @@ body {
 
 /* Month Selector */
 .month-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-.month-row label { margin: 0; white-space: nowrap; font-size: 0.85rem; color: var(--text-sec); font-weight: 500; }
+.month-row label { margin: 0; white-space: nowrap; font-size: 0.85rem; color: var(--text-sec); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.month-row label svg { width: 16px; height: 16px; fill: currentColor; }
 .month-row select { flex: 1; }
 
 /* Form */
@@ -1191,7 +1348,7 @@ input::placeholder { color: var(--text-muted); }
 
 /* Empty */
 .empty { text-align: center; padding: 50px 20px; color: var(--text-muted); }
-.empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+.empty-icon { margin-bottom: 16px; opacity: 0.5; }
 .empty-icon svg { width: 64px; height: 64px; fill: currentColor; }
 .empty-text { font-size: 1rem; }
 
@@ -1212,8 +1369,12 @@ input::placeholder { color: var(--text-muted); }
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     pointer-events: none;
     border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+.toast svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 .toast.success { background: rgba(16, 185, 129, 0.95); color: #fff; }
 .toast.error { background: rgba(239, 68, 68, 0.95); color: #fff; }
@@ -1224,7 +1385,17 @@ input::placeholder { color: var(--text-muted); }
 ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--glass-border-hover); }
 
-.section-title { font-size: 1rem; color: var(--text-sec); font-weight: 600; margin-bottom: 16px; }
+.section-title {
+    font-size: 1rem;
+    color: var(--text-sec);
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title svg { width: 20px; height: 20px; fill: currentColor; }
 
 /* Modal */
 .modal-overlay {
@@ -1258,7 +1429,8 @@ input::placeholder { color: var(--text-muted); }
 }
 
 .modal-overlay.show .modal-box { transform: scale(1); }
-.modal-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; }
+.modal-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.modal-title svg { width: 22px; height: 22px; fill: var(--danger); }
 .modal-text { font-size: 0.9rem; color: var(--text-sec); margin-bottom: 24px; line-height: 1.5; }
 .modal-btns { display: flex; gap: 10px; }
 
@@ -1279,14 +1451,14 @@ input::placeholder { color: var(--text-muted); }
 .modal-btn.confirm { background: linear-gradient(135deg, var(--danger), #f87171); color: #fff; box-shadow: 0 4px 15px var(--danger-glow); }
 .modal-btn.confirm:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--danger-glow); }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spinAnim { to { transform: rotate(360deg); } }
 .loading {
     display: inline-block;
     width: 18px; height: 18px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     border-top-color: #fff;
-    animation: spin 0.8s linear infinite;
+    animation: spinAnim 0.8s linear infinite;
     vertical-align: middle;
     margin-left: 8px;
 }
@@ -1301,29 +1473,14 @@ input::placeholder { color: var(--text-muted); }
     background: rgba(15, 23, 42, 0.5);
     border-radius: var(--radius-xs);
     border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
 }
 
-.daily-stat-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 4px; }
+.daily-stat:hover { border-color: var(--glass-border-hover); transform: translateY(-2px); }
+
+.daily-stat-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.daily-stat-label svg { width: 12px; height: 12px; fill: currentColor; }
 .daily-stat-val { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; }
-
-.forecast-card {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.05));
-    border: 1px solid rgba(99, 102, 241, 0.2);
-}
-
-.forecast-value {
-    font-size: 2.2rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent-light), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 10px 0;
-    font-variant-numeric: tabular-nums;
-}
-
-.forecast-label { font-size: 0.88rem; color: var(--text-sec); font-weight: 500; }
-.forecast-status { font-size: 0.82rem; margin-top: 6px; }
 
 .comparison-card {
     padding: 16px;
@@ -1332,10 +1489,14 @@ input::placeholder { color: var(--text-muted); }
     border-radius: var(--radius-sm);
     margin-bottom: 10px;
     backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
 }
 
+.comparison-card:hover { border-color: var(--glass-border-hover); transform: translateX(-4px); }
+
 .comparison-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.comparison-label { font-size: 0.85rem; color: var(--text-sec); font-weight: 500; }
+.comparison-label { font-size: 0.85rem; color: var(--text-sec); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.comparison-label svg { width: 16px; height: 16px; fill: currentColor; }
 .comparison-value { font-size: 1.05rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .comparison-value.positive { color: var(--success); }
 .comparison-value.negative { color: var(--danger); }
@@ -1400,7 +1561,7 @@ input::placeholder { color: var(--text-muted); }
 .fab-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px var(--accent-glow); }
 .fab-btn svg { width: 20px; height: 20px; fill: currentColor; }
 
-/* Desktop-specific styles */
+/* ============ DESKTOP SPECIFIC ============ */
 .desktop-card {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
@@ -1435,30 +1596,13 @@ input::placeholder { color: var(--text-muted); }
     border-color: rgba(99, 102, 241, 0.2);
 }
 
-.desktop-balance-card .balance-amount {
-    font-size: 3.5rem;
-}
+.desktop-balance-card .balance-amount { font-size: 3.5rem; }
 
-.desktop-stat-card {
-    text-align: center;
-    padding: 28px 20px;
-}
+.desktop-stat-card { text-align: center; padding: 28px 20px; }
+.desktop-stat-card .stat-value { font-size: 2rem; }
 
-.desktop-stat-card .stat-value {
-    font-size: 2rem;
-}
-
-.desktop-chart-wrap {
-    position: relative;
-    height: 300px;
-    margin-bottom: 20px;
-}
-
-.desktop-daily-chart-wrap {
-    position: relative;
-    height: 280px;
-    margin-bottom: 16px;
-}
+.desktop-chart-wrap { position: relative; height: 300px; margin-bottom: 20px; }
+.desktop-daily-chart-wrap { position: relative; height: 280px; margin-bottom: 16px; }
 
 .desktop-health-card {
     background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(99, 102, 241, 0.05));
@@ -1485,7 +1629,6 @@ input::placeholder { color: var(--text-muted); }
 .desktop-progress-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
 .desktop-progress-ring .bg { stroke: rgba(15, 23, 42, 0.6); }
 .desktop-progress-ring .progress {
-    stroke: url(#gradient);
     transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
     filter: drop-shadow(0 0 4px var(--accent-glow));
 }
@@ -1499,11 +1642,7 @@ input::placeholder { color: var(--text-muted); }
     font-variant-numeric: tabular-nums;
 }
 
-.desktop-quick-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-}
+.desktop-quick-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 
 .desktop-q-stat {
     padding: 22px;
@@ -1544,38 +1683,135 @@ input::placeholder { color: var(--text-muted); }
 .desktop-q-stat:hover .desktop-q-stat-val { color: var(--accent-light); }
 .desktop-q-stat-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
 
-.desktop-insights-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.desktop-tx-list { max-height: 600px; overflow-y: auto; }
+
+.desktop-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.desktop-form-grid .full-width { grid-column: span 2; }
+
+/* Recent Transactions Widget */
+.recent-tx-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.recent-tx-item {
+    display: flex;
+    align-items: center;
     gap: 12px;
+    padding: 12px;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: var(--radius-xs);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
 }
 
-.desktop-comparison-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
+.recent-tx-item:hover {
+    background: rgba(15, 23, 42, 0.7);
+    border-color: var(--glass-border);
+    transform: translateX(-4px);
 }
 
-.desktop-tx-list {
-    max-height: 600px;
-    overflow-y: auto;
+.recent-tx-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.desktop-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+.recent-tx-icon svg { width: 18px; height: 18px; fill: currentColor; }
+.recent-tx-icon.income { background: rgba(16, 185, 129, 0.12); color: var(--success); }
+.recent-tx-icon.expense { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
+
+.recent-tx-info { flex: 1; min-width: 0; }
+.recent-tx-cat { font-weight: 600; font-size: 0.85rem; }
+.recent-tx-date { font-size: 0.72rem; color: var(--text-muted); }
+.recent-tx-amount { font-weight: 700; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+.recent-tx-amount.income { color: var(--success); }
+.recent-tx-amount.expense { color: var(--danger); }
+
+/* Burn Rate Widget */
+.burn-rate-widget {
+    text-align: center;
+    padding: 20px;
 }
 
-.desktop-form-grid .full-width {
-    grid-column: span 2;
+.burn-rate-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    margin: 8px 0;
+}
+
+.burn-rate-label {
+    font-size: 0.85rem;
+    color: var(--text-sec);
+}
+
+.burn-rate-sub {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Stagger animation for dashboard cards */
+.dashboard-grid > * {
+    opacity: 0;
+    animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.dashboard-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.dashboard-grid > *:nth-child(2) { animation-delay: 0.1s; }
+.dashboard-grid > *:nth-child(3) { animation-delay: 0.15s; }
+.dashboard-grid > *:nth-child(4) { animation-delay: 0.2s; }
+.dashboard-grid > *:nth-child(5) { animation-delay: 0.25s; }
+.dashboard-grid > *:nth-child(6) { animation-delay: 0.3s; }
+.dashboard-grid > *:nth-child(7) { animation-delay: 0.35s; }
+.dashboard-grid > *:nth-child(8) { animation-delay: 0.4s; }
+.dashboard-grid > *:nth-child(9) { animation-delay: 0.45s; }
+.dashboard-grid > *:nth-child(10) { animation-delay: 0.5s; }
+.dashboard-grid > *:nth-child(11) { animation-delay: 0.55s; }
+.dashboard-grid > *:nth-child(12) { animation-delay: 0.6s; }
+
+@keyframes staggerIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tooltip */
+.tooltip-container {
+    position: relative;
+}
+
+.tooltip-container::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: rgba(15, 23, 42, 0.95);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.2s ease;
+    border: 1px solid var(--glass-border);
+    z-index: 50;
+}
+
+.tooltip-container:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
 }
 
 /* Responsive */
 @media (max-width: 1200px) {
     .desktop-quick-stats { grid-template-columns: repeat(2, 1fr); }
-    .desktop-comparison-grid { grid-template-columns: 1fr; }
-    .desktop-insights-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 1024px) {
@@ -1617,7 +1853,7 @@ input::placeholder { color: var(--text-muted); }
         </div>
         <nav class="sidebar-nav">
             <button class="sidebar-nav-btn active" data-tab="insights" onclick="switchDesktopTab('insights')">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
                 דשבורד
             </button>
             <button class="sidebar-nav-btn" data-tab="add" onclick="switchDesktopTab('add')">
@@ -1625,7 +1861,7 @@ input::placeholder { color: var(--text-muted); }
                 הוספת תנועה
             </button>
             <button class="sidebar-nav-btn" data-tab="history" onclick="switchDesktopTab('history')">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
                 היסטוריית תנועות
             </button>
         </nav>
@@ -1638,7 +1874,10 @@ input::placeholder { color: var(--text-muted); }
         <!-- Desktop Insights Tab -->
         <div id="desktopInsightsTab" class="tab-content active">
             <div class="desktop-header">
-                <h2 class="desktop-header-title">📊 דשבורד פיננסי</h2>
+                <h2 class="desktop-header-title">
+                    <svg viewBox="0 0 24 24" fill="var(--accent)"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                    דשבורד פיננסי
+                </h2>
                 <div class="desktop-header-actions">
                     <select id="desktopInsightsMonth" class="desktop-month-select" onchange="loadDesktopInsights()"></select>
                     <button class="desktop-add-btn" onclick="switchDesktopTab('add')">
@@ -1648,12 +1887,15 @@ input::placeholder { color: var(--text-muted); }
                 </div>
             </div>
 
-            <div class="dashboard-grid">
-                <!-- Balance Card -->
+            <div class="dashboard-grid" id="desktopDashboardGrid">
+                <!-- Balance -->
                 <div class="col-12">
-                    <div class="desktop-card desktop-balance-card balance-card">
-                        <div class="balance-label">מאזן חודשי</div>
-                        <div id="dBalanceAmount" class="balance-amount">₪0</div>
+                    <div class="desktop-card desktop-balance-card balance-card" id="dBalanceCard">
+                        <div class="balance-label">
+                            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            מאזן חודשי
+                        </div>
+                        <div id="dBalanceAmount" class="balance-amount skeleton skeleton-balance">₪0</div>
                         <div id="dBalanceSub" class="balance-sub"></div>
                     </div>
                 </div>
@@ -1661,14 +1903,20 @@ input::placeholder { color: var(--text-muted); }
                 <!-- Income & Expense -->
                 <div class="col-6">
                     <div class="desktop-card desktop-stat-card stat-card">
-                        <div class="stat-label">💰 הכנסות</div>
-                        <div id="dIncomeAmount" class="stat-value income">₪0</div>
+                        <div class="stat-icon income">
+                            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>
+                        </div>
+                        <div class="stat-label">הכנסות</div>
+                        <div id="dIncomeAmount" class="stat-value income skeleton skeleton-stat">₪0</div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="desktop-card desktop-stat-card stat-card">
-                        <div class="stat-label">💸 הוצאות</div>
-                        <div id="dExpenseAmount" class="stat-value expense">₪0</div>
+                        <div class="stat-icon expense">
+                            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                        </div>
+                        <div class="stat-label">הוצאות</div>
+                        <div id="dExpenseAmount" class="stat-value expense skeleton skeleton-stat">₪0</div>
                     </div>
                 </div>
 
@@ -1676,7 +1924,10 @@ input::placeholder { color: var(--text-muted); }
                 <div class="col-5">
                     <div class="desktop-card desktop-health-card health-card">
                         <div class="health-header">
-                            <div class="health-title">🏥 מדד בריאות פיננסית</div>
+                            <div class="health-title">
+                                <svg viewBox="0 0 24 24" fill="var(--purple)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                מדד בריאות פיננסית
+                            </div>
                             <div class="health-score" id="dHealthScore">0</div>
                         </div>
                         <div class="health-bar-container">
@@ -1689,7 +1940,10 @@ input::placeholder { color: var(--text-muted); }
                 <!-- Budget Progress Ring -->
                 <div class="col-7">
                     <div class="desktop-card">
-                        <div class="section-title">🎯 תקציב חודשי</div>
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
+                            תקציב חודשי
+                        </div>
                         <svg width="0" height="0">
                             <defs>
                                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1722,21 +1976,33 @@ input::placeholder { color: var(--text-muted); }
                 <!-- Daily Chart -->
                 <div class="col-8">
                     <div class="desktop-card">
-                        <div class="chart-title">📈 הוצאות יומיות</div>
+                        <div class="chart-title">
+                            <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+                            הוצאות יומיות
+                        </div>
                         <div class="desktop-daily-chart-wrap">
                             <canvas id="dDailyChart"></canvas>
                         </div>
                         <div class="daily-stats">
                             <div class="daily-stat">
-                                <div class="daily-stat-label">ממוצע יומי</div>
+                                <div class="daily-stat-label">
+                                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                    ממוצע יומי
+                                </div>
                                 <div id="dDailyAvg" class="daily-stat-val">-</div>
                             </div>
                             <div class="daily-stat">
-                                <div class="daily-stat-label">יום הכי יקר</div>
+                                <div class="daily-stat-label">
+                                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                                    יום הכי יקר
+                                </div>
                                 <div id="dDailyMax" class="daily-stat-val">-</div>
                             </div>
                             <div class="daily-stat">
-                                <div class="daily-stat-label">יום הכי זול</div>
+                                <div class="daily-stat-label">
+                                    <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                                    יום הכי זול
+                                </div>
                                 <div id="dDailyMin" class="daily-stat-val">-</div>
                             </div>
                         </div>
@@ -1746,16 +2012,62 @@ input::placeholder { color: var(--text-muted); }
                 <!-- Category Chart -->
                 <div class="col-4">
                     <div class="desktop-card">
-                        <div class="chart-title">📊 פירוט לפי קטגוריה</div>
+                        <div class="chart-title">
+                            <svg viewBox="0 0 24 24"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>
+                            פירוט לפי קטגוריה
+                        </div>
                         <div class="desktop-chart-wrap">
                             <canvas id="dCategoryChart"></canvas>
                         </div>
                         <div id="dCustomLegend" class="custom-legend"></div>
                         <div id="dChartEmpty" class="empty" style="display:none;padding:20px">
                             <div class="empty-icon">
-                                <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>
                             </div>
                             <div class="empty-text">אין הוצאות בחודש זה</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Burn Rate & Quick Stats -->
+                <div class="col-4">
+                    <div class="desktop-card">
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24" fill="var(--warning)"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
+                            קצב שריפת תקציב
+                        </div>
+                        <div class="burn-rate-widget" id="dBurnRateWidget">
+                            <div class="burn-rate-label">ימים עד סיום התקציב</div>
+                            <div class="burn-rate-value" id="dBurnRateValue" style="color: var(--text-muted)">-</div>
+                            <div class="burn-rate-sub" id="dBurnRateSub">הגדר תקציב לחישוב</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="desktop-card">
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24" fill="var(--pink)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            העסקה הגדולה
+                        </div>
+                        <div class="burn-rate-widget" id="dLargestTxWidget">
+                            <div class="burn-rate-label">הוצאה הכי גדולה החודש</div>
+                            <div class="burn-rate-value" id="dLargestTxValue" style="color: var(--danger); font-size: 2rem;">-</div>
+                            <div class="burn-rate-sub" id="dLargestTxSub">אין נתונים</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="desktop-card">
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24" fill="var(--cyan)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                            ממוצע לעסקה
+                        </div>
+                        <div class="burn-rate-widget" id="dAvgTxWidget">
+                            <div class="burn-rate-label">סכום ממוצע לתנועה</div>
+                            <div class="burn-rate-value" id="dAvgTxValue" style="color: var(--accent-light); font-size: 2rem;">-</div>
+                            <div class="burn-rate-sub" id="dAvgTxSub">אין נתונים</div>
                         </div>
                     </div>
                 </div>
@@ -1763,23 +2075,46 @@ input::placeholder { color: var(--text-muted); }
                 <!-- Comparison -->
                 <div class="col-6">
                     <div class="desktop-card">
-                        <div class="section-title">📊 השוואה לחודש קודם</div>
-                        <div id="dComparisonContainer"></div>
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M9.01 14H2v2h7.01v3L13 15l-3.99-4v3zm5.98-1v-3H22V8h-7.01V5L11 9l3.99 4z"/></svg>
+                            השוואה לחודש קודם
+                        </div>
+                        <div id="dComparisonContainer">
+                            <div class="section-loader"><div class="loader-spinner"></div> טוען נתונים...</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Insights -->
                 <div class="col-6">
                     <div class="desktop-card">
-                        <div class="section-title">💡 תובנות חכמות</div>
-                        <div id="dInsightsContainer"></div>
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24" fill="var(--warning)"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg>
+                            תובנות חכמות
+                        </div>
+                        <div id="dInsightsContainer">
+                            <div class="section-loader"><div class="loader-spinner"></div> מנתח נתונים...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="col-6">
+                    <div class="desktop-card">
+                        <div class="section-title">
+                            <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                            תנועות אחרונות
+                        </div>
+                        <div class="recent-tx-widget" id="dRecentTxWidget">
+                            <div class="section-loader"><div class="loader-spinner"></div> טוען...</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Quick Stats -->
-                <div class="col-12">
+                <div class="col-6">
                     <div class="desktop-quick-stats">
-                        <div class="desktop-q-stat">
+                        <div class="desktop-q-stat tooltip-container" data-tooltip="הקטגוריה עם ההוצאה הגבוהה ביותר">
                             <div class="desktop-q-stat-label">
                                 <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                                 קטגוריה מובילה
@@ -1787,15 +2122,15 @@ input::placeholder { color: var(--text-muted); }
                             <div id="dTopCat" class="desktop-q-stat-val">-</div>
                             <div id="dTopCatAmt" class="desktop-q-stat-sub">-</div>
                         </div>
-                        <div class="desktop-q-stat">
+                        <div class="desktop-q-stat tooltip-container" data-tooltip="ממוצע הוצאה יומית">
                             <div class="desktop-q-stat-label">
-                                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
                                 ממוצע יומי
                             </div>
                             <div id="dAvgDaily" class="desktop-q-stat-val">-</div>
                             <div class="desktop-q-stat-sub">הוצאה ליום</div>
                         </div>
-                        <div class="desktop-q-stat">
+                        <div class="desktop-q-stat tooltip-container" data-tooltip="סה״כ תנועות בחודש זה">
                             <div class="desktop-q-stat-label">
                                 <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
                                 מס׳ תנועות
@@ -1803,13 +2138,13 @@ input::placeholder { color: var(--text-muted); }
                             <div id="dTxCount" class="desktop-q-stat-val">0</div>
                             <div class="desktop-q-stat-sub">בחודש זה</div>
                         </div>
-                        <div class="desktop-q-stat">
+                        <div class="desktop-q-stat tooltip-container" data-tooltip="אחוז ההכנסה שנחסך">
                             <div class="desktop-q-stat-label">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.94s4.18 1.36 4.18 3.85c0 1.89-1.44 2.98-3.12 3.19z"/></svg>
-                                אחסון
+                                <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                                אחוז חיסכון
                             </div>
                             <div id="dSavingsRate" class="desktop-q-stat-val">-</div>
-                            <div class="desktop-q-stat-sub">אחוז חיסכון</div>
+                            <div class="desktop-q-stat-sub">מההכנסה</div>
                         </div>
                     </div>
                 </div>
@@ -1827,7 +2162,10 @@ input::placeholder { color: var(--text-muted); }
         <!-- Desktop Add Tab -->
         <div id="desktopAddTab" class="tab-content">
             <div class="desktop-header">
-                <h2 class="desktop-header-title">➕ הוספת תנועה חדשה</h2>
+                <h2 class="desktop-header-title">
+                    <svg viewBox="0 0 24 24" fill="var(--accent)"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    הוספת תנועה חדשה
+                </h2>
             </div>
             <div class="desktop-card" style="max-width: 700px;">
                 <form id="dTrackerForm">
@@ -1875,7 +2213,10 @@ input::placeholder { color: var(--text-muted); }
         <!-- Desktop History Tab -->
         <div id="desktopHistoryTab" class="tab-content">
             <div class="desktop-header">
-                <h2 class="desktop-header-title">📋 היסטוריית תנועות</h2>
+                <h2 class="desktop-header-title">
+                    <svg viewBox="0 0 24 24" fill="var(--accent)"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                    היסטוריית תנועות
+                </h2>
                 <div class="desktop-header-actions">
                     <select id="dHistoryMonth" class="desktop-month-select" onchange="loadDesktopHistory()"></select>
                     <button class="export-btn" onclick="exportDesktopCSV()">
@@ -1895,12 +2236,7 @@ input::placeholder { color: var(--text-muted); }
                     <button class="chip" data-filter="הכנסה" onclick="setDesktopFilter('הכנסה')">הכנסות</button>
                 </div>
                 <div id="dTxList" class="desktop-tx-list tx-list">
-                    <div class="empty">
-                        <div class="empty-icon">
-                            <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
-                        </div>
-                        <div class="empty-text">טוען תנועות...</div>
-                    </div>
+                    <div class="section-loader"><div class="loader-spinner"></div> טוען תנועות...</div>
                 </div>
                 <div id="dHistoryFooter" class="history-footer" style="display:none">
                     <div class="hf-item">
@@ -1936,7 +2272,7 @@ input::placeholder { color: var(--text-muted); }
 
         <nav class="tabs">
             <button class="tab-btn active" data-tab="insights">
-                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
                 <span>סיכום</span>
             </button>
             <button class="tab-btn" data-tab="add">
@@ -1944,7 +2280,7 @@ input::placeholder { color: var(--text-muted); }
                 <span>הוספה</span>
             </button>
             <button class="tab-btn" data-tab="history">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
                 <span>היסטוריה</span>
             </button>
         </nav>
@@ -1953,31 +2289,46 @@ input::placeholder { color: var(--text-muted); }
         <div id="insightsTab" class="tab-content active">
             <div class="card">
                 <div class="month-row">
-                    <label>חודש:</label>
+                    <label>
+                        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                        חודש:
+                    </label>
                     <select id="insightsMonth" class="month-select" onchange="loadInsights()"></select>
                 </div>
             </div>
 
             <div class="card balance-card">
-                <div class="balance-label">מאזן חודשי</div>
-                <div id="balanceAmount" class="balance-amount">₪0</div>
+                <div class="balance-label">
+                    <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    מאזן חודשי
+                </div>
+                <div id="balanceAmount" class="balance-amount skeleton skeleton-balance">₪0</div>
                 <div id="balanceSub" class="balance-sub"></div>
             </div>
 
             <div class="stats-grid">
                 <div class="card stat-card">
+                    <div class="stat-icon income">
+                        <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>
+                    </div>
                     <div class="stat-label">הכנסות</div>
-                    <div id="incomeAmount" class="stat-value income">₪0</div>
+                    <div id="incomeAmount" class="stat-value income skeleton skeleton-stat">₪0</div>
                 </div>
                 <div class="card stat-card">
+                    <div class="stat-icon expense">
+                        <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+                    </div>
                     <div class="stat-label">הוצאות</div>
-                    <div id="expenseAmount" class="stat-value expense">₪0</div>
+                    <div id="expenseAmount" class="stat-value expense skeleton skeleton-stat">₪0</div>
                 </div>
             </div>
 
             <div class="card health-card">
                 <div class="health-header">
-                    <div class="health-title">🏥 מדד בריאות פיננסית</div>
+                    <div class="health-title">
+                        <svg viewBox="0 0 24 24" fill="var(--purple)"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        מדד בריאות פיננסית
+                    </div>
                     <div class="health-score" id="healthScore">0</div>
                 </div>
                 <div class="health-bar-container">
@@ -1987,33 +2338,53 @@ input::placeholder { color: var(--text-muted); }
             </div>
 
             <div class="card">
-                <div class="chart-title">📈 הוצאות יומיות</div>
+                <div class="chart-title">
+                    <svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+                    הוצאות יומיות
+                </div>
                 <div class="daily-chart-wrap">
                     <canvas id="dailyChart"></canvas>
                 </div>
                 <div class="daily-stats">
                     <div class="daily-stat">
-                        <div class="daily-stat-label">ממוצע יומי</div>
+                        <div class="daily-stat-label">
+                            <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                            ממוצע יומי
+                        </div>
                         <div id="dailyAvg" class="daily-stat-val">-</div>
                     </div>
                     <div class="daily-stat">
-                        <div class="daily-stat-label">יום הכי יקר</div>
+                        <div class="daily-stat-label">
+                            <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                            יום הכי יקר
+                        </div>
                         <div id="dailyMax" class="daily-stat-val">-</div>
                     </div>
                     <div class="daily-stat">
-                        <div class="daily-stat-label">יום הכי זול</div>
+                        <div class="daily-stat-label">
+                            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                            יום הכי זול
+                        </div>
                         <div id="dailyMin" class="daily-stat-val">-</div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="section-title">📊 השוואה לחודש קודם</div>
-                <div id="comparisonContainer"></div>
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24"><path d="M9.01 14H2v2h7.01v3L13 15l-3.99-4v3zm5.98-1v-3H22V8h-7.01V5L11 9l3.99 4z"/></svg>
+                    השוואה לחודש קודם
+                </div>
+                <div id="comparisonContainer">
+                    <div class="section-loader"><div class="loader-spinner"></div> טוען נתונים...</div>
+                </div>
             </div>
 
             <div class="card">
-                <div class="section-title">🎯 תקציב חודשי</div>
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
+                    תקציב חודשי
+                </div>
                 <svg width="0" height="0">
                     <defs>
                         <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -2043,22 +2414,30 @@ input::placeholder { color: var(--text-muted); }
             </div>
 
             <div class="card">
-                <div class="chart-title">📊 פירוט הוצאות לפי קטגוריה</div>
+                <div class="chart-title">
+                    <svg viewBox="0 0 24 24"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>
+                    פירוט הוצאות לפי קטגוריה
+                </div>
                 <div class="chart-wrap">
                     <canvas id="categoryChart"></canvas>
                 </div>
                 <div id="customLegend" class="custom-legend"></div>
                 <div id="chartEmpty" class="empty" style="display:none;padding:20px">
                     <div class="empty-icon">
-                        <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M11 2v20c-5.07-.5-9-4.79-9-10s3.93-9.5 9-10zm2.03 0v8.99H22c-.47-4.74-4.24-8.52-8.97-8.99zm0 11.01V22c4.74-.47 8.5-4.25 8.97-8.99h-8.97z"/></svg>
                     </div>
                     <div class="empty-text">אין הוצאות בחודש זה</div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="section-title">💡 תובנות חכמות</div>
-                <div id="insightsContainer"></div>
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24" fill="var(--warning)"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg>
+                    תובנות חכמות
+                </div>
+                <div id="insightsContainer">
+                    <div class="section-loader"><div class="loader-spinner"></div> מנתח נתונים...</div>
+                </div>
             </div>
 
             <div class="quick-stats">
@@ -2072,7 +2451,7 @@ input::placeholder { color: var(--text-muted); }
                 </div>
                 <div class="q-stat">
                     <div class="q-stat-label">
-                        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
                         ממוצע יומי
                     </div>
                     <div id="avgDaily" class="q-stat-val">-</div>
@@ -2088,11 +2467,11 @@ input::placeholder { color: var(--text-muted); }
                 </div>
                 <div class="q-stat">
                     <div class="q-stat-label">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.94s4.18 1.36 4.18 3.85c0 1.89-1.44 2.98-3.12 3.19z"/></svg>
-                        אחסון
+                        <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                        אחוז חיסכון
                     </div>
                     <div id="savingsRate" class="q-stat-val">-</div>
-                    <div class="q-stat-sub">אחוז חיסכון</div>
+                    <div class="q-stat-sub">מההכנסה</div>
                 </div>
             </div>
 
@@ -2148,7 +2527,10 @@ input::placeholder { color: var(--text-muted); }
             <div class="card">
                 <div class="history-top">
                     <div class="month-row">
-                        <label>חודש:</label>
+                        <label>
+                            <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                            חודש:
+                        </label>
                         <select id="historyMonth" class="month-select" onchange="loadHistory()"></select>
                     </div>
                     <button class="export-btn" onclick="exportCSV()">
@@ -2169,12 +2551,7 @@ input::placeholder { color: var(--text-muted); }
                 </div>
 
                 <div id="txList" class="tx-list">
-                    <div class="empty">
-                        <div class="empty-icon">
-                            <svg viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/></svg>
-                        </div>
-                        <div class="empty-text">טוען תנועות...</div>
-                    </div>
+                    <div class="section-loader"><div class="loader-spinner"></div> טוען תנועות...</div>
                 </div>
                 <div id="historyFooter" class="history-footer" style="display:none">
                     <div class="hf-item">
@@ -2206,7 +2583,10 @@ input::placeholder { color: var(--text-muted); }
 
 <div id="confirmModal" class="modal-overlay">
     <div class="modal-box">
-        <div class="modal-title">🗑️ מחיקת תנועה</div>
+        <div class="modal-title">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            מחיקת תנועה
+        </div>
         <div class="modal-text">האם אתה בטוח שברצונך למחוק תנועה זו?<br>פעולה זו אינה הפיכה.</div>
         <div class="modal-btns">
             <button class="modal-btn cancel" onclick="closeModal()">ביטול</button>
@@ -2247,7 +2627,20 @@ let desktopCurrentSearch = '';
 let allTransactions = [];
 let desktopAllTransactions = [];
 
-// Create particles
+// SVG Icons
+const ICONS = {
+    check: '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
+    error: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>',
+    trophy: '<svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>',
+    warning: '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+    alert: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>',
+    zap: '<svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>',
+    savings: '<svg viewBox="0 0 24 24"><path d="M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zm2.5 2.1h-15V5h15v14.1zM21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>',
+    trendUp: '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>',
+    trendDown: '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>',
+    sparkle: '<svg viewBox="0 0 24 24"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>'
+};
+
 function createParticles() {
     for (let i = 0; i < 20; i++) {
         const p = document.createElement('div');
@@ -2290,7 +2683,15 @@ function switchTab(tab) {
 function switchDesktopTab(tab) {
     document.querySelectorAll('.sidebar-nav-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.tab === tab); });
     document.querySelectorAll('.desktop-layout .tab-content').forEach(function(c) { c.classList.remove('active'); });
-    document.getElementById('desktop' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab').classList.add('active');
+    var tabId = 'desktop' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab';
+    document.getElementById(tabId).classList.add('active');
+    // Re-trigger stagger animation
+    var grid = document.getElementById('desktopDashboardGrid');
+    if (grid && tab === 'insights') {
+        grid.style.animation = 'none';
+        grid.offsetHeight;
+        grid.style.animation = '';
+    }
     if (tab === 'insights') loadDesktopInsights();
     if (tab === 'history') loadDesktopHistory();
 }
@@ -2380,18 +2781,34 @@ function loadMonths() {
 }
 
 function apiPost(params) {
-    return fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: params
-    }).then(function(r) { return r.json(); });
+    return fetch(SCRIPT_URL, { method: 'POST', body: params }).then(function(r) { return r.json(); });
 }
 
 function apiGet(action, extra) {
     var url = SCRIPT_URL + '?action=' + action + '&t=' + new Date().getTime();
-    if (extra) {
-        for (var k in extra) url += '&' + k + '=' + encodeURIComponent(extra[k]);
-    }
+    if (extra) { for (var k in extra) url += '&' + k + '=' + encodeURIComponent(extra[k]); }
     return fetch(url).then(function(r) { return r.json(); });
+}
+
+// Show loading skeletons
+function showSkeletons(prefix) {
+    var ids = prefix === 'd' ? 
+        ['dBalanceAmount', 'dIncomeAmount', 'dExpenseAmount'] :
+        ['balanceAmount', 'incomeAmount', 'expenseAmount'];
+    ids.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('skeleton');
+    });
+}
+
+function hideSkeletons(prefix) {
+    var ids = prefix === 'd' ?
+        ['dBalanceAmount', 'dIncomeAmount', 'dExpenseAmount'] :
+        ['balanceAmount', 'incomeAmount', 'expenseAmount'];
+    ids.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.remove('skeleton');
+    });
 }
 
 // Mobile form submit
@@ -2412,21 +2829,14 @@ document.getElementById('trackerForm').addEventListener('submit', function(e) {
     apiPost(p)
     .then(function(data) {
         if (data.status === 'success') {
-            showToast('✅ התנועה נשמרה בהצלחה!', 'success');
+            showToast('התנועה נשמרה בהצלחה', 'success');
             document.getElementById('amount').value = '';
             document.getElementById('description').value = '';
             loadMonths();
-        } else {
-            throw new Error(data.message);
-        }
+        } else { throw new Error(data.message); }
     })
-    .catch(function(err) {
-        showToast('❌ שגיאה: ' + err.message, 'error');
-    })
-    .finally(function() {
-        btn.disabled = false;
-        btn.textContent = 'שמירת תנועה';
-    });
+    .catch(function(err) { showToast('שגיאה: ' + err.message, 'error'); })
+    .finally(function() { btn.disabled = false; btn.textContent = 'שמירת תנועה'; });
 });
 
 // Desktop form submit
@@ -2447,27 +2857,21 @@ document.getElementById('dTrackerForm').addEventListener('submit', function(e) {
     apiPost(p)
     .then(function(data) {
         if (data.status === 'success') {
-            showToast('✅ התנועה נשמרה בהצלחה!', 'success');
+            showToast('התנועה נשמרה בהצלחה', 'success');
             document.getElementById('dAmount').value = '';
             document.getElementById('dDescription').value = '';
             loadMonths();
-        } else {
-            throw new Error(data.message);
-        }
+        } else { throw new Error(data.message); }
     })
-    .catch(function(err) {
-        showToast('❌ שגיאה: ' + err.message, 'error');
-    })
-    .finally(function() {
-        btn.disabled = false;
-        btn.textContent = 'שמירת תנועה';
-    });
+    .catch(function(err) { showToast('שגיאה: ' + err.message, 'error'); })
+    .finally(function() { btn.disabled = false; btn.textContent = 'שמירת תנועה'; });
 });
 
 function animateValue(el, start, end, duration, prefix, suffix) {
     prefix = prefix || '';
     suffix = suffix || '';
     var range = end - start;
+    if (range === 0) { el.textContent = prefix + end.toLocaleString() + suffix; return; }
     var startTime = null;
     function step(timestamp) {
         if (!startTime) startTime = timestamp;
@@ -2480,11 +2884,12 @@ function animateValue(el, start, end, duration, prefix, suffix) {
     requestAnimationFrame(step);
 }
 
-// ===== MOBILE FUNCTIONS =====
+// ===== MOBILE =====
 function loadInsights() {
     var month = document.getElementById('insightsMonth').value;
     if (!month) return;
     var prevMonth = getPreviousMonth(month);
+    showSkeletons('m');
 
     apiGet('settings').then(function(settingsData) {
         if (settingsData.status === 'success') {
@@ -2492,10 +2897,7 @@ function loadInsights() {
             if (settingsData.settings[monthKey] !== undefined && settingsData.settings[monthKey] !== '') {
                 currentBudget = parseFloat(settingsData.settings[monthKey]);
                 document.getElementById('budgetInput').value = currentBudget;
-            } else {
-                currentBudget = 0;
-                document.getElementById('budgetInput').value = '';
-            }
+            } else { currentBudget = 0; document.getElementById('budgetInput').value = ''; }
         }
     });
 
@@ -2507,6 +2909,7 @@ function loadInsights() {
 
     apiGet('summary', {month: month}).then(function(currentData) {
         if (currentData.status !== 'success') return;
+        hideSkeletons('m');
         currentExpense = currentData.expense;
         currentIncome = currentData.income;
 
@@ -2518,8 +2921,8 @@ function loadInsights() {
             balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
 
             var balSub = document.getElementById('balanceSub');
-            if (bal > 0) balSub.textContent = '✨ עודפים לחיסכון';
-            else if (bal < 0) balSub.textContent = '⚠️ גירעון חודשי';
+            if (bal > 0) balSub.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg> עודפים לחיסכון';
+            else if (bal < 0) balSub.innerHTML = '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg> גירעון חודשי';
             else balSub.textContent = 'מאוזן';
 
             var incomeEl = document.getElementById('incomeAmount');
@@ -2535,9 +2938,7 @@ function loadInsights() {
                 var rate = Math.round((bal / currentData.income) * 100);
                 document.getElementById('savingsRate').textContent = rate + '%';
                 document.getElementById('savingsRate').style.color = rate >= 0 ? 'var(--success)' : 'var(--danger)';
-            } else {
-                document.getElementById('savingsRate').textContent = '-';
-            }
+            } else { document.getElementById('savingsRate').textContent = '-'; }
 
             setTimeout(function() {
                 updateBudgetRing(currentData.expense, 'budgetRing', 'budgetRingValue', 'budgetAmount', 'budgetRemaining', 'budgetInput');
@@ -2556,11 +2957,12 @@ function loadInsights() {
     });
 }
 
-// ===== DESKTOP FUNCTIONS =====
+// ===== DESKTOP =====
 function loadDesktopInsights() {
     var month = document.getElementById('desktopInsightsMonth').value;
     if (!month) return;
     var prevMonth = getPreviousMonth(month);
+    showSkeletons('d');
 
     apiGet('settings').then(function(settingsData) {
         if (settingsData.status === 'success') {
@@ -2568,21 +2970,22 @@ function loadDesktopInsights() {
             if (settingsData.settings[monthKey] !== undefined && settingsData.settings[monthKey] !== '') {
                 desktopCurrentBudget = parseFloat(settingsData.settings[monthKey]);
                 document.getElementById('dBudgetInput').value = desktopCurrentBudget;
-            } else {
-                desktopCurrentBudget = 0;
-                document.getElementById('dBudgetInput').value = '';
-            }
+            } else { desktopCurrentBudget = 0; document.getElementById('dBudgetInput').value = ''; }
         }
     });
 
     apiGet('transactions', {month: month}).then(function(txData) {
         if (txData.status === 'success') {
             renderDailyChart(txData.transactions, month, 'dDailyChart');
+            renderRecentTransactions(txData.transactions);
+            calculateLargestTx(txData.transactions);
+            calculateAvgTx(txData.transactions);
         }
     });
 
     apiGet('summary', {month: month}).then(function(currentData) {
         if (currentData.status !== 'success') return;
+        hideSkeletons('d');
         desktopCurrentExpense = currentData.expense;
         desktopCurrentIncome = currentData.income;
 
@@ -2594,8 +2997,8 @@ function loadDesktopInsights() {
             balEl.className = 'balance-amount ' + (bal >= 0 ? 'positive' : 'negative');
 
             var balSub = document.getElementById('dBalanceSub');
-            if (bal > 0) balSub.textContent = '✨ עודפים לחיסכון';
-            else if (bal < 0) balSub.textContent = '⚠️ גירעון חודשי';
+            if (bal > 0) balSub.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg> עודפים לחיסכון';
+            else if (bal < 0) balSub.innerHTML = '<svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg> גירעון חודשי';
             else balSub.textContent = 'מאוזן';
 
             var incomeEl = document.getElementById('dIncomeAmount');
@@ -2611,13 +3014,12 @@ function loadDesktopInsights() {
                 var rate = Math.round((bal / currentData.income) * 100);
                 document.getElementById('dSavingsRate').textContent = rate + '%';
                 document.getElementById('dSavingsRate').style.color = rate >= 0 ? 'var(--success)' : 'var(--danger)';
-            } else {
-                document.getElementById('dSavingsRate').textContent = '-';
-            }
+            } else { document.getElementById('dSavingsRate').textContent = '-'; }
 
             setTimeout(function() {
                 updateBudgetRing(currentData.expense, 'dBudgetRing', 'dBudgetRingValue', 'dBudgetAmount', 'dBudgetRemaining', 'dBudgetInput');
                 updateBudgetBar(currentData.expense, 'dBudgetRemaining', 'dBudgetInput');
+                updateBurnRate(currentData.expense);
             }, 200);
 
             renderComparison(currentData, prevData, 'dComparisonContainer');
@@ -2630,6 +3032,98 @@ function loadDesktopInsights() {
         if (data.status !== 'success') return;
         renderCategoryChart(data.categories, month, 'dCategoryChart', 'dCustomLegend', 'dChartEmpty', 'dTopCat', 'dTopCatAmt', 'dAvgDaily');
     });
+}
+
+// ===== NEW WIDGETS =====
+function renderRecentTransactions(transactions) {
+    var container = document.getElementById('dRecentTxWidget');
+    var sorted = transactions.slice().sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+    var recent = sorted.slice(0, 5);
+
+    if (recent.length === 0) {
+        container.innerHTML = '<div class="empty" style="padding:20px"><div class="empty-text">אין תנועות בחודש זה</div></div>';
+        return;
+    }
+
+    var html = '';
+    recent.forEach(function(t) {
+        var isInc = t.type === 'הכנסה';
+        var cls = isInc ? 'income' : 'expense';
+        var sign = isInc ? '+' : '-';
+        var dateStr = '';
+        try { var d = new Date(t.date); dateStr = d.getDate() + '/' + (d.getMonth()+1); } catch(e) { dateStr = t.date; }
+
+        html += '<div class="recent-tx-item">' +
+            '<div class="recent-tx-icon ' + cls + '">' +
+            (isInc ? '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>' :
+                    '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>') +
+            '</div>' +
+            '<div class="recent-tx-info"><div class="recent-tx-cat">' + escHtml(t.category) + '</div><div class="recent-tx-date">' + dateStr + '</div></div>' +
+            '<div class="recent-tx-amount ' + cls + '">' + sign + '₪' + t.amount.toLocaleString() + '</div>' +
+            '</div>';
+    });
+
+    container.innerHTML = html;
+}
+
+function calculateLargestTx(transactions) {
+    var expenses = transactions.filter(function(t) { return t.type === 'הוצאה'; });
+    var el = document.getElementById('dLargestTxValue');
+    var subEl = document.getElementById('dLargestTxSub');
+
+    if (expenses.length === 0) {
+        el.textContent = '-';
+        subEl.textContent = 'אין הוצאות';
+        return;
+    }
+
+    var largest = expenses.reduce(function(max, t) { return t.amount > max.amount ? t : max; }, expenses[0]);
+    el.textContent = '₪' + largest.amount.toLocaleString();
+    subEl.textContent = largest.category;
+}
+
+function calculateAvgTx(transactions) {
+    var el = document.getElementById('dAvgTxValue');
+    var subEl = document.getElementById('dAvgTxSub');
+
+    if (transactions.length === 0) {
+        el.textContent = '-';
+        subEl.textContent = 'אין תנועות';
+        return;
+    }
+
+    var total = transactions.reduce(function(sum, t) { return sum + t.amount; }, 0);
+    var avg = total / transactions.length;
+    el.textContent = '₪' + avg.toFixed(0);
+    subEl.textContent = transactions.length + ' תנועות בסה״כ';
+}
+
+function updateBurnRate(expense) {
+    var budget = desktopCurrentBudget;
+    var valueEl = document.getElementById('dBurnRateValue');
+    var subEl = document.getElementById('dBurnRateSub');
+
+    if (!budget || budget <= 0) {
+        valueEl.textContent = '-';
+        valueEl.style.color = 'var(--text-muted)';
+        subEl.textContent = 'הגדר תקציב לחישוב';
+        return;
+    }
+
+    var remaining = Math.max(0, budget - expense);
+    var daysLeft = getDaysLeftInMonth();
+    var dailySpend = daysLeft > 0 ? expense / (new Date().getDate()) : 0;
+    var daysUntilDone = dailySpend > 0 ? Math.floor(remaining / dailySpend) : 999;
+
+    if (remaining <= 0) {
+        valueEl.textContent = '0';
+        valueEl.style.color = 'var(--danger)';
+        subEl.textContent = 'חריגה מהתקציב!';
+    } else {
+        valueEl.textContent = daysUntilDone;
+        valueEl.style.color = daysUntilDone > daysLeft ? 'var(--success)' : daysUntilDone > daysLeft * 0.7 ? 'var(--warning)' : 'var(--danger)';
+        subEl.textContent = 'נותרו ₪' + remaining.toLocaleString() + ' מתוך התקציב';
+    }
 }
 
 // ===== SHARED FUNCTIONS =====
@@ -2827,9 +3321,9 @@ function renderComparison(current, prev, containerId) {
     var balanceChange = prev.balance !== 0 ? ((current.balance - prev.balance) / Math.abs(prev.balance) * 100) : 0;
 
     var html = '';
-    html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">הכנסות</span><span class="comparison-value ' + (incomeChange >= 0 ? 'positive' : 'negative') + '">' + (incomeChange >= 0 ? '+' : '') + incomeChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (incomeChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(incomeChange), 100) + '%"></div></div></div>';
-    html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">הוצאות</span><span class="comparison-value ' + (expenseChange <= 0 ? 'positive' : 'negative') + '">' + (expenseChange >= 0 ? '+' : '') + expenseChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (expenseChange <= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(expenseChange), 100) + '%"></div></div></div>';
-    html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label">מאזן נטו</span><span class="comparison-value ' + (balanceChange >= 0 ? 'positive' : 'negative') + '">' + (balanceChange >= 0 ? '+' : '') + balanceChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (balanceChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(balanceChange), 100) + '%"></div></div></div>';
+    html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:var(--success)"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg> הכנסות</span><span class="comparison-value ' + (incomeChange >= 0 ? 'positive' : 'negative') + '">' + (incomeChange >= 0 ? '+' : '') + incomeChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (incomeChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(incomeChange), 100) + '%"></div></div></div>';
+    html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:var(--danger)"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg> הוצאות</span><span class="comparison-value ' + (expenseChange <= 0 ? 'positive' : 'negative') + '">' + (expenseChange >= 0 ? '+' : '') + expenseChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (expenseChange <= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(expenseChange), 100) + '%"></div></div></div>';
+    html += '<div class="comparison-card"><div class="comparison-header"><span class="comparison-label"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:var(--accent)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9z"/></svg> מאזן נטו</span><span class="comparison-value ' + (balanceChange >= 0 ? 'positive' : 'negative') + '">' + (balanceChange >= 0 ? '+' : '') + balanceChange.toFixed(1) + '%</span></div><div class="comparison-bar"><div class="comparison-fill ' + (balanceChange >= 0 ? 'positive' : 'negative') + '" style="width:' + Math.min(Math.abs(balanceChange), 100) + '%"></div></div></div>';
 
     container.innerHTML = html;
 }
@@ -2842,36 +3336,36 @@ function generateInsights(current, prev, containerId) {
     if (current.income > 0) {
         var savingsRate = (current.balance / current.income) * 100;
         if (savingsRate > 20) {
-            insights.push({ icon: '🎉', type: 'positive', title: 'כל הכבוד! אתה חוסך יפה', text: 'אתה חוסך ' + savingsRate.toFixed(0) + '% מההכנסה שלך. זה מעולה!' });
+            insights.push({ icon: 'trophy', type: 'positive', title: 'כל הכבוד! אתה חוסך יפה', text: 'אתה חוסך ' + savingsRate.toFixed(0) + '% מההכנסה שלך. זה מעולה!' });
         } else if (savingsRate > 0) {
-            insights.push({ icon: '💪', type: 'neutral', title: 'אתה בדרך הנכונה', text: 'אתה חוסך ' + savingsRate.toFixed(0) + '% מההכנסה. נסה להגיע ל-20% לפחות.' });
+            insights.push({ icon: 'zap', type: 'neutral', title: 'אתה בדרך הנכונה', text: 'אתה חוסך ' + savingsRate.toFixed(0) + '% מההכנסה. נסה להגיע ל-20% לפחות.' });
         } else {
-            insights.push({ icon: '⚠️', type: 'negative', title: 'ההוצאות עולות על ההכנסות', text: 'אתה מוציא יותר ממה שאתה מרוויח. כדאי לבדוק איפה אפשר לקצץ.' });
+            insights.push({ icon: 'warning', type: 'negative', title: 'ההוצאות עולות על ההכנסות', text: 'אתה מוציא יותר ממה שאתה מרוויח. כדאי לבדוק איפה אפשר לקצץ.' });
         }
     }
 
     if (prev.status === 'success' && prev.transactions > 0) {
         var expenseChange = ((current.expense - prev.expense) / prev.expense * 100);
         if (expenseChange < -10) {
-            insights.push({ icon: '📉', type: 'positive', title: 'הוצאות ירדו!', text: 'ההוצאות שלך ירדו ב-' + Math.abs(expenseChange).toFixed(0) + '% לעומת החודש הקודם. מעולה!' });
+            insights.push({ icon: 'trendDown', type: 'positive', title: 'הוצאות ירדו!', text: 'ההוצאות שלך ירדו ב-' + Math.abs(expenseChange).toFixed(0) + '% לעומת החודש הקודם.' });
         } else if (expenseChange > 10) {
-            insights.push({ icon: '📈', type: 'negative', title: 'הוצאות עלו', text: 'ההוצאות שלך עלו ב-' + expenseChange.toFixed(0) + '% לעומת החודש הקודם. כדאי לשים לב.' });
+            insights.push({ icon: 'trendUp', type: 'negative', title: 'הוצאות עלו', text: 'ההוצאות שלך עלו ב-' + expenseChange.toFixed(0) + '% לעומת החודש הקודם. כדאי לשים לב.' });
         }
     }
 
     if (budget > 0) {
         var budgetPct = (current.expense / budget) * 100;
         if (budgetPct > 90) {
-            insights.push({ icon: '🚨', type: 'negative', title: 'קרוב לתקציב!', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב החודשי. נשאר לך רק ' + Math.max(0, budget - current.expense).toLocaleString() });
+            insights.push({ icon: 'alert', type: 'negative', title: 'קרוב לתקציב!', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר ₪' + Math.max(0, budget - current.expense).toLocaleString() + ' בלבד.' });
         } else if (budgetPct > 70) {
-            insights.push({ icon: '⚡', type: 'neutral', title: 'שליטה בתקציב', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + Math.max(0, budget - current.expense).toLocaleString() + ' נותרו.' });
+            insights.push({ icon: 'zap', type: 'neutral', title: 'שליטה בתקציב', text: 'השתמשת ב-' + budgetPct.toFixed(0) + '% מהתקציב. עוד ₪' + Math.max(0, budget - current.expense).toLocaleString() + ' נותרו.' });
         } else if (budgetPct > 0) {
-            insights.push({ icon: '✅', type: 'positive', title: 'תקציב בשליטה', text: 'השתמשת רק ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר לך ₪' + Math.max(0, budget - current.expense).toLocaleString() + ' להמשך החודש.' });
+            insights.push({ icon: 'check', type: 'positive', title: 'תקציב בשליטה', text: 'השתמשת רק ב-' + budgetPct.toFixed(0) + '% מהתקציב. נשאר ₪' + Math.max(0, budget - current.expense).toLocaleString() + '.' });
         }
     }
 
     if (current.transactions > 30) {
-        insights.push({ icon: '📊', type: 'neutral', title: 'הרבה תנועות החודש', text: 'ביצעת ' + current.transactions + ' תנועות החודש. אולי כדאי לבדוק אם יש הוצאות מיותרות.' });
+        insights.push({ icon: 'savings', type: 'neutral', title: 'הרבה תנועות החודש', text: 'ביצעת ' + current.transactions + ' תנועות. אולי כדאי לבדוק אם יש הוצאות מיותרות.' });
     }
 
     if (insights.length === 0) {
@@ -2881,7 +3375,19 @@ function generateInsights(current, prev, containerId) {
 
     var html = '';
     insights.forEach(function(insight) {
-        html += '<div class="insight-item ' + insight.type + '"><div class="insight-icon ' + insight.type + '">' + insight.icon + '</div><div class="insight-content"><div class="insight-title">' + insight.title + '</div><div class="insight-text">' + insight.text + '</div></div></div>';
+        var iconSvg = '';
+        switch(insight.icon) {
+            case 'trophy': iconSvg = ICONS.trophy; break;
+            case 'warning': iconSvg = ICONS.warning; break;
+            case 'zap': iconSvg = ICONS.zap; break;
+            case 'alert': iconSvg = ICONS.alert; break;
+            case 'check': iconSvg = ICONS.check; break;
+            case 'trendUp': iconSvg = ICONS.trendUp; break;
+            case 'trendDown': iconSvg = ICONS.trendDown; break;
+            case 'savings': iconSvg = ICONS.savings; break;
+            default: iconSvg = ICONS.sparkle;
+        }
+        html += '<div class="insight-item ' + insight.type + '"><div class="insight-icon ' + insight.type + '">' + iconSvg + '</div><div class="insight-content"><div class="insight-title">' + insight.title + '</div><div class="insight-text">' + insight.text + '</div></div></div>';
     });
 
     container.innerHTML = html;
@@ -2898,18 +3404,14 @@ function calculateHealthScore(current, scoreId, barId, factorsId) {
         else if (savingsRate >= 10) { score += 20; factors.push({text: 'חיסכון טוב', status: 'good'}); }
         else if (savingsRate >= 0) { score += 10; factors.push({text: 'חיסכון נמוך', status: 'warn'}); }
         else { factors.push({text: 'גירעון', status: 'bad'}); }
-    } else {
-        factors.push({text: 'אין הכנסות', status: 'bad'});
-    }
+    } else { factors.push({text: 'אין הכנסות', status: 'bad'}); }
 
     if (budget > 0) {
         var budgetPct = (current.expense / budget) * 100;
         if (budgetPct <= 70) { score += 20; factors.push({text: 'בתוך התקציב', status: 'good'}); }
         else if (budgetPct <= 90) { score += 10; factors.push({text: 'קרוב לתקציב', status: 'warn'}); }
         else { factors.push({text: 'חריגה מהתקציב', status: 'bad'}); }
-    } else {
-        factors.push({text: 'אין תקציב', status: 'warn'});
-    }
+    } else { factors.push({text: 'אין תקציב', status: 'warn'}); }
 
     if (current.transactions > 0 && current.transactions <= 30) {
         score += 10; factors.push({text: 'ניהול מסודר', status: 'good'});
@@ -2922,7 +3424,6 @@ function calculateHealthScore(current, scoreId, barId, factorsId) {
     var scoreEl = document.getElementById(scoreId);
     var currentScore = parseInt(scoreEl.textContent) || 0;
     animateValue(scoreEl, currentScore, score, 1000, '', '/100');
-
     document.getElementById(barId).style.width = score + '%';
 
     var factorsHtml = '';
@@ -2939,16 +3440,13 @@ function updateBudgetBar(expense, remainingId, inputId) {
         var inputVal = parseFloat(budgetInput.value);
         if (inputVal > 0) budget = inputVal;
     }
-
     if (!budget || budget <= 0) {
         document.getElementById(remainingId).textContent = 'הגדר תקציב כדי להתחיל';
         return;
     }
-
     var remaining = Math.max(0, budget - expense);
     var daysLeft = getDaysLeftInMonth();
     var dailyBudget = daysLeft > 0 ? (remaining / daysLeft) : 0;
-
     document.getElementById(remainingId).textContent = 'נותר ₪' + remaining.toLocaleString() + ' (' + dailyBudget.toFixed(0) + ' ליום)';
 }
 
@@ -2968,18 +3466,13 @@ function updateBudgetRing(expense, ringId, ringValueId, budgetAmountId, remainin
     var pct = Math.min((expense / budget) * 100, 100);
     var circumference = 2 * Math.PI * 42;
     var offset = circumference - (pct / 100) * circumference;
-
     ring.style.strokeDashoffset = offset;
     ringValue.textContent = Math.round(pct) + '%';
     budgetAmount.textContent = '₪' + expense.toLocaleString() + ' / ₪' + budget.toLocaleString();
 
-    if (pct > 90) {
-        ring.style.stroke = 'var(--danger)';
-    } else if (pct > 70) {
-        ring.style.stroke = 'var(--warning)';
-    } else {
-        ring.style.stroke = 'url(#gradient)';
-    }
+    if (pct > 90) ring.style.stroke = 'var(--danger)';
+    else if (pct > 70) ring.style.stroke = 'var(--warning)';
+    else ring.style.stroke = 'url(#gradient)';
 }
 
 function getDaysLeftInMonth() {
@@ -2992,9 +3485,8 @@ function saveBudget() {
     var budgetInput = document.getElementById('budgetInput');
     var val = budgetInput.value.trim();
     var month = document.getElementById('insightsMonth').value;
-
-    if (!month) { showToast('❌ בחר חודש קודם', 'error'); return; }
-    if (!val || isNaN(val) || parseFloat(val) <= 0) { showToast('❌ הזן סכום תקין', 'error'); return; }
+    if (!month) { showToast('בחר חודש קודם', 'error'); return; }
+    if (!val || isNaN(val) || parseFloat(val) <= 0) { showToast('הזן סכום תקין', 'error'); return; }
 
     var budgetNum = parseFloat(val);
     var p = new URLSearchParams();
@@ -3012,26 +3504,19 @@ function saveBudget() {
             currentBudget = budgetNum;
             updateBudgetBar(currentExpense, 'budgetRemaining', 'budgetInput');
             updateBudgetRing(currentExpense, 'budgetRing', 'budgetRingValue', 'budgetAmount', 'budgetRemaining', 'budgetInput');
-            showToast('✅ תקציב נשמר לחודש ' + formatMonth(month) + ': ₪' + budgetNum.toLocaleString(), 'success');
+            showToast('תקציב נשמר: ₪' + budgetNum.toLocaleString(), 'success');
             if (currentExpense < budgetNum * 0.7) launchConfetti();
-        } else {
-            throw new Error(data.message || 'שגיאה לא ידועה');
-        }
-    }).catch(function(err) {
-        showToast('❌ שגיאה בשמירה: ' + err.message, 'error');
-    }).finally(function() {
-        btn.disabled = false;
-        btn.textContent = originalText;
-    });
+        } else { throw new Error(data.message || 'שגיאה'); }
+    }).catch(function(err) { showToast('שגיאה: ' + err.message, 'error'); })
+    .finally(function() { btn.disabled = false; btn.textContent = originalText; });
 }
 
 function saveDesktopBudget() {
     var budgetInput = document.getElementById('dBudgetInput');
     var val = budgetInput.value.trim();
     var month = document.getElementById('desktopInsightsMonth').value;
-
-    if (!month) { showToast('❌ בחר חודש קודם', 'error'); return; }
-    if (!val || isNaN(val) || parseFloat(val) <= 0) { showToast('❌ הזן סכום תקין', 'error'); return; }
+    if (!month) { showToast('בחר חודש קודם', 'error'); return; }
+    if (!val || isNaN(val) || parseFloat(val) <= 0) { showToast('הזן סכום תקין', 'error'); return; }
 
     var budgetNum = parseFloat(val);
     var p = new URLSearchParams();
@@ -3049,17 +3534,12 @@ function saveDesktopBudget() {
             desktopCurrentBudget = budgetNum;
             updateBudgetBar(desktopCurrentExpense, 'dBudgetRemaining', 'dBudgetInput');
             updateBudgetRing(desktopCurrentExpense, 'dBudgetRing', 'dBudgetRingValue', 'dBudgetAmount', 'dBudgetRemaining', 'dBudgetInput');
-            showToast('✅ תקציב נשמר לחודש ' + formatMonth(month) + ': ₪' + budgetNum.toLocaleString(), 'success');
+            updateBurnRate(desktopCurrentExpense);
+            showToast('תקציב נשמר: ₪' + budgetNum.toLocaleString(), 'success');
             if (desktopCurrentExpense < budgetNum * 0.7) launchConfetti();
-        } else {
-            throw new Error(data.message || 'שגיאה לא ידועה');
-        }
-    }).catch(function(err) {
-        showToast('❌ שגיאה בשמירה: ' + err.message, 'error');
-    }).finally(function() {
-        btn.disabled = false;
-        btn.textContent = originalText;
-    });
+        } else { throw new Error(data.message || 'שגיאה'); }
+    }).catch(function(err) { showToast('שגיאה: ' + err.message, 'error'); })
+    .finally(function() { btn.disabled = false; btn.textContent = originalText; });
 }
 
 function launchConfetti() {
@@ -3081,6 +3561,7 @@ function launchConfetti() {
 function loadHistory() {
     var month = document.getElementById('historyMonth').value;
     if (!month) return;
+    document.getElementById('txList').innerHTML = '<div class="section-loader"><div class="loader-spinner"></div> טוען תנועות...</div>';
     apiGet('transactions', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         allTransactions = data.transactions;
@@ -3091,6 +3572,7 @@ function loadHistory() {
 function loadDesktopHistory() {
     var month = document.getElementById('dHistoryMonth').value;
     if (!month) return;
+    document.getElementById('dTxList').innerHTML = '<div class="section-loader"><div class="loader-spinner"></div> טוען תנועות...</div>';
     apiGet('transactions', {month: month}).then(function(data) {
         if (data.status !== 'success') return;
         desktopAllTransactions = data.transactions;
@@ -3155,10 +3637,7 @@ function renderTransactions(txs, month, listId, footerId, incomeId, expenseId, n
         if (isInc) totalIn += t.amount; else totalOut += t.amount;
 
         var dateStr = '';
-        try {
-            var d = new Date(t.date);
-            dateStr = d.getDate() + '/' + (d.getMonth()+1);
-        } catch(e) { dateStr = t.date; }
+        try { var d = new Date(t.date); dateStr = d.getDate() + '/' + (d.getMonth()+1); } catch(e) { dateStr = t.date; }
 
         html += '<div class="tx-item" style="animation-delay:' + (idx * 0.04) + 's"><div class="tx-icon ' + cls + '">' + (isInc ? '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" transform="rotate(180 12 12)"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>') + '</div><div class="tx-info"><div class="tx-cat">' + escHtml(t.category) + '</div><div class="tx-desc">' + escHtml(t.description || dateStr) + '</div></div><div class="tx-right"><div class="tx-amount ' + cls + '">' + sign + '₪' + t.amount.toLocaleString() + '</div><div class="tx-date">' + dateStr + '</div></div><button class="tx-del" onclick="confirmDelete(\'' + t.id + '\',\'' + month + '\')" title="מחק"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button></div>';
     });
@@ -3193,7 +3672,6 @@ function closeModal() {
 
 document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
     if (!pendingDeleteId || !pendingDeleteMonth) { closeModal(); return; }
-
     var p = new URLSearchParams();
     p.append('action', 'delete');
     p.append('id', pendingDeleteId);
@@ -3201,19 +3679,14 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 
     apiPost(p).then(function(data) {
         if (data.status === 'success') {
-            showToast('✅ התנועה נמחקה', 'success');
+            showToast('התנועה נמחקה', 'success');
             loadHistory();
             loadDesktopHistory();
             loadInsights();
             loadDesktopInsights();
-        } else {
-            throw new Error(data.message);
-        }
-    }).catch(function(err) {
-        showToast('❌ שגיאה: ' + err.message, 'error');
-    }).finally(function() {
-        closeModal();
-    });
+        } else { throw new Error(data.message); }
+    }).catch(function(err) { showToast('שגיאה: ' + err.message, 'error'); })
+    .finally(function() { closeModal(); });
 });
 
 function exportCSV() {
@@ -3221,8 +3694,7 @@ function exportCSV() {
     if (!month) return;
     apiGet('transactions', {month: month}).then(function(data) {
         if (data.status !== 'success' || !data.transactions || data.transactions.length === 0) {
-            showToast('❌ אין נתונים לייצוא', 'error');
-            return;
+            showToast('אין נתונים לייצוא', 'error'); return;
         }
         var csv = '\uFEFF';
         csv += 'תאריך,סוג,קטגוריה,סכום,תיאור\n';
@@ -3236,7 +3708,7 @@ function exportCSV() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        showToast('✅ הקובץ הורד!', 'success');
+        showToast('הקובץ הורד!', 'success');
     });
 }
 
@@ -3245,8 +3717,7 @@ function exportDesktopCSV() {
     if (!month) return;
     apiGet('transactions', {month: month}).then(function(data) {
         if (data.status !== 'success' || !data.transactions || data.transactions.length === 0) {
-            showToast('❌ אין נתונים לייצוא', 'error');
-            return;
+            showToast('אין נתונים לייצוא', 'error'); return;
         }
         var csv = '\uFEFF';
         csv += 'תאריך,סוג,קטגוריה,סכום,תיאור\n';
@@ -3260,13 +3731,14 @@ function exportDesktopCSV() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        showToast('✅ הקובץ הורד!', 'success');
+        showToast('הקובץ הורד!', 'success');
     });
 }
 
 function showToast(msg, type) {
     var t = document.getElementById('toast');
-    t.textContent = msg;
+    var icon = type === 'success' ? ICONS.check : ICONS.error;
+    t.innerHTML = icon + '<span>' + msg + '</span>';
     t.className = 'toast ' + type + ' show';
     clearTimeout(t._timer);
     t._timer = setTimeout(function() { t.classList.remove('show'); }, 3000);
