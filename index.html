@@ -10,21 +10,21 @@
 :root {
     --bg-primary: #06080f;
     --bg-secondary: #0d1117;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-bg-hover: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-border-hover: rgba(255, 255, 255, 0.15);
-    --text: #f1f5f9;
+    --glass-bg: rgba(255, 255, 255, 0.025);
+    --glass-bg-hover: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glass-border-hover: rgba(255, 255, 255, 0.12);
+    --text: #f8fafc;
     --text-sec: #94a3b8;
     --text-muted: #64748b;
     --accent: #6366f1;
     --accent-light: #818cf8;
     --accent-dark: #4f46e5;
-    --accent-glow: rgba(99, 102, 241, 0.4);
+    --accent-glow: rgba(99, 102, 241, 0.35);
     --success: #10b981;
-    --success-glow: rgba(16, 185, 129, 0.3);
+    --success-glow: rgba(16, 185, 129, 0.25);
     --danger: #ef4444;
-    --danger-glow: rgba(239, 68, 68, 0.3);
+    --danger-glow: rgba(239, 68, 68, 0.25);
     --warning: #f59e0b;
     --purple: #a855f7;
     --pink: #ec4899;
@@ -32,99 +32,103 @@
     --radius: 20px;
     --radius-sm: 14px;
     --radius-xs: 10px;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
     --sidebar-width: 260px;
-    --sidebar-bg: rgba(13, 17, 23, 0.95);
-    --card-bg: rgba(255, 255, 255, 0.03);
+    --sidebar-bg: rgba(13, 17, 23, 0.92);
+    --card-bg: rgba(255, 255, 255, 0.025);
     --input-bg: rgba(15, 23, 42, 0.5);
     --chip-bg: rgba(15, 23, 42, 0.5);
-    --stat-bg: rgba(15, 23, 42, 0.5);
-    --balance-card-bg: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(16, 185, 129, 0.04));
-    --balance-card-border: rgba(99, 102, 241, 0.2);
-    --health-card-bg: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(99, 102, 241, 0.05));
-    --health-card-border: rgba(168, 85, 247, 0.2);
-    --progress-bg: rgba(15, 23, 42, 0.4);
-    --legend-bg: rgba(15, 23, 42, 0.4);
-    --legend-item-bg: rgba(255, 255, 255, 0.04);
-    --tx-bg: rgba(15, 23, 42, 0.5);
-    --tx-hover-bg: rgba(15, 23, 42, 0.8);
-    --footer-bg: rgba(15, 23, 42, 0.5);
+    --stat-bg: rgba(15, 23, 42, 0.4);
+    --balance-card-bg: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(16, 185, 129, 0.03));
+    --balance-card-border: rgba(99, 102, 241, 0.15);
+    --health-card-bg: linear-gradient(135deg, rgba(168, 85, 247, 0.06), rgba(99, 102, 241, 0.03));
+    --health-card-border: rgba(168, 85, 247, 0.15);
+    --progress-bg: rgba(15, 23, 42, 0.35);
+    --legend-bg: rgba(15, 23, 42, 0.35);
+    --legend-item-bg: rgba(255, 255, 255, 0.03);
+    --tx-bg: rgba(15, 23, 42, 0.4);
+    --tx-hover-bg: rgba(15, 23, 42, 0.7);
+    --footer-bg: rgba(15, 23, 42, 0.4);
     --modal-bg: rgba(30, 41, 59, 0.95);
     --toast-success: rgba(16, 185, 129, 0.95);
     --toast-error: rgba(239, 68, 68, 0.95);
-    --grid-color: rgba(99, 102, 241, 0.03);
-    --orb1: rgba(99, 102, 241, 0.3);
-    --orb2: rgba(16, 185, 129, 0.25);
-    --orb3: rgba(236, 72, 153, 0.2);
-    --particle-color: rgba(99, 102, 241, 0.5);
-    --health-factor-bg: rgba(15, 23, 42, 0.4);
-    --comparison-bg: rgba(15, 23, 42, 0.5);
-    --comparison-bar-bg: rgba(15, 23, 42, 0.6);
-    --recent-tx-bg: rgba(15, 23, 42, 0.4);
-    --recent-tx-hover-bg: rgba(15, 23, 42, 0.7);
-    --skeleton-bg: rgba(255,255,255,0.04);
-    --skeleton-shimmer: rgba(255,255,255,0.06);
+    --grid-color: rgba(99, 102, 241, 0.025);
+    --orb1: rgba(99, 102, 241, 0.25);
+    --orb2: rgba(16, 185, 129, 0.2);
+    --orb3: rgba(236, 72, 153, 0.15);
+    --particle-color: rgba(99, 102, 241, 0.4);
+    --health-factor-bg: rgba(15, 23, 42, 0.35);
+    --comparison-bg: rgba(15, 23, 42, 0.4);
+    --comparison-bar-bg: rgba(15, 23, 42, 0.5);
+    --recent-tx-bg: rgba(15, 23, 42, 0.35);
+    --recent-tx-hover-bg: rgba(15, 23, 42, 0.6);
+    --skeleton-bg: rgba(255,255,255,0.03);
+    --skeleton-shimmer: rgba(255,255,255,0.05);
     --select-bg: #1e293b;
     --empty-icon-color: var(--text-muted);
+    --card-inner-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 [data-theme="light"] {
-    --bg-primary: #f0f2f5;
+    --bg-primary: #f1f5f9;
     --bg-secondary: #ffffff;
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-bg-hover: rgba(255, 255, 255, 0.9);
-    --glass-border: rgba(0, 0, 0, 0.08);
-    --glass-border-hover: rgba(0, 0, 0, 0.15);
-    --text: #1e293b;
+    --glass-border: rgba(0, 0, 0, 0.06);
+    --glass-border-hover: rgba(0, 0, 0, 0.12);
+    --text: #0f172a;
     --text-sec: #475569;
     --text-muted: #94a3b8;
     --accent: #6366f1;
     --accent-light: #818cf8;
     --accent-dark: #4f46e5;
-    --accent-glow: rgba(99, 102, 241, 0.25);
+    --accent-glow: rgba(99, 102, 241, 0.2);
     --success: #059669;
-    --success-glow: rgba(5, 150, 105, 0.2);
+    --success-glow: rgba(5, 150, 105, 0.15);
     --danger: #dc2626;
-    --danger-glow: rgba(220, 38, 38, 0.2);
+    --danger-glow: rgba(220, 38, 38, 0.15);
     --warning: #d97706;
     --purple: #9333ea;
     --pink: #db2777;
     --cyan: #0891b2;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
     --sidebar-bg: rgba(255, 255, 255, 0.95);
     --card-bg: rgba(255, 255, 255, 0.7);
     --input-bg: rgba(241, 245, 249, 0.8);
     --chip-bg: rgba(241, 245, 249, 0.8);
-    --stat-bg: rgba(241, 245, 249, 0.8);
-    --balance-card-bg: linear-gradient(135deg, rgba(99, 102, 241, 0.06), rgba(16, 185, 129, 0.04));
-    --balance-card-border: rgba(99, 102, 241, 0.15);
-    --health-card-bg: linear-gradient(135deg, rgba(168, 85, 247, 0.06), rgba(99, 102, 241, 0.04));
-    --health-card-border: rgba(168, 85, 247, 0.15);
-    --progress-bg: rgba(241, 245, 249, 0.6);
-    --legend-bg: rgba(241, 245, 249, 0.6);
-    --legend-item-bg: rgba(0, 0, 0, 0.04);
-    --tx-bg: rgba(241, 245, 249, 0.6);
-    --tx-hover-bg: rgba(241, 245, 249, 0.9);
-    --footer-bg: rgba(241, 245, 249, 0.6);
+    --stat-bg: rgba(241, 245, 249, 0.7);
+    --balance-card-bg: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(16, 185, 129, 0.03));
+    --balance-card-border: rgba(99, 102, 241, 0.12);
+    --health-card-bg: linear-gradient(135deg, rgba(168, 85, 247, 0.05), rgba(99, 102, 241, 0.03));
+    --health-card-border: rgba(168, 85, 247, 0.12);
+    --progress-bg: rgba(241, 245, 249, 0.5);
+    --legend-bg: rgba(241, 245, 249, 0.5);
+    --legend-item-bg: rgba(0, 0, 0, 0.03);
+    --tx-bg: rgba(241, 245, 249, 0.5);
+    --tx-hover-bg: rgba(241, 245, 249, 0.8);
+    --footer-bg: rgba(241, 245, 249, 0.5);
     --modal-bg: rgba(255, 255, 255, 0.98);
     --toast-success: rgba(5, 150, 105, 0.95);
     --toast-error: rgba(220, 38, 38, 0.95);
-    --grid-color: rgba(99, 102, 241, 0.04);
-    --orb1: rgba(99, 102, 241, 0.15);
-    --orb2: rgba(16, 185, 129, 0.12);
-    --orb3: rgba(236, 72, 153, 0.1);
-    --particle-color: rgba(99, 102, 241, 0.3);
-    --health-factor-bg: rgba(241, 245, 249, 0.6);
-    --comparison-bg: rgba(241, 245, 249, 0.6);
-    --comparison-bar-bg: rgba(226, 232, 240, 0.8);
-    --recent-tx-bg: rgba(241, 245, 249, 0.5);
-    --recent-tx-hover-bg: rgba(241, 245, 249, 0.8);
-    --skeleton-bg: rgba(0,0,0,0.04);
-    --skeleton-shimmer: rgba(0,0,0,0.06);
+    --grid-color: rgba(99, 102, 241, 0.03);
+    --orb1: rgba(99, 102, 241, 0.12);
+    --orb2: rgba(16, 185, 129, 0.1);
+    --orb3: rgba(236, 72, 153, 0.08);
+    --particle-color: rgba(99, 102, 241, 0.25);
+    --health-factor-bg: rgba(241, 245, 249, 0.5);
+    --comparison-bg: rgba(241, 245, 249, 0.5);
+    --comparison-bar-bg: rgba(226, 232, 240, 0.6);
+    --recent-tx-bg: rgba(241, 245, 249, 0.4);
+    --recent-tx-hover-bg: rgba(241, 245, 249, 0.7);
+    --skeleton-bg: rgba(0,0,0,0.03);
+    --skeleton-shimmer: rgba(0,0,0,0.05);
     --select-bg: #f1f5f9;
     --empty-icon-color: var(--text-muted);
+    --card-inner-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -137,7 +141,7 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
-    transition: background 0.5s ease, color 0.5s ease;
+    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s ease;
 }
 
 .bg-animation {
@@ -151,36 +155,37 @@ body {
 .bg-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.4;
-    animation: float 20s ease-in-out infinite;
+    filter: blur(100px);
+    opacity: 0.5;
+    animation: float 25s ease-in-out infinite;
 }
 
 .bg-orb-1 {
-    width: 500px; height: 500px;
+    width: 600px; height: 600px;
     background: radial-gradient(circle, var(--orb1), transparent 70%);
-    top: -150px; right: -150px;
+    top: -200px; right: -200px;
 }
 
 .bg-orb-2 {
-    width: 400px; height: 400px;
+    width: 500px; height: 500px;
     background: radial-gradient(circle, var(--orb2), transparent 70%);
-    bottom: -150px; left: -150px;
-    animation-delay: -7s;
+    bottom: -200px; left: -200px;
+    animation-delay: -8s;
 }
 
 .bg-orb-3 {
-    width: 350px; height: 350px;
+    width: 450px; height: 450px;
     background: radial-gradient(circle, var(--orb3), transparent 70%);
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    animation-delay: -14s;
+    animation-delay: -16s;
 }
 
 @keyframes float {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -30px) scale(1.1); }
-    66% { transform: translate(-20px, 20px) scale(0.9); }
+    25% { transform: translate(40px, -40px) scale(1.05); }
+    50% { transform: translate(-30px, 30px) scale(0.95); }
+    75% { transform: translate(20px, 20px) scale(1.02); }
 }
 
 .grid-overlay {
@@ -211,7 +216,6 @@ body {
     100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
 }
 
-/* ============ SKELETON LOADING ============ */
 .skeleton {
     position: relative;
     overflow: hidden;
@@ -232,7 +236,7 @@ body {
     position: absolute;
     inset: 0;
     background: linear-gradient(90deg, transparent, var(--skeleton-shimmer), transparent);
-    animation: skeleton-shimmer 1.8s ease-in-out infinite;
+    animation: skeleton-shimmer 2s ease-in-out infinite;
 }
 
 @keyframes skeleton-shimmer {
@@ -254,7 +258,6 @@ body {
     border-radius: 8px;
 }
 
-/* Content fade in after loading */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -265,7 +268,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ============ DESKTOP LAYOUT ============ */
 .desktop-layout {
     display: none;
     min-height: 100vh;
@@ -280,14 +282,15 @@ body {
     width: var(--sidebar-width);
     height: 100vh;
     background: var(--sidebar-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     border-left: 1px solid var(--glass-border);
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
     z-index: 100;
     overflow-y: auto;
-    transition: background 0.5s ease, border-color 0.5s ease;
+    transition: background 0.6s ease, border-color 0.6s ease;
 }
 
 .sidebar-header {
@@ -306,6 +309,12 @@ body {
     justify-content: center;
     margin: 0 auto 12px;
     box-shadow: 0 8px 24px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.2);
+    animation: logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
 }
 
 .sidebar-logo svg { width: 28px; height: 28px; fill: white; }
@@ -345,7 +354,7 @@ body {
     font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: right;
     position: relative;
     overflow: hidden;
@@ -365,10 +374,11 @@ body {
 .sidebar-nav-btn:hover {
     color: var(--text);
     background: rgba(255,255,255,0.04);
+    transform: translateX(-4px);
 }
 
 [data-theme="light"] .sidebar-nav-btn:hover {
-    background: rgba(0,0,0,0.04);
+    background: rgba(0,0,0,0.03);
 }
 
 .sidebar-nav-btn.active {
@@ -382,7 +392,10 @@ body {
     width: 20px; height: 20px;
     fill: currentColor;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
 }
+
+.sidebar-nav-btn:hover svg { transform: scale(1.1); }
 
 .sidebar-footer {
     padding-top: 20px;
@@ -395,7 +408,6 @@ body {
     color: var(--text-muted);
 }
 
-/* Theme Toggle */
 .theme-toggle {
     display: flex;
     align-items: center;
@@ -411,6 +423,7 @@ body {
 
 .theme-toggle:hover {
     border-color: var(--glass-border-hover);
+    background: var(--glass-bg-hover);
 }
 
 .theme-toggle-label {
@@ -426,6 +439,11 @@ body {
     width: 18px;
     height: 18px;
     fill: currentColor;
+    transition: transform 0.5s ease;
+}
+
+.theme-toggle:hover .theme-toggle-label svg {
+    transform: rotate(20deg);
 }
 
 .theme-toggle-switch {
@@ -446,7 +464,8 @@ body {
     height: 18px;
     background: var(--text);
     border-radius: 50%;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 [data-theme="light"] .theme-toggle-switch::after {
@@ -492,14 +511,8 @@ body {
     gap: 12px;
 }
 
-.desktop-month-select, .desktop-add-btn {
-    padding: 10px 16px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-}
-
 .desktop-month-select {
+    padding: 10px 16px;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
@@ -509,12 +522,15 @@ body {
     cursor: pointer;
     min-width: 160px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
-.desktop-month-select:hover { border-color: var(--glass-border-hover); }
+.desktop-month-select:hover { border-color: var(--glass-border-hover); background: var(--glass-bg-hover); }
 .desktop-month-select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
 
+/* תיקון לכפתור הוסף תנועה */
 .desktop-add-btn {
+    padding: 10px 20px;
     background: linear-gradient(135deg, var(--accent), var(--accent-light));
     border: none;
     border-radius: var(--radius-sm);
@@ -523,16 +539,32 @@ body {
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
+    display: flex;
+    align-items: center;
     gap: 8px;
     box-shadow: 0 4px 15px var(--accent-glow);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    line-height: 1.2;
 }
 
-.desktop-add-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow); }
-.desktop-add-btn svg { width: 18px; height: 18px; fill: currentColor; }
+.desktop-add-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+}
 
-/* Dashboard Grid */
+.desktop-add-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); }
+.desktop-add-btn:hover::before { width: 300px; height: 300px; }
+.desktop-add-btn svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -547,7 +579,6 @@ body {
 .col-8 { grid-column: span 8; }
 .col-12 { grid-column: span 12; }
 
-/* ============ MOBILE LAYOUT ============ */
 .mobile-layout { display: block; }
 
 .app {
@@ -561,7 +592,6 @@ body {
     padding-bottom: 100px;
 }
 
-/* Header */
 .header {
     text-align: center;
     padding: 20px 0 24px;
@@ -573,7 +603,7 @@ body {
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.15), transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.12), transparent 70%);
     pointer-events: none;
     animation: pulse-glow 4s ease-in-out infinite;
 }
@@ -624,7 +654,6 @@ body {
     z-index: 1;
 }
 
-/* Tabs */
 .tabs {
     display: flex;
     gap: 4px;
@@ -639,7 +668,7 @@ body {
     position: sticky;
     top: 10px;
     z-index: 100;
-    transition: background 0.5s ease, border-color 0.5s ease;
+    transition: background 0.6s ease, border-color 0.6s ease;
 }
 
 .tab-btn {
@@ -693,11 +722,9 @@ body {
 .tab-btn:hover svg { transform: scale(1.15); }
 .tab-btn span { position: relative; z-index: 1; }
 
-/* Tab Content */
 .tab-content { display: none; }
 .tab-content.active { display: block; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
 
-/* Card */
 .card {
     background: var(--card-bg);
     backdrop-filter: blur(20px);
@@ -706,8 +733,8 @@ body {
     border-radius: var(--radius);
     padding: 24px;
     margin-bottom: 14px;
-    box-shadow: var(--shadow);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease, border-color 0.5s ease;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease, border-color 0.6s ease;
     position: relative;
     overflow: hidden;
 }
@@ -717,125 +744,116 @@ body {
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-[data-theme="light"] .card::before {
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.05), transparent);
+    background: var(--card-inner-shadow);
 }
 
 .card:hover {
     border-color: var(--glass-border-hover);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow);
     transform: translateY(-2px);
 }
 
-/* Balance Card - New Aurora Animation */
 .balance-card {
     text-align: center;
-    padding: 32px 24px;
+    padding: 40px 30px;
     background: var(--balance-card-bg);
     border-color: var(--balance-card-border);
     position: relative;
     overflow: hidden;
-    transition: background 0.5s ease, border-color 0.5s ease;
+    transition: background 0.6s ease, border-color 0.6s ease;
 }
 
-/* Aurora mesh animation */
-.aurora-layer {
+.balance-mesh {
     position: absolute;
-    inset: -50%;
-    width: 200%;
-    height: 200%;
-    opacity: 0.6;
-    pointer-events: none;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0.8;
 }
 
-.aurora-blob {
+.mesh-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(60px);
-    animation: auroraMove 12s ease-in-out infinite;
+    filter: blur(50px);
+    animation: meshFloat 15s ease-in-out infinite;
 }
 
-.aurora-blob-1 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.4), transparent 70%);
-    top: 20%; left: 10%;
-    animation-duration: 15s;
-}
-
-.aurora-blob-2 {
+.mesh-blob-1 {
     width: 250px; height: 250px;
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.35), transparent 70%);
-    top: 40%; right: 15%;
-    animation-duration: 18s;
-    animation-delay: -5s;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.3), transparent 70%);
+    top: -50px; right: -50px;
+    animation-duration: 12s;
 }
 
-.aurora-blob-3 {
+.mesh-blob-2 {
     width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent 70%);
-    bottom: 10%; left: 30%;
-    animation-duration: 20s;
-    animation-delay: -10s;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.25), transparent 70%);
+    bottom: -30px; left: -30px;
+    animation-duration: 16s;
+    animation-delay: -4s;
 }
 
-.aurora-blob-4 {
+.mesh-blob-3 {
     width: 180px; height: 180px;
-    background: radial-gradient(circle, rgba(6, 182, 212, 0.25), transparent 70%);
-    top: 10%; right: 30%;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.2), transparent 70%);
+    top: 30%; left: 40%;
     animation-duration: 14s;
-    animation-delay: -3s;
+    animation-delay: -8s;
 }
 
-@keyframes auroraMove {
-    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    25% { transform: translate(40px, -30px) scale(1.15) rotate(90deg); }
-    50% { transform: translate(-20px, 40px) scale(0.9) rotate(180deg); }
-    75% { transform: translate(30px, 20px) scale(1.1) rotate(270deg); }
+@keyframes meshFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.1); }
+    66% { transform: translate(-20px, 30px) scale(0.95); }
 }
 
-/* Floating particles inside balance card */
-.balance-particles {
+.balance-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
+    animation: patternShift 20s ease-in-out infinite;
+}
+
+@keyframes patternShift {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.balance-dots {
     position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
 }
 
-.balance-particle {
+.balance-dot {
     position: absolute;
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    animation: balanceParticleFloat linear infinite;
+    animation: dotFloat 8s ease-in-out infinite;
 }
 
-[data-theme="light"] .balance-particle {
+[data-theme="light"] .balance-dot {
     background: rgba(99, 102, 241, 0.3);
 }
 
-@keyframes balanceParticleFloat {
-    0% {
-        transform: translateY(100%) translateX(0) scale(0);
+@keyframes dotFloat {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
         opacity: 0;
     }
-    10% {
-        opacity: 1;
-        transform: translateY(80%) translateX(10px) scale(1);
-    }
-    90% {
-        opacity: 1;
-    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
     100% {
-        transform: translateY(-20%) translateX(-20px) scale(0.5);
+        transform: translateY(-100px) translateX(30px);
         opacity: 0;
     }
 }
 
-/* Shimmer line effect */
 .balance-shimmer {
     position: absolute;
     top: 0;
@@ -845,12 +863,12 @@ body {
     background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.03) 45%,
-        rgba(255, 255, 255, 0.08) 50%,
-        rgba(255, 255, 255, 0.03) 55%,
+        rgba(255, 255, 255, 0.02) 45%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.02) 55%,
         transparent 100%
     );
-    animation: balanceShimmer 6s ease-in-out infinite;
+    animation: balanceShimmer 8s ease-in-out infinite;
     pointer-events: none;
 }
 
@@ -858,9 +876,9 @@ body {
     background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(99, 102, 241, 0.03) 45%,
-        rgba(99, 102, 241, 0.08) 50%,
-        rgba(99, 102, 241, 0.03) 55%,
+        rgba(99, 102, 241, 0.02) 45%,
+        rgba(99, 102, 241, 0.05) 50%,
+        rgba(99, 102, 241, 0.02) 55%,
         transparent 100%
     );
 }
@@ -870,16 +888,15 @@ body {
     50% { left: 100%; }
 }
 
-/* Glow pulse on the amount */
-.balance-amount-glow {
+.balance-glow {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 200px;
-    height: 100px;
-    background: radial-gradient(ellipse, rgba(99, 102, 241, 0.15), transparent 70%);
-    animation: glowPulse 3s ease-in-out infinite;
+    width: 250px;
+    height: 120px;
+    background: radial-gradient(ellipse, rgba(99, 102, 241, 0.12), transparent 70%);
+    animation: glowPulse 4s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
 }
@@ -905,7 +922,7 @@ body {
 .balance-label svg { width: 18px; height: 18px; fill: currentColor; }
 
 .balance-amount {
-    font-size: 3rem;
+    font-size: 3.2rem;
     font-weight: 800;
     letter-spacing: -1.5px;
     position: relative;
@@ -916,12 +933,12 @@ body {
 
 .balance-amount.positive {
     color: var(--success);
-    text-shadow: 0 0 40px rgba(16, 185, 129, 0.4);
+    text-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
 }
 
 .balance-amount.negative {
     color: var(--danger);
-    text-shadow: 0 0 40px rgba(239, 68, 68, 0.4);
+    text-shadow: 0 0 40px rgba(239, 68, 68, 0.3);
 }
 
 .balance-sub {
@@ -938,7 +955,6 @@ body {
 
 .balance-sub svg { width: 16px; height: 16px; fill: currentColor; }
 
-/* Stats Grid */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
 
 .stat-card {
@@ -967,7 +983,10 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 auto 10px;
+    transition: transform 0.3s ease;
 }
+
+.stat-card:hover .stat-icon { transform: scale(1.1) rotate(5deg); }
 
 .stat-icon svg { width: 20px; height: 20px; fill: currentColor; }
 .stat-icon.income { background: rgba(16, 185, 129, 0.12); color: var(--success); }
@@ -986,11 +1005,10 @@ body {
 .stat-value.income { color: var(--success); text-shadow: 0 0 20px var(--success-glow); }
 .stat-value.expense { color: var(--danger); text-shadow: 0 0 20px var(--danger-glow); }
 
-/* Financial Health Score */
 .health-card {
     background: var(--health-card-bg);
     border-color: var(--health-card-border);
-    transition: background 0.5s ease, border-color 0.5s ease;
+    transition: background 0.6s ease, border-color 0.6s ease;
 }
 
 .health-header {
@@ -1022,14 +1040,14 @@ body {
 
 .health-bar-container {
     height: 8px;
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(15, 23, 42, 0.5);
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 12px;
 }
 
 [data-theme="light"] .health-bar-container {
-    background: rgba(226, 232, 240, 0.8);
+    background: rgba(226, 232, 240, 0.6);
 }
 
 .health-bar {
@@ -1069,8 +1087,10 @@ body {
     padding: 6px 10px;
     background: var(--health-factor-bg);
     border-radius: var(--radius-xs);
-    transition: background 0.5s ease;
+    transition: background 0.6s ease, transform 0.3s ease;
 }
+
+.health-factor:hover { transform: translateX(-4px); }
 
 .health-factor .dot {
     width: 6px; height: 6px;
@@ -1082,7 +1102,6 @@ body {
 .health-factor .dot.warn { background: var(--warning); box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); }
 .health-factor .dot.bad { background: var(--danger); box-shadow: 0 0 8px var(--danger-glow); }
 
-/* Progress Ring */
 .progress-ring-container {
     display: flex;
     align-items: center;
@@ -1091,7 +1110,7 @@ body {
     background: var(--progress-bg);
     border-radius: var(--radius-sm);
     margin-bottom: 16px;
-    transition: background 0.5s ease;
+    transition: background 0.6s ease;
 }
 
 .progress-ring {
@@ -1102,9 +1121,9 @@ body {
 
 .progress-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
 .progress-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
-.progress-ring .bg { stroke: rgba(15, 23, 42, 0.6); }
+.progress-ring .bg { stroke: rgba(15, 23, 42, 0.5); }
 
-[data-theme="light"] .progress-ring .bg { stroke: rgba(226, 232, 240, 0.8); }
+[data-theme="light"] .progress-ring .bg { stroke: rgba(226, 232, 240, 0.6); }
 
 .progress-ring .progress {
     transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1126,7 +1145,6 @@ body {
 .progress-info .amount { font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
 .progress-info .sub { font-size: 0.78rem; color: var(--text-muted); }
 
-/* Budget */
 .budget-input-row { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
 .budget-input-row input { flex: 1; }
 
@@ -1140,14 +1158,27 @@ body {
     font-size: 0.92rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     box-shadow: 0 4px 15px var(--accent-glow);
+    position: relative;
+    overflow: hidden;
+}
+
+.budget-save-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
 }
 
 .budget-save-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow); }
+.budget-save-btn:hover::before { width: 300px; height: 300px; }
 
-/* Chart */
 .chart-title {
     font-size: 1rem;
     color: var(--text-sec);
@@ -1169,7 +1200,7 @@ body {
     padding: 14px;
     background: var(--legend-bg);
     border-radius: var(--radius-sm);
-    transition: background 0.5s ease;
+    transition: background 0.6s ease;
 }
 
 .legend-item {
@@ -1185,20 +1216,19 @@ body {
 }
 
 .legend-item:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
     transform: translateY(-2px);
     border-color: var(--glass-border-hover);
 }
 
 [data-theme="light"] .legend-item:hover {
-    background: rgba(0, 0, 0, 0.06);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .legend-color { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
 .legend-label { font-size: 0.82rem; color: var(--text-sec); font-weight: 500; }
 .legend-amount { font-size: 0.72rem; color: var(--text-muted); }
 
-/* Quick Stats */
 .quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
 
 .q-stat {
@@ -1207,7 +1237,7 @@ body {
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease, background 0.5s ease;
+    transition: all 0.3s ease, background 0.6s ease;
     position: relative;
     overflow: hidden;
 }
@@ -1240,7 +1270,6 @@ body {
 .q-stat:hover .q-stat-val { color: var(--accent-light); }
 .q-stat-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
 
-/* Insight Item */
 .insight-item {
     padding: 16px;
     background: var(--tx-bg);
@@ -1251,7 +1280,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    transition: all 0.3s ease, background 0.5s ease;
+    transition: all 0.3s ease, background 0.6s ease;
     border-right: 3px solid transparent;
 }
 
@@ -1267,7 +1296,10 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
 }
+
+.insight-item:hover .insight-icon { transform: scale(1.1); }
 
 .insight-icon svg { width: 20px; height: 20px; fill: currentColor; }
 .insight-icon.positive { background: rgba(16, 185, 129, 0.12); color: var(--success); }
@@ -1278,7 +1310,6 @@ body {
 .insight-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 3px; }
 .insight-text { font-size: 0.82rem; color: var(--text-sec); line-height: 1.5; }
 
-/* Refresh */
 .refresh-btn {
     width: 100%;
     padding: 14px;
@@ -1298,17 +1329,15 @@ body {
 }
 
 .refresh-btn svg { width: 18px; height: 18px; fill: currentColor; transition: transform 0.5s ease; }
-.refresh-btn:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); border-color: var(--glass-border-hover); }
-[data-theme="light"] .refresh-btn:hover { background: rgba(0, 0, 0, 0.04); }
+.refresh-btn:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); border-color: var(--glass-border-hover); }
+[data-theme="light"] .refresh-btn:hover { background: rgba(0, 0, 0, 0.03); }
 .refresh-btn:hover svg { transform: rotate(180deg); }
 
-/* Month Selector */
 .month-row { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .month-row label { margin: 0; white-space: nowrap; font-size: 0.85rem; color: var(--text-sec); font-weight: 500; display: flex; align-items: center; gap: 6px; }
 .month-row label svg { width: 16px; height: 16px; fill: currentColor; }
 .month-row select { flex: 1; }
 
-/* Form */
 .form-group {
     margin-bottom: 20px;
     animation: slideIn 0.5s ease-out backwards;
@@ -1343,7 +1372,7 @@ input, select {
     font-size: 1rem;
     font-family: inherit;
     outline: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease;
     backdrop-filter: blur(10px);
 }
 
@@ -1373,7 +1402,6 @@ input::placeholder { color: var(--text-muted); }
 }
 .date-input-wrapper input:focus + svg { fill: var(--accent); }
 
-/* Type Toggle */
 .type-toggle { display: flex; gap: 10px; }
 
 .type-option {
@@ -1388,7 +1416,7 @@ input::placeholder { color: var(--text-muted); }
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1432,7 +1460,6 @@ input::placeholder { color: var(--text-muted); }
     box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
 }
 
-/* Submit */
 .submit-btn {
     width: 100%;
     padding: 17px;
@@ -1467,7 +1494,6 @@ input::placeholder { color: var(--text-muted); }
 .submit-btn:active { transform: translateY(-1px); }
 .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-/* History */
 .history-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
 .history-top .month-row { margin: 0; flex: 1; min-width: 180px; }
 
@@ -1493,7 +1519,7 @@ input::placeholder { color: var(--text-muted); }
     font-size: 0.82rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease, background 0.5s ease;
+    transition: all 0.3s ease, background 0.6s ease;
     font-family: inherit;
 }
 
@@ -1518,8 +1544,8 @@ input::placeholder { color: var(--text-muted); }
 }
 
 .export-btn svg { width: 16px; height: 16px; fill: currentColor; }
-.export-btn:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); border-color: var(--glass-border-hover); transform: translateY(-2px); }
-[data-theme="light"] .export-btn:hover { background: rgba(0, 0, 0, 0.04); }
+.export-btn:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); border-color: var(--glass-border-hover); transform: translateY(-2px); }
+[data-theme="light"] .export-btn:hover { background: rgba(0, 0, 0, 0.03); }
 
 .tx-list { max-height: 500px; overflow-y: auto; }
 
@@ -1532,7 +1558,7 @@ input::placeholder { color: var(--text-muted); }
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
     margin-bottom: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease;
     backdrop-filter: blur(10px);
     animation: slideInRight 0.4s ease-out backwards;
 }
@@ -1600,20 +1626,18 @@ input::placeholder { color: var(--text-muted); }
     flex-wrap: wrap;
     gap: 10px;
     backdrop-filter: blur(10px);
-    transition: background 0.5s ease;
+    transition: background 0.6s ease;
 }
 
 .hf-item { font-size: 0.85rem; }
 .hf-label { color: var(--text-muted); }
 .hf-val { font-weight: 600; font-variant-numeric: tabular-nums; }
 
-/* Empty */
 .empty { text-align: center; padding: 50px 20px; color: var(--text-muted); }
 .empty-icon { margin-bottom: 16px; opacity: 0.5; }
 .empty-icon svg { width: 64px; height: 64px; fill: var(--empty-icon-color); }
 .empty-text { font-size: 1rem; }
 
-/* Toast */
 .toast {
     position: fixed;
     bottom: 30px;
@@ -1640,7 +1664,6 @@ input::placeholder { color: var(--text-muted); }
 .toast.success { background: var(--toast-success); color: #fff; }
 .toast.error { background: var(--toast-error); color: #fff; }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 3px; }
@@ -1658,7 +1681,6 @@ input::placeholder { color: var(--text-muted); }
 
 .section-title svg { width: 20px; height: 20px; fill: currentColor; }
 
-/* Modal */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -1685,7 +1707,7 @@ input::placeholder { color: var(--text-muted); }
     width: 90%;
     text-align: center;
     transform: scale(0.9);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.5s ease;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.6s ease;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
@@ -1710,7 +1732,7 @@ input::placeholder { color: var(--text-muted); }
 .modal-btn.cancel { background: rgba(15, 23, 42, 0.6); color: var(--text-sec); border: 1px solid var(--glass-border); }
 [data-theme="light"] .modal-btn.cancel { background: rgba(241, 245, 249, 0.8); }
 .modal-btn.cancel:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); }
-[data-theme="light"] .modal-btn.cancel:hover { background: rgba(0, 0, 0, 0.06); }
+[data-theme="light"] .modal-btn.cancel:hover { background: rgba(0, 0, 0, 0.05); }
 .modal-btn.confirm { background: linear-gradient(135deg, var(--danger), #f87171); color: #fff; box-shadow: 0 4px 15px var(--danger-glow); }
 .modal-btn.confirm:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--danger-glow); }
 
@@ -1736,7 +1758,7 @@ input::placeholder { color: var(--text-muted); }
     background: var(--stat-bg);
     border-radius: var(--radius-xs);
     border: 1px solid var(--glass-border);
-    transition: all 0.3s ease, background 0.5s ease;
+    transition: all 0.3s ease, background 0.6s ease;
 }
 
 .daily-stat:hover { border-color: var(--glass-border-hover); transform: translateY(-2px); }
@@ -1752,7 +1774,7 @@ input::placeholder { color: var(--text-muted); }
     border-radius: var(--radius-sm);
     margin-bottom: 10px;
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease, background 0.5s ease;
+    transition: all 0.3s ease, background 0.6s ease;
 }
 
 .comparison-card:hover { border-color: var(--glass-border-hover); transform: translateX(-4px); }
@@ -1769,7 +1791,7 @@ input::placeholder { color: var(--text-muted); }
     background: var(--comparison-bar-bg);
     border-radius: 3px;
     overflow: hidden;
-    transition: background 0.5s ease;
+    transition: background 0.6s ease;
 }
 
 .comparison-fill {
@@ -1781,7 +1803,6 @@ input::placeholder { color: var(--text-muted); }
 .comparison-fill.positive { background: linear-gradient(90deg, var(--success), #34d399); }
 .comparison-fill.negative { background: linear-gradient(90deg, var(--danger), #f87171); }
 
-/* Confetti */
 .confetti {
     position: fixed;
     width: 8px; height: 8px;
@@ -1795,7 +1816,6 @@ input::placeholder { color: var(--text-muted); }
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
-/* FAB */
 .fab {
     position: fixed;
     bottom: 24px;
@@ -1825,7 +1845,6 @@ input::placeholder { color: var(--text-muted); }
 .fab-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px var(--accent-glow); }
 .fab-btn svg { width: 20px; height: 20px; fill: currentColor; }
 
-/* ============ DESKTOP SPECIFIC ============ */
 .desktop-card {
     background: var(--card-bg);
     backdrop-filter: blur(20px);
@@ -1833,8 +1852,8 @@ input::placeholder { color: var(--text-muted); }
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
     padding: 24px;
-    box-shadow: var(--shadow);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease, border-color 0.5s ease;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease, border-color 0.6s ease;
     position: relative;
     overflow: hidden;
 }
@@ -1844,33 +1863,36 @@ input::placeholder { color: var(--text-muted); }
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-}
-
-[data-theme="light"] .desktop-card::before {
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.05), transparent);
+    background: var(--card-inner-shadow);
 }
 
 .desktop-card:hover {
     border-color: var(--glass-border-hover);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow);
     transform: translateY(-2px);
 }
 
 .desktop-balance-card {
     text-align: center;
-    padding: 40px 30px;
+    padding: 45px 30px;
     background: var(--balance-card-bg);
     border-color: var(--balance-card-border);
 }
 
-.desktop-balance-card .balance-amount { font-size: 3.5rem; }
+.desktop-balance-card .balance-amount { font-size: 3.8rem; }
 
 .desktop-stat-card { text-align: center; padding: 28px 20px; }
 .desktop-stat-card .stat-value { font-size: 2rem; }
 
+/* תיקון לגרף היומי - הוספת min-height */
+.desktop-daily-chart-wrap { 
+    position: relative; 
+    height: 280px; 
+    margin-bottom: 16px;
+    min-height: 280px;
+}
+
 .desktop-chart-wrap { position: relative; height: 300px; margin-bottom: 20px; }
-.desktop-daily-chart-wrap { position: relative; height: 280px; margin-bottom: 16px; }
 
 .desktop-health-card {
     background: var(--health-card-bg);
@@ -1885,7 +1907,7 @@ input::placeholder { color: var(--text-muted); }
     background: var(--progress-bg);
     border-radius: var(--radius-sm);
     margin-bottom: 16px;
-    transition: background 0.5s ease;
+    transition: background 0.6s ease;
 }
 
 .desktop-progress-ring {
@@ -1896,9 +1918,9 @@ input::placeholder { color: var(--text-muted); }
 
 .desktop-progress-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
 .desktop-progress-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
-.desktop-progress-ring .bg { stroke: rgba(15, 23, 42, 0.6); }
+.desktop-progress-ring .bg { stroke: rgba(15, 23, 42, 0.5); }
 
-[data-theme="light"] .desktop-progress-ring .bg { stroke: rgba(226, 232, 240, 0.8); }
+[data-theme="light"] .desktop-progress-ring .bg { stroke: rgba(226, 232, 240, 0.6); }
 
 .desktop-progress-ring .progress {
     transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1922,7 +1944,7 @@ input::placeholder { color: var(--text-muted); }
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease, background 0.5s ease;
+    transition: all 0.3s ease, background 0.6s ease;
     position: relative;
     overflow: hidden;
 }
@@ -1960,7 +1982,6 @@ input::placeholder { color: var(--text-muted); }
 .desktop-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .desktop-form-grid .full-width { grid-column: span 2; }
 
-/* Recent Transactions Widget */
 .recent-tx-widget {
     display: flex;
     flex-direction: column;
@@ -1974,7 +1995,7 @@ input::placeholder { color: var(--text-muted); }
     padding: 12px;
     background: var(--recent-tx-bg);
     border-radius: var(--radius-xs);
-    transition: all 0.3s ease, background 0.5s ease;
+    transition: all 0.3s ease, background 0.6s ease;
     border: 1px solid transparent;
 }
 
@@ -2004,7 +2025,6 @@ input::placeholder { color: var(--text-muted); }
 .recent-tx-amount.income { color: var(--success); }
 .recent-tx-amount.expense { color: var(--danger); }
 
-/* Burn Rate Widget */
 .burn-rate-widget {
     text-align: center;
     padding: 20px;
@@ -2028,7 +2048,6 @@ input::placeholder { color: var(--text-muted); }
     margin-top: 4px;
 }
 
-/* Stagger animation for dashboard cards */
 .dashboard-grid > * {
     opacity: 0;
     animation: staggerIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -2052,7 +2071,6 @@ input::placeholder { color: var(--text-muted); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Tooltip */
 .tooltip-container {
     position: relative;
 }
@@ -2086,7 +2104,6 @@ input::placeholder { color: var(--text-muted); }
     transform: translateX(-50%) scale(1);
 }
 
-/* Section loader */
 .section-loader {
     display: flex;
     align-items: center;
@@ -2106,7 +2123,6 @@ input::placeholder { color: var(--text-muted); }
     animation: spinAnim 0.8s linear infinite;
 }
 
-/* Responsive */
 @media (max-width: 1200px) {
     .desktop-quick-stats { grid-template-columns: repeat(2, 1fr); }
 }
@@ -2138,7 +2154,6 @@ input::placeholder { color: var(--text-muted); }
 </div>
 <div class="grid-overlay"></div>
 
-<!-- ============ DESKTOP LAYOUT ============ -->
 <div class="desktop-layout">
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -2177,7 +2192,6 @@ input::placeholder { color: var(--text-muted); }
     </aside>
 
     <main class="main-content">
-        <!-- Desktop Insights Tab -->
         <div id="desktopInsightsTab" class="tab-content active">
             <div class="desktop-header">
                 <h2 class="desktop-header-title">
@@ -2188,34 +2202,32 @@ input::placeholder { color: var(--text-muted); }
                     <select id="desktopInsightsMonth" class="desktop-month-select" onchange="loadDesktopInsights()"></select>
                     <button class="desktop-add-btn" onclick="switchDesktopTab('add')">
                         <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                        הוסף תנועה
+                        <span>הוסף תנועה</span>
                     </button>
                 </div>
             </div>
 
             <div class="dashboard-grid" id="desktopDashboardGrid">
-                <!-- Balance -->
                 <div class="col-12">
                     <div class="desktop-card desktop-balance-card balance-card" id="dBalanceCard">
-                        <div class="aurora-layer">
-                            <div class="aurora-blob aurora-blob-1"></div>
-                            <div class="aurora-blob aurora-blob-2"></div>
-                            <div class="aurora-blob aurora-blob-3"></div>
-                            <div class="aurora-blob aurora-blob-4"></div>
+                        <div class="balance-mesh">
+                            <div class="mesh-blob mesh-blob-1"></div>
+                            <div class="mesh-blob mesh-blob-2"></div>
+                            <div class="mesh-blob mesh-blob-3"></div>
                         </div>
-                        <div class="balance-particles" id="dBalanceParticles"></div>
+                        <div class="balance-pattern"></div>
+                        <div class="balance-dots" id="dBalanceDots"></div>
                         <div class="balance-shimmer"></div>
-                        <div class="balance-amount-glow"></div>
+                        <div class="balance-glow"></div>
                         <div class="balance-label">
                             <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                             מאזן חודשי
                         </div>
-                        <div id="dBalanceAmount" class="balance-amount skeleton skeleton-balance">₪0</div>
+                        <div id="dBalanceAmount" class="balance-amount skeleton skeleton-balance">0</div>
                         <div id="dBalanceSub" class="balance-sub"></div>
                     </div>
                 </div>
 
-                <!-- Income & Expense -->
                 <div class="col-6">
                     <div class="desktop-card desktop-stat-card stat-card">
                         <div class="stat-icon income">
@@ -2235,8 +2247,7 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Financial Health - NOW col-7 to match budget -->
-                <div class="col-7">
+                <div class="col-6">
                     <div class="desktop-card desktop-health-card health-card">
                         <div class="health-header">
                             <div class="health-title">
@@ -2252,8 +2263,7 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Budget Progress Ring - col-5 to balance with health -->
-                <div class="col-5">
+                <div class="col-6">
                     <div class="desktop-card">
                         <div class="section-title">
                             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><circle cx="12" cy="12" r="5"/></svg>
@@ -2277,7 +2287,7 @@ input::placeholder { color: var(--text-muted); }
                             </div>
                             <div class="progress-info">
                                 <div class="label">הוצאות מתוך תקציב</div>
-                                <div class="amount" id="dBudgetAmount">₪0 / ₪0</div>
+                                <div class="amount" id="dBudgetAmount">0 / ₪0</div>
                                 <div class="sub" id="dBudgetRemaining">הגדר תקציב כדי להתחיל</div>
                             </div>
                         </div>
@@ -2288,7 +2298,6 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Daily Chart -->
                 <div class="col-8">
                     <div class="desktop-card">
                         <div class="chart-title">
@@ -2324,7 +2333,6 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Category Chart -->
                 <div class="col-4">
                     <div class="desktop-card">
                         <div class="chart-title">
@@ -2344,7 +2352,6 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Burn Rate & Quick Stats -->
                 <div class="col-4">
                     <div class="desktop-card">
                         <div class="section-title">
@@ -2387,7 +2394,6 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Comparison -->
                 <div class="col-6">
                     <div class="desktop-card">
                         <div class="section-title">
@@ -2400,7 +2406,6 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Insights -->
                 <div class="col-6">
                     <div class="desktop-card">
                         <div class="section-title">
@@ -2413,7 +2418,6 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Recent Transactions -->
                 <div class="col-6">
                     <div class="desktop-card">
                         <div class="section-title">
@@ -2426,7 +2430,6 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Quick Stats -->
                 <div class="col-6">
                     <div class="desktop-quick-stats">
                         <div class="desktop-q-stat tooltip-container" data-tooltip="הקטגוריה עם ההוצאה הגבוהה ביותר">
@@ -2464,7 +2467,6 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                 </div>
 
-                <!-- Refresh -->
                 <div class="col-12">
                     <button class="refresh-btn" onclick="loadDesktopInsights()">
                         <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
@@ -2474,7 +2476,6 @@ input::placeholder { color: var(--text-muted); }
             </div>
         </div>
 
-        <!-- Desktop Add Tab -->
         <div id="desktopAddTab" class="tab-content">
             <div class="desktop-header">
                 <h2 class="desktop-header-title">
@@ -2493,7 +2494,7 @@ input::placeholder { color: var(--text-muted); }
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>סכום ()</label>
+                            <label>סכום (₪)</label>
                             <input type="number" id="dAmount" placeholder="0.00" step="0.01" min="0.01" required>
                         </div>
                         <div class="form-group full-width">
@@ -2525,7 +2526,6 @@ input::placeholder { color: var(--text-muted); }
             </div>
         </div>
 
-        <!-- Desktop History Tab -->
         <div id="desktopHistoryTab" class="tab-content">
             <div class="desktop-header">
                 <h2 class="desktop-header-title">
@@ -2571,7 +2571,6 @@ input::placeholder { color: var(--text-muted); }
     </main>
 </div>
 
-<!-- ============ MOBILE LAYOUT ============ -->
 <div class="mobile-layout">
     <div class="app">
         <div class="header">
@@ -2600,7 +2599,6 @@ input::placeholder { color: var(--text-muted); }
             </button>
         </nav>
 
-        <!-- TAB: INSIGHTS -->
         <div id="insightsTab" class="tab-content active">
             <div class="card">
                 <div class="month-row">
@@ -2613,15 +2611,15 @@ input::placeholder { color: var(--text-muted); }
             </div>
 
             <div class="card balance-card">
-                <div class="aurora-layer">
-                    <div class="aurora-blob aurora-blob-1"></div>
-                    <div class="aurora-blob aurora-blob-2"></div>
-                    <div class="aurora-blob aurora-blob-3"></div>
-                    <div class="aurora-blob aurora-blob-4"></div>
+                <div class="balance-mesh">
+                    <div class="mesh-blob mesh-blob-1"></div>
+                    <div class="mesh-blob mesh-blob-2"></div>
+                    <div class="mesh-blob mesh-blob-3"></div>
                 </div>
-                <div class="balance-particles" id="mBalanceParticles"></div>
+                <div class="balance-pattern"></div>
+                <div class="balance-dots" id="mBalanceDots"></div>
                 <div class="balance-shimmer"></div>
-                <div class="balance-amount-glow"></div>
+                <div class="balance-glow"></div>
                 <div class="balance-label">
                     <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     מאזן חודשי
@@ -2805,7 +2803,6 @@ input::placeholder { color: var(--text-muted); }
             </button>
         </div>
 
-        <!-- TAB: ADD -->
         <div id="addTab" class="tab-content">
             <div class="card">
                 <form id="trackerForm">
@@ -2846,7 +2843,6 @@ input::placeholder { color: var(--text-muted); }
             </div>
         </div>
 
-        <!-- TAB: HISTORY -->
         <div id="historyTab" class="tab-content">
             <div class="card">
                 <div class="history-top">
@@ -2895,7 +2891,6 @@ input::placeholder { color: var(--text-muted); }
     </div>
 </div>
 
-<!-- FAB Button -->
 <div class="fab" id="fab">
     <button class="fab-btn" onclick="switchTab('add')">
         <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
@@ -2951,7 +2946,6 @@ let desktopCurrentSearch = '';
 let allTransactions = [];
 let desktopAllTransactions = [];
 
-// Theme management
 function initTheme() {
     const saved = localStorage.getItem('finance-theme');
     const theme = saved || 'dark';
@@ -2981,16 +2975,16 @@ function updateThemeIcon(theme) {
 
 initTheme();
 
-// Create balance particles
-function createBalanceParticles(containerId, count) {
+function createBalanceDots(containerId, count) {
     var container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = '';
     for (var i = 0; i < count; i++) {
         var p = document.createElement('div');
-        p.className = 'balance-particle';
+        p.className = 'balance-dot';
         p.style.left = Math.random() * 100 + '%';
-        p.style.animationDuration = (Math.random() * 4 + 3) + 's';
+        p.style.top = (50 + Math.random() * 50) + '%';
+        p.style.animationDuration = (Math.random() * 4 + 4) + 's';
         p.style.animationDelay = (Math.random() * 5) + 's';
         p.style.width = (Math.random() * 3 + 2) + 'px';
         p.style.height = p.style.width;
@@ -2998,18 +2992,17 @@ function createBalanceParticles(containerId, count) {
     }
 }
 
-createBalanceParticles('dBalanceParticles', 15);
-createBalanceParticles('mBalanceParticles', 10);
+createBalanceDots('dBalanceDots', 12);
+createBalanceDots('mBalanceDots', 8);
 
-// Create particles
 function createParticles() {
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 15; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.style.left = Math.random() * 100 + '%';
         p.style.animationDuration = (Math.random() * 10 + 10) + 's';
         p.style.animationDelay = (Math.random() * 10) + 's';
-        p.style.opacity = Math.random() * 0.5 + 0.2;
+        p.style.opacity = Math.random() * 0.4 + 0.1;
         document.body.appendChild(p);
     }
 }
@@ -3413,7 +3406,7 @@ function renderRecentTransactions(transactions) {
                     '<svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>') +
             '</div>' +
             '<div class="recent-tx-info"><div class="recent-tx-cat">' + escHtml(t.category) + '</div><div class="recent-tx-date">' + dateStr + '</div></div>' +
-            '<div class="recent-tx-amount ' + cls + '">' + sign + '₪' + t.amount.toLocaleString() + '</div>' +
+            '<div class="recent-tx-amount ' + cls + '">' + sign + '' + t.amount.toLocaleString() + '</div>' +
             '</div>';
     });
 
@@ -3448,8 +3441,8 @@ function calculateAvgTx(transactions) {
 
     var total = transactions.reduce(function(sum, t) { return sum + t.amount; }, 0);
     var avg = total / transactions.length;
-    el.textContent = '₪' + avg.toFixed(0);
-    subEl.textContent = transactions.length + ' תנועות בסה״כ';
+    el.textContent = '' + avg.toFixed(0);
+    subEl.textContent = transactions.length + ' תנועות בסהכ';
 }
 
 function updateBurnRate(expense) {
@@ -3520,7 +3513,7 @@ function renderCategoryChart(cats, month, canvasId, legendId, emptyId, topCatId,
         item.className = 'legend-item';
         item.innerHTML = '<div class="legend-color" style="background: ' + CHART_COLORS[idx % CHART_COLORS.length] + '; color: ' + CHART_COLORS[idx % CHART_COLORS.length] + '"></div>' +
             '<div><div class="legend-label">' + cat.category + '</div>' +
-            '<div class="legend-amount">₪' + cat.amount.toLocaleString() + ' (' + pct + '%)</div></div>';
+            '<div class="legend-amount">' + cat.amount.toLocaleString() + ' (' + pct + '%)</div></div>';
         legendEl.appendChild(item);
     });
 
@@ -3567,6 +3560,11 @@ function renderCategoryChart(cats, month, canvasId, legendId, emptyId, topCatId,
 
 function renderDailyChart(transactions, month, canvasId) {
     var canvas = document.getElementById(canvasId);
+    if (!canvas) {
+        console.error('Canvas not found:', canvasId);
+        return;
+    }
+    
     var parts = month.split('-');
     var mNum = parseInt(parts[0]), yNum = parseInt(parts[1]);
     var daysInMonth = new Date(yNum, mNum, 0).getDate();
@@ -3599,9 +3597,13 @@ function renderDailyChart(transactions, month, canvasId) {
     var min = minData.length > 0 ? Math.min.apply(null, minData) : 0;
 
     var prefix = canvasId === 'dDailyChart' ? 'd' : '';
-    document.getElementById(prefix + 'DailyAvg').textContent = '' + avg.toFixed(0);
-    document.getElementById(prefix + 'DailyMax').textContent = '₪' + max.toLocaleString();
-    document.getElementById(prefix + 'DailyMin').textContent = '₪' + min.toLocaleString();
+    var avgEl = document.getElementById(prefix + 'DailyAvg');
+    var maxEl = document.getElementById(prefix + 'DailyMax');
+    var minEl = document.getElementById(prefix + 'DailyMin');
+    
+    if (avgEl) avgEl.textContent = '' + avg.toFixed(0);
+    if (maxEl) maxEl.textContent = '' + max.toLocaleString();
+    if (minEl) minEl.textContent = '₪' + min.toLocaleString();
 
     var chartInstance = canvasId === 'dailyChart' ? dailyChart : dDailyChart;
     if (chartInstance) chartInstance.destroy();
@@ -3802,7 +3804,7 @@ function updateBudgetBar(expense, remainingId, inputId) {
     var remaining = Math.max(0, budget - expense);
     var daysLeft = getDaysLeftInMonth();
     var dailyBudget = daysLeft > 0 ? (remaining / daysLeft) : 0;
-    document.getElementById(remainingId).textContent = 'נותר ₪' + remaining.toLocaleString() + ' (' + dailyBudget.toFixed(0) + ' ליום)';
+    document.getElementById(remainingId).textContent = 'נותר ' + remaining.toLocaleString() + ' (' + dailyBudget.toFixed(0) + ' ליום)';
 }
 
 function updateBudgetRing(expense, ringId, ringValueId, budgetAmountId, remainingId, inputId) {
@@ -3890,7 +3892,7 @@ function saveDesktopBudget() {
             updateBudgetBar(desktopCurrentExpense, 'dBudgetRemaining', 'dBudgetInput');
             updateBudgetRing(desktopCurrentExpense, 'dBudgetRing', 'dBudgetRingValue', 'dBudgetAmount', 'dBudgetRemaining', 'dBudgetInput');
             updateBurnRate(desktopCurrentExpense);
-            showToast('תקציב נשמר: ₪' + budgetNum.toLocaleString(), 'success');
+            showToast('תקציב נשמר: ' + budgetNum.toLocaleString(), 'success');
             if (desktopCurrentExpense < budgetNum * 0.7) launchConfetti();
         } else { throw new Error(data.message || 'שגיאה'); }
     }).catch(function(err) { showToast('שגיאה: ' + err.message, 'error'); })
