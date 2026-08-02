@@ -10,10 +10,10 @@
 :root {
     --bg-primary: #06080f;
     --bg-secondary: #0d1117;
-    --glass-bg: rgba(255, 255, 255, 0.025);
-    --glass-bg-hover: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.06);
-    --glass-border-hover: rgba(255, 255, 255, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-bg-hover: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-hover: rgba(255, 255, 255, 0.15);
     --text: #f8fafc;
     --text-sec: #94a3b8;
     --text-muted: #64748b;
@@ -528,7 +528,6 @@ body {
 .desktop-month-select:hover { border-color: var(--glass-border-hover); background: var(--glass-bg-hover); }
 .desktop-month-select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
 
-/* תיקון לכפתור הוסף תנועה */
 .desktop-add-btn {
     padding: 10px 20px;
     background: linear-gradient(135deg, var(--accent), var(--accent-light));
@@ -753,6 +752,7 @@ body {
     transform: translateY(-2px);
 }
 
+/* Balance Card - Interactive Glassmorphism */
 .balance-card {
     text-align: center;
     padding: 40px 30px;
@@ -760,7 +760,36 @@ body {
     border-color: var(--balance-card-border);
     position: relative;
     overflow: hidden;
-    transition: background 0.6s ease, border-color 0.6s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+}
+
+.balance-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+}
+
+.balance-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.15), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.balance-card:hover::after {
+    opacity: 1;
+}
+
+.balance-card:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15), inset 0 0 60px rgba(99, 102, 241, 0.05);
+    transform: translateY(-4px) scale(1.01);
 }
 
 .balance-mesh {
@@ -1884,7 +1913,6 @@ input::placeholder { color: var(--text-muted); }
 .desktop-stat-card { text-align: center; padding: 28px 20px; }
 .desktop-stat-card .stat-value { font-size: 2rem; }
 
-/* תיקון לגרף היומי - הוספת min-height */
 .desktop-daily-chart-wrap { 
     position: relative; 
     height: 280px; 
@@ -2725,7 +2753,7 @@ input::placeholder { color: var(--text-muted); }
                     </div>
                     <div class="progress-info">
                         <div class="label">הוצאות מתוך תקציב</div>
-                        <div class="amount" id="budgetAmount">₪0 / ₪0</div>
+                        <div class="amount" id="budgetAmount">0 / ₪0</div>
                         <div class="sub" id="budgetRemaining">הגדר תקציב כדי להתחיל</div>
                     </div>
                 </div>
@@ -3016,6 +3044,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initTabs();
     loadMonths();
     updateFabVisibility();
+    
+    // FIX: Load desktop insights on initial load
+    setTimeout(function() {
+        loadDesktopInsights();
+    }, 300);
 });
 
 function initTabs() {
@@ -3546,7 +3579,7 @@ function renderCategoryChart(cats, month, canvasId, legendId, emptyId, topCatId,
                         label: function(ctx) {
                             var total = ctx.dataset.data.reduce(function(a,b){return a+b;},0);
                             var pct = ((ctx.parsed / total) * 100).toFixed(1);
-                            return ctx.label + ': ₪' + ctx.parsed.toLocaleString() + ' (' + pct + '%)';
+                            return ctx.label + ': ' + ctx.parsed.toLocaleString() + ' (' + pct + '%)';
                         }
                     }
                 }
@@ -4099,6 +4132,20 @@ function showToast(msg, type) {
     clearTimeout(t._timer);
     t._timer = setTimeout(function() { t.classList.remove('show'); }, 3000);
 }
+
+// Interactive balance card mouse tracking
+document.addEventListener('DOMContentLoaded', function() {
+    var balanceCards = document.querySelectorAll('.balance-card');
+    balanceCards.forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+            var rect = card.getBoundingClientRect();
+            var x = ((e.clientX - rect.left) / rect.width) * 100;
+            var y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty('--mouse-x', x + '%');
+            card.style.setProperty('--mouse-y', y + '%');
+        });
+    });
+});
 </script>
 </body>
 </html>
